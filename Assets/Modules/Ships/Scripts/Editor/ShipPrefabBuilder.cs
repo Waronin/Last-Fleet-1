@@ -1,3 +1,4 @@
+using LastFleet.Exploration;
 using LastFleet.Mining;
 using LastFleet.Shared.Editor;
 using UnityEditor;
@@ -77,6 +78,7 @@ namespace LastFleet.Ships.Editor
             AddPresentation(root, engineGlow, trail, bracket, 22f, 1f);
             EditorAssetUtility.SetReferences(root.GetComponent<ShipPresentation>(), ("_model", model));
             root.AddComponent<HarvesterMining>();
+            root.AddComponent<ShipScanner>();
             MiningAttachment attachment = root.AddComponent<MiningAttachment>();
             EditorAssetUtility.SetReferences(attachment, ("_model", model), ("_debris", debris));
             return SavePrefab(root, HarvesterPrefabPath);

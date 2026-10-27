@@ -34,7 +34,7 @@ namespace LastFleet.ShipControl
         ZoneView _activeZone;
         bool _isDragging;
         Vector2 _dragStart;
-        Rect _blockedScreenArea;
+        readonly Dictionary<object, Rect> _blockedScreenAreas = new Dictionary<object, Rect>();
         ShipAgent _lastClickedShip;
         float _lastClickTime = float.NegativeInfinity;
 
@@ -42,6 +42,12 @@ namespace LastFleet.ShipControl
 
         /// <summary>Short feedback for the player about what a command did.</summary>
         public event System.Action<string> Notice;
+
+        /// <summary>A deposit was left-clicked. The ship selection is kept, so ships can be put to work on it.</summary>
+        public event System.Action<ZoneView, ResourceDeposit> DepositClicked;
+
+        /// <summary>Empty space was left-clicked; the selection was cleared.</summary>
+        public event System.Action EmptySpaceClicked;
 
         void Awake()
         {
@@ -71,10 +77,30 @@ namespace LastFleet.ShipControl
             _isDragging = false;
         }
 
-        /// <summary>Screen area (pixels, origin bottom left) covered by UI, where clicks must not reach ships.</summary>
-        public void SetBlockedScreenArea(Rect screenArea)
+        /// <summary>
+        /// Screen area (pixels, origin bottom left) covered by a UI panel, where clicks must not reach
+        /// ships. Each panel registers its own area.
+        /// </summary>
+        public void SetBlockedScreenArea(object owner, Rect screenArea)
         {
-            _blockedScreenArea = screenArea;
+            _blockedScreenAreas[owner] = screenArea;
+        }
+
+        public void ClearBlockedScreenArea(object owner)
+        {
+            _blockedScreenAreas.Remove(owner);
+        }
+
+        bool IsOverUi(Vector2 pointer)
+        {
+            foreach (Rect area in _blockedScreenAreas.Values)
+            {
+                if (area.Contains(pointer))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public void SelectSquad(Squad squad, bool additive)
@@ -132,7 +158,7 @@ namespace LastFleet.ShipControl
 
             bool shift = keyboard.shiftKey.isPressed;
             Vector2 pointer = mouse.position.ReadValue();
-            bool overUi = _blockedScreenArea.Contains(pointer);
+            bool overUi = IsOverUi(pointer);
 
             if (mouse.leftButton.wasPressedThisFrame && !overUi)
             {
@@ -213,10 +239,17 @@ namespace LastFleet.ShipControl
 
             if (ship == null)
             {
+                // Inspecting a deposit keeps the selected ships, so they can be put to work on it.
+                if (_activeZone.TryPickDeposit(_camera, pointer, _pickRadiusPixels, out ResourceDeposit deposit))
+                {
+                    DepositClicked?.Invoke(_activeZone, deposit);
+                    return;
+                }
                 if (!additive)
                 {
                     _selection.Clear();
                 }
+                EmptySpaceClicked?.Invoke();
                 return;
             }
 

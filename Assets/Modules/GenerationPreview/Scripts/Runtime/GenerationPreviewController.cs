@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using LastFleet.CameraControl;
+using LastFleet.Exploration;
 using LastFleet.Galaxy;
+using LastFleet.Inspection;
 using LastFleet.Mining;
 using LastFleet.ShipControl;
 using LastFleet.Ships;
@@ -50,6 +52,8 @@ namespace LastFleet.GenerationPreview
         [SerializeField] ControlGroupInput _groupInput;
         [SerializeField] HangarCommandInput _hangarInput;
         [SerializeField] MiningCoordinator _mining;
+        [SerializeField] ScoutingService _scouting;
+        [SerializeField] InspectionPanel _inspection;
         [Tooltip("Spawned on arrival in a system until fleet jumps carry the fleet along.")]
         [SerializeField] ShipAgent _refineryPrefab;
         [SerializeField] ShipAgent _harvesterPrefab;
@@ -79,7 +83,8 @@ namespace LastFleet.GenerationPreview
         {
             if (_galaxyMapView == null || _starSystemView == null || _zoneWorld == null || _environment == null ||
                 _cameraRig == null || _shipRegistry == null || _shipInput == null || _groupInput == null ||
-                _hangarInput == null || _mining == null || _refineryPrefab == null || _harvesterPrefab == null)
+                _hangarInput == null || _mining == null || _scouting == null || _inspection == null ||
+                _refineryPrefab == null || _harvesterPrefab == null)
             {
                 Debug.LogError("GenerationPreviewController is missing a scene reference.", this);
                 enabled = false;
@@ -94,6 +99,10 @@ namespace LastFleet.GenerationPreview
             _hangarInput.Notice += ShowNotice;
             _shipInput.Notice += ShowNotice;
             _mining.Notice += ShowNotice;
+            _scouting.Notice += ShowNotice;
+            _inspection.Notice += ShowNotice;
+            _shipInput.DepositClicked += InspectDeposit;
+            _shipInput.EmptySpaceClicked += _inspection.Clear;
         }
 
         void OnDisable()
@@ -104,6 +113,20 @@ namespace LastFleet.GenerationPreview
             _hangarInput.Notice -= ShowNotice;
             _shipInput.Notice -= ShowNotice;
             _mining.Notice -= ShowNotice;
+            _scouting.Notice -= ShowNotice;
+            _inspection.Notice -= ShowNotice;
+            _shipInput.DepositClicked -= InspectDeposit;
+            _shipInput.EmptySpaceClicked -= _inspection.Clear;
+        }
+
+        void InspectDeposit(ZoneView zone, ResourceDeposit deposit)
+        {
+            _inspection.Show(new DepositInspection(zone, deposit, _mining, _scouting, () => Selection.Ships));
+        }
+
+        void InspectPointOfInterest(int index)
+        {
+            _inspection.Show(new PointOfInterestInspection(CurrentSystem, index, _scouting, ViewZone));
         }
 
         public void SelectSquad(Squad squad, bool additive)
@@ -225,6 +248,7 @@ namespace LastFleet.GenerationPreview
                 else
                 {
                     _starSystemView.SelectPointOfInterest(index);
+                    InspectPointOfInterest(index);
                 }
             }
         }
@@ -312,6 +336,7 @@ namespace LastFleet.GenerationPreview
 
         void ShowGalaxyMap()
         {
+            _inspection.Clear();
             Mode = GenerationPreviewMode.GalaxyMap;
             _shipInput.SetActiveZone(null);
             _starSystemView.SetVisible(false);
@@ -373,6 +398,7 @@ namespace LastFleet.GenerationPreview
 
         void ShowStarSystemMap()
         {
+            _inspection.Clear();
             Mode = GenerationPreviewMode.StarSystem;
             CurrentZone = null;
             _shipInput.SetActiveZone(null);
@@ -409,6 +435,7 @@ namespace LastFleet.GenerationPreview
 
         void ShowZone(ZoneView view)
         {
+            _inspection.Clear();
             Mode = GenerationPreviewMode.Zone;
             CurrentZone = view;
             _starSystemView.SetVisible(false);

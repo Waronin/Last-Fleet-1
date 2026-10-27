@@ -7,6 +7,8 @@
         "LastFleet.Zones",
         "LastFleet.Ships",
         "LastFleet.Mining",
+        "LastFleet.Exploration",
+        "LastFleet.Inspection",
         "LastFleet.ShipControl",
         "LastFleet.Space",
         "LastFleet.CameraControl",

@@ -66,7 +66,7 @@ namespace LastFleet.GenerationPreview
         {
             // GUI coordinates start top left, Input System screen coordinates bottom left.
             Rect screen = new Rect(Margin + panelInArea.x, Screen.height - Margin - panelInArea.yMax, panelInArea.width, panelInArea.height);
-            _controller.ShipInput.SetBlockedScreenArea(screen);
+            _controller.ShipInput.SetBlockedScreenArea(this, screen);
         }
 
         void DrawGalaxy()

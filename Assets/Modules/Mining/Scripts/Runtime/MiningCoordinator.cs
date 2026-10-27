@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using LastFleet.Ships;
 using LastFleet.Zones;
@@ -17,6 +17,8 @@ namespace LastFleet.Mining
 
         readonly MiningSlotClaims _claims = new MiningSlotClaims();
         readonly List<(ResourceDeposit Deposit, float DistanceSquared)> _candidates = new List<(ResourceDeposit Deposit, float DistanceSquared)>();
+        readonly List<ShipAgent> _harvesters = new List<ShipAgent>();
+        readonly List<ShipAgent> _harvesterCandidates = new List<ShipAgent>();
 
         public MiningSlotClaims Claims => _claims;
 
@@ -88,6 +90,50 @@ namespace LastFleet.Mining
             deposit = null;
             slot = -1;
             return false;
+        }
+
+        /// <summary>
+        /// Puts harvesters to work on a deposit and returns how many started. Selected harvesters are
+        /// used if there are any; otherwise free harvesters are called, then the nearest busy ones,
+        /// as many as the deposit has free slots.
+        /// </summary>
+        public int AssignHarvesters(ZoneView zone, ResourceDeposit deposit, IReadOnlyList<ShipAgent> selectedShips)
+        {
+            _harvesters.Clear();
+            foreach (ShipAgent ship in selectedShips)
+            {
+                if (ship.TryGetComponent(out HarvesterMining _))
+                {
+                    _harvesters.Add(ship);
+                }
+            }
+
+            if (_harvesters.Count == 0)
+            {
+                _harvesterCandidates.Clear();
+                foreach (ShipAgent ship in _registry.Ships)
+                {
+                    if (ship.TryGetComponent(out HarvesterMining mining) && mining.Deposit != deposit)
+                    {
+                        _harvesterCandidates.Add(ship);
+                    }
+                }
+                int zoneIndex = zone.Record.PointOfInterestIndex;
+                Vector2 zonePositionAU = zone.Record.PointOfInterest.PositionAU;
+                ShipAvailability.PickFreeThenNearest(_harvesterCandidates, ShipAvailability.IsFree,
+                    ship => ShipAvailability.TravelCost(ship, zoneIndex, zonePositionAU, deposit.LocalPosition),
+                    _claims.FreeSlotCount(deposit), _harvesters);
+            }
+
+            int started = 0;
+            foreach (ShipAgent harvester in _harvesters)
+            {
+                if (harvester.GetComponent<HarvesterMining>().StartMining(zone, deposit))
+                {
+                    started++;
+                }
+            }
+            return started;
         }
 
         /// <summary>The home carrier's storage if it has room, otherwise any storage with room.</summary>

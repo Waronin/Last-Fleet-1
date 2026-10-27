@@ -19,7 +19,7 @@ namespace LastFleet.Mining
     /// order. Attaching to a deposit scans it, since the ship is now on site.
     /// </summary>
     [RequireComponent(typeof(ShipAgent))]
-    public sealed class HarvesterMining : MonoBehaviour
+    public sealed class HarvesterMining : MonoBehaviour, IShipAutomation
     {
         const float SlotArrivalToleranceUnits = 2f;
 
@@ -39,6 +39,7 @@ namespace LastFleet.Mining
         public ResourceDeposit Deposit { get; private set; }
         public float YieldMultiplier => Deposit != null ? MiningYield.Multiplier(Deposit.MiningSeconds) : 1f;
         public Vector3 DepositWorldPosition => _zone.transform.TransformPoint(Deposit.LocalPosition);
+        public bool IsAutomationActive => State != MiningState.Inactive;
 
         // Subscribed for the object's whole life: docked ships are inactive but must still react.
         void Awake()

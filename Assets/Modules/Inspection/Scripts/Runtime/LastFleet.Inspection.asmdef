@@ -1,0 +1,21 @@
+{
+    "name": "LastFleet.Inspection",
+    "rootNamespace": "LastFleet.Inspection",
+    "references": [
+        "LastFleet.Ships",
+        "LastFleet.ShipControl",
+        "LastFleet.Mining",
+        "LastFleet.Exploration",
+        "LastFleet.Zones",
+        "LastFleet.StarSystem"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -4,6 +4,7 @@
     "references": [
         "LastFleet.Ships",
         "LastFleet.Mining",
+        "LastFleet.Exploration",
         "LastFleet.Shared.Editor"
     ],
     "includePlatforms": [
