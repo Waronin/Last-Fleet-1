@@ -141,6 +141,8 @@ namespace LastFleet.Mining
             Deposit.RecordMining(deltaTime);
             Cargo.Load(Deposit.Resource, extracted * multiplier);
             _zone.RefreshDeposit(Deposit);
+            // A ship destroyed here is removed at the end of the frame, so finishing this step is safe.
+            _coordinator.ApplyHazards(_zone, Deposit, deltaTime);
 
             if (Cargo.FreeSpace <= 0.01f)
             {

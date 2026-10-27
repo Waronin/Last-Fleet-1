@@ -155,6 +155,33 @@ namespace LastFleet.Mining
             return null;
         }
 
+        /// <summary>Rolls the deposit's hazard for one ship's mining time and applies what goes off.</summary>
+        public void ApplyHazards(ZoneView zone, ResourceDeposit deposit, float miningSeconds)
+        {
+            HazardEvent hazardEvent = MiningHazardRules.Roll(deposit.Hazard, miningSeconds, UnityEngine.Random.value);
+            if (hazardEvent == HazardEvent.None)
+            {
+                return;
+            }
+
+            Vector3 center = zone.transform.TransformPoint(deposit.LocalPosition);
+            if (hazardEvent == HazardEvent.Shatter)
+            {
+                int hit = _registry.DamageShipsNear(zone, center, deposit.RadiusUnits + MiningHazardRules.ShatterRangeUnits,
+                    MiningHazardRules.ShatterDamage, "debris of a breaking asteroid");
+                deposit.Shatter();
+                Report($"An asteroid broke apart in {zone.Record.PointOfInterest.Name}; {hit} ship(s) hit by debris.");
+            }
+            else
+            {
+                int hit = _registry.DamageShipsNear(zone, center, deposit.RadiusUnits + MiningHazardRules.GasExplosionRangeUnits,
+                    MiningHazardRules.GasExplosionDamage, "a gas explosion");
+                deposit.ClearHazard();
+                Report($"Gas pockets exploded in {zone.Record.PointOfInterest.Name}; {hit} ship(s) hit.");
+            }
+            zone.RefreshDeposit(deposit);
+        }
+
         public void Report(string message)
         {
             Notice?.Invoke(message);

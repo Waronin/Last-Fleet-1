@@ -17,6 +17,8 @@ namespace LastFleet.Inspection
         const int TitleFontSize = 16;
 
         [SerializeField] ShipCommandInput _shipInput;
+        [Tooltip("Top right for inspected objects, bottom right for the ship window.")]
+        [SerializeField] bool _anchorBottom;
 
         readonly List<string> _lines = new List<string>();
         readonly List<InspectionAction> _actions = new List<InspectionAction>();
@@ -77,6 +79,10 @@ namespace LastFleet.Inspection
             }
 
             GUILayout.BeginArea(new Rect(Screen.width - PanelWidth - Margin, Margin, PanelWidth, Screen.height - Margin * 2f));
+            if (_anchorBottom)
+            {
+                GUILayout.FlexibleSpace();
+            }
             GUILayout.BeginVertical(GUI.skin.box);
             GUILayout.Label(target.Title, _titleStyle);
             foreach (string line in _lines)
@@ -89,7 +95,7 @@ namespace LastFleet.Inspection
             {
                 DrawAction(action);
             }
-            if (GUILayout.Button("Close"))
+            if (!_anchorBottom && GUILayout.Button("Close"))
             {
                 Clear();
             }

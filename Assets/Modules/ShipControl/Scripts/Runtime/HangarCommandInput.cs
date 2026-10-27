@@ -78,8 +78,14 @@ namespace LastFleet.ShipControl
 
         void LaunchSelected()
         {
+            LaunchShips(_commandInput.Selection.Ships);
+        }
+
+        /// <summary>Queues the docked ones among the given ships for launch.</summary>
+        public void LaunchShips(IReadOnlyList<ShipAgent> ships)
+        {
             int launching = 0;
-            foreach (ShipAgent ship in _commandInput.Selection.Ships)
+            foreach (ShipAgent ship in ships)
             {
                 if (ship.IsDocked)
                 {

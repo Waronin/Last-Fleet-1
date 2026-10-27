@@ -92,13 +92,20 @@ namespace LastFleet.GenerationPreview.Editor
             InspectionPanel inspection = inspectionObject.AddComponent<InspectionPanel>();
             EditorAssetUtility.SetReferences(inspection, ("_shipInput", shipInput));
 
+            GameObject shipPanelObject = new GameObject("Ship Panel");
+            InspectionPanel shipPanel = shipPanelObject.AddComponent<InspectionPanel>();
+            SerializedObject shipPanelData = new SerializedObject(shipPanel);
+            EditorAssetUtility.FindProperty(shipPanelData, "_shipInput").objectReferenceValue = shipInput;
+            EditorAssetUtility.FindProperty(shipPanelData, "_anchorBottom").boolValue = true;
+            shipPanelData.ApplyModifiedPropertiesWithoutUndo();
+
             GameObject previewObject = new GameObject("Generation Preview");
             GenerationPreviewController preview = previewObject.AddComponent<GenerationPreviewController>();
             EditorAssetUtility.SetReferences(preview,
                 ("_galaxyMapView", mapView), ("_starSystemView", systemView), ("_zoneWorld", zoneWorld),
                 ("_environment", environment), ("_cameraRig", cameraRig), ("_shipRegistry", shipRegistry),
                 ("_shipInput", shipInput), ("_groupInput", groupInput), ("_hangarInput", hangarInput), ("_mining", mining),
-                ("_scouting", scouting), ("_inspection", inspection),
+                ("_scouting", scouting), ("_inspection", inspection), ("_shipPanel", shipPanel),
                 ("_refineryPrefab", ShipPrefabBuilder.LoadOrCreateRefinery()),
                 ("_harvesterPrefab", ShipPrefabBuilder.LoadOrCreateHarvester()));
             GenerationPreviewOverlay overlay = previewObject.AddComponent<GenerationPreviewOverlay>();

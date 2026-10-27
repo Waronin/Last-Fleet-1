@@ -91,7 +91,8 @@ namespace LastFleet.Zones
         public float RemainingAmount { get; private set; }
         public float RemainingFraction => RemainingAmount / InitialAmount;
         public bool IsDepleted => RemainingAmount <= 0f;
-        public DepositHazard Hazard { get; }
+        /// <summary>Run state: a hazard can be used up, e.g. when gas pockets have exploded.</summary>
+        public DepositHazard Hazard { get; private set; }
         public float SlotAngleOffsetDegrees { get; }
 
         /// <summary>Whether a scan revealed resource, exact amount, hazard and mining slots.</summary>
@@ -143,6 +144,19 @@ namespace LastFleet.Zones
         public void Scan()
         {
             IsScanned = true;
+        }
+
+        /// <summary>The hazard is used up, e.g. the gas pockets have gone off.</summary>
+        public void ClearHazard()
+        {
+            Hazard = DepositHazard.None;
+        }
+
+        /// <summary>A brittle rock breaks apart: half of what is left drifts off as debris.</summary>
+        public void Shatter()
+        {
+            Extract(RemainingAmount * 0.5f);
+            ClearHazard();
         }
 
         public void RecordMining(float seconds)

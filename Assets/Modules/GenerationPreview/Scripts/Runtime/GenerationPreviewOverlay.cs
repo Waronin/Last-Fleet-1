@@ -139,7 +139,7 @@ namespace LastFleet.GenerationPreview
             DrawShips();
             GUILayout.Space(6f);
             GUILayout.Label("Left click / drag: select ships (Shift: add)   Right click: move (Shift: queue), on a deposit: mine");
-            GUILayout.Label("V: scan nearest deposit (Shift: whole zone)   X: extract nearest deposit");
+            GUILayout.Label("V: scan nearest deposit (Shift: whole zone)   X: extract nearest deposit   K: damage selected (Shift: heavy)");
             GUILayout.Label("Tab / Shift+Tab: next revealed zone   F: follow ship   Esc: system map");
         }
 
@@ -172,7 +172,7 @@ namespace LastFleet.GenerationPreview
                     ? $", hangar {shipHangar.DockedShips.Count}/{shipHangar.Capacity}{(shipHangar.LaunchQueueCount > 0 ? $", launching {shipHangar.LaunchQueueCount}" : string.Empty)}"
                     : string.Empty;
                 string storage = ship.TryGetComponent(out RawMaterialStorage shipStorage) ? $", stored {DescribeStock(shipStorage.Stock)}" : string.Empty;
-                string label = $"{(_controller.Selection.Contains(ship) ? "* " : string.Empty)}{ship.name} - {ship.Activity} " +
+                string label = $"{(_controller.Selection.Contains(ship) ? "* " : string.Empty)}{ship.name} ({DescribeHull(ship)}) - {ship.Activity} " +
                                $"in {ship.Zone.Record.PointOfInterest.Name}{DescribeTarget(ship)}{hangar}{storage}";
                 if (GUILayout.Button(label, GUI.skin.label))
                 {
@@ -200,7 +200,7 @@ namespace LastFleet.GenerationPreview
 
             foreach (ShipAgent ship in _controller.Selection.Ships)
             {
-                GUILayout.Label($"   {ship.name}: {ship.MotionPhase}, {ship.Speed:0.0} u/s ({ship.Speed * 0.1f:0.00} km/s), " +
+                GUILayout.Label($"   {ship.name}: {DescribeHull(ship)}, {ship.MotionPhase}, {ship.Speed:0.0} u/s ({ship.Speed * 0.1f:0.00} km/s), " +
                                 $"{ship.QueuedOrderCount} queued{DescribeMining(ship)}");
             }
 
@@ -229,6 +229,13 @@ namespace LastFleet.GenerationPreview
 
             string charge = ship.Activity == ShipActivity.ChargingJump ? $", jump in {ship.JumpChargeRemainingSeconds:0.0} s" : string.Empty;
             return $" -> {_controller.CurrentSystem.Zones[ship.TargetZoneIndex].PointOfInterest.Name}{charge}";
+        }
+
+        static string DescribeHull(ShipAgent ship)
+        {
+            return ship.TryGetComponent(out ShipDurability durability)
+                ? $"hull {durability.Hull.Current:0}/{durability.Hull.Maximum:0}"
+                : "no hull";
         }
 
         static string DescribeMining(ShipAgent ship)

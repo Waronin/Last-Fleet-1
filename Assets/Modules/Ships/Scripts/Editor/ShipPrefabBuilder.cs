@@ -23,6 +23,8 @@ namespace LastFleet.Ships.Editor
         const string LitShaderName = "Universal Render Pipeline/Lit";
         const string UnlitShaderName = "Universal Render Pipeline/Unlit";
         const string ParticleShaderName = "Universal Render Pipeline/Particles/Unlit";
+        const float HarvesterHull = 100f;
+        const float RefineryHull = 2000f;
         static readonly int BaseColorId = Shader.PropertyToID("_BaseColor");
 
         // Industrial design language (GDD): angular, yellow-black warning colors, rust, warm orange engines.
@@ -77,6 +79,7 @@ namespace LastFleet.Ships.Editor
             EditorAssetUtility.SetReferences(agent, ("_movementProfile", profile));
             AddPresentation(root, engineGlow, trail, bracket, 22f, 1f);
             EditorAssetUtility.SetReferences(root.GetComponent<ShipPresentation>(), ("_model", model));
+            AddDurability(root, HarvesterHull);
             root.AddComponent<HarvesterMining>();
             root.AddComponent<ShipScanner>();
             MiningAttachment attachment = root.AddComponent<MiningAttachment>();
@@ -132,6 +135,7 @@ namespace LastFleet.Ships.Editor
             Hangar hangar = root.AddComponent<Hangar>();
             EditorAssetUtility.SetReferences(hangar, ("_bay", bayTransform));
             root.AddComponent<RawMaterialStorage>();
+            AddDurability(root, RefineryHull);
             AddPresentation(root, engineGlow, trail, bracket, 34f, 1f);
             return SavePrefab(root, RefineryPrefabPath);
         }
@@ -182,6 +186,14 @@ namespace LastFleet.Ships.Editor
             EditorAssetUtility.FindProperty(serialized, "_bracket").objectReferenceValue = bracket;
             EditorAssetUtility.FindProperty(serialized, "_bracketSizePixels").floatValue = bracketSizePixels;
             EditorAssetUtility.FindProperty(serialized, "_engineGlowMaximumScale").floatValue = engineGlowScale;
+            serialized.ApplyModifiedPropertiesWithoutUndo();
+        }
+
+        static void AddDurability(GameObject root, float maximumHull)
+        {
+            ShipDurability durability = root.AddComponent<ShipDurability>();
+            SerializedObject serialized = new SerializedObject(durability);
+            EditorAssetUtility.FindProperty(serialized, "_maximumHull").floatValue = maximumHull;
             serialized.ApplyModifiedPropertiesWithoutUndo();
         }
 

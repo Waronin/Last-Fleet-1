@@ -16,6 +16,7 @@ namespace LastFleet.Ships
         readonly List<Hangar> _hangars = new List<Hangar>();
         readonly SquadRoster _squads = new SquadRoster();
         readonly Dictionary<string, int> _spawnedPerClass = new Dictionary<string, int>();
+        readonly List<ShipDurability> _damageTargets = new List<ShipDurability>();
 
         public IReadOnlyList<ShipAgent> Ships => _ships;
         public IReadOnlyList<Hangar> Hangars => _hangars;
@@ -24,6 +25,29 @@ namespace LastFleet.Ships
 
         public event Action<ShipAgent> ShipSpawned;
         public event Action<ShipAgent> ShipRemoved;
+
+        /// <summary>A ship was destroyed by damage; the string names the cause.</summary>
+        public event Action<ShipAgent, string> ShipLost;
+
+        /// <summary>Damages every ship flying within a radius of a world point, e.g. for an explosion.</summary>
+        public int DamageShipsNear(ZoneView zone, Vector3 worldPoint, float radiusUnits, float damage, string cause)
+        {
+            _damageTargets.Clear();
+            foreach (ShipAgent ship in _ships)
+            {
+                if (!ship.IsDocked && ship.Zone == zone && (ship.transform.position - worldPoint).sqrMagnitude <= radiusUnits * radiusUnits &&
+                    ship.TryGetComponent(out ShipDurability durability))
+                {
+                    _damageTargets.Add(durability);
+                }
+            }
+            // Separate pass: destroyed ships leave the list during the loop above otherwise.
+            foreach (ShipDurability target in _damageTargets)
+            {
+                target.ApplyDamage(damage, cause);
+            }
+            return _damageTargets.Count;
+        }
 
         void Awake()
         {
@@ -56,6 +80,11 @@ namespace LastFleet.Ships
             if (ship.TryGetComponent(out Hangar hangar))
             {
                 _hangars.Add(hangar);
+            }
+
+            if (ship.TryGetComponent(out ShipDurability durability))
+            {
+                durability.DestroyedBy += OnShipDestroyedBy;
             }
 
             ship.Destroyed += OnShipDestroyed;
@@ -125,10 +154,19 @@ namespace LastFleet.Ships
             }
         }
 
+        void OnShipDestroyedBy(ShipAgent ship, string cause)
+        {
+            ShipLost?.Invoke(ship, cause);
+        }
+
         // Ships are children of their zone view or carrier, so leaving a system destroys them with the zones.
         void OnShipDestroyed(ShipAgent ship)
         {
             ship.Destroyed -= OnShipDestroyed;
+            if (ship.TryGetComponent(out ShipDurability durability))
+            {
+                durability.DestroyedBy -= OnShipDestroyedBy;
+            }
             _ships.Remove(ship);
             _squads.Remove(ship);
             if (ship.TryGetComponent(out Hangar hangar))

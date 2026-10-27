@@ -38,6 +38,8 @@ namespace LastFleet.GenerationPreview
         const float ZoneViewDistanceUnits = 120f;
         const float DeveloperExtractFraction = 0.5f;
         const int HarvestersPerSquad = 3;
+        const float DeveloperLightDamage = 25f;
+        const float DeveloperHeavyDamage = 100f;
         static readonly Vector3 RefineryArrivalPosition = new Vector3(0f, 0f, 0f);
 
         [SerializeField] int _galaxySeed = 1;
@@ -54,12 +56,14 @@ namespace LastFleet.GenerationPreview
         [SerializeField] MiningCoordinator _mining;
         [SerializeField] ScoutingService _scouting;
         [SerializeField] InspectionPanel _inspection;
+        [SerializeField] InspectionPanel _shipPanel;
         [Tooltip("Spawned on arrival in a system until fleet jumps carry the fleet along.")]
         [SerializeField] ShipAgent _refineryPrefab;
         [SerializeField] ShipAgent _harvesterPrefab;
         [SerializeField, Min(1f)] float _pickRadiusPixels = 14f;
 
         readonly List<ShipAgent> _singleShip = new List<ShipAgent>(1);
+        ShipSelectionInspection _shipInspection;
         RunZoneRegistry _runZones;
         float _lastClickTime = float.NegativeInfinity;
         int _lastClickedIndex = -1;
@@ -83,7 +87,7 @@ namespace LastFleet.GenerationPreview
         {
             if (_galaxyMapView == null || _starSystemView == null || _zoneWorld == null || _environment == null ||
                 _cameraRig == null || _shipRegistry == null || _shipInput == null || _groupInput == null ||
-                _hangarInput == null || _mining == null || _scouting == null || _inspection == null ||
+                _hangarInput == null || _mining == null || _scouting == null || _inspection == null || _shipPanel == null ||
                 _refineryPrefab == null || _harvesterPrefab == null)
             {
                 Debug.LogError("GenerationPreviewController is missing a scene reference.", this);
@@ -103,6 +107,20 @@ namespace LastFleet.GenerationPreview
             _inspection.Notice += ShowNotice;
             _shipInput.DepositClicked += InspectDeposit;
             _shipInput.EmptySpaceClicked += _inspection.Clear;
+            _shipRegistry.ShipLost += OnShipLost;
+            Selection.Changed += UpdateShipPanel;
+        }
+
+        /// <summary>The ship window follows the selection: open while ships are selected.</summary>
+        void UpdateShipPanel()
+        {
+            if (Selection.Count == 0)
+            {
+                _shipPanel.Clear();
+                return;
+            }
+            _shipInspection ??= new ShipSelectionInspection(Selection, _shipRegistry, _hangarInput);
+            _shipPanel.Show(_shipInspection);
         }
 
         void OnDisable()
@@ -117,6 +135,8 @@ namespace LastFleet.GenerationPreview
             _inspection.Notice -= ShowNotice;
             _shipInput.DepositClicked -= InspectDeposit;
             _shipInput.EmptySpaceClicked -= _inspection.Clear;
+            _shipRegistry.ShipLost -= OnShipLost;
+            Selection.Changed -= UpdateShipPanel;
         }
 
         void InspectDeposit(ZoneView zone, ResourceDeposit deposit)
@@ -275,6 +295,30 @@ namespace LastFleet.GenerationPreview
             {
                 ScanDeposits(keyboard.shiftKey.isPressed);
             }
+            else if (keyboard.kKey.wasPressedThisFrame)
+            {
+                DamageSelectedShips(keyboard.shiftKey.isPressed ? DeveloperHeavyDamage : DeveloperLightDamage);
+            }
+        }
+
+        // Developer stand-in for enemies until combat exists.
+        void DamageSelectedShips(float damage)
+        {
+            _singleShip.Clear();
+            _singleShip.AddRange(Selection.Ships);
+            foreach (ShipAgent ship in _singleShip)
+            {
+                if (ship.TryGetComponent(out ShipDurability durability))
+                {
+                    durability.ApplyDamage(damage, "developer damage");
+                }
+            }
+            LastAction = $"Dealt {damage:0} damage to {_singleShip.Count} ship(s).";
+        }
+
+        void OnShipLost(ShipAgent ship, string cause)
+        {
+            LastAction = $"{ship.name} was destroyed by {cause}.";
         }
 
         /// <summary>Deposit nearest to the camera pivot in the viewed zone, or null.</summary>
