@@ -97,6 +97,9 @@ namespace LastFleet.Zones
         /// <summary>Whether a scan revealed resource, exact amount, hazard and mining slots.</summary>
         public bool IsScanned { get; private set; }
 
+        /// <summary>Total harvester-seconds spent mining this deposit; drives the mining bonus.</summary>
+        public float MiningSeconds { get; private set; }
+
         public DepositSizeClass SizeClass => SizeClassFor(RadiusUnits);
 
         /// <summary>
@@ -119,7 +122,10 @@ namespace LastFleet.Zones
             return radiusUnits >= MediumRadiusUnits ? DepositSizeClass.Medium : DepositSizeClass.Small;
         }
 
-        /// <summary>Position of a mining slot relative to the zone center, evenly spaced around the deposit.</summary>
+        /// <summary>
+        /// Position of a mining slot relative to the zone center, evenly spaced around the deposit.
+        /// Slots lie on the zone plane, where ships fly, even if the deposit floats above or below it.
+        /// </summary>
         public Vector3 GetMiningSlotLocalPosition(int slotIndex)
         {
             if (slotIndex < 0 || slotIndex >= MiningSlotCount)
@@ -129,12 +135,23 @@ namespace LastFleet.Zones
 
             float angle = (SlotAngleOffsetDegrees + slotIndex * 360f / MiningSlotCount) * Mathf.Deg2Rad;
             Vector3 direction = new Vector3(Mathf.Cos(angle), 0f, Mathf.Sin(angle));
-            return LocalPosition + direction * FootprintRadiusUnits;
+            Vector3 slot = LocalPosition + direction * FootprintRadiusUnits;
+            slot.y = 0f;
+            return slot;
         }
 
         public void Scan()
         {
             IsScanned = true;
+        }
+
+        public void RecordMining(float seconds)
+        {
+            if (seconds < 0f)
+            {
+                throw new ArgumentOutOfRangeException(nameof(seconds), "Mining time cannot be negative.");
+            }
+            MiningSeconds += seconds;
         }
 
         /// <summary>Removes up to the requested amount and returns how much was actually extracted.</summary>

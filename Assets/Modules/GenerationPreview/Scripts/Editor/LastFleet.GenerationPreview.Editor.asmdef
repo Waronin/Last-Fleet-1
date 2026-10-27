@@ -7,6 +7,7 @@
         "LastFleet.StarSystem",
         "LastFleet.Zones",
         "LastFleet.Ships",
+        "LastFleet.Mining",
         "LastFleet.Ships.Editor",
         "LastFleet.ShipControl",
         "LastFleet.CameraControl",

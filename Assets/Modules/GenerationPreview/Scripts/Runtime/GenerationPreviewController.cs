@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using LastFleet.CameraControl;
 using LastFleet.Galaxy;
+using LastFleet.Mining;
 using LastFleet.ShipControl;
 using LastFleet.Ships;
 using LastFleet.Space;
@@ -48,6 +49,7 @@ namespace LastFleet.GenerationPreview
         [SerializeField] ShipCommandInput _shipInput;
         [SerializeField] ControlGroupInput _groupInput;
         [SerializeField] HangarCommandInput _hangarInput;
+        [SerializeField] MiningCoordinator _mining;
         [Tooltip("Spawned on arrival in a system until fleet jumps carry the fleet along.")]
         [SerializeField] ShipAgent _refineryPrefab;
         [SerializeField] ShipAgent _harvesterPrefab;
@@ -77,7 +79,7 @@ namespace LastFleet.GenerationPreview
         {
             if (_galaxyMapView == null || _starSystemView == null || _zoneWorld == null || _environment == null ||
                 _cameraRig == null || _shipRegistry == null || _shipInput == null || _groupInput == null ||
-                _hangarInput == null || _refineryPrefab == null || _harvesterPrefab == null)
+                _hangarInput == null || _mining == null || _refineryPrefab == null || _harvesterPrefab == null)
             {
                 Debug.LogError("GenerationPreviewController is missing a scene reference.", this);
                 enabled = false;
@@ -90,6 +92,8 @@ namespace LastFleet.GenerationPreview
             _groupInput.FocusRequested += FocusShip;
             _groupInput.Notice += ShowNotice;
             _hangarInput.Notice += ShowNotice;
+            _shipInput.Notice += ShowNotice;
+            _mining.Notice += ShowNotice;
         }
 
         void OnDisable()
@@ -98,6 +102,8 @@ namespace LastFleet.GenerationPreview
             _groupInput.FocusRequested -= FocusShip;
             _groupInput.Notice -= ShowNotice;
             _hangarInput.Notice -= ShowNotice;
+            _shipInput.Notice -= ShowNotice;
+            _mining.Notice -= ShowNotice;
         }
 
         public void SelectSquad(Squad squad, bool additive)

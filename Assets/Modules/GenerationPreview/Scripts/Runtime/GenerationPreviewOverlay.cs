@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using LastFleet.Galaxy;
+using LastFleet.Mining;
 using LastFleet.ShipControl;
 using LastFleet.Ships;
 using LastFleet.StarSystem;
@@ -137,7 +138,7 @@ namespace LastFleet.GenerationPreview
             }
             DrawShips();
             GUILayout.Space(6f);
-            GUILayout.Label("Left click / drag: select ships (Shift: add)   Right click: move (Shift: queue)");
+            GUILayout.Label("Left click / drag: select ships (Shift: add)   Right click: move (Shift: queue), on a deposit: mine");
             GUILayout.Label("V: scan nearest deposit (Shift: whole zone)   X: extract nearest deposit");
             GUILayout.Label("Tab / Shift+Tab: next revealed zone   F: follow ship   Esc: system map");
         }
@@ -170,8 +171,9 @@ namespace LastFleet.GenerationPreview
                 string hangar = ship.TryGetComponent(out Hangar shipHangar)
                     ? $", hangar {shipHangar.DockedShips.Count}/{shipHangar.Capacity}{(shipHangar.LaunchQueueCount > 0 ? $", launching {shipHangar.LaunchQueueCount}" : string.Empty)}"
                     : string.Empty;
+                string storage = ship.TryGetComponent(out RawMaterialStorage shipStorage) ? $", stored {DescribeStock(shipStorage.Stock)}" : string.Empty;
                 string label = $"{(_controller.Selection.Contains(ship) ? "* " : string.Empty)}{ship.name} - {ship.Activity} " +
-                               $"in {ship.Zone.Record.PointOfInterest.Name}{DescribeTarget(ship)}{hangar}";
+                               $"in {ship.Zone.Record.PointOfInterest.Name}{DescribeTarget(ship)}{hangar}{storage}";
                 if (GUILayout.Button(label, GUI.skin.label))
                 {
                     HandleEntryClick(ship, () => _controller.SelectShip(ship, Event.current.shift), ship);
@@ -198,7 +200,8 @@ namespace LastFleet.GenerationPreview
 
             foreach (ShipAgent ship in _controller.Selection.Ships)
             {
-                GUILayout.Label($"   {ship.name}: {ship.MotionPhase}, {ship.Speed:0.0} u/s ({ship.Speed * 0.1f:0.00} km/s), {ship.QueuedOrderCount} queued");
+                GUILayout.Label($"   {ship.name}: {ship.MotionPhase}, {ship.Speed:0.0} u/s ({ship.Speed * 0.1f:0.00} km/s), " +
+                                $"{ship.QueuedOrderCount} queued{DescribeMining(ship)}");
             }
 
             GUILayout.Label($"Control groups (Ctrl+number: store, number: recall, twice: show): {DescribeGroups()}");
@@ -226,6 +229,23 @@ namespace LastFleet.GenerationPreview
 
             string charge = ship.Activity == ShipActivity.ChargingJump ? $", jump in {ship.JumpChargeRemainingSeconds:0.0} s" : string.Empty;
             return $" -> {_controller.CurrentSystem.Zones[ship.TargetZoneIndex].PointOfInterest.Name}{charge}";
+        }
+
+        static string DescribeMining(ShipAgent ship)
+        {
+            if (!ship.TryGetComponent(out HarvesterMining mining))
+            {
+                return string.Empty;
+            }
+
+            string cargo = mining.Cargo.IsEmpty ? "empty" : $"{mining.Cargo.Resource} {mining.Cargo.Amount:0}/{mining.Cargo.Capacity:0}";
+            string bonus = mining.State == MiningState.Extracting ? $", yield x{mining.YieldMultiplier:0.00}" : string.Empty;
+            return $", mining {mining.State}, cargo {cargo}{bonus}";
+        }
+
+        static string DescribeStock(RawMaterialStock stock)
+        {
+            return $"Ore {stock.AmountOf(ResourceKind.Ore):0}, Ice {stock.AmountOf(ResourceKind.Ice):0}, Gas {stock.AmountOf(ResourceKind.Gas):0}";
         }
 
         string DescribeGroups()

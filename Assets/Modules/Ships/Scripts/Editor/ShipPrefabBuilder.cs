@@ -1,3 +1,4 @@
+using LastFleet.Mining;
 using LastFleet.Shared.Editor;
 using UnityEditor;
 using UnityEngine;
@@ -20,6 +21,7 @@ namespace LastFleet.Ships.Editor
         const string RefineryPrefabPath = PrefabFolder + "/Refinery.prefab";
         const string LitShaderName = "Universal Render Pipeline/Lit";
         const string UnlitShaderName = "Universal Render Pipeline/Unlit";
+        const string ParticleShaderName = "Universal Render Pipeline/Particles/Unlit";
         static readonly int BaseColorId = Shader.PropertyToID("_BaseColor");
 
         // Industrial design language (GDD): angular, yellow-black warning colors, rust, warm orange engines.
@@ -33,7 +35,7 @@ namespace LastFleet.Ships.Editor
         static readonly Color TrailColor = new Color(1f, 0.5f, 0.15f);
 
         [MenuItem("Last Fleet/Rebuild Ship Prefabs")]
-        static void RebuildFromMenu()
+        public static void RebuildAll()
         {
             AssetDatabase.DeleteAsset(HarvesterPrefabPath);
             AssetDatabase.DeleteAsset(RefineryPrefabPath);
@@ -52,19 +54,31 @@ namespace LastFleet.Ships.Editor
             GameObject root = new GameObject("Harvester");
             Material hull = LoadOrCreateMaterial("HarvesterHull", LitShaderName, HarvesterHullColor);
             Material cargo = LoadOrCreateMaterial("HarvesterCargo", LitShaderName, CargoColor);
-            CreatePart(root.transform, PrimitiveType.Cube, "Hull", hull, new Vector3(0f, 0f, 0.2f), new Vector3(0.6f, 0.4f, 1.6f));
-            CreatePart(root.transform, PrimitiveType.Cube, "Cargo Left", cargo, new Vector3(-0.5f, 0f, -0.1f), new Vector3(0.4f, 0.35f, 1f));
-            CreatePart(root.transform, PrimitiveType.Cube, "Cargo Right", cargo, new Vector3(0.5f, 0f, -0.1f), new Vector3(0.4f, 0.35f, 1f));
 
-            Transform engineGlow = CreatePart(root.transform, PrimitiveType.Sphere, "Engine Glow", Engine(),
+            // Everything visible sits under Model, so mining can clamp the model onto a rock while the
+            // ship's gameplay position stays at its mining slot.
+            Transform model = new GameObject("Model").transform;
+            model.SetParent(root.transform, false);
+            CreatePart(model, PrimitiveType.Cube, "Hull", hull, new Vector3(0f, 0f, 0.2f), new Vector3(0.6f, 0.4f, 1.6f));
+            CreatePart(model, PrimitiveType.Cube, "Cargo Left", cargo, new Vector3(-0.5f, 0f, -0.1f), new Vector3(0.4f, 0.35f, 1f));
+            CreatePart(model, PrimitiveType.Cube, "Cargo Right", cargo, new Vector3(0.5f, 0f, -0.1f), new Vector3(0.4f, 0.35f, 1f));
+            CreatePart(model, PrimitiveType.Cube, "Clamp Front", cargo, new Vector3(0f, -0.28f, 0.6f), new Vector3(0.5f, 0.16f, 0.12f));
+            CreatePart(model, PrimitiveType.Cube, "Clamp Rear", cargo, new Vector3(0f, -0.28f, -0.3f), new Vector3(0.5f, 0.16f, 0.12f));
+
+            Transform engineGlow = CreatePart(model, PrimitiveType.Sphere, "Engine Glow", Engine(),
                 new Vector3(0f, 0f, -0.75f), Vector3.one * 0.35f).transform;
-            TrailRenderer trail = CreateTrail(root.transform, new Vector3(0f, 0f, -0.8f), 0.3f, 4f);
+            TrailRenderer trail = CreateTrail(model, new Vector3(0f, 0f, -0.8f), 0.3f, 4f);
+            ParticleSystem debris = CreateDebrisParticles(model, new Vector3(0f, -0.35f, 0.15f));
             LineRenderer bracket = CreateBracket(root.transform);
 
             ShipAgent agent = root.AddComponent<ShipAgent>();
             ShipMovementProfile profile = LoadOrCreateProfile("HarvesterMovement", null);
             EditorAssetUtility.SetReferences(agent, ("_movementProfile", profile));
             AddPresentation(root, engineGlow, trail, bracket, 22f, 1f);
+            EditorAssetUtility.SetReferences(root.GetComponent<ShipPresentation>(), ("_model", model));
+            root.AddComponent<HarvesterMining>();
+            MiningAttachment attachment = root.AddComponent<MiningAttachment>();
+            EditorAssetUtility.SetReferences(attachment, ("_model", model), ("_debris", debris));
             return SavePrefab(root, HarvesterPrefabPath);
         }
 
@@ -115,6 +129,7 @@ namespace LastFleet.Ships.Editor
 
             Hangar hangar = root.AddComponent<Hangar>();
             EditorAssetUtility.SetReferences(hangar, ("_bay", bayTransform));
+            root.AddComponent<RawMaterialStorage>();
             AddPresentation(root, engineGlow, trail, bracket, 34f, 1f);
             return SavePrefab(root, RefineryPrefabPath);
         }
@@ -230,6 +245,52 @@ namespace LastFleet.Ships.Editor
             trail.shadowCastingMode = ShadowCastingMode.Off;
             trail.receiveShadows = false;
             return trail;
+        }
+
+        /// <summary>
+        /// Blockout debris spray at the clamps: small chunks thrown away from the rock in world space,
+        /// so they drift off instead of following the ship. The color is set per resource at runtime.
+        /// </summary>
+        static ParticleSystem CreateDebrisParticles(Transform parent, Vector3 localPosition)
+        {
+            GameObject debrisObject = new GameObject("Mining Debris");
+            debrisObject.transform.SetParent(parent, false);
+            debrisObject.transform.localPosition = localPosition;
+            // Cone shapes emit along local +z; turn it to spray along the ship's up axis, away from the rock.
+            debrisObject.transform.localRotation = Quaternion.Euler(-90f, 0f, 0f);
+
+            ParticleSystem debris = debrisObject.AddComponent<ParticleSystem>();
+            debris.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+
+            ParticleSystem.MainModule main = debris.main;
+            main.playOnAwake = false;
+            main.loop = true;
+            main.duration = 1f;
+            main.startLifetime = new ParticleSystem.MinMaxCurve(0.8f, 1.6f);
+            main.startSpeed = new ParticleSystem.MinMaxCurve(0.8f, 2.5f);
+            main.startSize = new ParticleSystem.MinMaxCurve(0.08f, 0.25f);
+            main.startRotation = new ParticleSystem.MinMaxCurve(0f, Mathf.PI * 2f);
+            main.simulationSpace = ParticleSystemSimulationSpace.World;
+            main.maxParticles = 150;
+
+            ParticleSystem.EmissionModule emission = debris.emission;
+            emission.rateOverTime = 35f;
+
+            ParticleSystem.ShapeModule shape = debris.shape;
+            shape.shapeType = ParticleSystemShapeType.Cone;
+            shape.angle = 55f;
+            shape.radius = 0.25f;
+
+            ParticleSystem.SizeOverLifetimeModule sizeOverLifetime = debris.sizeOverLifetime;
+            sizeOverLifetime.enabled = true;
+            sizeOverLifetime.size = new ParticleSystem.MinMaxCurve(1f, AnimationCurve.Linear(0f, 1f, 1f, 0.2f));
+
+            ParticleSystemRenderer renderer = debrisObject.GetComponent<ParticleSystemRenderer>();
+            renderer.sharedMaterial = LoadOrCreateMaterial("MiningDebris", ParticleShaderName, Color.white);
+            renderer.renderMode = ParticleSystemRenderMode.Billboard;
+            renderer.shadowCastingMode = ShadowCastingMode.Off;
+            renderer.receiveShadows = false;
+            return debris;
         }
 
         static LineRenderer CreateBracket(Transform parent)

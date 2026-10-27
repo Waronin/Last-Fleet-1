@@ -65,6 +65,12 @@ namespace LastFleet.Ships
         /// <summary>The ship completed a zone jump and now belongs to another zone.</summary>
         public event Action<ShipAgent> ZoneChanged;
 
+        /// <summary>All queued orders were replaced, e.g. by a new player command.</summary>
+        public event Action<ShipAgent> OrdersReplaced;
+
+        /// <summary>The ship landed in a hangar; raised before it leaves the zone.</summary>
+        public event Action<ShipAgent, Hangar> DockedInHangar;
+
         public event Action<ShipAgent> Destroyed;
 
         public void Initialize(ZoneWorld zoneWorld, ZoneView zone, Vector3 localPosition, float headingDegrees)
@@ -95,9 +101,10 @@ namespace LastFleet.Ships
                 {
                     Activity = ShipActivity.Idle;
                 }
+                OrdersReplaced?.Invoke(this);
             }
 
-            if (IsDocked && order.Kind == ShipOrderKind.Dock && order.Hangar == _dockedIn)
+            if (IsDocked && order.TargetsHangar && order.Hangar == _dockedIn)
             {
                 return;
             }
@@ -118,6 +125,7 @@ namespace LastFleet.Ships
         /// <summary>Called by the hangar once the ship has landed.</summary>
         internal void EnterHangar(Hangar hangar)
         {
+            DockedInHangar?.Invoke(this, hangar);
             _dockedIn = hangar;
             _zone = null;
             Activity = ShipActivity.Docked;
@@ -208,7 +216,7 @@ namespace LastFleet.Ships
             }
 
             _motion.SetDestination(ToPlane(OrderLocalPoint(order, _zone)));
-            Activity = order.Kind == ShipOrderKind.Dock ? ShipActivity.Docking : ShipActivity.Moving;
+            Activity = order.TargetsHangar ? ShipActivity.Docking : ShipActivity.Moving;
         }
 
         void BeginJump(int zoneIndex)
@@ -223,7 +231,7 @@ namespace LastFleet.Ships
         {
             Vector2 direction = JumpDirection(_jumpTargetZoneIndex);
             ZoneView target = _zoneWorld.Reveal(_jumpTargetZoneIndex);
-            if (_currentOrder.Kind == ShipOrderKind.Dock && _currentOrder.Hangar == null)
+            if (_currentOrder.TargetsHangar && _currentOrder.Hangar == null)
             {
                 Activity = ShipActivity.Idle;
                 return;
@@ -239,7 +247,7 @@ namespace LastFleet.Ships
             _motion.Teleport(exit);
             _motion.SetDestination(arrival);
             JumpChargeRemainingSeconds = 0f;
-            Activity = _currentOrder.Kind == ShipOrderKind.Dock ? ShipActivity.Docking : ShipActivity.Moving;
+            Activity = _currentOrder.TargetsHangar ? ShipActivity.Docking : ShipActivity.Moving;
             ApplyTransform();
             ZoneChanged?.Invoke(this);
         }
@@ -273,9 +281,14 @@ namespace LastFleet.Ships
 
             Vector3 offset = hangar.BayWorldPosition - transform.position;
             offset.y = 0f;
-            if (offset.magnitude <= hangar.DockingRadiusUnits && !hangar.TryDock(this))
+            if (offset.magnitude > hangar.DockingRadiusUnits)
             {
-                // Hangar filled up during the approach; wait for new orders.
+                return;
+            }
+
+            // An approach ends next to the bay; a failed landing means the hangar filled up meanwhile.
+            if (_currentOrder.Kind == ShipOrderKind.Approach || !hangar.TryDock(this))
+            {
                 Activity = ShipActivity.Idle;
             }
         }

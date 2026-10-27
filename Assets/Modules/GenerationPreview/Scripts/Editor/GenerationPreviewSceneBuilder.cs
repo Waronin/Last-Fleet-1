@@ -1,6 +1,7 @@
 ﻿using LastFleet.CameraControl;
 using LastFleet.CameraControl.Editor;
 using LastFleet.Galaxy;
+using LastFleet.Mining;
 using LastFleet.Shared.Editor;
 using LastFleet.ShipControl;
 using LastFleet.Ships;
@@ -80,13 +81,15 @@ namespace LastFleet.GenerationPreview.Editor
             EditorAssetUtility.SetReferences(groupInput, ("_commandInput", shipInput), ("_registry", shipRegistry));
             HangarCommandInput hangarInput = shipsObject.AddComponent<HangarCommandInput>();
             EditorAssetUtility.SetReferences(hangarInput, ("_commandInput", shipInput), ("_registry", shipRegistry));
+            MiningCoordinator mining = shipsObject.AddComponent<MiningCoordinator>();
+            EditorAssetUtility.SetReferences(mining, ("_registry", shipRegistry));
 
             GameObject previewObject = new GameObject("Generation Preview");
             GenerationPreviewController preview = previewObject.AddComponent<GenerationPreviewController>();
             EditorAssetUtility.SetReferences(preview,
                 ("_galaxyMapView", mapView), ("_starSystemView", systemView), ("_zoneWorld", zoneWorld),
                 ("_environment", environment), ("_cameraRig", cameraRig), ("_shipRegistry", shipRegistry),
-                ("_shipInput", shipInput), ("_groupInput", groupInput), ("_hangarInput", hangarInput),
+                ("_shipInput", shipInput), ("_groupInput", groupInput), ("_hangarInput", hangarInput), ("_mining", mining),
                 ("_refineryPrefab", ShipPrefabBuilder.LoadOrCreateRefinery()),
                 ("_harvesterPrefab", ShipPrefabBuilder.LoadOrCreateHarvester()));
             GenerationPreviewOverlay overlay = previewObject.AddComponent<GenerationPreviewOverlay>();

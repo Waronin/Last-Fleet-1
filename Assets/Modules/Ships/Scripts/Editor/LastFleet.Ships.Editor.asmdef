@@ -3,6 +3,7 @@
     "rootNamespace": "LastFleet.Ships.Editor",
     "references": [
         "LastFleet.Ships",
+        "LastFleet.Mining",
         "LastFleet.Shared.Editor"
     ],
     "includePlatforms": [

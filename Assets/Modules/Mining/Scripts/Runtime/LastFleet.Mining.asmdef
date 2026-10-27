@@ -1,0 +1,18 @@
+{
+    "name": "LastFleet.Mining",
+    "rootNamespace": "LastFleet.Mining",
+    "references": [
+        "LastFleet.Ships",
+        "LastFleet.Zones",
+        "LastFleet.StarSystem"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

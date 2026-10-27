@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using LastFleet.Mining;
 using LastFleet.Ships;
 using LastFleet.Zones;
 using UnityEngine;
@@ -38,6 +39,9 @@ namespace LastFleet.ShipControl
         float _lastClickTime = float.NegativeInfinity;
 
         public ShipSelection Selection => _selection;
+
+        /// <summary>Short feedback for the player about what a command did.</summary>
+        public event System.Action<string> Notice;
 
         void Awake()
         {
@@ -148,12 +152,56 @@ namespace LastFleet.ShipControl
                 }
             }
 
-            if (mouse.rightButton.wasPressedThisFrame && !overUi && _selection.Count > 0 &&
-                _activeZone.Zone.TryRaycastPlane(_camera.ScreenPointToRay(pointer), out Vector3 worldPoint))
+            if (!mouse.rightButton.wasPressedThisFrame || overUi || _selection.Count == 0)
+            {
+                return;
+            }
+
+            // Context command (GDD): right click on a deposit sends harvesters mining, otherwise it is a move.
+            if (_activeZone.TryPickDeposit(_camera, pointer, _pickRadiusPixels, out ResourceDeposit deposit) && TryOrderMining(deposit))
+            {
+                return;
+            }
+            if (_activeZone.Zone.TryRaycastPlane(_camera.ScreenPointToRay(pointer), out Vector3 worldPoint))
             {
                 Vector3 localPoint = _activeZone.transform.InverseTransformPoint(worldPoint);
                 OrderSelected(_activeZone.Record.PointOfInterestIndex, localPoint, shift);
             }
+        }
+
+        /// <summary>Selected harvesters mine the deposit; other selected ships move next to it.</summary>
+        bool TryOrderMining(ResourceDeposit deposit)
+        {
+            int harvesters = 0;
+            int started = 0;
+            _ordered.Clear();
+            foreach (ShipAgent ship in _selection.Ships)
+            {
+                if (ship.TryGetComponent(out HarvesterMining mining))
+                {
+                    harvesters++;
+                    if (mining.StartMining(_activeZone, deposit))
+                    {
+                        started++;
+                    }
+                }
+                else
+                {
+                    _ordered.Add(ship);
+                }
+            }
+            if (harvesters == 0)
+            {
+                return false;
+            }
+
+            foreach (ShipAgent ship in _ordered)
+            {
+                ship.Order(ShipOrder.MoveTo(_activeZone.Record.PointOfInterestIndex, deposit.LocalPosition), false);
+            }
+            string full = started < harvesters ? $"; {harvesters - started} found no free mining slot" : string.Empty;
+            Notice?.Invoke($"{started} harvester(s) mining{full}.");
+            return true;
         }
 
         void HandleClick(Vector2 pointer, bool additive)

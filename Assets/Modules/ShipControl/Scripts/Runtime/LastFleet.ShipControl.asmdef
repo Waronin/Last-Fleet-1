@@ -3,6 +3,7 @@
     "rootNamespace": "LastFleet.ShipControl",
     "references": [
         "LastFleet.Ships",
+        "LastFleet.Mining",
         "LastFleet.Zones",
         "LastFleet.Space",
         "Unity.InputSystem"

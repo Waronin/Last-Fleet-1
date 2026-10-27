@@ -14,6 +14,8 @@ namespace LastFleet.Ships
         [SerializeField] Transform _engineGlow;
         [SerializeField] TrailRenderer _trail;
         [SerializeField] LineRenderer _bracket;
+        [Tooltip("Optional. The bracket follows this visual root, e.g. when mining moves the model onto a rock.")]
+        [SerializeField] Transform _model;
         [SerializeField, Min(1f)] float _bracketSizePixels = 22f;
         [SerializeField, Min(0.01f)] float _bracketLineFraction = 0.08f;
         [SerializeField, Min(0f)] float _engineGlowMaximumScale = 1f;
@@ -57,6 +59,12 @@ namespace LastFleet.Ships
             _camera = camera;
         }
 
+        /// <summary>Stops the engine trail, e.g. while the model is moved without the ship flying.</summary>
+        public void SetTrailEmitting(bool emitting)
+        {
+            _trail.emitting = emitting;
+        }
+
         public void SetSelected(bool selected)
         {
             IsSelected = selected;
@@ -78,6 +86,10 @@ namespace LastFleet.Ships
             float worldPerPixel = 2f * distance * Mathf.Tan(_camera.fieldOfView * 0.5f * Mathf.Deg2Rad) / Screen.height;
             float size = worldPerPixel * _bracketSizePixels;
             Transform bracketTransform = _bracket.transform;
+            if (_model != null)
+            {
+                bracketTransform.position = _model.position;
+            }
             bracketTransform.rotation = _camera.transform.rotation;
             bracketTransform.localScale = Vector3.one * size;
             _bracket.widthMultiplier = size * _bracketLineFraction;

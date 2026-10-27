@@ -59,12 +59,17 @@ namespace LastFleet.Zones
             return false;
         }
 
+        /// <summary>
+        /// Compares distances on the zone plane: ships fly on the plane, so objects must not stack
+        /// above each other, or a mining slot could end up under a neighbouring rock.
+        /// </summary>
         bool Overlaps(Vector3 candidate, float radiusUnits)
         {
             foreach ((Vector3 occupiedPosition, float occupiedRadius) in _occupied)
             {
                 float minimumDistance = radiusUnits + occupiedRadius + _minimumGapUnits;
-                if ((occupiedPosition - candidate).sqrMagnitude < minimumDistance * minimumDistance)
+                Vector2 planarOffset = new Vector2(occupiedPosition.x - candidate.x, occupiedPosition.z - candidate.z);
+                if (planarOffset.sqrMagnitude < minimumDistance * minimumDistance)
                 {
                     return true;
                 }

@@ -22,6 +22,7 @@ namespace LastFleet.Ships
         public SquadRoster Squads => _squads;
         public float FormationSpacingUnits => _formationSpacingUnits;
 
+        public event Action<ShipAgent> ShipSpawned;
         public event Action<ShipAgent> ShipRemoved;
 
         void Awake()
@@ -59,6 +60,7 @@ namespace LastFleet.Ships
 
             ship.Destroyed += OnShipDestroyed;
             _ships.Add(ship);
+            ShipSpawned?.Invoke(ship);
             return ship;
         }
 

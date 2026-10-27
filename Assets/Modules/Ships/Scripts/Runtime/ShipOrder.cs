@@ -8,7 +8,10 @@ namespace LastFleet.Ships
         Move,
 
         /// <summary>Fly to a hangar's landing bay and land, following its carrier across zones.</summary>
-        Dock
+        Dock,
+
+        /// <summary>Fly to a hangar's landing bay and stop next to it without landing, e.g. to unload cargo.</summary>
+        Approach
     }
 
     public readonly struct ShipOrder
@@ -41,5 +44,13 @@ namespace LastFleet.Ships
         {
             return new ShipOrder(ShipOrderKind.Dock, -1, Vector3.zero, hangar);
         }
+
+        public static ShipOrder ApproachBay(Hangar hangar)
+        {
+            return new ShipOrder(ShipOrderKind.Approach, -1, Vector3.zero, hangar);
+        }
+
+        /// <summary>Whether the order targets a hangar's landing bay (dock or approach).</summary>
+        public bool TargetsHangar => Kind != ShipOrderKind.Move;
     }
 }

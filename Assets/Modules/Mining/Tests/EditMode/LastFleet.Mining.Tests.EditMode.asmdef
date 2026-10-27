@@ -1,0 +1,26 @@
+{
+    "name": "LastFleet.Mining.Tests.EditMode",
+    "rootNamespace": "LastFleet.Mining.Tests",
+    "references": [
+        "LastFleet.Mining",
+        "LastFleet.Ships",
+        "LastFleet.Zones",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

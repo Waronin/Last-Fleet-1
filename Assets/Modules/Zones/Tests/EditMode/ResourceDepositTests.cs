@@ -29,7 +29,9 @@ namespace LastFleet.Zones.Tests
             for (int i = 0; i < deposit.MiningSlotCount; i++)
             {
                 Vector3 slot = deposit.GetMiningSlotLocalPosition(i);
-                Assert.AreEqual(deposit.FootprintRadiusUnits, Vector3.Distance(slot, deposit.LocalPosition), 0.001f);
+                Vector2 planarOffset = new Vector2(slot.x - deposit.LocalPosition.x, slot.z - deposit.LocalPosition.z);
+                Assert.AreEqual(deposit.FootprintRadiusUnits, planarOffset.magnitude, 0.001f);
+                Assert.AreEqual(0f, slot.y, "Slots lie on the zone plane where ships fly.");
                 for (int j = i + 1; j < deposit.MiningSlotCount; j++)
                 {
                     Assert.Greater(Vector3.Distance(slot, deposit.GetMiningSlotLocalPosition(j)), deposit.RadiusUnits);
@@ -99,8 +101,10 @@ namespace LastFleet.Zones.Tests
                             {
                                 if (other != deposit)
                                 {
-                                    Assert.Greater(Vector3.Distance(slotPosition, other.LocalPosition), other.RadiusUnits,
-                                        $"A mining slot in {zone.PointOfInterest.Name} lies inside another deposit.");
+                                    // Planar: a slot must not lie inside or under another deposit.
+                                    Vector2 offset = new Vector2(slotPosition.x - other.LocalPosition.x, slotPosition.z - other.LocalPosition.z);
+                                    Assert.Greater(offset.magnitude, other.RadiusUnits,
+                                        $"A mining slot in {zone.PointOfInterest.Name} lies under another deposit.");
                                 }
                             }
                         }

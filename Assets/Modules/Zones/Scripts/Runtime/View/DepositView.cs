@@ -17,11 +17,11 @@ namespace LastFleet.Zones
         const float HazardRingRadiusFactor = 1.4f;
         const float HazardRingWidthUnits = 0.15f;
         const int HazardRingSegments = 40;
-        const float SlotMarkerSizeUnits = 0.35f;
+        const float SlotMarkerSizeUnits = 0.18f;
 
         static readonly Color UnscannedRockColor = new Color(0.42f, 0.4f, 0.38f);
         static readonly Color UnscannedGasColor = new Color(0.55f, 0.4f, 0.3f);
-        static readonly Color SlotMarkerColor = new Color(0.3f, 1.2f, 1.6f);
+        static readonly Color SlotMarkerColor = new Color(0.2f, 0.6f, 0.8f);
 
         readonly List<Renderer> _bodyParts = new List<Renderer>();
         readonly List<Renderer> _slotMarkers = new List<Renderer>();

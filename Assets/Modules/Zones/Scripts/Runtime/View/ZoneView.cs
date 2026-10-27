@@ -24,6 +24,7 @@ namespace LastFleet.Zones
         const float StarBackdropDiameter = 700f;
 
         readonly List<DepositView> _depositViews = new List<DepositView>();
+        readonly Dictionary<ResourceDeposit, DepositView> _viewByDeposit = new Dictionary<ResourceDeposit, DepositView>();
         MaterialPropertyBlock _propertyBlock;
 
         public ZoneRecord Record { get; private set; }
@@ -50,6 +51,7 @@ namespace LastFleet.Zones
                 // Seeded from the zone, so a rebuilt zone shows the same rocks.
                 view.Build(deposit, DeterministicRandom.DeriveSeed(record.Seed, DepositVisualSalt + (ulong)i), bodyMaterial, glowMaterial);
                 _depositViews.Add(view);
+                _viewByDeposit.Add(deposit, view);
             }
             foreach (ZoneStation station in contents.Stations)
             {
@@ -64,6 +66,48 @@ namespace LastFleet.Zones
             {
                 view.Refresh();
             }
+        }
+
+        public void RefreshDeposit(ResourceDeposit deposit)
+        {
+            if (_viewByDeposit.TryGetValue(deposit, out DepositView view))
+            {
+                view.Refresh();
+            }
+        }
+
+        /// <summary>
+        /// Finds the deposit under a screen position: inside its projected outline, or within a few
+        /// pixels of its center so small rocks stay clickable.
+        /// </summary>
+        public bool TryPickDeposit(Camera camera, Vector2 screenPosition, float minimumRadiusPixels, out ResourceDeposit deposit)
+        {
+            deposit = null;
+            float bestDistance = float.MaxValue;
+            foreach (ResourceDeposit candidate in Record.Contents.Deposits)
+            {
+                if (candidate.IsDepleted)
+                {
+                    continue;
+                }
+
+                Vector3 center = transform.TransformPoint(candidate.LocalPosition);
+                Vector3 screenCenter = camera.WorldToScreenPoint(center);
+                if (screenCenter.z <= 0f)
+                {
+                    continue;
+                }
+
+                Vector3 screenEdge = camera.WorldToScreenPoint(center + camera.transform.right * candidate.RadiusUnits);
+                float radiusPixels = Mathf.Max(minimumRadiusPixels, Vector2.Distance(screenCenter, screenEdge));
+                float distance = Vector2.Distance(new Vector2(screenCenter.x, screenCenter.y), screenPosition);
+                if (distance <= radiusPixels && distance < bestDistance)
+                {
+                    bestDistance = distance;
+                    deposit = candidate;
+                }
+            }
+            return deposit != null;
         }
 
         /// <summary>Returns the index of the non-depleted deposit closest to a world point, or -1.</summary>
