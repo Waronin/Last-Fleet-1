@@ -139,7 +139,7 @@ namespace LastFleet.GenerationPreview
             DrawShips();
             GUILayout.Space(6f);
             GUILayout.Label("Left click / drag: select ships (Shift: add)   Right click: move (Shift: queue), on a deposit: mine");
-            GUILayout.Label("V: scan nearest deposit (Shift: whole zone)   X: extract nearest deposit   K: damage selected (Shift: heavy)");
+            GUILayout.Label("V: scan nearest deposit (Shift: whole zone)   X: extract nearest deposit   K: damage selected (Shift: heavy)   J: empty selected tanks");
             GUILayout.Label("Tab / Shift+Tab: next revealed zone   F: follow ship   Esc: system map");
         }
 

@@ -29,6 +29,9 @@ namespace LastFleet.Ships
         /// <summary>A ship was destroyed by damage; the string names the cause.</summary>
         public event Action<ShipAgent, string> ShipLost;
 
+        /// <summary>A ship could not start a zone jump: target zone index and the fuel it would have cost.</summary>
+        public event Action<ShipAgent, int, float> JumpRefusedForFuel;
+
         /// <summary>Damages every ship flying within a radius of a world point, e.g. for an explosion.</summary>
         public int DamageShipsNear(ZoneView zone, Vector3 worldPoint, float radiusUnits, float damage, string cause)
         {
@@ -88,6 +91,7 @@ namespace LastFleet.Ships
             }
 
             ship.Destroyed += OnShipDestroyed;
+            ship.JumpRefusedForFuel += OnJumpRefusedForFuel;
             _ships.Add(ship);
             ShipSpawned?.Invoke(ship);
             return ship;
@@ -159,10 +163,16 @@ namespace LastFleet.Ships
             ShipLost?.Invoke(ship, cause);
         }
 
+        void OnJumpRefusedForFuel(ShipAgent ship, int targetZoneIndex, float requiredFuel)
+        {
+            JumpRefusedForFuel?.Invoke(ship, targetZoneIndex, requiredFuel);
+        }
+
         // Ships are children of their zone view or carrier, so leaving a system destroys them with the zones.
         void OnShipDestroyed(ShipAgent ship)
         {
             ship.Destroyed -= OnShipDestroyed;
+            ship.JumpRefusedForFuel -= OnJumpRefusedForFuel;
             if (ship.TryGetComponent(out ShipDurability durability))
             {
                 durability.DestroyedBy -= OnShipDestroyedBy;

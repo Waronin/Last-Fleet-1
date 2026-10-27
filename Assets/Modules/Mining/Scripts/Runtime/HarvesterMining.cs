@@ -47,12 +47,14 @@ namespace LastFleet.Mining
             _ship = GetComponent<ShipAgent>();
             _ship.OrdersReplaced += OnOrdersReplaced;
             _ship.DockedInHangar += OnDockedInHangar;
+            _ship.JumpRefusedForFuel += OnJumpRefusedForFuel;
         }
 
         void OnDestroy()
         {
             _ship.OrdersReplaced -= OnOrdersReplaced;
             _ship.DockedInHangar -= OnDockedInHangar;
+            _ship.JumpRefusedForFuel -= OnJumpRefusedForFuel;
         }
 
         public void Initialize(MiningCoordinator coordinator)
@@ -214,6 +216,8 @@ namespace LastFleet.Mining
 
             float stored = _storage.Stock.Store(Cargo.Resource, Cargo.Amount);
             Cargo.Unload(stored);
+            // Unloading at the bay also tops up the tank, so the mining loop does not run dry.
+            _storage.Hangar.Refuel(_ship, _ship.Fuel.Tank.FreeSpace);
             if (!Cargo.IsEmpty)
             {
                 _coordinator.Report($"{_storage.name} storage is full for {Cargo.Resource}.");
@@ -262,6 +266,17 @@ namespace LastFleet.Mining
             {
                 StopMining();
             }
+        }
+
+        /// <summary>Retrying every frame would only repeat the refusal; the player has to refuel the ship.</summary>
+        void OnJumpRefusedForFuel(ShipAgent ship, int targetZoneIndex, float requiredFuel)
+        {
+            if (State == MiningState.Inactive || _coordinator == null)
+            {
+                return;
+            }
+            _coordinator.Report($"{_ship.name} stopped mining: not enough fuel to jump ({requiredFuel:0.0} needed, {_ship.Fuel.Tank.Amount:0.0} left).");
+            StopMining();
         }
 
         /// <summary>A harvester landing with cargo unloads into the carrier's storage.</summary>

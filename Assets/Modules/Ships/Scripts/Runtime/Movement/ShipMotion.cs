@@ -57,6 +57,12 @@ namespace LastFleet.Ships
         /// <summary>True once the last destination has been reached and the ship stopped.</summary>
         public bool HasArrived { get; private set; }
 
+        /// <summary>
+        /// Without the main drive, e.g. with an empty tank, every move is a thruster maneuver
+        /// (GDD: the ship can only move with its thrusters).
+        /// </summary>
+        public bool MainDriveAvailable { get; set; } = true;
+
         public Vector2 Forward => HeadingToDirection(HeadingDegrees);
 
         public void SetDestination(Vector2 destination)
@@ -64,7 +70,8 @@ namespace LastFleet.Ships
             _destination = destination;
             HasArrived = false;
             float distance = (destination - Position).magnitude;
-            Phase = distance <= _settings.ManeuverRangeUnits && Speed <= _settings.ThrusterMaximumSpeed
+            bool thrustersSuffice = distance <= _settings.ManeuverRangeUnits && Speed <= _settings.ThrusterMaximumSpeed;
+            Phase = thrustersSuffice || !MainDriveAvailable
                 ? ShipMotionPhase.Maneuvering
                 : ShipMotionPhase.Aligning;
         }
@@ -126,6 +133,11 @@ namespace LastFleet.Ships
 
             MainDriveActive = false;
             ThrustersActive = false;
+            if (!MainDriveAvailable && UsesMainDrive(Phase))
+            {
+                Phase = ShipMotionPhase.Maneuvering;
+            }
+
             switch (Phase)
             {
                 case ShipMotionPhase.Idle:
@@ -245,7 +257,7 @@ namespace LastFleet.Ships
                 HasArrived = true;
                 return;
             }
-            if (distance > _settings.ManeuverRangeUnits * 2f)
+            if (distance > _settings.ManeuverRangeUnits * 2f && MainDriveAvailable)
             {
                 Phase = ShipMotionPhase.Aligning;
                 return;
@@ -260,7 +272,7 @@ namespace LastFleet.Ships
         void StepCruising(float deltaTime)
         {
             RotateTowards(DirectionToHeading(_courseDirection), deltaTime);
-            if (IsHeadingAligned(_courseDirection))
+            if (MainDriveAvailable && IsHeadingAligned(_courseDirection))
             {
                 Velocity += Forward * (_settings.MainDriveAcceleration * deltaTime);
                 MainDriveActive = true;
@@ -285,6 +297,12 @@ namespace LastFleet.Ships
         void RotateTowards(float targetHeadingDegrees, float deltaTime)
         {
             HeadingDegrees = Mathf.MoveTowardsAngle(HeadingDegrees, targetHeadingDegrees, _settings.TurnRateDegreesPerSecond * deltaTime);
+        }
+
+        static bool UsesMainDrive(ShipMotionPhase phase)
+        {
+            return phase == ShipMotionPhase.Aligning || phase == ShipMotionPhase.Burning
+                || phase == ShipMotionPhase.Flipping || phase == ShipMotionPhase.Braking;
         }
 
         bool IsHeadingAligned(Vector2 direction)

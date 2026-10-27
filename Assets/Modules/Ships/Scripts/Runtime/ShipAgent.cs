@@ -24,6 +24,7 @@ namespace LastFleet.Ships
     /// coordinates; a docked ship is an inactive child of its carrier.
     /// Zone jump (GDD): the jump drive charges while the main drive accelerates towards the target
     /// zone; the ship then appears in the target zone keeping its momentum, flips and brakes.
+    /// Powered flight and jumps burn fuel (see <see cref="ShipFuel"/>).
     /// </summary>
     public sealed class ShipAgent : MonoBehaviour
     {
@@ -33,6 +34,7 @@ namespace LastFleet.Ships
 
         readonly Queue<ShipOrder> _orders = new Queue<ShipOrder>();
         ShipMotion _motion;
+        ShipFuel _fuel;
         ZoneWorld _zoneWorld;
         ZoneView _zone;
         Hangar _dockedIn;
@@ -58,6 +60,7 @@ namespace LastFleet.Ships
         public float HeadingDegrees => _motion.HeadingDegrees;
         public float JumpChargeRemainingSeconds { get; private set; }
         public int QueuedOrderCount => _orders.Count;
+        public ShipFuel Fuel => _fuel != null ? _fuel : _fuel = GetComponent<ShipFuel>();
 
         /// <summary>Zone the ship is charging a jump to, or -1.</summary>
         public int TargetZoneIndex => Activity == ShipActivity.ChargingJump ? _jumpTargetZoneIndex : -1;
@@ -73,16 +76,23 @@ namespace LastFleet.Ships
 
         public event Action<ShipAgent> Destroyed;
 
+        /// <summary>A zone jump was not started because the tank held less than the given cost; the order is dropped.</summary>
+        public event Action<ShipAgent, int, float> JumpRefusedForFuel;
+
         public void Initialize(ZoneWorld zoneWorld, ZoneView zone, Vector3 localPosition, float headingDegrees)
         {
             if (_movementProfile == null)
             {
                 throw new InvalidOperationException($"{name} has no movement profile.");
             }
+            if (Fuel == null)
+            {
+                throw new InvalidOperationException($"{name} has no {nameof(ShipFuel)} component.");
+            }
 
             _zoneWorld = zoneWorld;
             _zone = zone;
-            _motion = new ShipMotion(_movementProfile.Motion, ToPlane(localPosition), headingDegrees);
+            _motion = CreateMotion(localPosition, headingDegrees);
             ApplyTransform();
         }
 
@@ -144,7 +154,7 @@ namespace LastFleet.Ships
             _dockedIn = null;
             _zone = zone;
             transform.SetParent(zone.transform, false);
-            _motion = new ShipMotion(_movementProfile.Motion, ToPlane(localPosition), headingDegrees);
+            _motion = CreateMotion(localPosition, headingDegrees);
             Activity = ShipActivity.Idle;
             ApplyTransform();
             gameObject.SetActive(true);
@@ -167,7 +177,9 @@ namespace LastFleet.Ships
             }
 
             float deltaTime = Time.deltaTime;
+            Vector2 previousPosition = _motion.Position;
             _motion.Step(deltaTime);
+            BurnTravelFuel((_motion.Position - previousPosition).magnitude);
 
             switch (Activity)
             {
@@ -219,8 +231,27 @@ namespace LastFleet.Ships
             Activity = order.TargetsHangar ? ShipActivity.Docking : ShipActivity.Moving;
         }
 
+        /// <summary>Powered travel costs fuel per km; drifting is free, and so are thrusters on an empty tank.</summary>
+        void BurnTravelFuel(float distanceUnits)
+        {
+            if (_motion.MainDriveActive || _motion.ThrustersActive)
+            {
+                Fuel.Tank.Drain(Fuel.Consumption.ForTravel(distanceUnits));
+            }
+            _motion.MainDriveAvailable = !Fuel.Tank.IsEmpty;
+        }
+
+        /// <summary>The jump is paid in full when the countdown starts; without enough fuel the order is dropped.</summary>
         void BeginJump(int zoneIndex)
         {
+            float cost = JumpFuelCost(zoneIndex);
+            if (!Fuel.Tank.TryDrain(cost))
+            {
+                Activity = ShipActivity.Idle;
+                JumpRefusedForFuel?.Invoke(this, zoneIndex, cost);
+                return;
+            }
+
             _jumpTargetZoneIndex = zoneIndex;
             _motion.SetCourse(JumpDirection(zoneIndex));
             JumpChargeRemainingSeconds = _movementProfile.JumpChargeSeconds;
@@ -310,10 +341,28 @@ namespace LastFleet.Ships
         /// <summary>Direction on the zone plane from the current zone towards another zone of the system.</summary>
         public Vector2 JumpDirection(int targetZoneIndex)
         {
+            Vector2 delta = JumpDeltaAU(targetZoneIndex);
+            return delta.sqrMagnitude > 1e-12f ? delta.normalized : _motion.Forward;
+        }
+
+        /// <summary>Fuel a small jump from the current zone to another zone of the system costs.</summary>
+        public float JumpFuelCost(int targetZoneIndex)
+        {
+            return Fuel.Consumption.ForJump(JumpDeltaAU(targetZoneIndex).magnitude);
+        }
+
+        Vector2 JumpDeltaAU(int targetZoneIndex)
+        {
             Vector2 fromAU = Zone.Record.PointOfInterest.PositionAU;
             Vector2 toAU = _zoneWorld.CurrentSystem.Zones[targetZoneIndex].PointOfInterest.PositionAU;
-            Vector2 delta = toAU - fromAU;
-            return delta.sqrMagnitude > 1e-12f ? delta.normalized : _motion.Forward;
+            return toAU - fromAU;
+        }
+
+        ShipMotion CreateMotion(Vector3 localPosition, float headingDegrees)
+        {
+            ShipMotion motion = new ShipMotion(_movementProfile.Motion, ToPlane(localPosition), headingDegrees);
+            motion.MainDriveAvailable = !Fuel.Tank.IsEmpty;
+            return motion;
         }
 
         void ApplyTransform()

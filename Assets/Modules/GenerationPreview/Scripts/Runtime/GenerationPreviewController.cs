@@ -108,6 +108,7 @@ namespace LastFleet.GenerationPreview
             _shipInput.DepositClicked += InspectDeposit;
             _shipInput.EmptySpaceClicked += _inspection.Clear;
             _shipRegistry.ShipLost += OnShipLost;
+            _shipRegistry.JumpRefusedForFuel += OnJumpRefusedForFuel;
             Selection.Changed += UpdateShipPanel;
         }
 
@@ -136,6 +137,7 @@ namespace LastFleet.GenerationPreview
             _shipInput.DepositClicked -= InspectDeposit;
             _shipInput.EmptySpaceClicked -= _inspection.Clear;
             _shipRegistry.ShipLost -= OnShipLost;
+            _shipRegistry.JumpRefusedForFuel -= OnJumpRefusedForFuel;
             Selection.Changed -= UpdateShipPanel;
         }
 
@@ -299,6 +301,20 @@ namespace LastFleet.GenerationPreview
             {
                 DamageSelectedShips(keyboard.shiftKey.isPressed ? DeveloperHeavyDamage : DeveloperLightDamage);
             }
+            else if (keyboard.jKey.wasPressedThisFrame)
+            {
+                EmptySelectedTanks();
+            }
+        }
+
+        // Developer shortcut to try the out-of-fuel rules without flying a tank dry.
+        void EmptySelectedTanks()
+        {
+            foreach (ShipAgent ship in Selection.Ships)
+            {
+                ship.Fuel.Tank.Drain(ship.Fuel.Tank.Amount);
+            }
+            LastAction = $"Emptied the tanks of {Selection.Count} ship(s).";
         }
 
         // Developer stand-in for enemies until combat exists.
@@ -319,6 +335,12 @@ namespace LastFleet.GenerationPreview
         void OnShipLost(ShipAgent ship, string cause)
         {
             LastAction = $"{ship.name} was destroyed by {cause}.";
+        }
+
+        void OnJumpRefusedForFuel(ShipAgent ship, int targetZoneIndex, float requiredFuel)
+        {
+            string target = _zoneWorld.CurrentSystem.Zones[targetZoneIndex].PointOfInterest.Name;
+            LastAction = $"{ship.name} cannot jump to {target}: needs {requiredFuel:0.0} fuel, has {ship.Fuel.Tank.Amount:0.0}.";
         }
 
         /// <summary>Deposit nearest to the camera pivot in the viewed zone, or null.</summary>

@@ -36,7 +36,7 @@ namespace LastFleet.Inspection
             }
             foreach (ShipAgent ship in _selection.Ships)
             {
-                lines.Add($"{ship.name}: {Hull(ship)}, {Task(ship)}");
+                lines.Add($"{ship.name}: {Hull(ship)}, {Fuel(ship)}, {Task(ship)}");
             }
         }
 
@@ -72,6 +72,11 @@ namespace LastFleet.Inspection
         {
             lines.Add($"{ship.ClassName} ({ship.Size})");
             lines.Add(Hull(ship));
+            lines.Add(Fuel(ship));
+            if (ship.Fuel.Tank.IsEmpty)
+            {
+                lines.Add("Out of fuel: thrusters only, no jumps");
+            }
             lines.Add($"Task: {Task(ship)}");
             if (!ship.IsDocked)
             {
@@ -103,6 +108,12 @@ namespace LastFleet.Inspection
             return ship.TryGetComponent(out ShipDurability durability)
                 ? $"Hull {durability.Hull.Current:0}/{durability.Hull.Maximum:0}"
                 : "No hull";
+        }
+
+        static string Fuel(ShipAgent ship)
+        {
+            FuelTank tank = ship.Fuel.Tank;
+            return $"Fuel {tank.Amount:0.0}/{tank.Capacity:0}";
         }
 
         static string Task(ShipAgent ship)

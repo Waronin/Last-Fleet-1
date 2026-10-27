@@ -1242,6 +1242,7 @@ GameObject:
   - component: {fileID: 1840262402444908862}
   - component: {fileID: 6664837717211786756}
   - component: {fileID: 6534870078712758903}
+  - component: {fileID: 344354337137870335}
   m_Layer: 0
   m_Name: Refinery
   m_TagString: Untagged
@@ -1308,6 +1309,7 @@ MonoBehaviour:
   _bay: {fileID: 1333569514758793298}
   _dockingRadiusUnits: 3
   _launchExitDistanceUnits: 4
+  _refuelPerSecond: 25
 --- !u!114 &1840262402444908862
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1358,6 +1360,21 @@ MonoBehaviour:
   _thrusterGlowFraction: 0.35
   _bracketColor: {r: 0.4, g: 0.8, b: 1, a: 1}
   _selectedBracketColor: {r: 1, g: 0.85, b: 0.2, a: 1}
+--- !u!114 &344354337137870335
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8742294279212198465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95cc1e6e7125fd64dab89780b1ff5082, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.Ships::LastFleet.Ships.ShipFuel
+  _tankCapacity: 5000
+  _fuelPerKlick: 1
+  _fuelPerAU: 50
 --- !u!1 &8914957691072129255
 GameObject:
   m_ObjectHideFlags: 0

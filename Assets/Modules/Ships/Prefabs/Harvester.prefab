@@ -2313,6 +2313,7 @@ GameObject:
   - component: {fileID: 259673809803727468}
   - component: {fileID: 8935419841807991543}
   - component: {fileID: 4783859190931281156}
+  - component: {fileID: 1099331768947732533}
   m_Layer: 0
   m_Name: Harvester
   m_TagString: Untagged
@@ -2430,6 +2431,21 @@ MonoBehaviour:
   _debris: {fileID: 8759524027717308073}
   _attachSeconds: 1.2
   _hullClearanceUnits: 0.3
+--- !u!114 &1099331768947732533
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4785350210512641969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95cc1e6e7125fd64dab89780b1ff5082, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.Ships::LastFleet.Ships.ShipFuel
+  _tankCapacity: 100
+  _fuelPerKlick: 0.1
+  _fuelPerAU: 2
 --- !u!1 &5358699967121527773
 GameObject:
   m_ObjectHideFlags: 0

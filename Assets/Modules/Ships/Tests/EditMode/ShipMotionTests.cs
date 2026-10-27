@@ -145,6 +145,65 @@ namespace LastFleet.Ships.Tests
             Assert.AreEqual(ShipMotionPhase.Cruising, motion.Phase);
         }
 
+        [Test]
+        public void WithoutMainDrive_LongMoveUsesThrustersOnly()
+        {
+            ShipMotion motion = new ShipMotion(Settings, Vector2.zero, 0f);
+            motion.MainDriveAvailable = false;
+            Vector2 destination = new Vector2(-300f, 200f);
+            motion.SetDestination(destination);
+
+            float elapsed = 0f;
+            while (!motion.HasArrived && elapsed < MaximumSimulatedSeconds)
+            {
+                motion.Step(StepSeconds);
+                elapsed += StepSeconds;
+                Assert.IsFalse(motion.MainDriveActive);
+                Assert.LessOrEqual(motion.Speed, Settings.ThrusterMaximumSpeed + 0.001f);
+            }
+
+            Assert.IsTrue(motion.HasArrived, "Ship did not crawl to its destination in time.");
+            Assert.AreEqual(destination, motion.Position);
+        }
+
+        [Test]
+        public void MainDriveLostMidBurn_SlowsDownWithThrustersAndStillArrives()
+        {
+            ShipMotion motion = new ShipMotion(Settings, Vector2.zero, 0f);
+            Vector2 destination = new Vector2(0f, 800f);
+            motion.SetDestination(destination);
+            while (motion.Phase != ShipMotionPhase.Burning || motion.Speed < Settings.MaximumSpeed * 0.5f)
+            {
+                motion.Step(StepSeconds);
+            }
+
+            motion.MainDriveAvailable = false;
+            float elapsed = 0f;
+            while (!motion.HasArrived && elapsed < MaximumSimulatedSeconds)
+            {
+                motion.Step(StepSeconds);
+                elapsed += StepSeconds;
+                Assert.IsFalse(motion.MainDriveActive);
+            }
+
+            Assert.IsTrue(motion.HasArrived, $"Ship did not arrive; last phase {motion.Phase}.");
+        }
+
+        [Test]
+        public void WithoutMainDrive_CourseDoesNotAccelerate()
+        {
+            ShipMotion motion = new ShipMotion(Settings, Vector2.zero, 0f);
+            motion.MainDriveAvailable = false;
+            motion.SetCourse(Vector2.up);
+
+            for (float t = 0f; t < 5f; t += StepSeconds)
+            {
+                motion.Step(StepSeconds);
+            }
+
+            Assert.AreEqual(0f, motion.Speed, 1e-4f);
+        }
+
         static HashSet<ShipMotionPhase> Simulate(ShipMotion motion)
         {
             HashSet<ShipMotionPhase> phases = new HashSet<ShipMotionPhase>();

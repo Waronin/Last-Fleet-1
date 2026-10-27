@@ -25,6 +25,15 @@ namespace LastFleet.Ships.Editor
         const string ParticleShaderName = "Universal Render Pipeline/Particles/Unlit";
         const float HarvesterHull = 100f;
         const float RefineryHull = 2000f;
+
+        // Blockout balance: a harvester tank lasts about 1000 km or 50 AU; the refinery carries enough
+        // to refuel its harvesters several times. Zones are 50 km in radius, zone jumps a few AU.
+        const float HarvesterTank = 100f;
+        const float HarvesterFuelPerKlick = 0.1f;
+        const float HarvesterFuelPerAU = 2f;
+        const float RefineryTank = 5000f;
+        const float RefineryFuelPerKlick = 1f;
+        const float RefineryFuelPerAU = 50f;
         static readonly int BaseColorId = Shader.PropertyToID("_BaseColor");
 
         // Industrial design language (GDD): angular, yellow-black warning colors, rust, warm orange engines.
@@ -80,6 +89,7 @@ namespace LastFleet.Ships.Editor
             AddPresentation(root, engineGlow, trail, bracket, 22f, 1f);
             EditorAssetUtility.SetReferences(root.GetComponent<ShipPresentation>(), ("_model", model));
             AddDurability(root, HarvesterHull);
+            AddFuel(root, HarvesterTank, HarvesterFuelPerKlick, HarvesterFuelPerAU);
             root.AddComponent<HarvesterMining>();
             root.AddComponent<ShipScanner>();
             MiningAttachment attachment = root.AddComponent<MiningAttachment>();
@@ -136,6 +146,7 @@ namespace LastFleet.Ships.Editor
             EditorAssetUtility.SetReferences(hangar, ("_bay", bayTransform));
             root.AddComponent<RawMaterialStorage>();
             AddDurability(root, RefineryHull);
+            AddFuel(root, RefineryTank, RefineryFuelPerKlick, RefineryFuelPerAU);
             AddPresentation(root, engineGlow, trail, bracket, 34f, 1f);
             return SavePrefab(root, RefineryPrefabPath);
         }
@@ -194,6 +205,16 @@ namespace LastFleet.Ships.Editor
             ShipDurability durability = root.AddComponent<ShipDurability>();
             SerializedObject serialized = new SerializedObject(durability);
             EditorAssetUtility.FindProperty(serialized, "_maximumHull").floatValue = maximumHull;
+            serialized.ApplyModifiedPropertiesWithoutUndo();
+        }
+
+        static void AddFuel(GameObject root, float tankCapacity, float fuelPerKlick, float fuelPerAU)
+        {
+            ShipFuel fuel = root.AddComponent<ShipFuel>();
+            SerializedObject serialized = new SerializedObject(fuel);
+            EditorAssetUtility.FindProperty(serialized, "_tankCapacity").floatValue = tankCapacity;
+            EditorAssetUtility.FindProperty(serialized, "_fuelPerKlick").floatValue = fuelPerKlick;
+            EditorAssetUtility.FindProperty(serialized, "_fuelPerAU").floatValue = fuelPerAU;
             serialized.ApplyModifiedPropertiesWithoutUndo();
         }
 
