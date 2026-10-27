@@ -122,16 +122,37 @@ namespace LastFleet.GenerationPreview
 
             ZoneContents contents = zone.Record.Contents;
             GUILayout.Label($"Zone {zone.Record.PointOfInterest.Name} ({zone.Record.PointOfInterest.Kind})");
-            GUILayout.Label($"Radius {contents.RadiusKlicks:0} klicks  |  {contents.Stations.Count} stations");
+            GUILayout.Label($"Radius {contents.RadiusKlicks:0} klicks  |  {contents.Stations.Count} stations  |  " +
+                            $"{CountScanned(contents)}/{contents.Deposits.Count} deposits scanned");
+            // Only scanned deposits contribute, so the overlay does not give away unscanned resources.
             foreach (KeyValuePair<ResourceKind, (int Count, float Remaining, float Initial)> entry in SumDeposits(contents))
             {
                 (int count, float remaining, float initial) = entry.Value;
-                GUILayout.Label($"  {entry.Key}: {count} deposits, {remaining:0} of {initial:0} left");
+                GUILayout.Label($"  {entry.Key}: {count} scanned deposits, {remaining:0} of {initial:0} left");
+            }
+            ResourceDeposit nearest = _controller.NearestDeposit;
+            if (nearest != null)
+            {
+                GUILayout.Label($"Nearest: {GenerationPreviewController.DescribeDeposit(nearest)}");
             }
             DrawShips();
             GUILayout.Space(6f);
             GUILayout.Label("Left click / drag: select ships (Shift: add)   Right click: move (Shift: queue)");
-            GUILayout.Label("Tab / Shift+Tab: next revealed zone   F: follow ship   X: extract nearest deposit   Esc: system map");
+            GUILayout.Label("V: scan nearest deposit (Shift: whole zone)   X: extract nearest deposit");
+            GUILayout.Label("Tab / Shift+Tab: next revealed zone   F: follow ship   Esc: system map");
+        }
+
+        static int CountScanned(ZoneContents contents)
+        {
+            int scanned = 0;
+            foreach (ResourceDeposit deposit in contents.Deposits)
+            {
+                if (deposit.IsScanned)
+                {
+                    scanned++;
+                }
+            }
+            return scanned;
         }
 
         /// <summary>Squad bar stand-in (GDD: Squad list): click selects, Shift adds, double click shows it.</summary>
@@ -240,6 +261,10 @@ namespace LastFleet.GenerationPreview
                 new SortedDictionary<ResourceKind, (int Count, float Remaining, float Initial)>();
             foreach (ResourceDeposit deposit in contents.Deposits)
             {
+                if (!deposit.IsScanned)
+                {
+                    continue;
+                }
                 sums.TryGetValue(deposit.Resource, out (int Count, float Remaining, float Initial) sum);
                 sums[deposit.Resource] = (sum.Count + 1, sum.Remaining + deposit.RemainingAmount, sum.Initial + deposit.InitialAmount);
             }

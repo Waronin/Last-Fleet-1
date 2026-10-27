@@ -58,7 +58,7 @@ namespace LastFleet.Zones.Tests
         [Test]
         public void Extract_ClampsToRemainingAmount()
         {
-            ResourceDeposit deposit = new ResourceDeposit(DepositShape.Asteroid, ResourceKind.Ore, Vector3.zero, 1f, 100f);
+            ResourceDeposit deposit = new ResourceDeposit(DepositShape.Asteroid, ResourceKind.Ore, Vector3.zero, 1f, 100f, DepositHazard.None, 0f);
 
             Assert.AreEqual(60f, deposit.Extract(60f));
             Assert.AreEqual(40f, deposit.Extract(60f));

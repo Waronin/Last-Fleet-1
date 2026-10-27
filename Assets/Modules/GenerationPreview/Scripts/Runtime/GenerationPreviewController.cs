@@ -241,6 +241,56 @@ namespace LastFleet.GenerationPreview
             {
                 ExtractNearestDeposit();
             }
+            else if (keyboard.vKey.wasPressedThisFrame)
+            {
+                ScanDeposits(keyboard.shiftKey.isPressed);
+            }
+        }
+
+        /// <summary>Deposit nearest to the camera pivot in the viewed zone, or null.</summary>
+        public ResourceDeposit NearestDeposit
+        {
+            get
+            {
+                if (CurrentZone == null)
+                {
+                    return null;
+                }
+                int index = CurrentZone.FindNearestDeposit(_cameraRig.Pivot);
+                return index >= 0 ? CurrentZone.Record.Contents.Deposits[index] : null;
+            }
+        }
+
+        // Stand-in for ship scanners: scans the deposit nearest to the camera, or every deposit in the zone.
+        void ScanDeposits(bool wholeZone)
+        {
+            if (wholeZone)
+            {
+                foreach (ResourceDeposit deposit in CurrentZone.Record.Contents.Deposits)
+                {
+                    deposit.Scan();
+                }
+                LastAction = $"Scanned all {CurrentZone.Record.Contents.Deposits.Count} deposits in this zone.";
+            }
+            else if (NearestDeposit != null)
+            {
+                ResourceDeposit deposit = NearestDeposit;
+                deposit.Scan();
+                LastAction = $"Scanned: {DescribeDeposit(deposit)}.";
+            }
+            CurrentZone.Refresh();
+        }
+
+        public static string DescribeDeposit(ResourceDeposit deposit)
+        {
+            if (!deposit.IsScanned)
+            {
+                return $"{deposit.SizeClass} {deposit.Shape}, not scanned";
+            }
+
+            string hazard = deposit.Hazard == DepositHazard.None ? "no hazard" : deposit.Hazard.ToString();
+            return $"{deposit.SizeClass} {deposit.Shape}: {deposit.Resource} {deposit.RemainingAmount:0} of {deposit.InitialAmount:0}, " +
+                   $"{deposit.MiningSlotCount} mining slot(s), {hazard}";
         }
 
         void StartNewRun()

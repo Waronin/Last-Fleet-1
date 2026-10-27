@@ -32,6 +32,12 @@ namespace LastFleet.Zones
         static readonly (ResourceKind Value, float Weight)[] GasRichBelt = { (ResourceKind.Gas, 0.6f), (ResourceKind.Ice, 0.25f), (ResourceKind.Ore, 0.15f) };
         static readonly (ResourceKind Value, float Weight)[] MixedBelt = { (ResourceKind.Ore, 0.5f), (ResourceKind.Ice, 0.35f), (ResourceKind.Gas, 0.15f) };
 
+        // About one asteroid in four is dangerous to mine (GDD: brittle, radioactive, gas pockets).
+        static readonly (DepositHazard Value, float Weight)[] AsteroidHazards =
+        {
+            (DepositHazard.None, 0.75f), (DepositHazard.Brittle, 0.1f), (DepositHazard.Radioactive, 0.08f), (DepositHazard.GasPockets, 0.07f)
+        };
+
         static readonly DepositRecipe GasCloud = new DepositRecipe(DepositShape.GasCloud, GasOnly, 6f, 14f);
         static readonly DepositRecipe GasAsteroid = new DepositRecipe(DepositShape.Asteroid, GasOnly, 1.5f, 4f);
         static readonly DepositRecipe OreDebris = new DepositRecipe(DepositShape.Asteroid, OreOnly, 0.5f, 2.5f);
@@ -110,7 +116,11 @@ namespace LastFleet.Zones
             {
                 float radius = random.Range(recipe.MinimumRadiusUnits, recipe.MaximumRadiusUnits);
                 ResourceKind resource = random.PickWeighted(recipe.Resources);
-                if (!placement.TryPlace(radius, out Vector3 position))
+                DepositHazard hazard = recipe.Shape == DepositShape.Asteroid ? random.PickWeighted(AsteroidHazards) : DepositHazard.None;
+                float slotAngleOffset = random.AngleDegrees();
+
+                // The footprint includes the mining slots, so no slot ends up inside a neighbour.
+                if (!placement.TryPlace(radius + ResourceDeposit.SlotClearanceUnits, out Vector3 position))
                 {
                     continue;
                 }
@@ -118,7 +128,7 @@ namespace LastFleet.Zones
                 float amount = recipe.Shape == DepositShape.GasCloud
                     ? radius * radius * GasAmountPerSquareUnit
                     : radius * radius * radius * AsteroidAmountPerCubicUnit;
-                deposits.Add(new ResourceDeposit(recipe.Shape, resource, position, radius, Mathf.Round(amount)));
+                deposits.Add(new ResourceDeposit(recipe.Shape, resource, position, radius, Mathf.Round(amount), hazard, slotAngleOffset));
             }
         }
 
