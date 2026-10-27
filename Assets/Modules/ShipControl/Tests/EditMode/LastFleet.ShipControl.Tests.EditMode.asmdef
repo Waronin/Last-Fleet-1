@@ -1,0 +1,25 @@
+{
+    "name": "LastFleet.ShipControl.Tests.EditMode",
+    "rootNamespace": "LastFleet.ShipControl.Tests",
+    "references": [
+        "LastFleet.ShipControl",
+        "LastFleet.Ships",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,19 @@
+{
+    "name": "LastFleet.Ships",
+    "rootNamespace": "LastFleet.Ships",
+    "references": [
+        "LastFleet.Shared",
+        "LastFleet.Space",
+        "LastFleet.StarSystem",
+        "LastFleet.Zones"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

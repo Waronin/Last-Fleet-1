@@ -1,0 +1,19 @@
+{
+    "name": "LastFleet.ShipControl",
+    "rootNamespace": "LastFleet.ShipControl",
+    "references": [
+        "LastFleet.Ships",
+        "LastFleet.Zones",
+        "LastFleet.Space",
+        "Unity.InputSystem"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

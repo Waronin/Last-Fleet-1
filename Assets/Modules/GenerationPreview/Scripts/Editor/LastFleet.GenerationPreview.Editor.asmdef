@@ -1,0 +1,30 @@
+{
+    "name": "LastFleet.GenerationPreview.Editor",
+    "rootNamespace": "LastFleet.GenerationPreview.Editor",
+    "references": [
+        "LastFleet.GenerationPreview",
+        "LastFleet.Galaxy",
+        "LastFleet.StarSystem",
+        "LastFleet.Zones",
+        "LastFleet.Ships",
+        "LastFleet.Ships.Editor",
+        "LastFleet.ShipControl",
+        "LastFleet.CameraControl",
+        "LastFleet.CameraControl.Editor",
+        "LastFleet.Space",
+        "LastFleet.Space.Editor",
+        "LastFleet.Shared.Editor",
+        "Unity.RenderPipelines.Core.Runtime"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ced768ee487b27d419f651e5c128d06b, type: 3}
+  m_Name: RefineryMovement
+  m_EditorClassIdentifier: LastFleet.Ships::LastFleet.Ships.ShipMovementProfile
+  _motion:
+    _maximumSpeed: 10
+    _mainDriveAcceleration: 0.8
+    _turnRateDegreesPerSecond: 10
+    _thrusterAcceleration: 0.6
+    _thrusterMaximumSpeed: 2
+    _maneuverRangeUnits: 40
+    _arrivalToleranceUnits: 1.5
+    _alignToleranceDegrees: 4
+  _jumpChargeSeconds: 15

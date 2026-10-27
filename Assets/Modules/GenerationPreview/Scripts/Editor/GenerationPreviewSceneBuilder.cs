@@ -1,0 +1,123 @@
+﻿using LastFleet.CameraControl;
+using LastFleet.CameraControl.Editor;
+using LastFleet.Galaxy;
+using LastFleet.Shared.Editor;
+using LastFleet.ShipControl;
+using LastFleet.Ships;
+using LastFleet.Ships.Editor;
+using LastFleet.Space;
+using LastFleet.Space.Editor;
+using LastFleet.StarSystem;
+using LastFleet.Zones;
+using UnityEditor;
+using UnityEditor.SceneManagement;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+namespace LastFleet.GenerationPreview.Editor
+{
+    /// <summary>
+    /// Builds the generation preview scene: starfield backdrop, star map, star system view and an
+    /// RTS camera. Menu: Last Fleet / Create Generation Preview Scene.
+    /// </summary>
+    public static class GenerationPreviewSceneBuilder
+    {
+        const string ModuleRoot = "Assets/Modules/GenerationPreview";
+        const string SceneFolder = ModuleRoot + "/Scenes";
+        const string ScenePath = SceneFolder + "/GenerationPreview.unity";
+        const string LitMaterialPath = ModuleRoot + "/Graphics/Blockout/BlockoutLit.mat";
+        const string UnlitMaterialPath = ModuleRoot + "/Graphics/Blockout/BlockoutUnlit.mat";
+        const string LitShaderName = "Universal Render Pipeline/Lit";
+        const string UnlitShaderName = "Universal Render Pipeline/Unlit";
+        const float InitialBoundsRadius = 500f;
+        const float InitialCameraDistance = 600f;
+        static readonly Vector3 ZoneWorldOrigin = new Vector3(6000f, 0f, 0f);
+
+        [MenuItem("Last Fleet/Create Generation Preview Scene")]
+        static void CreateFromMenu()
+        {
+            if (AssetDatabase.LoadAssetAtPath<SceneAsset>(ScenePath) != null &&
+                !EditorUtility.DisplayDialog("Generation preview exists", $"Overwrite {ScenePath}?", "Overwrite", "Cancel"))
+            {
+                return;
+            }
+
+            if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
+            {
+                return;
+            }
+
+            Build();
+        }
+
+        public static void Build()
+        {
+            Material litMaterial = EditorAssetUtility.LoadOrCreateMaterial(LitMaterialPath, LitShaderName);
+            Material unlitMaterial = EditorAssetUtility.LoadOrCreateMaterial(UnlitMaterialPath, UnlitShaderName);
+
+            Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+
+            // No sun on the maps: in the system map the star lights the planets; zones use the zone sun.
+            SpaceEnvironment environment = SpaceSceneFactory.CreateEnvironment(null);
+            SpaceSceneFactory.CreateGlobalVolume();
+            RtsCameraRig cameraRig = CameraRigFactory.Create(Vector3.zero, InitialBoundsRadius, InitialCameraDistance);
+            ZoneWorld zoneWorld = CreateZoneWorld(litMaterial, unlitMaterial);
+
+            GameObject mapObject = new GameObject("Galaxy Map View");
+            GalaxyMapView mapView = mapObject.AddComponent<GalaxyMapView>();
+            EditorAssetUtility.SetReferences(mapView, ("_markerMaterial", unlitMaterial), ("_lineMaterial", unlitMaterial));
+
+            GameObject systemObject = new GameObject("Star System View");
+            StarSystemView systemView = systemObject.AddComponent<StarSystemView>();
+            EditorAssetUtility.SetReferences(systemView, ("_bodyMaterial", litMaterial), ("_glowMaterial", unlitMaterial));
+
+            GameObject shipsObject = new GameObject("Ships");
+            ShipRegistry shipRegistry = shipsObject.AddComponent<ShipRegistry>();
+            EditorAssetUtility.SetReferences(shipRegistry, ("_zoneWorld", zoneWorld), ("_camera", cameraRig.Camera));
+            ShipCommandInput shipInput = shipsObject.AddComponent<ShipCommandInput>();
+            EditorAssetUtility.SetReferences(shipInput, ("_camera", cameraRig.Camera), ("_registry", shipRegistry));
+            ControlGroupInput groupInput = shipsObject.AddComponent<ControlGroupInput>();
+            EditorAssetUtility.SetReferences(groupInput, ("_commandInput", shipInput), ("_registry", shipRegistry));
+            HangarCommandInput hangarInput = shipsObject.AddComponent<HangarCommandInput>();
+            EditorAssetUtility.SetReferences(hangarInput, ("_commandInput", shipInput), ("_registry", shipRegistry));
+
+            GameObject previewObject = new GameObject("Generation Preview");
+            GenerationPreviewController preview = previewObject.AddComponent<GenerationPreviewController>();
+            EditorAssetUtility.SetReferences(preview,
+                ("_galaxyMapView", mapView), ("_starSystemView", systemView), ("_zoneWorld", zoneWorld),
+                ("_environment", environment), ("_cameraRig", cameraRig), ("_shipRegistry", shipRegistry),
+                ("_shipInput", shipInput), ("_groupInput", groupInput), ("_hangarInput", hangarInput),
+                ("_refineryPrefab", ShipPrefabBuilder.LoadOrCreateRefinery()),
+                ("_harvesterPrefab", ShipPrefabBuilder.LoadOrCreateHarvester()));
+            GenerationPreviewOverlay overlay = previewObject.AddComponent<GenerationPreviewOverlay>();
+            EditorAssetUtility.SetReferences(overlay, ("_controller", preview));
+
+            EditorAssetUtility.EnsureFolder(SceneFolder);
+            EditorSceneManager.SaveScene(scene, ScenePath);
+            EditorAssetUtility.AddSceneToBuildSettings(ScenePath, true);
+            Debug.Log($"Generation preview scene created at {ScenePath}.");
+        }
+
+        static ZoneWorld CreateZoneWorld(Material litMaterial, Material unlitMaterial)
+        {
+            GameObject sunObject = new GameObject("Zone Sun");
+            Light zoneSun = sunObject.AddComponent<Light>();
+            zoneSun.type = LightType.Directional;
+            zoneSun.color = new Color(1f, 0.95f, 0.88f);
+            zoneSun.intensity = 1.6f;
+            zoneSun.shadows = LightShadows.None;
+            zoneSun.enabled = false;
+
+            // Far from the maps at the origin, so zones never appear in the map views.
+            GameObject worldObject = new GameObject("Zone World");
+            worldObject.transform.position = ZoneWorldOrigin;
+            worldObject.SetActive(false);
+            ZoneWorld zoneWorld = worldObject.AddComponent<ZoneWorld>();
+            EditorAssetUtility.SetReferences(zoneWorld,
+                ("_gridMaterial", SpaceSceneFactory.LoadOrCreateGridMaterial()), ("_bodyMaterial", litMaterial),
+                ("_glowMaterial", unlitMaterial), ("_zoneSun", zoneSun));
+            worldObject.SetActive(true);
+            return zoneWorld;
+        }
+    }
+}

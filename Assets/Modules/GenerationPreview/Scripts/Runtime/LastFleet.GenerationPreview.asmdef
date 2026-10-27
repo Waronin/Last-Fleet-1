@@ -1,0 +1,23 @@
+{
+    "name": "LastFleet.GenerationPreview",
+    "rootNamespace": "LastFleet.GenerationPreview",
+    "references": [
+        "LastFleet.Galaxy",
+        "LastFleet.StarSystem",
+        "LastFleet.Zones",
+        "LastFleet.Ships",
+        "LastFleet.ShipControl",
+        "LastFleet.Space",
+        "LastFleet.CameraControl",
+        "Unity.InputSystem"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
