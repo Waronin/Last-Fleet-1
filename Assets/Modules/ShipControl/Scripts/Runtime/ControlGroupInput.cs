@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using LastFleet.Shared.Text;
 using LastFleet.Ships;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -35,7 +36,7 @@ namespace LastFleet.ShipControl
         public event Action<ShipAgent> FocusRequested;
 
         /// <summary>Short feedback for the player about what an input did.</summary>
-        public event Action<string> Notice;
+        public event Action<GameText> Notice;
 
         void Awake()
         {
@@ -90,7 +91,7 @@ namespace LastFleet.ShipControl
         void StoreGroup(int group)
         {
             _groups.Store(group, _commandInput.Selection.Ships);
-            Notice?.Invoke($"Stored {_commandInput.Selection.Count} ship(s) in group {group}.");
+            Notice?.Invoke(ShipControlTexts.GroupStored.Format(("count", _commandInput.Selection.Count), ("group", group)));
         }
 
         void RecallGroup(int group)
@@ -98,7 +99,7 @@ namespace LastFleet.ShipControl
             IReadOnlyList<ShipAgent> ships = _groups.Get(group);
             if (ships.Count == 0)
             {
-                Notice?.Invoke($"Group {group} is empty.");
+                Notice?.Invoke(ShipControlTexts.GroupEmpty.Format(("group", group)));
                 return;
             }
 
@@ -118,7 +119,7 @@ namespace LastFleet.ShipControl
             ShipSelection selection = _commandInput.Selection;
             if (selection.Count == 0)
             {
-                Notice?.Invoke("Select ships to form a squad.");
+                Notice?.Invoke(ShipControlTexts.SelectShipsForSquad);
                 return;
             }
 
@@ -127,13 +128,13 @@ namespace LastFleet.ShipControl
             {
                 if (ship.ClassName != className)
                 {
-                    Notice?.Invoke("A squad can only hold ships of one class.");
+                    Notice?.Invoke(ShipControlTexts.SquadNeedsOneClass);
                     return;
                 }
             }
 
             Squad squad = _registry.Squads.Form(selection.Ships);
-            Notice?.Invoke($"Formed {squad.Name} with {squad.Members.Count} ship(s).");
+            Notice?.Invoke(ShipControlTexts.SquadFormed.Format(("squad", squad.Name), ("count", squad.Members.Count)));
         }
     }
 }

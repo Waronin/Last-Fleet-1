@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: GenerationPreview_de
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: de
+  m_SharedData: {fileID: 11400000, guid: 642bd0fd4d3e8ea479c3ceade54e50f0, type: 2}
+  m_Metadata:
+    m_Items:
+    - rid: 6743102046643421296
+  m_TableData:
+  - m_Id: 301543424
+    m_Localized: '{count:plural:{} Schiff|{} Schiffe} nach {zone} beordert.'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421296
+  - m_Id: 314126336
+    m_Localized: In {system} angekommen; {known} Zonen bekannt.
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421296
+  - m_Id: 314126337
+    m_Localized: "Kein Schiff ausgew\xE4hlt."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 314126338
+    m_Localized: '{zone} aufgedeckt.'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421296
+  - m_Id: 314126339
+    m_Localized: '{zone} ist bereits aufgedeckt.'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421296
+  - m_Id: 314126340
+    m_Localized: 'Unerforschte Zone: scannen (C) oder ein Schiff schicken (Rechtsklick).'
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 6743102046643421296
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 
+        m_SharedEntries:
+        - id: 301543424
+        - id: 314126336
+        - id: 314126338
+        - id: 314126339

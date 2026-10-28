@@ -1,0 +1,97 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Ships_en
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: 1af454265c18ddf43ab3f48577837798, type: 2}
+  m_Metadata:
+    m_Items:
+    - rid: 6743102046643421286
+  m_TableData:
+  - m_Id: 305737728
+    m_Localized: Idle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318320640
+    m_Localized: Moving
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318320641
+    m_Localized: Charging jump
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318320642
+    m_Localized: Docking
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318320643
+    m_Localized: Docked
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318320644
+    m_Localized: Idle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318320645
+    m_Localized: Aligning
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318320646
+    m_Localized: Burning
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318320647
+    m_Localized: Flipping
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318320648
+    m_Localized: Braking
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318320649
+    m_Localized: Maneuvering
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318320650
+    m_Localized: Cruising
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318320651
+    m_Localized: small ship
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318320652
+    m_Localized: capital ship
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318320653
+    m_Localized: '{ship} was destroyed by {cause}.'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421286
+  - m_Id: 326709248
+    m_Localized: '{ship} cannot jump to {zone}: needs {needed:0.0} fuel, has {left:0.0}.'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421286
+  references:
+    version: 2
+    RefIds:
+    - rid: 6743102046643421286
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 
+        m_SharedEntries:
+        - id: 318320653
+        - id: 326709248

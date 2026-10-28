@@ -2,6 +2,7 @@
     "name": "LastFleet.Exploration",
     "rootNamespace": "LastFleet.Exploration",
     "references": [
+        "LastFleet.Shared",
         "LastFleet.Ships",
         "LastFleet.Zones",
         "LastFleet.StarSystem"

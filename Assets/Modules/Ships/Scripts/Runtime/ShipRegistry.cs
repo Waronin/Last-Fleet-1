@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using LastFleet.Shared.Text;
 using LastFleet.Zones;
 using UnityEngine;
 
@@ -26,14 +27,14 @@ namespace LastFleet.Ships
         public event Action<ShipAgent> ShipSpawned;
         public event Action<ShipAgent> ShipRemoved;
 
-        /// <summary>A ship was destroyed by damage; the string names the cause.</summary>
-        public event Action<ShipAgent, string> ShipLost;
+        /// <summary>A ship was destroyed by damage; the text names the cause.</summary>
+        public event Action<ShipAgent, GameText> ShipLost;
 
         /// <summary>A ship could not start a zone jump: target zone index and the fuel it would have cost.</summary>
         public event Action<ShipAgent, int, float> JumpRefusedForFuel;
 
         /// <summary>Damages every ship flying within a radius of a world point, e.g. for an explosion.</summary>
-        public int DamageShipsNear(ZoneView zone, Vector3 worldPoint, float radiusUnits, float damage, string cause)
+        public int DamageShipsNear(ZoneView zone, Vector3 worldPoint, float radiusUnits, float damage, GameText cause)
         {
             _damageTargets.Clear();
             foreach (ShipAgent ship in _ships)
@@ -158,7 +159,7 @@ namespace LastFleet.Ships
             }
         }
 
-        void OnShipDestroyedBy(ShipAgent ship, string cause)
+        void OnShipDestroyedBy(ShipAgent ship, GameText cause)
         {
             ShipLost?.Invoke(ship, cause);
         }

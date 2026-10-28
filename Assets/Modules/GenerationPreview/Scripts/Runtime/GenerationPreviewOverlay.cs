@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using LastFleet.Galaxy;
+using LastFleet.Localization;
 using LastFleet.Mining;
 using LastFleet.ShipControl;
 using LastFleet.Ships;
@@ -10,8 +11,9 @@ using UnityEngine;
 namespace LastFleet.GenerationPreview
 {
     /// <summary>
-    /// Developer overlay for the generation preview. Uses IMGUI and English text on purpose:
-    /// player-facing UI will use the project's UI framework and Unity Localization.
+    /// Developer overlay for the generation preview. Uses IMGUI and English text on purpose; only the
+    /// last player notice is resolved in the selected language. Player-facing UI will use the
+    /// project's UI framework.
     /// </summary>
     public sealed class GenerationPreviewOverlay : MonoBehaviour
     {
@@ -52,7 +54,7 @@ namespace LastFleet.GenerationPreview
                     break;
             }
             GUILayout.Space(6f);
-            GUILayout.Label(_controller.LastAction);
+            GUILayout.Label(GameTextResolver.Resolve(_controller.LastAction));
             GUILayout.EndVertical();
             if (Event.current.type == EventType.Repaint)
             {
@@ -82,7 +84,7 @@ namespace LastFleet.GenerationPreview
             GUILayout.Label($"Selected: {selected.Name}{(selected.Index == galaxy.StartSystemIndex ? " (start)" : string.Empty)}");
             GUILayout.Label($"Reachable with one jump: {galaxy.GetNeighbours(selected.Index).Count}");
             GUILayout.Space(6f);
-            GUILayout.Label("Click: select   Enter / double click: enter system   R: new run");
+            GUILayout.Label("Click: select   Enter / double click: enter system   R: new run   F9: switch language");
             GUILayout.Label("WASD: pan   Q/E or middle mouse: rotate   Wheel: zoom");
         }
 

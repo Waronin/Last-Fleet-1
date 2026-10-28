@@ -15,4 +15,6 @@ EditorBuildSettings:
     path: Assets/Modules/Space/Scenes/Zone.unity
     guid: 29beb1e26d6f7844da0f5b8a46340a41
   m_configObjects:
+    com.unity.addressableassets: {fileID: 11400000, guid: debc385a53d194c41877fce8fc5ec480, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+    com.unity.localization.settings: {fileID: 11400000, guid: 8edc0f348e9dba9418efd4347ed0bcb2, type: 2}

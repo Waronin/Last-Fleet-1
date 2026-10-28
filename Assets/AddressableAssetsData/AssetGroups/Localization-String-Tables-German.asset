@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Localization-String-Tables-German
+  m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
+  m_GroupName: Localization-String-Tables-German
+  m_GUID: e7761f0891deb8f46b8e69e6d9c6dbea
+  m_SerializeEntries:
+  - m_GUID: 00421b9eca366e749939591a3fc32f8b
+    m_Address: Exploration_de
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-de
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 12bb3f865c74b1c499d5162d95783eaa
+    m_Address: Ships_de
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-de
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 16b8ae0b0b9d8c14ba1dcf648c3f8dae
+    m_Address: GenerationPreview_de
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-de
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 31c8d7eb551094f4592918fda7b6f4db
+    m_Address: Zones_de
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-de
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3601cf9fbf6a98045b3ed0cd378cb0b8
+    m_Address: Inspection_de
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-de
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 48df3dc687213a84b89834d5ec4c6be1
+    m_Address: ShipControl_de
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-de
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 76218c413e959034489364c0a564eb46
+    m_Address: Mining_de
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-de
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b2b596cb765b1d34ca21ab165445cb70
+    m_Address: StarSystem_de
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-de
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 1
+  m_Settings: {fileID: 11400000, guid: d293d647f1a6ca24ca70f0088d863f25, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: f8372fe82254b874eb1ca1fb2c21d0a7, type: 2}
+    - {fileID: 11400000, guid: 1238aeef46e06ce4d85b213374f3fb05, type: 2}
+    - {fileID: 11400000, guid: 9c30418dcc37a0f4fa7c653fbf9d5814, type: 2}

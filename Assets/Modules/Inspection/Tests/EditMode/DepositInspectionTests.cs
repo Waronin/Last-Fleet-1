@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using LastFleet.Shared.Text;
 using LastFleet.Zones;
 using NUnit.Framework;
 using UnityEngine;
@@ -11,14 +12,13 @@ namespace LastFleet.Inspection.Tests
         public void UnscannedDeposit_GivesNothingAway()
         {
             ResourceDeposit deposit = CreateDeposit(ResourceKind.Ice, DepositHazard.Radioactive);
-            List<string> lines = new List<string>();
+            List<GameText> lines = new List<GameText>();
 
             DepositInspection.DescribeDeposit(deposit, 0, lines);
 
-            string text = string.Join("\n", lines);
-            StringAssert.DoesNotContain("Ice", text);
-            StringAssert.DoesNotContain("Radioactive", text);
-            StringAssert.DoesNotContain(deposit.InitialAmount.ToString("0"), text);
+            Assert.AreEqual(1, lines.Count);
+            Assert.AreEqual(InspectionTexts.DepositUnknown, lines[0].Key);
+            Assert.IsEmpty(lines[0].Arguments, "The unknown line must not carry resource, amount or hazard.");
         }
 
         [Test]
@@ -27,15 +27,16 @@ namespace LastFleet.Inspection.Tests
             ResourceDeposit deposit = CreateDeposit(ResourceKind.Ice, DepositHazard.Radioactive);
             deposit.Scan();
             deposit.Extract(25f);
-            List<string> lines = new List<string>();
+            List<GameText> lines = new List<GameText>();
 
             DepositInspection.DescribeDeposit(deposit, 1, lines);
 
-            string text = string.Join("\n", lines);
-            StringAssert.Contains("Ice", text);
-            StringAssert.Contains("Radioactive", text);
-            StringAssert.Contains("75 of 100", text);
-            StringAssert.Contains($"1/{deposit.MiningSlotCount}", text);
+            Assert.AreEqual(ZoneTexts.Resources.For(ResourceKind.Ice).Key, TextArgument(lines, InspectionTexts.DepositResource, "resource").Key);
+            Assert.AreEqual(ZoneTexts.Hazards.For(DepositHazard.Radioactive).Key, TextArgument(lines, InspectionTexts.DepositHazard, "hazard").Key);
+            Assert.AreEqual(75f, Argument(lines, InspectionTexts.DepositRemaining, "remaining"));
+            Assert.AreEqual(100f, Argument(lines, InspectionTexts.DepositRemaining, "initial"));
+            Assert.AreEqual(1, Argument(lines, InspectionTexts.DepositSlots, "used"));
+            Assert.AreEqual(deposit.MiningSlotCount, Argument(lines, InspectionTexts.DepositSlots, "total"));
         }
 
         [Test]
@@ -43,11 +44,39 @@ namespace LastFleet.Inspection.Tests
         {
             ResourceDeposit deposit = CreateDeposit(ResourceKind.Ore, DepositHazard.None);
             deposit.Extract(deposit.InitialAmount);
-            List<string> lines = new List<string>();
+            List<GameText> lines = new List<GameText>();
 
             DepositInspection.DescribeDeposit(deposit, 0, lines);
 
-            CollectionAssert.AreEqual(new string[] { "Depleted." }, lines);
+            Assert.AreEqual(1, lines.Count);
+            Assert.AreEqual(InspectionTexts.DepositDepleted, lines[0].Key);
+        }
+
+        static object Argument(List<GameText> lines, GameTextKey line, string name)
+        {
+            foreach (GameText text in lines)
+            {
+                if (!text.Key.Equals(line))
+                {
+                    continue;
+                }
+                foreach (GameTextArgument argument in text.Arguments)
+                {
+                    if (argument.Name == name)
+                    {
+                        return argument.Value;
+                    }
+                }
+            }
+            Assert.Fail($"No line {line} with argument {name}.");
+            return null;
+        }
+
+        static GameText TextArgument(List<GameText> lines, GameTextKey line, string name)
+        {
+            object value = Argument(lines, line, name);
+            Assert.IsInstanceOf<GameText>(value);
+            return (GameText)value;
         }
 
         static ResourceDeposit CreateDeposit(ResourceKind resource, DepositHazard hazard)

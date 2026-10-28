@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using LastFleet.Mining;
+using LastFleet.Shared.Text;
 using LastFleet.Ships;
 using LastFleet.Zones;
 using UnityEngine;
@@ -41,7 +42,7 @@ namespace LastFleet.ShipControl
         public ShipSelection Selection => _selection;
 
         /// <summary>Short feedback for the player about what a command did.</summary>
-        public event System.Action<string> Notice;
+        public event System.Action<GameText> Notice;
 
         /// <summary>A deposit was left-clicked. The ship selection is kept, so ships can be put to work on it.</summary>
         public event System.Action<ZoneView, ResourceDeposit> DepositClicked;
@@ -225,8 +226,7 @@ namespace LastFleet.ShipControl
             {
                 ship.Order(ShipOrder.MoveTo(_activeZone.Record.PointOfInterestIndex, deposit.LocalPosition), false);
             }
-            string full = started < harvesters ? $"; {harvesters - started} found no free mining slot" : string.Empty;
-            Notice?.Invoke($"{started} harvester(s) mining{full}.");
+            Notice?.Invoke(ShipControlTexts.HarvestersMining.Format(("count", started), ("withoutSlot", harvesters - started)));
             return true;
         }
 

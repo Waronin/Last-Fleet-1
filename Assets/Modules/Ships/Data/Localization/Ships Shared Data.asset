@@ -1,0 +1,92 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: Ships Shared Data
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.SharedTableData
+  m_TableCollectionName: Ships
+  m_TableCollectionNameGuidString: 1af454265c18ddf43ab3f48577837798
+  m_Entries:
+  - m_Id: 305737728
+    m_Key: activity.Idle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318320640
+    m_Key: activity.Moving
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318320641
+    m_Key: activity.ChargingJump
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318320642
+    m_Key: activity.Docking
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318320643
+    m_Key: activity.Docked
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318320644
+    m_Key: motion.Idle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318320645
+    m_Key: motion.Aligning
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318320646
+    m_Key: motion.Burning
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318320647
+    m_Key: motion.Flipping
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318320648
+    m_Key: motion.Braking
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318320649
+    m_Key: motion.Maneuvering
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318320650
+    m_Key: motion.Cruising
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318320651
+    m_Key: size.Small
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318320652
+    m_Key: size.Capital
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318320653
+    m_Key: notice.destroyed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 326709248
+    m_Key: notice.jump-refused-fuel
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 6743102046643421280
+  references:
+    version: 2
+    RefIds:
+    - rid: 6743102046643421280
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1793180343459

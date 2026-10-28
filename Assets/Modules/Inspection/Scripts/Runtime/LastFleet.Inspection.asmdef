@@ -2,6 +2,8 @@
     "name": "LastFleet.Inspection",
     "rootNamespace": "LastFleet.Inspection",
     "references": [
+        "LastFleet.Localization",
+        "LastFleet.Shared",
         "LastFleet.Ships",
         "LastFleet.ShipControl",
         "LastFleet.Mining",

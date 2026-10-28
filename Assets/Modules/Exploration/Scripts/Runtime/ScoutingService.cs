@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using LastFleet.Shared.Text;
 using LastFleet.Ships;
 using LastFleet.StarSystem;
 using LastFleet.Zones;
@@ -20,7 +21,7 @@ namespace LastFleet.Exploration
         readonly List<ShipAgent> _picked = new List<ShipAgent>(1);
 
         /// <summary>Short feedback for the player about dispatched and finished tasks.</summary>
-        public event Action<string> Notice;
+        public event Action<GameText> Notice;
 
         void Awake()
         {
@@ -67,7 +68,7 @@ namespace LastFleet.Exploration
                 ship => ShipAvailability.TravelCost(ship, zoneIndex, zonePositionAU, deposit.LocalPosition), 1, _picked);
             if (_picked.Count == 0)
             {
-                Notice?.Invoke("No ship available to scan.");
+                Notice?.Invoke(ExplorationTexts.NoShipToScan);
                 return false;
             }
 
@@ -75,7 +76,7 @@ namespace LastFleet.Exploration
             scanner.ScanCompleted -= OnScanCompleted;
             scanner.ScanCompleted += OnScanCompleted;
             scanner.BeginScan(zone, deposit);
-            Notice?.Invoke($"{scanner.Ship.name} is on its way to scan.");
+            Notice?.Invoke(ExplorationTexts.ScanDispatched.Format(("ship", scanner.Ship.name)));
             return true;
         }
 
@@ -95,19 +96,20 @@ namespace LastFleet.Exploration
                 ship => ShipAvailability.TravelCost(ship, zoneIndex, pointOfInterest.PositionAU, Vector3.zero), 1, _picked);
             if (_picked.Count == 0)
             {
-                Notice?.Invoke("No ship available to explore.");
+                Notice?.Invoke(ExplorationTexts.NoShipToExplore);
                 return false;
             }
 
             _picked[0].Order(ShipOrder.MoveTo(zoneIndex, Vector3.zero), false);
-            Notice?.Invoke($"{_picked[0].name} is on its way to explore {pointOfInterest.Name}.");
+            Notice?.Invoke(ExplorationTexts.ExplorationDispatched.Format(("ship", _picked[0].name), ("zone", pointOfInterest.Name)));
             return true;
         }
 
         void OnScanCompleted(ShipScanner scanner, ResourceDeposit deposit)
         {
             scanner.ScanCompleted -= OnScanCompleted;
-            Notice?.Invoke($"{scanner.Ship.name} finished scanning: {deposit.SizeClass} {deposit.Shape}, {deposit.Resource}.");
+            Notice?.Invoke(ExplorationTexts.ScanFinished.Format(("ship", scanner.Ship.name), ("size", ZoneTexts.SizeClasses.For(deposit.SizeClass)),
+                ("shape", ZoneTexts.Shapes.For(deposit.Shape)), ("resource", ZoneTexts.Resources.For(deposit.Resource))));
         }
     }
 }

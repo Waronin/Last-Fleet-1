@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using LastFleet.Shared.Text;
 using LastFleet.Ships;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -19,7 +20,7 @@ namespace LastFleet.ShipControl
         readonly List<ShipAgent> _ships = new List<ShipAgent>();
 
         /// <summary>Short feedback for the player about what an input did.</summary>
-        public event Action<string> Notice;
+        public event Action<GameText> Notice;
 
         void Awake()
         {
@@ -71,9 +72,7 @@ namespace LastFleet.ShipControl
                 }
                 ship.Order(ShipOrder.DockAt(hangar), false);
             }
-
-            string missing = withoutHangar > 0 ? $"; {withoutHangar} found no free hangar" : string.Empty;
-            Notice?.Invoke($"{_ships.Count - withoutHangar} ship(s) returning to hangar{missing}.");
+            Notice?.Invoke(ShipControlTexts.ReturningToHangar.Format(("count", _ships.Count - withoutHangar), ("withoutHangar", withoutHangar)));
         }
 
         void LaunchSelected()
@@ -93,7 +92,7 @@ namespace LastFleet.ShipControl
                     launching++;
                 }
             }
-            Notice?.Invoke(launching > 0 ? $"Launching {launching} ship(s)." : "No docked ships selected.");
+            Notice?.Invoke(launching > 0 ? ShipControlTexts.Launching.Format(("count", launching)) : ShipControlTexts.NoDockedShipsSelected);
         }
     }
 }

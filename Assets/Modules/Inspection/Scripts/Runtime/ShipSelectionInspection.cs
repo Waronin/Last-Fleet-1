@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using LastFleet.Mining;
+using LastFleet.Shared.Text;
 using LastFleet.ShipControl;
 using LastFleet.Ships;
 using LastFleet.Zones;
@@ -12,6 +13,10 @@ namespace LastFleet.Inspection
     /// </summary>
     public sealed class ShipSelectionInspection : IInspectionTarget
     {
+        static readonly GameText ReturnHint = GameText.Verbatim("H");
+        static readonly GameText LaunchHint = GameText.Verbatim("L");
+        static readonly GameText FormSquadHint = GameText.Verbatim("G");
+
         readonly ShipSelection _selection;
         readonly ShipRegistry _registry;
         readonly HangarCommandInput _hangarCommands;
@@ -23,10 +28,13 @@ namespace LastFleet.Inspection
             _hangarCommands = hangarCommands;
         }
 
-        public string Title => _selection.Count == 1 ? _selection.Ships[0].name : $"{_selection.Count} ships selected";
+        public GameText Title => _selection.Count == 1
+            ? GameText.Verbatim(_selection.Ships[0].name)
+            : InspectionTexts.ShipsSelected.Format(("count", _selection.Count));
+
         public bool IsValid => _selection.Count > 0;
 
-        public void Describe(List<string> lines)
+        public void Describe(List<GameText> lines)
         {
             lines.Clear();
             if (_selection.Count == 1)
@@ -36,7 +44,7 @@ namespace LastFleet.Inspection
             }
             foreach (ShipAgent ship in _selection.Ships)
             {
-                lines.Add($"{ship.name}: {Hull(ship)}, {Fuel(ship)}, {Task(ship)}");
+                lines.Add(InspectionTexts.ShipGroupLine.Format(("ship", ship.name), ("hull", Hull(ship)), ("fuel", Fuel(ship)), ("task", Task(ship))));
             }
         }
 
@@ -53,76 +61,84 @@ namespace LastFleet.Inspection
                 sameClass &= ship.ClassName == _selection.Ships[0].ClassName;
             }
 
-            actions.Add(new InspectionAction("Return to hangar", "H", flyingSmall > 0, "No small ship in flight.", () =>
+            actions.Add(new InspectionAction(InspectionTexts.ReturnToHangarAction, ReturnHint, flyingSmall > 0, InspectionTexts.NoSmallShipInFlight, () =>
             {
                 _hangarCommands.ReturnToHangar(_selection.Ships);
                 return null;
             }));
-            actions.Add(new InspectionAction("Launch", "L", docked > 0, "No docked ship selected.", () =>
+            actions.Add(new InspectionAction(InspectionTexts.LaunchAction, LaunchHint, docked > 0, InspectionTexts.NoDockedShipSelected, () =>
             {
                 _hangarCommands.LaunchShips(_selection.Ships);
                 return null;
             }));
             bool canForm = _selection.Count > 1 && sameClass;
-            actions.Add(new InspectionAction("Form squad", "G", canForm, "Select several ships of one class.", () =>
-                $"Formed {_registry.Squads.Form(_selection.Ships).Name}."));
+            actions.Add(new InspectionAction(InspectionTexts.FormSquadAction, FormSquadHint, canForm, InspectionTexts.FormSquadNeedsOneClass, () =>
+                InspectionTexts.SquadFormed.Format(("squad", _registry.Squads.Form(_selection.Ships).Name))));
         }
 
-        void DescribeShip(ShipAgent ship, List<string> lines)
+        void DescribeShip(ShipAgent ship, List<GameText> lines)
         {
-            lines.Add($"{ship.ClassName} ({ship.Size})");
+            lines.Add(InspectionTexts.ShipClass.Format(("class", ship.ClassName), ("size", ShipTexts.Sizes.For(ship.Size))));
             lines.Add(Hull(ship));
             lines.Add(Fuel(ship));
             if (ship.Fuel.Tank.IsEmpty)
             {
-                lines.Add("Out of fuel: thrusters only, no jumps");
+                lines.Add(InspectionTexts.OutOfFuel);
             }
-            lines.Add($"Task: {Task(ship)}");
+            lines.Add(InspectionTexts.TaskLine.Format(("task", Task(ship))));
             if (!ship.IsDocked)
             {
-                lines.Add($"Motion: {ship.MotionPhase}, {ship.Speed * 0.1f:0.00} km/s");
+                lines.Add(InspectionTexts.Motion.Format(("phase", ShipTexts.MotionPhases.For(ship.MotionPhase)), ("speed", ship.Speed * 0.1f)));
             }
-            lines.Add($"Zone: {ship.Zone.Record.PointOfInterest.Name}{(ship.IsDocked ? $", docked in {ship.DockedIn.Carrier.name}" : string.Empty)}");
+            string zone = ship.Zone.Record.PointOfInterest.Name;
+            lines.Add(ship.IsDocked
+                ? InspectionTexts.ZoneDockedLine.Format(("zone", zone), ("carrier", ship.DockedIn.Carrier.name))
+                : InspectionTexts.ZoneLine.Format(("zone", zone)));
             if (_registry.Squads.TryGetSquad(ship, out Squad squad))
             {
-                lines.Add($"Squad: {squad.Name}");
+                lines.Add(InspectionTexts.SquadLine.Format(("squad", squad.Name)));
             }
             if (ship.TryGetComponent(out HarvesterMining mining))
             {
-                string cargo = mining.Cargo.IsEmpty ? "empty" : $"{mining.Cargo.Resource} {mining.Cargo.Amount:0}/{mining.Cargo.Capacity:0}";
-                lines.Add($"Cargo: {cargo}");
+                GameText cargo = mining.Cargo.IsEmpty
+                    ? InspectionTexts.CargoEmpty
+                    : InspectionTexts.CargoAmount.Format(("resource", ZoneTexts.Resources.For(mining.Cargo.Resource)),
+                        ("amount", mining.Cargo.Amount), ("capacity", mining.Cargo.Capacity));
+                lines.Add(InspectionTexts.CargoLine.Format(("cargo", cargo)));
             }
             if (ship.TryGetComponent(out Hangar hangar))
             {
-                lines.Add($"Hangar: {hangar.DockedShips.Count}/{hangar.Capacity} docked{(hangar.LaunchQueueCount > 0 ? $", {hangar.LaunchQueueCount} launching" : string.Empty)}");
+                lines.Add(InspectionTexts.HangarLine.Format(("docked", hangar.DockedShips.Count), ("capacity", hangar.Capacity),
+                    ("launching", hangar.LaunchQueueCount)));
             }
             if (ship.TryGetComponent(out RawMaterialStorage storage))
             {
                 RawMaterialStock stock = storage.Stock;
-                lines.Add($"Stored: Ore {stock.AmountOf(ResourceKind.Ore):0}, Ice {stock.AmountOf(ResourceKind.Ice):0}, Gas {stock.AmountOf(ResourceKind.Gas):0}");
+                lines.Add(InspectionTexts.StoredLine.Format(("ore", stock.AmountOf(ResourceKind.Ore)), ("ice", stock.AmountOf(ResourceKind.Ice)),
+                    ("gas", stock.AmountOf(ResourceKind.Gas))));
             }
         }
 
-        static string Hull(ShipAgent ship)
+        static GameText Hull(ShipAgent ship)
         {
             return ship.TryGetComponent(out ShipDurability durability)
-                ? $"Hull {durability.Hull.Current:0}/{durability.Hull.Maximum:0}"
-                : "No hull";
+                ? InspectionTexts.Hull.Format(("current", durability.Hull.Current), ("maximum", durability.Hull.Maximum))
+                : InspectionTexts.NoHull;
         }
 
-        static string Fuel(ShipAgent ship)
+        static GameText Fuel(ShipAgent ship)
         {
             FuelTank tank = ship.Fuel.Tank;
-            return $"Fuel {tank.Amount:0.0}/{tank.Capacity:0}";
+            return InspectionTexts.Fuel.Format(("amount", tank.Amount), ("capacity", tank.Capacity));
         }
 
-        static string Task(ShipAgent ship)
+        static GameText Task(ShipAgent ship)
         {
             if (ship.TryGetComponent(out HarvesterMining mining) && mining.State != MiningState.Inactive)
             {
-                return $"Mining ({mining.State})";
+                return InspectionTexts.MiningTask.Format(("state", MiningTexts.States.For(mining.State)));
             }
-            return ship.Activity.ToString();
+            return ShipTexts.Activities.For(ship.Activity);
         }
     }
 }

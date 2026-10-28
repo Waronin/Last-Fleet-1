@@ -1,4 +1,5 @@
 using System;
+using LastFleet.Shared.Text;
 using UnityEngine;
 
 namespace LastFleet.Ships
@@ -20,12 +21,12 @@ namespace LastFleet.Ships
         ShipAgent Ship => _ship != null ? _ship : _ship = GetComponent<ShipAgent>();
 
         /// <summary>Raised for every hit, with the damage and its cause.</summary>
-        public event Action<ShipDurability, float, string> Damaged;
+        public event Action<ShipDurability, float, GameText> Damaged;
 
         /// <summary>Raised once, with the cause, right before the ship is removed.</summary>
-        public event Action<ShipAgent, string> DestroyedBy;
+        public event Action<ShipAgent, GameText> DestroyedBy;
 
-        public void ApplyDamage(float amount, string cause)
+        public void ApplyDamage(float amount, GameText cause)
         {
             // Docked ships are inside the carrier and only share its fate.
             if (Ship.IsDocked || Hull.IsDestroyed)

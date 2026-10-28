@@ -3,6 +3,7 @@
     "rootNamespace": "LastFleet.Inspection.Tests",
     "references": [
         "LastFleet.Inspection",
+        "LastFleet.Shared",
         "LastFleet.Zones",
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner"

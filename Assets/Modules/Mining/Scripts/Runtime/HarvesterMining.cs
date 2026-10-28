@@ -186,7 +186,7 @@ namespace LastFleet.Mining
                 BeginDelivery();
                 return;
             }
-            _coordinator.Report($"{_ship.name}: no free deposit left in {_zone.Record.PointOfInterest.Name}.");
+            _coordinator.Report(MiningTexts.NoDepositLeft.Format(("ship", _ship.name), ("zone", _zone.Record.PointOfInterest.Name)));
             StopMining();
         }
 
@@ -197,7 +197,7 @@ namespace LastFleet.Mining
             _storage = _coordinator.FindStorage(_ship, Cargo.Resource);
             if (_storage == null)
             {
-                _coordinator.Report($"{_ship.name}: no storage with room for {Cargo.Resource}.");
+                _coordinator.Report(MiningTexts.NoStorage.Format(("ship", _ship.name), ("resource", ZoneTexts.Resources.For(Cargo.Resource))));
                 StopMining();
                 return;
             }
@@ -220,7 +220,7 @@ namespace LastFleet.Mining
             _storage.Hangar.Refuel(_ship, _ship.Fuel.Tank.FreeSpace);
             if (!Cargo.IsEmpty)
             {
-                _coordinator.Report($"{_storage.name} storage is full for {Cargo.Resource}.");
+                _coordinator.Report(MiningTexts.StorageFull.Format(("storage", _storage.name), ("resource", ZoneTexts.Resources.For(Cargo.Resource))));
                 StopMining();
                 return;
             }
@@ -275,7 +275,7 @@ namespace LastFleet.Mining
             {
                 return;
             }
-            _coordinator.Report($"{_ship.name} stopped mining: not enough fuel to jump ({requiredFuel:0.0} needed, {_ship.Fuel.Tank.Amount:0.0} left).");
+            _coordinator.Report(MiningTexts.StoppedForFuel.Format(("ship", _ship.name), ("needed", requiredFuel), ("left", _ship.Fuel.Tank.Amount)));
             StopMining();
         }
 

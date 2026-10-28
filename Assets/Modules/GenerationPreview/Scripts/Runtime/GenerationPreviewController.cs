@@ -3,7 +3,9 @@ using LastFleet.CameraControl;
 using LastFleet.Exploration;
 using LastFleet.Galaxy;
 using LastFleet.Inspection;
+using LastFleet.Localization;
 using LastFleet.Mining;
+using LastFleet.Shared.Text;
 using LastFleet.ShipControl;
 using LastFleet.Ships;
 using LastFleet.Space;
@@ -40,6 +42,7 @@ namespace LastFleet.GenerationPreview
         const int HarvestersPerSquad = 3;
         const float DeveloperLightDamage = 25f;
         const float DeveloperHeavyDamage = 100f;
+        static readonly GameText DeveloperDamageCause = GameText.Verbatim("developer damage");
         static readonly Vector3 RefineryArrivalPosition = new Vector3(0f, 0f, 0f);
 
         [SerializeField] int _galaxySeed = 1;
@@ -81,7 +84,7 @@ namespace LastFleet.GenerationPreview
         public ControlGroups ControlGroups => _groupInput.Groups;
         public ShipCommandInput ShipInput => _shipInput;
         public int VisitedSystemCount => _runZones != null ? _runZones.VisitedSystemCount : 0;
-        public string LastAction { get; private set; } = string.Empty;
+        public GameText LastAction { get; private set; } = GameText.Verbatim(string.Empty);
 
         void Awake()
         {
@@ -176,7 +179,7 @@ namespace LastFleet.GenerationPreview
             _cameraRig.SnapTo(ship.WorldPosition, ZoneViewDistanceUnits);
         }
 
-        void ShowNotice(string message)
+        void ShowNotice(GameText message)
         {
             LastAction = message;
         }
@@ -193,6 +196,10 @@ namespace LastFleet.GenerationPreview
             if (keyboard == null || mouse == null)
             {
                 return;
+            }
+            if (keyboard.f9Key.wasPressedThisFrame)
+            {
+                LastAction = GameText.Verbatim($"Language: {LanguageSelection.SelectNext()}");
             }
 
             switch (Mode)
@@ -258,7 +265,7 @@ namespace LastFleet.GenerationPreview
             {
                 // Arrive at the zone center, which every zone keeps free for arrivals.
                 _shipInput.OrderSelected(targetIndex, Vector3.zero, keyboard.shiftKey.isPressed);
-                LastAction = $"Ordered {Selection.Count} ship(s) to {CurrentSystem.Zones[targetIndex].PointOfInterest.Name}.";
+                LastAction = GenerationPreviewTexts.OrderedToZone.Format(("count", Selection.Count), ("zone", CurrentSystem.Zones[targetIndex].PointOfInterest.Name));
             }
             else if (mouse.leftButton.wasPressedThisFrame &&
                      _starSystemView.TryPickPointOfInterest(_cameraRig.Camera, pointer, _pickRadiusPixels, out int index))
@@ -314,7 +321,7 @@ namespace LastFleet.GenerationPreview
             {
                 ship.Fuel.Tank.Drain(ship.Fuel.Tank.Amount);
             }
-            LastAction = $"Emptied the tanks of {Selection.Count} ship(s).";
+            LastAction = GameText.Verbatim($"Emptied the tanks of {Selection.Count} ship(s).");
         }
 
         // Developer stand-in for enemies until combat exists.
@@ -326,21 +333,21 @@ namespace LastFleet.GenerationPreview
             {
                 if (ship.TryGetComponent(out ShipDurability durability))
                 {
-                    durability.ApplyDamage(damage, "developer damage");
+                    durability.ApplyDamage(damage, DeveloperDamageCause);
                 }
             }
-            LastAction = $"Dealt {damage:0} damage to {_singleShip.Count} ship(s).";
+            LastAction = GameText.Verbatim($"Dealt {damage:0} damage to {_singleShip.Count} ship(s).");
         }
 
-        void OnShipLost(ShipAgent ship, string cause)
+        void OnShipLost(ShipAgent ship, GameText cause)
         {
-            LastAction = $"{ship.name} was destroyed by {cause}.";
+            LastAction = ShipTexts.ShipDestroyed.Format(("ship", ship.name), ("cause", cause));
         }
 
         void OnJumpRefusedForFuel(ShipAgent ship, int targetZoneIndex, float requiredFuel)
         {
             string target = _zoneWorld.CurrentSystem.Zones[targetZoneIndex].PointOfInterest.Name;
-            LastAction = $"{ship.name} cannot jump to {target}: needs {requiredFuel:0.0} fuel, has {ship.Fuel.Tank.Amount:0.0}.";
+            LastAction = ShipTexts.JumpRefusedForFuel.Format(("ship", ship.name), ("zone", target), ("needed", requiredFuel), ("left", ship.Fuel.Tank.Amount));
         }
 
         /// <summary>Deposit nearest to the camera pivot in the viewed zone, or null.</summary>
@@ -366,13 +373,13 @@ namespace LastFleet.GenerationPreview
                 {
                     deposit.Scan();
                 }
-                LastAction = $"Scanned all {CurrentZone.Record.Contents.Deposits.Count} deposits in this zone.";
+                LastAction = GameText.Verbatim($"Scanned all {CurrentZone.Record.Contents.Deposits.Count} deposits in this zone.");
             }
             else if (NearestDeposit != null)
             {
                 ResourceDeposit deposit = NearestDeposit;
                 deposit.Scan();
-                LastAction = $"Scanned: {DescribeDeposit(deposit)}.";
+                LastAction = GameText.Verbatim($"Scanned: {DescribeDeposit(deposit)}.");
             }
             CurrentZone.Refresh();
         }
@@ -397,7 +404,7 @@ namespace LastFleet.GenerationPreview
             GalaxyLayout galaxy = GalaxyGenerator.Generate((ulong)_galaxySeed, _galaxySettings);
             _galaxyMapView.Show(galaxy);
             EnterStarSystem(galaxy.StartSystemIndex);
-            LastAction = $"New run with galaxy seed {_galaxySeed}; arrived at the jump point.";
+            LastAction = GameText.Verbatim($"New run with galaxy seed {_galaxySeed}; arrived at the jump point.");
         }
 
         void ShowGalaxyMap()
@@ -449,7 +456,7 @@ namespace LastFleet.GenerationPreview
             _shipInput.SelectSquad(firstSquad, false);
 
             ShowZone(arrival);
-            LastAction = $"Arrived in {system.Layout.Name}; {system.RevealedCount} zones known.";
+            LastAction = GenerationPreviewTexts.ArrivedInSystem.Format(("system", system.Layout.Name), ("known", system.RevealedCount));
         }
 
         void LeaveStarSystem()
@@ -458,7 +465,7 @@ namespace LastFleet.GenerationPreview
             _starSystemView.Clear();
             CurrentSystem = null;
             CurrentZone = null;
-            LastAction = "Left the system; zone state is kept, its ships are lost (no hangars yet).";
+            LastAction = GameText.Verbatim("Left the system; zone state is kept, its ships are lost (no hangars yet).");
             ShowGalaxyMap();
         }
 
@@ -482,7 +489,7 @@ namespace LastFleet.GenerationPreview
         {
             if (CurrentSystem.Zones[pointOfInterestIndex].IsRevealed)
             {
-                LastAction = $"{CurrentSystem.Zones[pointOfInterestIndex].PointOfInterest.Name} is already revealed.";
+                LastAction = GenerationPreviewTexts.ZoneAlreadyRevealed.Format(("zone", CurrentSystem.Zones[pointOfInterestIndex].PointOfInterest.Name));
                 return;
             }
             _zoneWorld.Reveal(pointOfInterestIndex);
@@ -492,7 +499,7 @@ namespace LastFleet.GenerationPreview
         {
             if (!_zoneWorld.TryGetView(pointOfInterestIndex, out ZoneView view))
             {
-                LastAction = "Unexplored zone: scan it (C) or send a ship (right click).";
+                LastAction = GenerationPreviewTexts.ZoneUnexplored;
                 return;
             }
             _starSystemView.SelectPointOfInterest(pointOfInterestIndex);
@@ -517,7 +524,7 @@ namespace LastFleet.GenerationPreview
         {
             if (Selection.Count == 0)
             {
-                LastAction = "No ship selected.";
+                LastAction = GenerationPreviewTexts.NoShipSelected;
                 return;
             }
 
@@ -531,7 +538,7 @@ namespace LastFleet.GenerationPreview
                 return;
             }
             _starSystemView.SetMarkerStyle(view.Record.PointOfInterestIndex, PointOfInterestMarkerStyle.Explored);
-            LastAction = $"Revealed {view.Record.PointOfInterest.Name}.";
+            LastAction = GenerationPreviewTexts.ZoneRevealed.Format(("zone", view.Record.PointOfInterest.Name));
         }
 
         void CycleRevealedZone(int direction)
@@ -556,14 +563,14 @@ namespace LastFleet.GenerationPreview
             int index = CurrentZone.FindNearestDeposit(_cameraRig.Pivot);
             if (index < 0)
             {
-                LastAction = "No deposits left in this zone.";
+                LastAction = GameText.Verbatim("No deposits left in this zone.");
                 return;
             }
 
             ResourceDeposit deposit = CurrentZone.Record.Contents.Deposits[index];
             float extracted = deposit.Extract(deposit.InitialAmount * DeveloperExtractFraction);
             CurrentZone.Refresh();
-            LastAction = $"Extracted {extracted:0} {deposit.Resource}; {deposit.RemainingAmount:0} of {deposit.InitialAmount:0} left.";
+            LastAction = GameText.Verbatim($"Extracted {extracted:0} {deposit.Resource}; {deposit.RemainingAmount:0} of {deposit.InitialAmount:0} left.");
         }
 
         bool RegisterClick(int index)

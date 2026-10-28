@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using LastFleet.Exploration;
+using LastFleet.Shared.Text;
 using LastFleet.StarSystem;
 using LastFleet.Zones;
 
@@ -26,22 +27,23 @@ namespace LastFleet.Inspection
         }
 
         ZoneRecord Zone => _system.Zones[_index];
-        public string Title => Zone.PointOfInterest.Name;
+        public GameText Title => GameText.Verbatim(Zone.PointOfInterest.Name);
         public bool IsValid => true;
 
-        public void Describe(List<string> lines)
+        public void Describe(List<GameText> lines)
         {
             lines.Clear();
             PointOfInterest point = Zone.PointOfInterest;
-            lines.Add($"{point.Kind}, {point.PositionAU.magnitude:0.00} AU from the star");
+            lines.Add(InspectionTexts.PointOfInterestKindLine.Format(("kind", StarSystemTexts.PointOfInterestKinds.For(point.Kind)),
+                ("distance", point.PositionAU.magnitude)));
             if (point.IsFuelSource)
             {
-                lines.Add("Fuel source");
+                lines.Add(InspectionTexts.FuelSource);
             }
 
             if (!Zone.IsRevealed)
             {
-                lines.Add("Unexplored. Send a ship to find out what is there.");
+                lines.Add(InspectionTexts.Unexplored);
                 return;
             }
 
@@ -54,22 +56,23 @@ namespace LastFleet.Inspection
                     scanned++;
                 }
             }
-            lines.Add($"Deposits: {contents.Deposits.Count} ({scanned} scanned)");
-            lines.Add($"Stations: {contents.Stations.Count}");
+            lines.Add(InspectionTexts.DepositCount.Format(("count", contents.Deposits.Count), ("scanned", scanned)));
+            lines.Add(InspectionTexts.StationCount.Format(("count", contents.Stations.Count)));
         }
 
         public void CollectActions(List<InspectionAction> actions)
         {
             actions.Clear();
             bool revealed = Zone.IsRevealed;
-            actions.Add(new InspectionAction("View zone", "double click", revealed, revealed ? null : "Not explored yet.",
+            actions.Add(new InspectionAction(InspectionTexts.ViewZoneAction, InspectionTexts.DoubleClickHint, revealed,
+                revealed ? null : InspectionTexts.NotExploredYet,
                 () =>
                 {
                     _viewZone(_index);
                     return null;
                 }));
-            actions.Add(new InspectionAction("Explore", null, !revealed, revealed ? "Already explored." : null,
-                () => _scouting.RequestExploration(_index, Zone.PointOfInterest) ? null : "No ship available to explore."));
+            actions.Add(new InspectionAction(InspectionTexts.ExploreAction, null, !revealed, revealed ? InspectionTexts.AlreadyExplored : null,
+                () => _scouting.RequestExploration(_index, Zone.PointOfInterest) ? null : ExplorationTexts.NoShipToExplore));
         }
     }
 }

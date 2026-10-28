@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: ShipControl Shared Data
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.SharedTableData
+  m_TableCollectionName: ShipControl
+  m_TableCollectionNameGuidString: 35aa94abff059ea45ad3d15b615e6e94
+  m_Entries:
+  - m_Id: 330903552
+    m_Key: notice.group-stored
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339292160
+    m_Key: notice.group-empty
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339292161
+    m_Key: notice.select-ships-for-squad
+    m_Metadata:
+      m_Items: []
+  - m_Id: 343486464
+    m_Key: notice.squad-needs-one-class
+    m_Metadata:
+      m_Items: []
+  - m_Id: 343486465
+    m_Key: notice.squad-formed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 343486466
+    m_Key: notice.returning-to-hangar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 343486467
+    m_Key: notice.launching
+    m_Metadata:
+      m_Items: []
+  - m_Id: 343486468
+    m_Key: notice.no-docked-ships-selected
+    m_Metadata:
+      m_Items: []
+  - m_Id: 343486469
+    m_Key: notice.harvesters-mining
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 6743102046643421283
+  references:
+    version: 2
+    RefIds:
+    - rid: 6743102046643421283
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1793180343949

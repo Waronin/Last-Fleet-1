@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using LastFleet.Shared.Text;
 using LastFleet.Ships;
 using LastFleet.Zones;
 using UnityEngine;
@@ -23,7 +24,7 @@ namespace LastFleet.Mining
         public MiningSlotClaims Claims => _claims;
 
         /// <summary>Short feedback for the player, e.g. when a harvester runs out of work.</summary>
-        public event Action<string> Notice;
+        public event Action<GameText> Notice;
 
         void Awake()
         {
@@ -168,21 +169,21 @@ namespace LastFleet.Mining
             if (hazardEvent == HazardEvent.Shatter)
             {
                 int hit = _registry.DamageShipsNear(zone, center, deposit.RadiusUnits + MiningHazardRules.ShatterRangeUnits,
-                    MiningHazardRules.ShatterDamage, "debris of a breaking asteroid");
+                    MiningHazardRules.ShatterDamage, MiningTexts.ShatterCause);
                 deposit.Shatter();
-                Report($"An asteroid broke apart in {zone.Record.PointOfInterest.Name}; {hit} ship(s) hit by debris.");
+                Report(MiningTexts.ShatterReport.Format(("zone", zone.Record.PointOfInterest.Name), ("count", hit)));
             }
             else
             {
                 int hit = _registry.DamageShipsNear(zone, center, deposit.RadiusUnits + MiningHazardRules.GasExplosionRangeUnits,
-                    MiningHazardRules.GasExplosionDamage, "a gas explosion");
+                    MiningHazardRules.GasExplosionDamage, MiningTexts.GasExplosionCause);
                 deposit.ClearHazard();
-                Report($"Gas pockets exploded in {zone.Record.PointOfInterest.Name}; {hit} ship(s) hit.");
+                Report(MiningTexts.GasExplosionReport.Format(("zone", zone.Record.PointOfInterest.Name), ("count", hit)));
             }
             zone.RefreshDeposit(deposit);
         }
 
-        public void Report(string message)
+        public void Report(GameText message)
         {
             Notice?.Invoke(message);
         }

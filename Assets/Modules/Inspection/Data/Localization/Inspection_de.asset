@@ -1,0 +1,311 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Inspection_de
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: de
+  m_SharedData: {fileID: 11400000, guid: cd9262c69234fad4c8396e7fe7dfc24f, type: 2}
+  m_Metadata:
+    m_Items:
+    - rid: 6743102046643421293
+  m_TableData:
+  - m_Id: 322514944
+    m_Localized: "Schlie\xDFen"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330903552
+    m_Localized: 'Zone: {zone}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421293
+  - m_Id: 330903553
+    m_Localized: Rechtsklick
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330903554
+    m_Localized: Doppelklick
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330903555
+    m_Localized: '{shape} ({size})'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421293
+  - m_Id: 330903556
+    m_Localized: "Scan l\xE4uft: {ship}, noch {seconds:0.0} s"
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421293
+  - m_Id: 330903557
+    m_Localized: 'Scan: {ship} ist unterwegs'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421293
+  - m_Id: 330903558
+    m_Localized: "Ersch\xF6pft."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330903559
+    m_Localized: Inhalt unbekannt. Ein Scan zeigt Rohstoff, Menge und Gefahren.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330903560
+    m_Localized: 'Rohstoff: {resource}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421293
+  - m_Id: 330903561
+    m_Localized: "\xDCbrig: {remaining:0} von {initial:0}"
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421293
+  - m_Id: 330903562
+    m_Localized: 'Gefahr: {hazard}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421293
+  - m_Id: 330903563
+    m_Localized: "Abbaupl\xE4tze: {used}/{total} belegt"
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421293
+  - m_Id: 330903564
+    m_Localized: 'Abbaubonus: x{bonus:0.00}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421293
+  - m_Id: 330903565
+    m_Localized: Scannen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330903566
+    m_Localized: Bereits gescannt.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330903567
+    m_Localized: Ein Schiff ist bereits unterwegs.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330903568
+    m_Localized: Scan angefordert.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330903569
+    m_Localized: Abbauen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330903570
+    m_Localized: "Alle Abbaupl\xE4tze sind belegt."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330903571
+    m_Localized: "Kein Sammelschiff verf\xFCgbar."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330903572
+    m_Localized: "{count:plural:{} ausgew\xE4hltes Sammelschiff baut|{} ausgew\xE4hlte Sammelschiffe bauen} ab."
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421293
+  - m_Id: 330903573
+    m_Localized: '{count:plural:{} Sammelschiff|{} Sammelschiffe} zum Abbau gerufen.'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421293
+  - m_Id: 330903574
+    m_Localized: '{kind}, {distance:0.00} AE vom Stern'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421293
+  - m_Id: 330903575
+    m_Localized: Treibstoffquelle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330903576
+    m_Localized: Unerforscht. Schicke ein Schiff, um herauszufinden, was dort ist.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330903577
+    m_Localized: 'Vorkommen: {count} ({scanned} gescannt)'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421293
+  - m_Id: 330903578
+    m_Localized: 'Stationen: {count}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421293
+  - m_Id: 330903579
+    m_Localized: Zone ansehen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330903580
+    m_Localized: Noch nicht erkundet.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330903581
+    m_Localized: Erkunden
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330903582
+    m_Localized: Bereits erkundet.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330903583
+    m_Localized: "{count} Schiffe ausgew\xE4hlt"
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421293
+  - m_Id: 330903584
+    m_Localized: '{ship}: {hull}, {fuel}, {task}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421293
+  - m_Id: 330903585
+    m_Localized: '{class} ({size})'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421293
+  - m_Id: 330903586
+    m_Localized: "H\xFClle {current:0}/{maximum:0}"
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421293
+  - m_Id: 330903587
+    m_Localized: "Keine H\xFClle"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330903588
+    m_Localized: Treibstoff {amount:0.0}/{capacity:0}
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421293
+  - m_Id: 330903589
+    m_Localized: "Kein Treibstoff: nur Schubd\xFCsen, keine Spr\xFCnge"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330903590
+    m_Localized: 'Aufgabe: {task}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421293
+  - m_Id: 330903591
+    m_Localized: Bergbau ({state})
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421293
+  - m_Id: 330903592
+    m_Localized: 'Bewegung: {phase}, {speed:0.00} km/s'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421293
+  - m_Id: 330903593
+    m_Localized: 'Zone: {zone}, im Hangar von {carrier}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421293
+  - m_Id: 330903594
+    m_Localized: 'Staffel: {squad}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421293
+  - m_Id: 330903595
+    m_Localized: 'Fracht: {cargo}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421293
+  - m_Id: 330903596
+    m_Localized: leer
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330903597
+    m_Localized: '{resource} {amount:0}/{capacity:0}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421293
+  - m_Id: 330903598
+    m_Localized: 'Hangar: {docked}/{capacity} belegt{launching:cond:>0?, {} starten|}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421293
+  - m_Id: 330903599
+    m_Localized: 'Lager: Erz {ore:0}, Eis {ice:0}, Gas {gas:0}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421293
+  - m_Id: 330903600
+    m_Localized: "Zum Hangar zur\xFCck"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330903601
+    m_Localized: Kein kleines Schiff im Flug.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330903602
+    m_Localized: Starten
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330903603
+    m_Localized: "Kein Schiff im Hangar ausgew\xE4hlt."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330903604
+    m_Localized: Staffel bilden
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330903605
+    m_Localized: "W\xE4hle mehrere Schiffe einer Klasse aus."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330903606
+    m_Localized: '{squad} gebildet.'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421293
+  references:
+    version: 2
+    RefIds:
+    - rid: 6743102046643421293
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 
+        m_SharedEntries:
+        - id: 330903552
+        - id: 330903555
+        - id: 330903556
+        - id: 330903557
+        - id: 330903560
+        - id: 330903561
+        - id: 330903562
+        - id: 330903563
+        - id: 330903564
+        - id: 330903572
+        - id: 330903573
+        - id: 330903574
+        - id: 330903577
+        - id: 330903578
+        - id: 330903583
+        - id: 330903584
+        - id: 330903585
+        - id: 330903586
+        - id: 330903588
+        - id: 330903590
+        - id: 330903591
+        - id: 330903592
+        - id: 330903593
+        - id: 330903594
+        - id: 330903595
+        - id: 330903597
+        - id: 330903598
+        - id: 330903599
+        - id: 330903606

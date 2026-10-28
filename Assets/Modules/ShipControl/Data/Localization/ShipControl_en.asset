@@ -1,0 +1,77 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: ShipControl_en
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: 35aa94abff059ea45ad3d15b615e6e94, type: 2}
+  m_Metadata:
+    m_Items:
+    - rid: 6743102046643421288
+  m_TableData:
+  - m_Id: 330903552
+    m_Localized: Stored {count:plural:{} ship|{} ships} in group {group}.
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421288
+  - m_Id: 339292160
+    m_Localized: Group {group} is empty.
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421288
+  - m_Id: 339292161
+    m_Localized: Select ships to form a squad.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 343486464
+    m_Localized: A squad can only hold ships of one class.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 343486465
+    m_Localized: Formed {squad} with {count:plural:{} ship|{} ships}.
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421288
+  - m_Id: 343486466
+    m_Localized: '{count:plural:{} ship|{} ships} returning to hangar{withoutHangar:cond:>0?; {} found no free hangar|}.'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421288
+  - m_Id: 343486467
+    m_Localized: Launching {count:plural:{} ship|{} ships}.
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421288
+  - m_Id: 343486468
+    m_Localized: No docked ships selected.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 343486469
+    m_Localized: '{count:plural:{} harvester|{} harvesters} mining{withoutSlot:cond:>0?; {} found no free mining slot|}.'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421288
+  references:
+    version: 2
+    RefIds:
+    - rid: 6743102046643421288
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 
+        m_SharedEntries:
+        - id: 330903552
+        - id: 339292160
+        - id: 343486465
+        - id: 343486466
+        - id: 343486467
+        - id: 343486469

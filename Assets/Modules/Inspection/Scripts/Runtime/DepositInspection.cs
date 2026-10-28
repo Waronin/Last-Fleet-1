@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using LastFleet.Exploration;
 using LastFleet.Mining;
+using LastFleet.Shared.Text;
 using LastFleet.Ships;
 using LastFleet.Zones;
 
@@ -30,21 +31,24 @@ namespace LastFleet.Inspection
         }
 
         public ResourceDeposit Deposit => _deposit;
-        public string Title => $"{_deposit.SizeClass} {(_deposit.Shape == DepositShape.GasCloud ? "Gas Cloud" : "Asteroid")}";
+
+        public GameText Title => InspectionTexts.DepositTitle.Format(("size", ZoneTexts.SizeClasses.For(_deposit.SizeClass)),
+            ("shape", ZoneTexts.Shapes.For(_deposit.Shape)));
+
         public bool IsValid => _zone != null;
 
-        public void Describe(List<string> lines)
+        public void Describe(List<GameText> lines)
         {
             lines.Clear();
-            lines.Add($"Zone: {_zone.Record.PointOfInterest.Name}");
+            lines.Add(InspectionTexts.ZoneLine.Format(("zone", _zone.Record.PointOfInterest.Name)));
             int occupied = _deposit.MiningSlotCount - _mining.Claims.FreeSlotCount(_deposit);
             DescribeDeposit(_deposit, occupied, lines);
 
             if (_scouting.TryGetActiveScan(_deposit, out ShipScanner scanner))
             {
                 lines.Add(scanner.State == ScanTaskState.Scanning
-                    ? $"Scanning: {scanner.Ship.name}, {scanner.RemainingSeconds:0.0} s left"
-                    : $"Scan: {scanner.Ship.name} on its way");
+                    ? InspectionTexts.DepositScanning.Format(("ship", scanner.Ship.name), ("seconds", scanner.RemainingSeconds))
+                    : InspectionTexts.DepositScanApproaching.Format(("ship", scanner.Ship.name)));
             }
         }
 
@@ -52,45 +56,47 @@ namespace LastFleet.Inspection
         {
             actions.Clear();
             bool scanActive = _scouting.TryGetActiveScan(_deposit, out ShipScanner _);
-            string scanBlocked = _deposit.IsScanned ? "Already scanned." : scanActive ? "A ship is already on it." : null;
-            actions.Add(new InspectionAction("Scan", null, scanBlocked == null, scanBlocked,
-                () => _scouting.RequestScan(_zone, _deposit) ? "Scan requested." : "No ship available to scan."));
+            GameText scanBlocked = _deposit.IsScanned ? InspectionTexts.AlreadyScanned : scanActive ? InspectionTexts.ScanAlreadyAssigned : null;
+            actions.Add(new InspectionAction(InspectionTexts.ScanAction, null, scanBlocked == null, scanBlocked,
+                () => _scouting.RequestScan(_zone, _deposit) ? InspectionTexts.ScanRequested : ExplorationTexts.NoShipToScan));
 
             int freeSlots = _mining.Claims.FreeSlotCount(_deposit);
-            string mineBlocked = _deposit.IsDepleted ? "Depleted." : freeSlots == 0 ? "All mining slots are taken." : null;
-            actions.Add(new InspectionAction("Mine", "right click", mineBlocked == null, mineBlocked, Mine));
+            GameText mineBlocked = _deposit.IsDepleted ? InspectionTexts.DepositDepleted : freeSlots == 0 ? InspectionTexts.AllSlotsTaken : null;
+            actions.Add(new InspectionAction(InspectionTexts.MineAction, InspectionTexts.RightClickHint, mineBlocked == null, mineBlocked, Mine));
         }
 
         /// <summary>Information lines for a deposit; hidden values stay hidden until it is scanned.</summary>
-        public static void DescribeDeposit(ResourceDeposit deposit, int occupiedSlots, List<string> lines)
+        public static void DescribeDeposit(ResourceDeposit deposit, int occupiedSlots, List<GameText> lines)
         {
             if (deposit.IsDepleted)
             {
-                lines.Add("Depleted.");
+                lines.Add(InspectionTexts.DepositDepleted);
                 return;
             }
             if (!deposit.IsScanned)
             {
-                lines.Add("Contents unknown. Scan to reveal resource, amount and hazards.");
+                lines.Add(InspectionTexts.DepositUnknown);
                 return;
             }
 
-            lines.Add($"Resource: {deposit.Resource}");
-            lines.Add($"Remaining: {deposit.RemainingAmount:0} of {deposit.InitialAmount:0}");
-            lines.Add($"Hazard: {(deposit.Hazard == DepositHazard.None ? "none" : deposit.Hazard.ToString())}");
-            lines.Add($"Mining slots: {occupiedSlots}/{deposit.MiningSlotCount} in use");
-            lines.Add($"Mining bonus: x{MiningYield.Multiplier(deposit.MiningSeconds):0.00}");
+            lines.Add(InspectionTexts.DepositResource.Format(("resource", ZoneTexts.Resources.For(deposit.Resource))));
+            lines.Add(InspectionTexts.DepositRemaining.Format(("remaining", deposit.RemainingAmount), ("initial", deposit.InitialAmount)));
+            lines.Add(InspectionTexts.DepositHazard.Format(("hazard", ZoneTexts.Hazards.For(deposit.Hazard))));
+            lines.Add(InspectionTexts.DepositSlots.Format(("used", occupiedSlots), ("total", deposit.MiningSlotCount)));
+            lines.Add(InspectionTexts.DepositMiningBonus.Format(("bonus", MiningYield.Multiplier(deposit.MiningSeconds))));
         }
 
-        string Mine()
+        GameText Mine()
         {
             bool usedSelection = HasSelectedHarvester();
             int started = _mining.AssignHarvesters(_zone, _deposit, _selectedShips());
             if (started == 0)
             {
-                return "No harvester available.";
+                return InspectionTexts.NoHarvesterAvailable;
             }
-            return usedSelection ? $"{started} selected harvester(s) mining." : $"Called {started} harvester(s) to mine.";
+            return usedSelection
+                ? InspectionTexts.SelectedHarvestersMining.Format(("count", started))
+                : InspectionTexts.HarvestersCalled.Format(("count", started));
         }
 
         bool HasSelectedHarvester()

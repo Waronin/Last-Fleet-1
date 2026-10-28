@@ -1,0 +1,311 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Inspection_en
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: cd9262c69234fad4c8396e7fe7dfc24f, type: 2}
+  m_Metadata:
+    m_Items:
+    - rid: 6743102046643421291
+  m_TableData:
+  - m_Id: 322514944
+    m_Localized: Close
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330903552
+    m_Localized: 'Zone: {zone}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421291
+  - m_Id: 330903553
+    m_Localized: right click
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330903554
+    m_Localized: double click
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330903555
+    m_Localized: '{shape} ({size})'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421291
+  - m_Id: 330903556
+    m_Localized: 'Scanning: {ship}, {seconds:0.0} s left'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421291
+  - m_Id: 330903557
+    m_Localized: 'Scan: {ship} on its way'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421291
+  - m_Id: 330903558
+    m_Localized: Depleted.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330903559
+    m_Localized: Contents unknown. Scan to reveal resource, amount and hazards.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330903560
+    m_Localized: 'Resource: {resource}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421291
+  - m_Id: 330903561
+    m_Localized: 'Remaining: {remaining:0} of {initial:0}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421291
+  - m_Id: 330903562
+    m_Localized: 'Hazard: {hazard}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421291
+  - m_Id: 330903563
+    m_Localized: 'Mining slots: {used}/{total} in use'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421291
+  - m_Id: 330903564
+    m_Localized: 'Mining bonus: x{bonus:0.00}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421291
+  - m_Id: 330903565
+    m_Localized: Scan
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330903566
+    m_Localized: Already scanned.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330903567
+    m_Localized: A ship is already on it.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330903568
+    m_Localized: Scan requested.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330903569
+    m_Localized: Mine
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330903570
+    m_Localized: All mining slots are taken.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330903571
+    m_Localized: No harvester available.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330903572
+    m_Localized: '{count:plural:{} selected harvester|{} selected harvesters} mining.'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421291
+  - m_Id: 330903573
+    m_Localized: Called {count:plural:{} harvester|{} harvesters} to mine.
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421291
+  - m_Id: 330903574
+    m_Localized: '{kind}, {distance:0.00} AU from the star'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421291
+  - m_Id: 330903575
+    m_Localized: Fuel source
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330903576
+    m_Localized: Unexplored. Send a ship to find out what is there.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330903577
+    m_Localized: 'Deposits: {count} ({scanned} scanned)'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421291
+  - m_Id: 330903578
+    m_Localized: 'Stations: {count}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421291
+  - m_Id: 330903579
+    m_Localized: View zone
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330903580
+    m_Localized: Not explored yet.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330903581
+    m_Localized: Explore
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330903582
+    m_Localized: Already explored.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330903583
+    m_Localized: '{count} ships selected'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421291
+  - m_Id: 330903584
+    m_Localized: '{ship}: {hull}, {fuel}, {task}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421291
+  - m_Id: 330903585
+    m_Localized: '{class} ({size})'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421291
+  - m_Id: 330903586
+    m_Localized: Hull {current:0}/{maximum:0}
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421291
+  - m_Id: 330903587
+    m_Localized: No hull
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330903588
+    m_Localized: Fuel {amount:0.0}/{capacity:0}
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421291
+  - m_Id: 330903589
+    m_Localized: 'Out of fuel: thrusters only, no jumps'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330903590
+    m_Localized: 'Task: {task}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421291
+  - m_Id: 330903591
+    m_Localized: Mining ({state})
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421291
+  - m_Id: 330903592
+    m_Localized: 'Motion: {phase}, {speed:0.00} km/s'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421291
+  - m_Id: 330903593
+    m_Localized: 'Zone: {zone}, docked in {carrier}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421291
+  - m_Id: 330903594
+    m_Localized: 'Squad: {squad}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421291
+  - m_Id: 330903595
+    m_Localized: 'Cargo: {cargo}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421291
+  - m_Id: 330903596
+    m_Localized: empty
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330903597
+    m_Localized: '{resource} {amount:0}/{capacity:0}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421291
+  - m_Id: 330903598
+    m_Localized: 'Hangar: {docked}/{capacity} docked{launching:cond:>0?, {} launching|}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421291
+  - m_Id: 330903599
+    m_Localized: 'Stored: Ore {ore:0}, Ice {ice:0}, Gas {gas:0}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421291
+  - m_Id: 330903600
+    m_Localized: Return to hangar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330903601
+    m_Localized: No small ship in flight.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330903602
+    m_Localized: Launch
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330903603
+    m_Localized: No docked ship selected.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330903604
+    m_Localized: Form squad
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330903605
+    m_Localized: Select several ships of one class.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330903606
+    m_Localized: Formed {squad}.
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421291
+  references:
+    version: 2
+    RefIds:
+    - rid: 6743102046643421291
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 
+        m_SharedEntries:
+        - id: 330903552
+        - id: 330903555
+        - id: 330903556
+        - id: 330903557
+        - id: 330903560
+        - id: 330903561
+        - id: 330903562
+        - id: 330903563
+        - id: 330903564
+        - id: 330903572
+        - id: 330903573
+        - id: 330903574
+        - id: 330903577
+        - id: 330903578
+        - id: 330903583
+        - id: 330903584
+        - id: 330903585
+        - id: 330903586
+        - id: 330903588
+        - id: 330903590
+        - id: 330903591
+        - id: 330903592
+        - id: 330903593
+        - id: 330903594
+        - id: 330903595
+        - id: 330903597
+        - id: 330903598
+        - id: 330903599
+        - id: 330903606
