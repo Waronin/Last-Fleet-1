@@ -187,6 +187,7 @@ MonoBehaviour:
   _refineryPrefab: {fileID: 5142392371226416469, guid: c71e6b935d877254fb6b91100578858b, type: 3}
   _linerPrefab: {fileID: 7877930830435579649, guid: 6ea1c669cd8e1114cb9423baf7aefa26, type: 3}
   _harvesterPrefab: {fileID: 7506755111648956259, guid: bd122c604b871644bacd59e217f7c455, type: 3}
+  _shuttlePrefab: {fileID: 5850452951789750662, guid: ae1f2227297f8b940b4bdb55d87628c4, type: 3}
   _pickRadiusPixels: 14
 --- !u!4 &536546184
 Transform:
@@ -716,6 +717,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: LastFleet.ShipControl::LastFleet.ShipControl.ShipCommandInput
   _camera: {fileID: 1736073903}
   _registry: {fileID: 1722081853}
+  _scouting: {fileID: 1722081848}
   _pickRadiusPixels: 18
   _selectionBoxColor: {r: 0.4, g: 0.8, b: 1, a: 0.25}
 --- !u!114 &1722081853

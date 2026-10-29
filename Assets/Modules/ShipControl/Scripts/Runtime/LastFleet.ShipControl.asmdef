@@ -5,6 +5,7 @@
         "LastFleet.Shared",
         "LastFleet.Ships",
         "LastFleet.Mining",
+        "LastFleet.Exploration",
         "LastFleet.Zones",
         "LastFleet.Space",
         "Unity.InputSystem"

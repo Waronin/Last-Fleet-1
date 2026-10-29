@@ -35,6 +35,10 @@ MonoBehaviour:
     m_Key: line.fleet-population
     m_Metadata:
       m_Items: []
+  - m_Id: 4317792251904
+    m_Key: notice.disembarked
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

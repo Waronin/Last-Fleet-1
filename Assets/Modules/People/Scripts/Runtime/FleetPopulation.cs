@@ -29,6 +29,7 @@ namespace LastFleet.People
             }
         }
 
+        /// <summary>Living space only; the seats of transports are not housing.</summary>
         public int TotalCapacity
         {
             get
@@ -36,13 +37,13 @@ namespace LastFleet.People
                 int total = 0;
                 foreach (ShipPassengers passengers in _ships)
                 {
-                    total += passengers.Quarters.Capacity;
+                    total += passengers.IsHousing ? passengers.Quarters.Capacity : 0;
                 }
                 return total;
             }
         }
 
-        /// <summary>Short feedback for the player when people die.</summary>
+        /// <summary>Short feedback for the player when people die or move between ships.</summary>
         public event Action<GameText> Notice;
 
         void Awake()
@@ -84,6 +85,7 @@ namespace LastFleet.People
             _ships.Add(passengers);
             passengers.Casualties += OnCasualties;
             passengers.LostWithShip += OnLostWithShip;
+            passengers.Disembarked += OnDisembarked;
         }
 
         void OnShipRemoved(ShipAgent ship)
@@ -98,6 +100,7 @@ namespace LastFleet.People
         {
             passengers.Casualties -= OnCasualties;
             passengers.LostWithShip -= OnLostWithShip;
+            passengers.Disembarked -= OnDisembarked;
         }
 
         void OnCasualties(ShipPassengers passengers, int deaths, GameText cause)
@@ -108,6 +111,11 @@ namespace LastFleet.People
         void OnLostWithShip(ShipPassengers passengers, int lost)
         {
             Notice?.Invoke(PeopleTexts.LostWithShip.Format(("count", lost), ("ship", passengers.Ship.DisplayName)));
+        }
+
+        void OnDisembarked(ShipPassengers transport, ShipPassengers carrier, int people)
+        {
+            Notice?.Invoke(PeopleTexts.Disembarked.Format(("count", people), ("ship", transport.Ship.DisplayName), ("carrier", carrier.Ship.DisplayName)));
         }
     }
 }

@@ -23,6 +23,7 @@ namespace LastFleet.Ships.Editor
         const string HarvesterPrefabPath = PrefabFolder + "/Harvester.prefab";
         const string RefineryPrefabPath = PrefabFolder + "/Refinery.prefab";
         const string LinerPrefabPath = PrefabFolder + "/Liner.prefab";
+        const string ShuttlePrefabPath = PrefabFolder + "/Shuttle.prefab";
         const string LitShaderName = "Universal Render Pipeline/Lit";
         const string UnlitShaderName = "Universal Render Pipeline/Unlit";
         const string ParticleShaderName = "Universal Render Pipeline/Particles/Unlit";
@@ -30,6 +31,8 @@ namespace LastFleet.Ships.Editor
         const float RefineryHull = 2000f;
         const float LinerHull = 2500f;
         const int LinerHangarCapacity = 6;
+        const float ShuttleHull = 80f;
+        const float ShuttleScanSeconds = 2f;
 
         // Blockout balance: a harvester tank lasts about 1000 km or 50 AU; the refinery carries enough
         // to refuel its harvesters several times. Zones are 50 km in radius, zone jumps a few AU.
@@ -42,12 +45,17 @@ namespace LastFleet.Ships.Editor
         const float LinerTank = 4000f;
         const float LinerFuelPerKlick = 1f;
         const float LinerFuelPerAU = 40f;
+        const float ShuttleTank = 120f;
+        const float ShuttleFuelPerKlick = 0.08f;
+        const float ShuttleFuelPerAU = 1.5f;
 
         // GDD: capital ships start below capacity, so rescued people have room.
         const int RefineryPassengerCapacity = 1200;
         const int RefineryStartingPassengers = 800;
         const int LinerPassengerCapacity = 8000;
         const int LinerStartingPassengers = 6000;
+        // A shuttle carries more people than any other small ship (GDD: Small ships), and starts empty.
+        const int ShuttleSeats = 40;
         static readonly int BaseColorId = Shader.PropertyToID("_BaseColor");
 
         // Industrial design language (GDD): angular, yellow-black warning colors, rust, warm orange engines.
@@ -72,9 +80,11 @@ namespace LastFleet.Ships.Editor
             AssetDatabase.DeleteAsset(HarvesterPrefabPath);
             AssetDatabase.DeleteAsset(RefineryPrefabPath);
             AssetDatabase.DeleteAsset(LinerPrefabPath);
+            AssetDatabase.DeleteAsset(ShuttlePrefabPath);
             LoadOrCreateHarvester();
             LoadOrCreateRefinery();
             LoadOrCreateLiner();
+            LoadOrCreateShuttle();
         }
 
         public static ShipAgent LoadOrCreateHarvester()
@@ -242,6 +252,69 @@ namespace LastFleet.Ships.Editor
             AddPassengers(root, LinerPassengerCapacity, LinerStartingPassengers);
             AddPresentation(root, engineGlow, trail, bracket, 38f, 1f);
             return SavePrefab(root, LinerPrefabPath);
+        }
+
+        /// <summary>
+        /// Civilian shuttle (GDD: Small ships): carries people, scans and later docks at stations. A
+        /// rounded white body with a window band, about the size of a harvester.
+        /// </summary>
+        public static ShipAgent LoadOrCreateShuttle()
+        {
+            GameObject existing = AssetDatabase.LoadAssetAtPath<GameObject>(ShuttlePrefabPath);
+            if (existing != null)
+            {
+                return existing.GetComponent<ShipAgent>();
+            }
+
+            GameObject root = new GameObject("Shuttle");
+            Material hull = LoadOrCreateMaterial("LinerHull", LitShaderName, LinerHullColor);
+            Material accent = LoadOrCreateMaterial("LinerAccent", LitShaderName, LinerAccentColor);
+            Material windows = LoadOrCreateMaterial("LinerWindows", UnlitShaderName, WindowColor);
+
+            CreatePart(root.transform, PrimitiveType.Capsule, "Hull", hull, new Vector3(0f, 0f, 0.1f), new Vector3(0.6f, 0.75f, 0.5f))
+                .transform.localRotation = Quaternion.Euler(90f, 0f, 0f);
+            CreatePart(root.transform, PrimitiveType.Sphere, "Cockpit", accent, new Vector3(0f, 0.12f, 0.6f), new Vector3(0.38f, 0.26f, 0.36f));
+            CreatePart(root.transform, PrimitiveType.Cube, "Windows Port", windows, new Vector3(-0.29f, 0.05f, 0f), new Vector3(0.03f, 0.08f, 0.8f));
+            CreatePart(root.transform, PrimitiveType.Cube, "Windows Starboard", windows, new Vector3(0.29f, 0.05f, 0f), new Vector3(0.03f, 0.08f, 0.8f));
+            CreatePart(root.transform, PrimitiveType.Cube, "Wing", accent, new Vector3(0f, -0.12f, -0.35f), new Vector3(1.2f, 0.05f, 0.35f));
+
+            Transform engineGlow = CreatePart(root.transform, PrimitiveType.Sphere, "Engine Glow", Engine(),
+                new Vector3(0f, 0f, -0.68f), Vector3.one * 0.28f).transform;
+            TrailRenderer trail = CreateTrail(root.transform, new Vector3(0f, 0f, -0.72f), 0.25f, 3.5f);
+            LineRenderer bracket = CreateBracket(root.transform);
+
+            ShipAgent agent = root.AddComponent<ShipAgent>();
+            ShipMovementProfile profile = LoadOrCreateProfile("ShuttleMovement", ConfigureShuttleMovement);
+            SerializedObject agentData = new SerializedObject(agent);
+            EditorAssetUtility.FindProperty(agentData, "_className").stringValue = "Shuttle";
+            EditorAssetUtility.FindProperty(agentData, "_size").enumValueIndex = (int)ShipSize.Small;
+            EditorAssetUtility.FindProperty(agentData, "_movementProfile").objectReferenceValue = profile;
+            agentData.ApplyModifiedPropertiesWithoutUndo();
+
+            AddPresentation(root, engineGlow, trail, bracket, 20f, 1f);
+            AddDurability(root, ShuttleHull);
+            AddFuel(root, ShuttleTank, ShuttleFuelPerKlick, ShuttleFuelPerAU);
+            ShipScanner scanner = root.AddComponent<ShipScanner>();
+            SerializedObject scannerData = new SerializedObject(scanner);
+            EditorAssetUtility.FindProperty(scannerData, "_scanSeconds").floatValue = ShuttleScanSeconds;
+            EditorAssetUtility.FindProperty(scannerData, "_isScout").boolValue = true;
+            scannerData.ApplyModifiedPropertiesWithoutUndo();
+            AddPassengers(root, ShuttleSeats, 0);
+            SerializedObject passengerData = new SerializedObject(root.GetComponent<ShipPassengers>());
+            EditorAssetUtility.FindProperty(passengerData, "_disembarkWhenDocked").boolValue = true;
+            passengerData.ApplyModifiedPropertiesWithoutUndo();
+            return SavePrefab(root, ShuttlePrefabPath);
+        }
+
+        /// <summary>Quick and nimble: shuttles are the fleet's eyes and ferries.</summary>
+        static void ConfigureShuttleMovement(SerializedObject profile)
+        {
+            EditorAssetUtility.FindProperty(profile, "_motion._maximumSpeed").floatValue = 50f;
+            EditorAssetUtility.FindProperty(profile, "_motion._mainDriveAcceleration").floatValue = 16f;
+            EditorAssetUtility.FindProperty(profile, "_motion._turnRateDegreesPerSecond").floatValue = 100f;
+            EditorAssetUtility.FindProperty(profile, "_motion._thrusterAcceleration").floatValue = 5f;
+            EditorAssetUtility.FindProperty(profile, "_motion._thrusterMaximumSpeed").floatValue = 7f;
+            EditorAssetUtility.FindProperty(profile, "_jumpChargeSeconds").floatValue = 4f;
         }
 
         /// <summary>A little livelier than the industrial ships, but still a capital ship.</summary>

@@ -43,6 +43,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - rid: 6743102069811707975
+  - m_Id: 4317792251904
+    m_Localized: '{count:plural:{} Mensch ist|{} Menschen sind} von {ship} auf {carrier} umgestiegen.'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707975
   references:
     version: 2
     RefIds:
@@ -55,3 +60,4 @@ MonoBehaviour:
         - id: 939077632
         - id: 939077633
         - id: 939077635
+        - id: 4317792251904

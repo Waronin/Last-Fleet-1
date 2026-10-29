@@ -23,6 +23,8 @@ namespace LastFleet.Exploration
         const float ArrivalToleranceUnits = 3f;
 
         [SerializeField, Min(0f)] float _scanSeconds = 3f;
+        [Tooltip("Scouting is this ship's main job, e.g. a shuttle; scouts are sent before other ships.")]
+        [SerializeField] bool _isScout;
 
         ShipAgent _ship;
         ZoneView _zone;
@@ -33,6 +35,7 @@ namespace LastFleet.Exploration
         public ResourceDeposit Target { get; private set; }
         public float RemainingSeconds { get; private set; }
         public ShipAgent Ship => _ship;
+        public bool IsScout => _isScout;
         public bool IsAutomationActive => State != ScanTaskState.Inactive;
 
         public event Action<ShipScanner, ResourceDeposit> ScanCompleted;

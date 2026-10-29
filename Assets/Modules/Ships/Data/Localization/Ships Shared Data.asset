@@ -99,6 +99,10 @@ MonoBehaviour:
     m_Key: name.squad
     m_Metadata:
       m_Items: []
+  - m_Id: 372965555908608
+    m_Key: class.Shuttle
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

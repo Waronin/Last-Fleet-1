@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using LastFleet.Exploration;
 using LastFleet.Mining;
 using LastFleet.Shared.Text;
 using LastFleet.Ships;
@@ -23,6 +24,7 @@ namespace LastFleet.ShipControl
 
         [SerializeField] Camera _camera;
         [SerializeField] ShipRegistry _registry;
+        [SerializeField] ScoutingService _scouting;
         [SerializeField, Min(1f)] float _pickRadiusPixels = 18f;
         [SerializeField] Color _selectionBoxColor = new Color(0.4f, 0.8f, 1f, 0.25f);
 
@@ -52,9 +54,9 @@ namespace LastFleet.ShipControl
 
         void Awake()
         {
-            if (_camera == null || _registry == null)
+            if (_camera == null || _registry == null || _scouting == null)
             {
-                Debug.LogError("ShipCommandInput needs the camera and the ship registry.", this);
+                Debug.LogError("ShipCommandInput needs the camera, the ship registry and the scouting service.", this);
                 enabled = false;
             }
         }
@@ -184,8 +186,10 @@ namespace LastFleet.ShipControl
                 return;
             }
 
-            // Context command (GDD): right click on a deposit sends harvesters mining, otherwise it is a move.
-            if (_activeZone.TryPickDeposit(_camera, pointer, _pickRadiusPixels, out ResourceDeposit deposit) && TryOrderMining(deposit))
+            // Context command (GDD): right click on a deposit sends harvesters mining or scouts scanning,
+            // otherwise it is a move.
+            if (_activeZone.TryPickDeposit(_camera, pointer, _pickRadiusPixels, out ResourceDeposit deposit) &&
+                (TryOrderMining(deposit) || TryOrderScan(deposit)))
             {
                 return;
             }
@@ -228,6 +232,25 @@ namespace LastFleet.ShipControl
             }
             Notice?.Invoke(ShipControlTexts.HarvestersMining.Format(("count", started), ("withoutSlot", harvesters - started)));
             return true;
+        }
+
+        /// <summary>A selected scout, such as a shuttle, scans a deposit that is not scanned yet.</summary>
+        bool TryOrderScan(ResourceDeposit deposit)
+        {
+            if (deposit.IsScanned)
+            {
+                return false;
+            }
+
+            _ordered.Clear();
+            foreach (ShipAgent ship in _selection.Ships)
+            {
+                if (ship.TryGetComponent(out ShipScanner scanner) && scanner.IsScout)
+                {
+                    _ordered.Add(ship);
+                }
+            }
+            return _ordered.Count > 0 && _scouting.RequestScan(_activeZone, deposit, _ordered);
         }
 
         void HandleClick(Vector2 pointer, bool additive)

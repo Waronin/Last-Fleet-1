@@ -13,6 +13,9 @@ namespace LastFleet.People
         /// <summary>{count}, {ship}</summary>
         public static readonly GameTextKey LostWithShip = new GameTextKey(Table, "notice.lost-with-ship");
 
+        /// <summary>{count}, {ship}, {carrier}</summary>
+        public static readonly GameTextKey Disembarked = new GameTextKey(Table, "notice.disembarked");
+
         /// <summary>{count}, {capacity}</summary>
         public static readonly GameTextKey PassengersLine = new GameTextKey(Table, "line.passengers");
 

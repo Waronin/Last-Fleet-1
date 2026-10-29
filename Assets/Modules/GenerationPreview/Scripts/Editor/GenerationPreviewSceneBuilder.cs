@@ -88,6 +88,7 @@ namespace LastFleet.GenerationPreview.Editor
             EditorAssetUtility.SetReferences(mining, ("_registry", shipRegistry));
             ScoutingService scouting = shipsObject.AddComponent<ScoutingService>();
             EditorAssetUtility.SetReferences(scouting, ("_registry", shipRegistry));
+            EditorAssetUtility.SetReferences(shipInput, ("_scouting", scouting));
             FleetPopulation population = shipsObject.AddComponent<FleetPopulation>();
             EditorAssetUtility.SetReferences(population, ("_registry", shipRegistry));
 
@@ -111,6 +112,7 @@ namespace LastFleet.GenerationPreview.Editor
                 ("_scouting", scouting), ("_population", population), ("_inspection", inspection), ("_shipPanel", shipPanel),
                 ("_refineryPrefab", ShipPrefabBuilder.LoadOrCreateRefinery()),
                 ("_linerPrefab", ShipPrefabBuilder.LoadOrCreateLiner()),
+                ("_shuttlePrefab", ShipPrefabBuilder.LoadOrCreateShuttle()),
                 ("_harvesterPrefab", ShipPrefabBuilder.LoadOrCreateHarvester()));
             GenerationPreviewOverlay overlay = previewObject.AddComponent<GenerationPreviewOverlay>();
             EditorAssetUtility.SetReferences(overlay, ("_controller", preview));

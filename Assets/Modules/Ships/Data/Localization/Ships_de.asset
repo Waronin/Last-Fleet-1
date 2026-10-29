@@ -107,6 +107,10 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - rid: 6743102046643421292
+  - m_Id: 372965555908608
+    m_Localized: Shuttle
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

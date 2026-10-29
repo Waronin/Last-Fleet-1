@@ -125,7 +125,8 @@ namespace LastFleet.Ships
                 OrdersReplaced?.Invoke(this);
             }
 
-            if (IsDocked && order.TargetsHangar && order.Hangar == _dockedIn)
+            // Already where the order leads, unless earlier queued orders take the ship out first.
+            if (IsDocked && order.TargetsHangar && order.Hangar == _dockedIn && _orders.Count == 0)
             {
                 return;
             }

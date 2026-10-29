@@ -11,13 +11,16 @@ namespace LastFleet.Exploration
     /// <summary>
     /// Sends ships to find things out: a ship to scan a deposit, or a ship to explore an unknown zone.
     /// It picks a free small ship first, otherwise the nearest one, and never sends a second ship for
-    /// the same deposit.
+    /// the same deposit. Scouts such as shuttles go before other ships, so harvesters keep mining.
     /// </summary>
     public sealed class ScoutingService : MonoBehaviour
     {
         [SerializeField] ShipRegistry _registry;
 
         readonly List<ShipAgent> _candidates = new List<ShipAgent>();
+        /// <summary>Larger than any travel cost, so a scout anywhere in the system is picked first.</summary>
+        const float NonScoutPenaltyUnits = 10000000f;
+
         readonly List<ShipAgent> _picked = new List<ShipAgent>(1);
 
         /// <summary>Short feedback for the player about dispatched and finished tasks.</summary>
@@ -48,13 +51,19 @@ namespace LastFleet.Exploration
 
         public bool RequestScan(ZoneView zone, ResourceDeposit deposit)
         {
+            return RequestScan(zone, deposit, _registry.Ships);
+        }
+
+        /// <summary>Scans with one of the given ships, e.g. the selection of a context command.</summary>
+        public bool RequestScan(ZoneView zone, ResourceDeposit deposit, IReadOnlyList<ShipAgent> ships)
+        {
             if (deposit.IsScanned || TryGetActiveScan(deposit, out ShipScanner _))
             {
                 return false;
             }
 
             _candidates.Clear();
-            foreach (ShipAgent ship in _registry.Ships)
+            foreach (ShipAgent ship in ships)
             {
                 if (!ship.IsCapital && ship.TryGetComponent(out ShipScanner _))
                 {
@@ -65,7 +74,7 @@ namespace LastFleet.Exploration
             int zoneIndex = zone.Record.PointOfInterestIndex;
             Vector2 zonePositionAU = zone.Record.PointOfInterest.PositionAU;
             ShipAvailability.PickFreeThenNearest(_candidates, ShipAvailability.IsFree,
-                ship => ShipAvailability.TravelCost(ship, zoneIndex, zonePositionAU, deposit.LocalPosition), 1, _picked);
+                ship => ScoutCost(ship, ShipAvailability.TravelCost(ship, zoneIndex, zonePositionAU, deposit.LocalPosition)), 1, _picked);
             if (_picked.Count == 0)
             {
                 Notice?.Invoke(ExplorationTexts.NoShipToScan);
@@ -93,7 +102,7 @@ namespace LastFleet.Exploration
             }
 
             ShipAvailability.PickFreeThenNearest(_candidates, ShipAvailability.IsFree,
-                ship => ShipAvailability.TravelCost(ship, zoneIndex, pointOfInterest.PositionAU, Vector3.zero), 1, _picked);
+                ship => ScoutCost(ship, ShipAvailability.TravelCost(ship, zoneIndex, pointOfInterest.PositionAU, Vector3.zero)), 1, _picked);
             if (_picked.Count == 0)
             {
                 Notice?.Invoke(ExplorationTexts.NoShipToExplore);
@@ -103,6 +112,11 @@ namespace LastFleet.Exploration
             _picked[0].Order(ShipOrder.MoveTo(zoneIndex, Vector3.zero), false);
             Notice?.Invoke(ExplorationTexts.ExplorationDispatched.Format(("ship", _picked[0].DisplayName), ("zone", pointOfInterest.Name)));
             return true;
+        }
+
+        static float ScoutCost(ShipAgent ship, float travelCost)
+        {
+            return ship.TryGetComponent(out ShipScanner scanner) && scanner.IsScout ? travelCost : travelCost + NonScoutPenaltyUnits;
         }
 
         void OnScanCompleted(ShipScanner scanner, ResourceDeposit deposit)
