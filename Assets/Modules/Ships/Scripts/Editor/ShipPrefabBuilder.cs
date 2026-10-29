@@ -1,6 +1,7 @@
 using LastFleet.Exploration;
 using LastFleet.Mining;
 using LastFleet.People;
+using LastFleet.Rewards;
 using LastFleet.Shared.Editor;
 using LastFleet.Stations;
 using UnityEditor;
@@ -131,6 +132,8 @@ namespace LastFleet.Ships.Editor
             AddCrew(root, HarvesterCrew);
             StationDocking harvesterDocking = root.AddComponent<StationDocking>();
             EditorAssetUtility.SetReferences(harvesterDocking, ("_airlock", AddAirlock(model, new Vector3(0f, 0f, 1.0f), 0.18f)));
+            root.AddComponent<StationSearching>();
+            root.AddComponent<ShipRewardHold>();
             root.AddComponent<HarvesterMining>();
             root.AddComponent<ShipScanner>();
             MiningAttachment attachment = root.AddComponent<MiningAttachment>();
@@ -306,6 +309,8 @@ namespace LastFleet.Ships.Editor
             AddCrew(root, ShuttleCrew);
             StationDocking shuttleDocking = root.AddComponent<StationDocking>();
             EditorAssetUtility.SetReferences(shuttleDocking, ("_airlock", AddAirlock(root.transform, new Vector3(0f, 0f, 0.85f), 0.2f)));
+            root.AddComponent<StationSearching>();
+            root.AddComponent<ShipRewardHold>();
             ShipScanner scanner = root.AddComponent<ShipScanner>();
             SerializedObject scannerData = new SerializedObject(scanner);
             EditorAssetUtility.FindProperty(scannerData, "_scanSeconds").floatValue = ShuttleScanSeconds;

@@ -5,6 +5,7 @@ using LastFleet.Galaxy;
 using LastFleet.Inspection;
 using LastFleet.Mining;
 using LastFleet.People;
+using LastFleet.Rewards;
 using LastFleet.Stations;
 using LastFleet.Stations.Editor;
 using LastFleet.Shared.Editor;
@@ -93,6 +94,10 @@ namespace LastFleet.GenerationPreview.Editor
             DockingService docking = shipsObject.AddComponent<DockingService>();
             EditorAssetUtility.SetReferences(docking, ("_registry", shipRegistry));
             EditorAssetUtility.SetReferences(shipInput, ("_scouting", scouting), ("_docking", docking));
+            SearchService search = shipsObject.AddComponent<SearchService>();
+            EditorAssetUtility.SetReferences(search, ("_docking", docking));
+            RewardDelivery rewards = shipsObject.AddComponent<RewardDelivery>();
+            EditorAssetUtility.SetReferences(rewards, ("_registry", shipRegistry));
             FleetPopulation population = shipsObject.AddComponent<FleetPopulation>();
             EditorAssetUtility.SetReferences(population, ("_registry", shipRegistry));
             CrewRecruitment recruitment = shipsObject.AddComponent<CrewRecruitment>();
@@ -115,7 +120,7 @@ namespace LastFleet.GenerationPreview.Editor
                 ("_galaxyMapView", mapView), ("_starSystemView", systemView), ("_zoneWorld", zoneWorld),
                 ("_environment", environment), ("_cameraRig", cameraRig), ("_shipRegistry", shipRegistry),
                 ("_shipInput", shipInput), ("_groupInput", groupInput), ("_hangarInput", hangarInput), ("_mining", mining),
-                ("_scouting", scouting), ("_population", population), ("_docking", docking), ("_inspection", inspection), ("_shipPanel", shipPanel),
+                ("_scouting", scouting), ("_population", population), ("_docking", docking), ("_search", search), ("_rewards", rewards), ("_inspection", inspection), ("_shipPanel", shipPanel),
                 ("_refineryPrefab", ShipPrefabBuilder.LoadOrCreateRefinery()),
                 ("_linerPrefab", ShipPrefabBuilder.LoadOrCreateLiner()),
                 ("_shuttlePrefab", ShipPrefabBuilder.LoadOrCreateShuttle()),

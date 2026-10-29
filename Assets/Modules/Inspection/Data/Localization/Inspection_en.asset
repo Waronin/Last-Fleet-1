@@ -366,6 +366,10 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - rid: 6743102046643421291
+  - m_Id: 505422057910272
+    m_Localized: 'Not scanned: the number of people aboard is unknown.'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

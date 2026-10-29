@@ -6,8 +6,9 @@ namespace LastFleet.Zones
     /// <summary>
     /// A station inside a station zone. It lies on the zone plane, where ships fly, so its docking
     /// ports can be reached. What it really is (<see cref="Profile"/>) stays hidden; a scan reveals
-    /// part of it (<see cref="ScanReport"/>), a hail its attitude (<see cref="HailResponse"/>) and docking
-    /// the rest. Scan and hail results are run state and stay when the fleet leaves the zone.
+    /// part of it (<see cref="ScanReport"/>), a hail its attitude (<see cref="HailResponse"/>), and a docked
+    /// crew sees the environment on site (<see cref="IsEnvironmentKnown"/>). All of this is run state and
+    /// stays when the fleet leaves the zone.
     /// </summary>
     public sealed class ZoneStation : IScanTarget
     {
@@ -41,6 +42,17 @@ namespace LastFleet.Zones
         public void CompleteScan(float accuracyRoll)
         {
             ScanReport ??= StationScanReport.FromProfile(Profile, accuracyRoll);
+        }
+
+        /// <summary>A ship of the fleet has docked: its crew has seen the air, radiation and condition on site.</summary>
+        public bool WasVisited { get; private set; }
+
+        /// <summary>Atmosphere, condition and radiation are known exactly, from a scan or from a docked crew.</summary>
+        public bool IsEnvironmentKnown => IsScanned || WasVisited;
+
+        public void MarkVisited()
+        {
+            WasVisited = true;
         }
 
         /// <summary>Null until the station has been hailed.</summary>

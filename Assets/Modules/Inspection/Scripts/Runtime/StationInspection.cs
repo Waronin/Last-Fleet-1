@@ -12,7 +12,8 @@ namespace LastFleet.Inspection
     /// A station in a zone: its type, size and docking ports are visible from afar. A scan reveals
     /// atmosphere, condition, radiation and a range of life signs; whether the people aboard are
     /// hostile stays unknown until they are hailed, which takes a ship of the fleet in the zone. Small
-    /// ships can dock at its ports, on their own risk if the station was not scanned.
+    /// ships can dock at its ports, on their own risk if the station was not scanned, and search it
+    /// if it is walkable and nobody lives aboard.
     /// </summary>
     public sealed class StationInspection : IInspectionTarget
     {
@@ -21,18 +22,21 @@ namespace LastFleet.Inspection
         readonly ScoutingService _scouting;
         readonly ShipRegistry _registry;
         readonly DockingService _docking;
+        readonly SearchService _search;
         readonly Func<IReadOnlyList<ShipAgent>> _selectedShips;
+        readonly List<ShipAgent> _docked = new List<ShipAgent>();
         readonly List<ShipAgent> _assigned = new List<ShipAgent>();
         readonly List<ShipAgent> _selectedSmallShips = new List<ShipAgent>();
 
         public StationInspection(ZoneView zone, ZoneStation station, ScoutingService scouting, ShipRegistry registry,
-            DockingService docking, Func<IReadOnlyList<ShipAgent>> selectedShips)
+            DockingService docking, SearchService search, Func<IReadOnlyList<ShipAgent>> selectedShips)
         {
             _zone = zone;
             _station = station ?? throw new ArgumentNullException(nameof(station));
             _scouting = scouting;
             _registry = registry;
             _docking = docking;
+            _search = search;
             _selectedShips = selectedShips;
         }
 
@@ -46,7 +50,7 @@ namespace LastFleet.Inspection
             lines.Add(InspectionTexts.ZoneLine.Format(("zone", _zone.Record.PointOfInterest.Name)));
             lines.Add(TypeLine(_station));
             lines.Add(InspectionTexts.StationPorts.Format(("count", _station.DockingPortCount)));
-            DescribeScan(_station.ScanReport, lines);
+            DescribeKnowledge(_station, lines);
             DescribeHail(_station, lines);
             DescribeDocking(lines);
 
@@ -71,6 +75,12 @@ namespace LastFleet.Inspection
 
             GameText dockBlocked = _docking.FreePortCount(_station) == 0 ? StationTexts.AllPortsTaken : null;
             actions.Add(new InspectionAction(StationTexts.DockAction, InspectionTexts.RightClickHint, dockBlocked == null, dockBlocked, Dock));
+
+            _search.CollectDockedShips(_station, _docked);
+            GameText searchBlocked = _docked.Count == 0 ? StationTexts.SearchNeedsDockedShip
+                : _search.LootOf(_zone, _station).IsEmpty ? StationTexts.SearchAlreadyEmpty : null;
+            actions.Add(new InspectionAction(StationTexts.SearchAction, null, searchBlocked == null, searchBlocked,
+                () => _search.RequestSearch(_zone, _station)));
         }
 
         /// <summary>Type and rough size, which are visible from afar.</summary>
@@ -80,19 +90,25 @@ namespace LastFleet.Inspection
                 ("length", StationTypes.NominalLengthKlicks(station.Type)));
         }
 
-        /// <summary>What the scan found; before a scan nothing of the hidden profile shows.</summary>
-        public static void DescribeScan(StationScanReport report, List<GameText> lines)
+        /// <summary>
+        /// What the fleet knows: atmosphere, condition and radiation from a scan or a docked crew, the
+        /// life signs only from a scan. Nothing else of the hidden profile shows.
+        /// </summary>
+        public static void DescribeKnowledge(ZoneStation station, List<GameText> lines)
         {
-            if (report == null)
+            if (!station.IsEnvironmentKnown)
             {
                 lines.Add(InspectionTexts.StationUnscanned);
                 return;
             }
 
-            lines.Add(InspectionTexts.StationAtmosphere.Format(("value", ZoneTexts.Atmospheres.For(report.Atmosphere))));
-            lines.Add(InspectionTexts.StationCondition.Format(("value", ZoneTexts.Conditions.For(report.Condition))));
-            lines.Add(InspectionTexts.StationRadiation.Format(("value", ZoneTexts.Radiation.For(report.Radiation))));
-            lines.Add(InspectionTexts.StationLifeSigns.Format(("lifeSigns", ScoutingService.LifeSigns(report))));
+            StationProfile profile = station.Profile;
+            lines.Add(InspectionTexts.StationAtmosphere.Format(("value", ZoneTexts.Atmospheres.For(profile.Atmosphere))));
+            lines.Add(InspectionTexts.StationCondition.Format(("value", ZoneTexts.Conditions.For(profile.Condition))));
+            lines.Add(InspectionTexts.StationRadiation.Format(("value", ZoneTexts.Radiation.For(profile.Radiation))));
+            lines.Add(station.IsScanned
+                ? InspectionTexts.StationLifeSigns.Format(("lifeSigns", ScoutingService.LifeSigns(station.ScanReport)))
+                : InspectionTexts.StationLifeSignsUnscanned);
         }
 
         /// <summary>The attitude the station claimed, or a hint to hail it once a scan shows people aboard.</summary>
@@ -117,10 +133,24 @@ namespace LastFleet.Inspection
             lines.Add(StationTexts.PortsInUse.Format(("used", _assigned.Count), ("total", _station.DockingPortCount)));
             foreach (ShipAgent ship in _assigned)
             {
-                if (ship.TryGetComponent(out StationDocking docking))
+                if (ship.TryGetComponent(out StationSearching searching) && searching.IsSearching)
+                {
+                    lines.Add(StationTexts.SearchingShipLine.Format(("ship", ship.DisplayName), ("progress", searching.FindProgress)));
+                }
+                else if (ship.TryGetComponent(out StationDocking docking))
                 {
                     lines.Add(StationTexts.DockedShipLine.Format(("ship", ship.DisplayName), ("state", StationTexts.DockingStates.For(docking.State))));
                 }
+            }
+
+            StationLoot loot = _search.LootOf(_zone, _station);
+            if (loot.IsEmpty && loot.FindsMade > 0)
+            {
+                lines.Add(StationTexts.NothingLeftLine);
+            }
+            else if (loot.FindsMade > 0)
+            {
+                lines.Add(StationTexts.FindsMadeLine.Format(("count", loot.FindsMade)));
             }
         }
 

@@ -17,6 +17,8 @@ GameObject:
   - component: {fileID: 5490605587608782397}
   - component: {fileID: 975284302581765720}
   - component: {fileID: 7898017801697416666}
+  - component: {fileID: 1786074812505717084}
+  - component: {fileID: 463264928280402122}
   m_Layer: 0
   m_Name: Shuttle
   m_TagString: Untagged
@@ -169,6 +171,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: LastFleet.Stations::LastFleet.Stations.StationDocking
   _airlock: {fileID: 5733540315736876312}
+--- !u!114 &1786074812505717084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 429577307932634993}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: facce49586486cf4091c0f66ac584092, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.Stations::LastFleet.Stations.StationSearching
+--- !u!114 &463264928280402122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 429577307932634993}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89c774c5d8d6c3340a39ac3310a0a52d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.Rewards::LastFleet.Rewards.ShipRewardHold
 --- !u!1 &695089878099305452
 GameObject:
   m_ObjectHideFlags: 0

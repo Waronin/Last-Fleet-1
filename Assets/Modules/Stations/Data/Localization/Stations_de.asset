@@ -37,7 +37,7 @@ MonoBehaviour:
       m_Items:
       - rid: 6743102069811707981
   - m_Id: 783888384
-    m_Localized: '{ship} hat an {station} angedockt.'
+    m_Localized: "{ship} hat an {station} angedockt: Atmosph\xE4re {atmosphere}, Strahlung {radiation}, Zustand {condition}."
     m_Metadata:
       m_Items:
       - rid: 6743102069811707981
@@ -94,6 +94,82 @@ MonoBehaviour:
     m_Localized: Alle Andockschleusen sind belegt.
     m_Metadata:
       m_Items: []
+  - m_Id: 15760721784832
+    m_Localized: Durchsuchen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15760730173440
+    m_Localized: Docke zuerst ein Schiff an.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15760730173441
+    m_Localized: Hier ist nichts mehr zu finden.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15760730173442
+    m_Localized: "Auf {station} leben Menschen; die Station l\xE4sst sich nicht einfach durchsuchen."
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707981
+  - m_Id: 15760730173443
+    m_Localized: "Die Atmosph\xE4re auf {station} ist giftig; niemand kann sie durchsuchen."
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707981
+  - m_Id: 15760730173444
+    m_Localized: "{station} ist vollst\xE4ndig durchsucht."
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707981
+  - m_Id: 15760730173445
+    m_Localized: '{count:plural:{} Crew durchsucht|{} Crews durchsuchen} {station}.'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707981
+  - m_Id: 15760730173446
+    m_Localized: An {station} ist kein Schiff angedockt.
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707981
+  - m_Id: 15760730173447
+    m_Localized: "{ship} hat keine freien Pl\xE4tze; auf {station} warten noch \xDCberlebende."
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707981
+  - m_Id: 15760730173448
+    m_Localized: '{ship} hat auf {station} {reward} gefunden.'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707981
+  - m_Id: 15760730173449
+    m_Localized: "{station} ist vollst\xE4ndig durchsucht."
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707981
+  - m_Id: 15760730173450
+    m_Localized: 'Durchsucht: bisher {count:plural:{} Fund|{} Funde}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707981
+  - m_Id: 15760730173451
+    m_Localized: "Vollst\xE4ndig durchsucht."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15760730173452
+    m_Localized: '  {ship}: durchsucht ({progress:0%})'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707981
+  - m_Id: 15760730173453
+    m_Localized: Durchsucht {station}
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707981
+  - m_Id: 19561356800000
+    m_Localized: Die Strahlung auf {station} ist zu hoch; niemand kann sie durchsuchen.
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707981
   references:
     version: 2
     RefIds:
@@ -109,3 +185,15 @@ MonoBehaviour:
         - id: 783888391
         - id: 5783466618880
         - id: 783888393
+        - id: 15760730173442
+        - id: 15760730173443
+        - id: 15760730173444
+        - id: 15760730173445
+        - id: 15760730173446
+        - id: 15760730173447
+        - id: 15760730173448
+        - id: 15760730173449
+        - id: 15760730173450
+        - id: 15760730173452
+        - id: 15760730173453
+        - id: 19561356800000

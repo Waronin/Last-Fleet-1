@@ -37,7 +37,7 @@ MonoBehaviour:
       m_Items:
       - rid: 6743102069811707982
   - m_Id: 783888384
-    m_Localized: '{ship} docked at {station}.'
+    m_Localized: '{ship} docked at {station}: atmosphere {atmosphere}, radiation {radiation}, condition {condition}.'
     m_Metadata:
       m_Items:
       - rid: 6743102069811707982
@@ -94,6 +94,82 @@ MonoBehaviour:
     m_Localized: All docking ports are taken.
     m_Metadata:
       m_Items: []
+  - m_Id: 15760721784832
+    m_Localized: Search
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15760730173440
+    m_Localized: Dock a ship first.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15760730173441
+    m_Localized: Nothing left to find.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15760730173442
+    m_Localized: People live aboard {station}; it cannot simply be searched.
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707982
+  - m_Id: 15760730173443
+    m_Localized: The atmosphere aboard {station} is toxic; nobody can search it.
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707982
+  - m_Id: 15760730173444
+    m_Localized: '{station} has been searched completely.'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707982
+  - m_Id: 15760730173445
+    m_Localized: '{count:plural:{} crew searches|{} crews search} {station}.'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707982
+  - m_Id: 15760730173446
+    m_Localized: No ship is docked at {station}.
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707982
+  - m_Id: 15760730173447
+    m_Localized: '{ship} has no free seats; survivors still wait aboard {station}.'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707982
+  - m_Id: 15760730173448
+    m_Localized: '{ship} found {reward} aboard {station}.'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707982
+  - m_Id: 15760730173449
+    m_Localized: '{station} has been searched completely.'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707982
+  - m_Id: 15760730173450
+    m_Localized: 'Searched: {count:plural:{} find|{} finds} so far'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707982
+  - m_Id: 15760730173451
+    m_Localized: Searched completely.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15760730173452
+    m_Localized: '  {ship}: searching ({progress:0%})'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707982
+  - m_Id: 15760730173453
+    m_Localized: Searching {station}
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707982
+  - m_Id: 19561356800000
+    m_Localized: The radiation aboard {station} is too high; nobody can search it.
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707982
   references:
     version: 2
     RefIds:
@@ -109,3 +185,15 @@ MonoBehaviour:
         - id: 783888391
         - id: 5783466618880
         - id: 783888393
+        - id: 15760730173442
+        - id: 15760730173443
+        - id: 15760730173444
+        - id: 15760730173445
+        - id: 15760730173446
+        - id: 15760730173447
+        - id: 15760730173448
+        - id: 15760730173449
+        - id: 15760730173450
+        - id: 15760730173452
+        - id: 15760730173453
+        - id: 19561356800000

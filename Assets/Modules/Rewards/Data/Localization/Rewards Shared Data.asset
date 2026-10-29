@@ -1,0 +1,84 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: Rewards Shared Data
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.SharedTableData
+  m_TableCollectionName: Rewards
+  m_TableCollectionNameGuidString: cd00f3038d2655c4ea308048f383e40a
+  m_Entries:
+  - m_Id: 767111168
+    m_Key: item-found.UpgradeModule
+    m_Metadata:
+      m_Items: []
+  - m_Id: 796471296
+    m_Key: item-found.Clue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 800665600
+    m_Key: item-found.ArchiveRecord
+    m_Metadata:
+      m_Items: []
+  - m_Id: 800665601
+    m_Key: item-inventory.UpgradeModule
+    m_Metadata:
+      m_Items: []
+  - m_Id: 800665602
+    m_Key: item-inventory.Clue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 800665603
+    m_Key: item-inventory.ArchiveRecord
+    m_Metadata:
+      m_Items: []
+  - m_Id: 800665604
+    m_Key: reward.resource
+    m_Metadata:
+      m_Items: []
+  - m_Id: 804859904
+    m_Key: reward.fuel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 809054208
+    m_Key: reward.survivors
+    m_Metadata:
+      m_Items: []
+  - m_Id: 809054209
+    m_Key: notice.delivered
+    m_Metadata:
+      m_Items: []
+  - m_Id: 809054210
+    m_Key: notice.no-room
+    m_Metadata:
+      m_Items: []
+  - m_Id: 809054211
+    m_Key: line.hold
+    m_Metadata:
+      m_Items: []
+  - m_Id: 809054212
+    m_Key: list.join
+    m_Metadata:
+      m_Items: []
+  - m_Id: 809054213
+    m_Key: line.inventory
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 6743102069811707983
+  references:
+    version: 2
+    RefIds:
+    - rid: 6743102069811707983
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1793299939770

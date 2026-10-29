@@ -3,6 +3,7 @@ using LastFleet.Galaxy;
 using LastFleet.Localization;
 using LastFleet.Mining;
 using LastFleet.People;
+using LastFleet.Rewards;
 using LastFleet.Shared.Text;
 using LastFleet.ShipControl;
 using LastFleet.Ships;
@@ -163,6 +164,17 @@ namespace LastFleet.GenerationPreview
             return scanned;
         }
 
+        string DescribeInventory()
+        {
+            string text = string.Empty;
+            foreach (ItemKind item in (ItemKind[])System.Enum.GetValues(typeof(ItemKind)))
+            {
+                text += GameTextResolver.Resolve(RewardTexts.InventoryLine.Format(("item", RewardTexts.InventoryItems.For(item)),
+                    ("count", _controller.Inventory.CountOf(item)))) + "   ";
+            }
+            return text;
+        }
+
         /// <summary>Squad bar stand-in (GDD: Squad list): click selects, Shift adds, double click shows it.</summary>
         void DrawShips()
         {
@@ -170,6 +182,7 @@ namespace LastFleet.GenerationPreview
             GUILayout.Label("Capital ships and squads (click: select, Shift: add, double click: show)");
             GUILayout.Label(GameTextResolver.Resolve(PeopleTexts.FleetPopulationLine.Format(
                 ("count", _controller.Population.TotalPeople), ("capacity", _controller.Population.TotalCapacity))));
+            GUILayout.Label(DescribeInventory());
             foreach (ShipAgent ship in _controller.Ships)
             {
                 if (!ship.IsCapital || ship.Zone == null)

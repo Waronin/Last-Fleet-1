@@ -323,6 +323,10 @@ MonoBehaviour:
     m_Key: station.ports
     m_Metadata:
       m_Items: []
+  - m_Id: 505422057910272
+    m_Key: station.life-signs-unscanned
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

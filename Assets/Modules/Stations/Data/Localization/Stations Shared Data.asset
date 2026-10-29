@@ -83,6 +83,70 @@ MonoBehaviour:
     m_Key: action.dock.all-ports-taken
     m_Metadata:
       m_Items: []
+  - m_Id: 15760721784832
+    m_Key: action.search
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15760730173440
+    m_Key: action.search.needs-docked-ship
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15760730173441
+    m_Key: action.search.empty
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15760730173442
+    m_Key: notice.search-blocked-inhabited
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15760730173443
+    m_Key: notice.search-blocked-toxic
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15760730173444
+    m_Key: notice.nothing-left
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15760730173445
+    m_Key: notice.search-started
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15760730173446
+    m_Key: notice.no-ship-docked
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15760730173447
+    m_Key: notice.no-seats-for-survivors
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15760730173448
+    m_Key: notice.found
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15760730173449
+    m_Key: notice.searched-completely
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15760730173450
+    m_Key: line.finds-made
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15760730173451
+    m_Key: line.nothing-left
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15760730173452
+    m_Key: line.searching-ship
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15760730173453
+    m_Key: task.searching
+    m_Metadata:
+      m_Items: []
+  - m_Id: 19561356800000
+    m_Key: notice.search-blocked-radiation
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

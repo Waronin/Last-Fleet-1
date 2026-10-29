@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using LastFleet.Mining;
 using LastFleet.People;
+using LastFleet.Rewards;
 using LastFleet.Shared.Text;
 using LastFleet.ShipControl;
 using LastFleet.Ships;
@@ -126,6 +127,10 @@ namespace LastFleet.Inspection
                         ("amount", mining.Cargo.Amount), ("capacity", mining.Cargo.Capacity));
                 lines.Add(InspectionTexts.CargoLine.Format(("cargo", cargo)));
             }
+            if (ship.TryGetComponent(out ShipRewardHold hold) && !hold.Hold.IsEmpty)
+            {
+                lines.Add(RewardTexts.HoldLine.Format(("finds", RewardTexts.DescribeAll(hold.Hold.Rewards))));
+            }
             if (ship.TryGetComponent(out Hangar hangar))
             {
                 lines.Add(InspectionTexts.HangarLine.Format(("docked", hangar.DockedShips.Count), ("capacity", hangar.Capacity),
@@ -154,6 +159,10 @@ namespace LastFleet.Inspection
 
         static GameText Task(ShipAgent ship)
         {
+            if (ship.TryGetComponent(out StationSearching searching) && searching.IsSearching)
+            {
+                return StationTexts.SearchingTask.Format(("station", searching.Station.Name));
+            }
             if (ship.TryGetComponent(out StationDocking docking) && docking.State != DockingState.Inactive)
             {
                 return StationTexts.DockingTask.Format(("state", StationTexts.DockingStates.For(docking.State)), ("station", docking.Station.Name));

@@ -1,0 +1,20 @@
+{
+    "name": "LastFleet.Rewards",
+    "rootNamespace": "LastFleet.Rewards",
+    "references": [
+        "LastFleet.Shared",
+        "LastFleet.Zones",
+        "LastFleet.Ships",
+        "LastFleet.Mining",
+        "LastFleet.People"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

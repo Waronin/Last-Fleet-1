@@ -6,6 +6,7 @@ using LastFleet.Inspection;
 using LastFleet.Localization;
 using LastFleet.Mining;
 using LastFleet.People;
+using LastFleet.Rewards;
 using LastFleet.Shared.Text;
 using LastFleet.ShipControl;
 using LastFleet.Ships;
@@ -65,6 +66,8 @@ namespace LastFleet.GenerationPreview
         [SerializeField] ScoutingService _scouting;
         [SerializeField] FleetPopulation _population;
         [SerializeField] DockingService _docking;
+        [SerializeField] SearchService _search;
+        [SerializeField] RewardDelivery _rewards;
         [SerializeField] InspectionPanel _inspection;
         [SerializeField] InspectionPanel _shipPanel;
         [Tooltip("Spawned on arrival in a system until fleet jumps carry the fleet along.")]
@@ -94,6 +97,7 @@ namespace LastFleet.GenerationPreview
         public ControlGroups ControlGroups => _groupInput.Groups;
         public ShipCommandInput ShipInput => _shipInput;
         public FleetPopulation Population => _population;
+        public FleetInventory Inventory => _rewards.Inventory;
         public int VisitedSystemCount => _runZones != null ? _runZones.VisitedSystemCount : 0;
         /// <summary>The latest notices, oldest first; several can arrive at once, e.g. a loss and its casualties.</summary>
         public IReadOnlyList<GameText> RecentNotices => _recentNotices;
@@ -102,7 +106,7 @@ namespace LastFleet.GenerationPreview
         {
             if (_galaxyMapView == null || _starSystemView == null || _zoneWorld == null || _environment == null ||
                 _cameraRig == null || _shipRegistry == null || _shipInput == null || _groupInput == null ||
-                _hangarInput == null || _mining == null || _scouting == null || _population == null || _docking == null || _inspection == null || _shipPanel == null ||
+                _hangarInput == null || _mining == null || _scouting == null || _population == null || _docking == null || _search == null || _rewards == null || _inspection == null || _shipPanel == null ||
                 _refineryPrefab == null || _linerPrefab == null || _harvesterPrefab == null || _shuttlePrefab == null)
             {
                 Debug.LogError("GenerationPreviewController is missing a scene reference.", this);
@@ -121,6 +125,8 @@ namespace LastFleet.GenerationPreview
             _scouting.Notice += ShowNotice;
             _population.Notice += ShowNotice;
             _docking.Notice += ShowNotice;
+            _search.Notice += ShowNotice;
+            _rewards.Notice += ShowNotice;
             _inspection.Notice += ShowNotice;
             _shipInput.DepositClicked += InspectDeposit;
             _shipInput.StationClicked += InspectStation;
@@ -153,6 +159,8 @@ namespace LastFleet.GenerationPreview
             _scouting.Notice -= ShowNotice;
             _population.Notice -= ShowNotice;
             _docking.Notice -= ShowNotice;
+            _search.Notice -= ShowNotice;
+            _rewards.Notice -= ShowNotice;
             _inspection.Notice -= ShowNotice;
             _shipInput.DepositClicked -= InspectDeposit;
             _shipInput.StationClicked -= InspectStation;
@@ -169,7 +177,7 @@ namespace LastFleet.GenerationPreview
 
         void InspectStation(ZoneView zone, ZoneStation station)
         {
-            _inspection.Show(new StationInspection(zone, station, _scouting, _shipRegistry, _docking, () => Selection.Ships));
+            _inspection.Show(new StationInspection(zone, station, _scouting, _shipRegistry, _docking, _search, () => Selection.Ships));
         }
 
         void InspectPointOfInterest(int index)

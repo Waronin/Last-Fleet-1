@@ -2406,6 +2406,8 @@ GameObject:
   - component: {fileID: 1099331768947732533}
   - component: {fileID: 8489758990507259205}
   - component: {fileID: 1660799898412071653}
+  - component: {fileID: 926869506666792858}
+  - component: {fileID: 331731271333735577}
   m_Layer: 0
   m_Name: Harvester
   m_TagString: Untagged
@@ -2565,6 +2567,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: LastFleet.Stations::LastFleet.Stations.StationDocking
   _airlock: {fileID: 3523773308252915382}
+--- !u!114 &926869506666792858
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4785350210512641969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: facce49586486cf4091c0f66ac584092, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.Stations::LastFleet.Stations.StationSearching
+--- !u!114 &331731271333735577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4785350210512641969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89c774c5d8d6c3340a39ac3310a0a52d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.Rewards::LastFleet.Rewards.ShipRewardHold
 --- !u!1 &5358699967121527773
 GameObject:
   m_ObjectHideFlags: 0

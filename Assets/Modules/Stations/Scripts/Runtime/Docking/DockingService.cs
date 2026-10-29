@@ -106,9 +106,14 @@ namespace LastFleet.Stations
             _claims.Release(ship);
         }
 
+        /// <summary>The docked crew sees the station's environment on site and reports it.</summary>
         internal void ReportDocked(StationDocking docking)
         {
-            Notice?.Invoke(StationTexts.Docked.Format(("ship", docking.Ship.DisplayName), ("station", docking.Station.Name)));
+            ZoneStation station = docking.Station;
+            station.MarkVisited();
+            Notice?.Invoke(StationTexts.Docked.Format(("ship", docking.Ship.DisplayName), ("station", station.Name),
+                ("atmosphere", ZoneTexts.Atmospheres.For(station.Profile.Atmosphere)), ("radiation", ZoneTexts.Radiation.For(station.Profile.Radiation)),
+                ("condition", ZoneTexts.Conditions.For(station.Profile.Condition))));
         }
 
         /// <summary>Applies a hazard to a docked ship; returns true if the ship was captured and is gone.</summary>

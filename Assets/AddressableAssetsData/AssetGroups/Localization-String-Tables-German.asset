@@ -63,6 +63,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Locale-de
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 801ec867ce92ee242bd4023173eac50f
+    m_Address: Rewards_de
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-de
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 912ecc4d49398bd4fb07296a3def9811
     m_Address: Stations_de
     m_ReadOnly: 1

@@ -61,6 +61,18 @@ namespace LastFleet.Zones.Tests
         }
 
         [Test]
+        public void DockedCrew_LearnsTheEnvironment_ButNotTheLifeSigns()
+        {
+            ZoneStation station = new ZoneStation("Test", StationType.Outpost, Vector3.zero, 0f, Inhabited(50));
+            Assert.IsFalse(station.IsEnvironmentKnown);
+
+            station.MarkVisited();
+
+            Assert.IsTrue(station.IsEnvironmentKnown);
+            Assert.IsFalse(station.IsScanned, "Counting life signs still takes a scan.");
+        }
+
+        [Test]
         public void ScanTargets_KeepTheirDistanceAndLargerStationsTakeLonger()
         {
             ZoneStation outpost = new ZoneStation("A", StationType.Outpost, Vector3.zero, 0f, Inhabited(10));

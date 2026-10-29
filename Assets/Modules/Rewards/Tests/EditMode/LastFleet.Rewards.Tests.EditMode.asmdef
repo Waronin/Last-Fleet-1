@@ -1,0 +1,25 @@
+{
+    "name": "LastFleet.Rewards.Tests.EditMode",
+    "rootNamespace": "LastFleet.Rewards.Tests",
+    "references": [
+        "LastFleet.Rewards",
+        "LastFleet.Zones",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

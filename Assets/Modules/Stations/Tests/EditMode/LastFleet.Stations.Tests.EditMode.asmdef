@@ -6,6 +6,7 @@
         "LastFleet.Zones",
         "LastFleet.Ships",
         "LastFleet.Shared",
+        "LastFleet.Rewards",
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner"
     ],
