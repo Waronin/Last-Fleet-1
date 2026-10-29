@@ -259,6 +259,26 @@ MonoBehaviour:
     m_Key: station.unscanned
     m_Metadata:
       m_Items: []
+  - m_Id: 394656457764864
+    m_Key: station.atmosphere
+    m_Metadata:
+      m_Items: []
+  - m_Id: 394656487124992
+    m_Key: station.condition
+    m_Metadata:
+      m_Items: []
+  - m_Id: 394656487124993
+    m_Key: station.radiation
+    m_Metadata:
+      m_Items: []
+  - m_Id: 394656487124994
+    m_Key: station.life-signs
+    m_Metadata:
+      m_Items: []
+  - m_Id: 394656487124995
+    m_Key: station.attitude-unknown
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

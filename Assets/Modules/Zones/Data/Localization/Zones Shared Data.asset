@@ -79,6 +79,38 @@ MonoBehaviour:
     m_Key: station-type.Habitat
     m_Metadata:
       m_Items: []
+  - m_Id: 394661071499264
+    m_Key: atmosphere.Breathable
+    m_Metadata:
+      m_Items: []
+  - m_Id: 394661167968256
+    m_Key: atmosphere.Thin
+    m_Metadata:
+      m_Items: []
+  - m_Id: 394661167968257
+    m_Key: atmosphere.Toxic
+    m_Metadata:
+      m_Items: []
+  - m_Id: 394661167968258
+    m_Key: condition.Intact
+    m_Metadata:
+      m_Items: []
+  - m_Id: 394661167968259
+    m_Key: condition.Damaged
+    m_Metadata:
+      m_Items: []
+  - m_Id: 394661167968260
+    m_Key: condition.Ruined
+    m_Metadata:
+      m_Items: []
+  - m_Id: 394661167968261
+    m_Key: radiation.None
+    m_Metadata:
+      m_Items: []
+  - m_Id: 394661167968262
+    m_Key: radiation.Elevated
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

@@ -44,13 +44,14 @@ namespace LastFleet.Zones
     /// A mineable deposit inside a zone. Remaining amount and scan state are run state: they survive
     /// leaving and re-entering the system, so a mined-out deposit stays mined out.
     /// </summary>
-    public sealed class ResourceDeposit
+    public sealed class ResourceDeposit : IScanTarget
     {
         public const float MediumRadiusUnits = 1.5f;
         public const float LargeRadiusUnits = 3f;
 
         /// <summary>Distance of a mining slot from the deposit surface, where a harvester attaches.</summary>
         public const float SlotClearanceUnits = 1.2f;
+        const float ScanStandoffMarginUnits = 1.5f;
 
         const int MaximumGasCloudSlots = 4;
 
@@ -114,6 +115,11 @@ namespace LastFleet.Zones
         /// <summary>Outer radius including the mining slots; nothing else should be placed inside it.</summary>
         public float FootprintRadiusUnits => RadiusUnits + SlotClearanceUnits;
 
+        /// <summary>Scanning ships stop just outside the rock and its mining slots.</summary>
+        public float ScanStandoffUnits => FootprintRadiusUnits + ScanStandoffMarginUnits;
+
+        public float ScanDurationFactor => 1f;
+
         public static DepositSizeClass SizeClassFor(float radiusUnits)
         {
             if (radiusUnits >= LargeRadiusUnits)
@@ -144,6 +150,12 @@ namespace LastFleet.Zones
         public void Scan()
         {
             IsScanned = true;
+        }
+
+        /// <summary>A deposit scan is exact, so the roll does not matter.</summary>
+        public void CompleteScan(float accuracyRoll)
+        {
+            Scan();
         }
 
         /// <summary>The hazard is used up, e.g. the gas pockets have gone off.</summary>

@@ -18,5 +18,13 @@ namespace LastFleet.Exploration
 
         /// <summary>{ship}, {size}, {shape}, {resource}</summary>
         public static readonly GameTextKey ScanFinished = new GameTextKey(Table, "notice.scan-finished");
+
+        /// <summary>{ship}, {station}, {lifeSigns}</summary>
+        public static readonly GameTextKey StationScanFinished = new GameTextKey(Table, "notice.station-scan-finished");
+
+        /// <summary>{minimum}, {maximum}</summary>
+        public static readonly GameTextKey LifeSignsRange = new GameTextKey(Table, "life-signs.range");
+
+        public static readonly GameTextKey NoLifeSigns = new GameTextKey(Table, "life-signs.none");
     }
 }

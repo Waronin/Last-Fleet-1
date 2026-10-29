@@ -165,7 +165,7 @@ namespace LastFleet.GenerationPreview
 
         void InspectStation(ZoneView zone, ZoneStation station)
         {
-            _inspection.Show(new StationInspection(zone, station));
+            _inspection.Show(new StationInspection(zone, station, _scouting));
         }
 
         void InspectPointOfInterest(int index)

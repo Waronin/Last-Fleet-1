@@ -35,6 +35,18 @@ MonoBehaviour:
     m_Key: notice.scan-finished
     m_Metadata:
       m_Items: []
+  - m_Id: 394657791553536
+    m_Key: notice.station-scan-finished
+    m_Metadata:
+      m_Items: []
+  - m_Id: 394657829302272
+    m_Key: life-signs.range
+    m_Metadata:
+      m_Items: []
+  - m_Id: 394657829302273
+    m_Key: life-signs.none
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

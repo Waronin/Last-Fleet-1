@@ -51,6 +51,22 @@ namespace LastFleet.Zones
             };
         }
 
+        /// <summary>
+        /// Scan time relative to a deposit (factor 1): a shuttle that scans a rock in 2 s needs 3 s for an
+        /// outpost and 6 s for a habitat ring.
+        /// </summary>
+        public static float ScanDurationFactor(StationType type)
+        {
+            return type switch
+            {
+                StationType.Outpost => 1.5f,
+                StationType.Research => 2f,
+                StationType.Industrial => 2.5f,
+                StationType.Habitat => 3f,
+                _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+            };
+        }
+
         public static int DockingBayCount(StationType type)
         {
             return type switch

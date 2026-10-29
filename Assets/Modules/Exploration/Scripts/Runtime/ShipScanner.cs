@@ -13,15 +13,16 @@ namespace LastFleet.Exploration
     }
 
     /// <summary>
-    /// Lets a small ship scan a deposit on site (GDD: what a zone really holds is only known when a
-    /// ship is there): fly next to it, scan for a few seconds, done. Any other order cancels the scan.
+    /// Lets a small ship scan a deposit or a station on site (GDD: what a zone really holds is only
+    /// known when a ship is there): fly to the target's standoff distance, scan for the ship's base time
+    /// times the target's factor, done. Any other order cancels the scan.
     /// </summary>
     [RequireComponent(typeof(ShipAgent))]
     public sealed class ShipScanner : MonoBehaviour, IShipAutomation
     {
-        const float ApproachMarginUnits = 1.5f;
         const float ArrivalToleranceUnits = 3f;
 
+        [Tooltip("Scan time for a deposit; larger targets such as stations take a multiple of it.")]
         [SerializeField, Min(0f)] float _scanSeconds = 3f;
         [Tooltip("Scouting is this ship's main job, e.g. a shuttle; scouts are sent before other ships.")]
         [SerializeField] bool _isScout;
@@ -32,13 +33,13 @@ namespace LastFleet.Exploration
         bool _isIssuingOrder;
 
         public ScanTaskState State { get; private set; }
-        public ResourceDeposit Target { get; private set; }
+        public IScanTarget Target { get; private set; }
         public float RemainingSeconds { get; private set; }
         public ShipAgent Ship => _ship;
         public bool IsScout => _isScout;
         public bool IsAutomationActive => State != ScanTaskState.Inactive;
 
-        public event Action<ShipScanner, ResourceDeposit> ScanCompleted;
+        public event Action<ShipScanner, IScanTarget> ScanCompleted;
 
         // Subscribed for the object's whole life: docked ships are inactive but can be tasked.
         void Awake()
@@ -52,11 +53,11 @@ namespace LastFleet.Exploration
             _ship.OrdersReplaced -= OnOrdersReplaced;
         }
 
-        public void BeginScan(ZoneView zone, ResourceDeposit deposit)
+        public void BeginScan(ZoneView zone, IScanTarget target)
         {
             _zone = zone;
-            Target = deposit;
-            _scanPoint = ApproachPoint(zone, deposit);
+            Target = target;
+            _scanPoint = ApproachPoint(zone, target);
             IssueOrder(ShipOrder.MoveTo(zone.Record.PointOfInterestIndex, _scanPoint));
             State = ScanTaskState.Approaching;
         }
@@ -79,7 +80,7 @@ namespace LastFleet.Exploration
                     if (IsAtScanPoint())
                     {
                         State = ScanTaskState.Scanning;
-                        RemainingSeconds = _scanSeconds;
+                        RemainingSeconds = _scanSeconds * Target.ScanDurationFactor;
                     }
                     else
                     {
@@ -99,26 +100,26 @@ namespace LastFleet.Exploration
 
         void CompleteScan()
         {
-            ResourceDeposit scanned = Target;
-            scanned.Scan();
-            _zone.RefreshDeposit(scanned);
+            IScanTarget scanned = Target;
+            scanned.CompleteScan(UnityEngine.Random.value);
+            _zone.Refresh();
             Cancel();
             ScanCompleted?.Invoke(this, scanned);
         }
 
-        /// <summary>Just outside the deposit and its mining slots, on the side facing the ship.</summary>
-        Vector3 ApproachPoint(ZoneView zone, ResourceDeposit deposit)
+        /// <summary>At the target's standoff distance, on the side facing the ship.</summary>
+        Vector3 ApproachPoint(ZoneView zone, IScanTarget target)
         {
             Vector3 shipLocal = zone.transform.InverseTransformPoint(_ship.WorldPosition);
-            Vector3 away = shipLocal - deposit.LocalPosition;
+            Vector3 away = shipLocal - target.LocalPosition;
             away.y = 0f;
             if (_ship.Zone != zone || away.sqrMagnitude < 1e-6f)
             {
-                away = -deposit.LocalPosition;
+                away = -target.LocalPosition;
                 away.y = 0f;
             }
             Vector3 direction = away.sqrMagnitude > 1e-6f ? away.normalized : Vector3.back;
-            Vector3 point = deposit.LocalPosition + direction * (deposit.FootprintRadiusUnits + ApproachMarginUnits);
+            Vector3 point = target.LocalPosition + direction * target.ScanStandoffUnits;
             point.y = 0f;
             return point;
         }

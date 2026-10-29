@@ -295,6 +295,30 @@ MonoBehaviour:
     m_Localized: 'Not scanned: crew, atmosphere, condition and radiation are unknown.'
     m_Metadata:
       m_Items: []
+  - m_Id: 394656457764864
+    m_Localized: 'Atmosphere: {value}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421291
+  - m_Id: 394656487124992
+    m_Localized: 'Condition: {value}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421291
+  - m_Id: 394656487124993
+    m_Localized: 'Radiation: {value}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421291
+  - m_Id: 394656487124994
+    m_Localized: 'Aboard: {lifeSigns}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421291
+  - m_Id: 394656487124995
+    m_Localized: 'Attitude unknown: hail them to find out.'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:
@@ -335,3 +359,7 @@ MonoBehaviour:
         - id: 378056329474048
         - id: 385606701625344
         - id: 385606714208256
+        - id: 394656457764864
+        - id: 394656487124992
+        - id: 394656487124993
+        - id: 394656487124994

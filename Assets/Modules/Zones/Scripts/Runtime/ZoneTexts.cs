@@ -12,5 +12,8 @@ namespace LastFleet.Zones
         public static readonly EnumTextKeys<DepositHazard> Hazards = new EnumTextKeys<DepositHazard>(Table, "hazard");
         public static readonly EnumTextKeys<DepositSizeClass> SizeClasses = new EnumTextKeys<DepositSizeClass>(Table, "size");
         public static readonly EnumTextKeys<StationType> StationTypeNames = new EnumTextKeys<StationType>(Table, "station-type");
+        public static readonly EnumTextKeys<StationAtmosphere> Atmospheres = new EnumTextKeys<StationAtmosphere>(Table, "atmosphere");
+        public static readonly EnumTextKeys<StationCondition> Conditions = new EnumTextKeys<StationCondition>(Table, "condition");
+        public static readonly EnumTextKeys<StationRadiation> Radiation = new EnumTextKeys<StationRadiation>(Table, "radiation");
     }
 }

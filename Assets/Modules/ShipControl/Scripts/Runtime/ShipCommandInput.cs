@@ -189,10 +189,14 @@ namespace LastFleet.ShipControl
                 return;
             }
 
-            // Context command (GDD): right click on a deposit sends harvesters mining or scouts scanning,
-            // otherwise it is a move.
+            // Context command (GDD): right click on a deposit sends harvesters mining or scouts scanning, on
+            // an unscanned station scouts scan it; otherwise it is a move.
             if (_activeZone.TryPickDeposit(_camera, pointer, _pickRadiusPixels, out ResourceDeposit deposit) &&
                 (TryOrderMining(deposit) || TryOrderScan(deposit)))
+            {
+                return;
+            }
+            if (_activeZone.TryPickStation(_camera, pointer, out ZoneStation station) && TryOrderScan(station))
             {
                 return;
             }
@@ -237,10 +241,10 @@ namespace LastFleet.ShipControl
             return true;
         }
 
-        /// <summary>A selected scout, such as a shuttle, scans a deposit that is not scanned yet.</summary>
-        bool TryOrderScan(ResourceDeposit deposit)
+        /// <summary>A selected scout, such as a shuttle, scans a deposit or station that is not scanned yet.</summary>
+        bool TryOrderScan(IScanTarget target)
         {
-            if (deposit.IsScanned)
+            if (target.IsScanned)
             {
                 return false;
             }
@@ -253,7 +257,7 @@ namespace LastFleet.ShipControl
                     _ordered.Add(ship);
                 }
             }
-            return _ordered.Count > 0 && _scouting.RequestScan(_activeZone, deposit, _ordered);
+            return _ordered.Count > 0 && _scouting.RequestScan(_activeZone, target, _ordered);
         }
 
         void HandleClick(Vector2 pointer, bool additive)

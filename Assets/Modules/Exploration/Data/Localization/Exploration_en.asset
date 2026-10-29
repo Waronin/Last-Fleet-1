@@ -42,6 +42,20 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - rid: 6743102046643421287
+  - m_Id: 394657791553536
+    m_Localized: '{ship} finished scanning {station}: {lifeSigns}.'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421287
+  - m_Id: 394657829302272
+    m_Localized: "{minimum}\u2013{maximum} life signs"
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421287
+  - m_Id: 394657829302273
+    m_Localized: no life signs
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:
@@ -53,3 +67,5 @@ MonoBehaviour:
         - id: 335097857
         - id: 335097858
         - id: 335097859
+        - id: 394657791553536
+        - id: 394657829302272

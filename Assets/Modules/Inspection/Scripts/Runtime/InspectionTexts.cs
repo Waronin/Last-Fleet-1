@@ -84,6 +84,20 @@ namespace LastFleet.Inspection
 
         public static readonly GameTextKey StationUnscanned = new GameTextKey(Table, "station.unscanned");
 
+        /// <summary>{value}</summary>
+        public static readonly GameTextKey StationAtmosphere = new GameTextKey(Table, "station.atmosphere");
+
+        /// <summary>{value}</summary>
+        public static readonly GameTextKey StationCondition = new GameTextKey(Table, "station.condition");
+
+        /// <summary>{value}</summary>
+        public static readonly GameTextKey StationRadiation = new GameTextKey(Table, "station.radiation");
+
+        /// <summary>{lifeSigns}</summary>
+        public static readonly GameTextKey StationLifeSigns = new GameTextKey(Table, "station.life-signs");
+
+        public static readonly GameTextKey StationAttitudeUnknown = new GameTextKey(Table, "station.attitude-unknown");
+
         // Ship window
         /// <summary>{count}</summary>
         public static readonly GameTextKey ShipsSelected = new GameTextKey(Table, "ship.selected-count");

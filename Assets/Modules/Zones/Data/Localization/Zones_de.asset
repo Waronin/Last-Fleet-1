@@ -82,6 +82,38 @@ MonoBehaviour:
     m_Localized: Habitatring
     m_Metadata:
       m_Items: []
+  - m_Id: 394661071499264
+    m_Localized: atembar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 394661167968256
+    m_Localized: "d\xFCnn"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 394661167968257
+    m_Localized: giftig
+    m_Metadata:
+      m_Items: []
+  - m_Id: 394661167968258
+    m_Localized: intakt
+    m_Metadata:
+      m_Items: []
+  - m_Id: 394661167968259
+    m_Localized: "besch\xE4digt"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 394661167968260
+    m_Localized: Ruine
+    m_Metadata:
+      m_Items: []
+  - m_Id: 394661167968261
+    m_Localized: keine
+    m_Metadata:
+      m_Items: []
+  - m_Id: 394661167968262
+    m_Localized: "erh\xF6ht"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

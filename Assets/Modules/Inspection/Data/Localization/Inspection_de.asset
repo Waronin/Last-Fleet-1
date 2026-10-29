@@ -295,6 +295,30 @@ MonoBehaviour:
     m_Localized: "Nicht gescannt: Besatzung, Atmosph\xE4re, Zustand und Strahlung sind unbekannt."
     m_Metadata:
       m_Items: []
+  - m_Id: 394656457764864
+    m_Localized: "Atmosph\xE4re: {value}"
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421293
+  - m_Id: 394656487124992
+    m_Localized: 'Zustand: {value}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421293
+  - m_Id: 394656487124993
+    m_Localized: 'Strahlung: {value}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421293
+  - m_Id: 394656487124994
+    m_Localized: 'An Bord: {lifeSigns}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421293
+  - m_Id: 394656487124995
+    m_Localized: "Gesinnung unbekannt: Rufen verr\xE4t mehr."
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:
@@ -335,3 +359,7 @@ MonoBehaviour:
         - id: 378056329474048
         - id: 385606701625344
         - id: 385606714208256
+        - id: 394656457764864
+        - id: 394656487124992
+        - id: 394656487124993
+        - id: 394656487124994

@@ -82,6 +82,38 @@ MonoBehaviour:
     m_Localized: Habitat ring
     m_Metadata:
       m_Items: []
+  - m_Id: 394661071499264
+    m_Localized: breathable
+    m_Metadata:
+      m_Items: []
+  - m_Id: 394661167968256
+    m_Localized: thin
+    m_Metadata:
+      m_Items: []
+  - m_Id: 394661167968257
+    m_Localized: toxic
+    m_Metadata:
+      m_Items: []
+  - m_Id: 394661167968258
+    m_Localized: intact
+    m_Metadata:
+      m_Items: []
+  - m_Id: 394661167968259
+    m_Localized: damaged
+    m_Metadata:
+      m_Items: []
+  - m_Id: 394661167968260
+    m_Localized: ruin
+    m_Metadata:
+      m_Items: []
+  - m_Id: 394661167968261
+    m_Localized: none
+    m_Metadata:
+      m_Items: []
+  - m_Id: 394661167968262
+    m_Localized: elevated
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

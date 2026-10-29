@@ -9,9 +9,10 @@ using UnityEngine;
 namespace LastFleet.Exploration
 {
     /// <summary>
-    /// Sends ships to find things out: a ship to scan a deposit, or a ship to explore an unknown zone.
+    /// Sends ships to find things out: a ship to scan a deposit or a station, or a ship to explore an
+    /// unknown zone.
     /// It picks a free small ship first, otherwise the nearest one, and never sends a second ship for
-    /// the same deposit. Scouts such as shuttles go before other ships, so harvesters keep mining.
+    /// the same target. Scouts such as shuttles go before other ships, so harvesters keep mining.
     /// </summary>
     public sealed class ScoutingService : MonoBehaviour
     {
@@ -35,12 +36,12 @@ namespace LastFleet.Exploration
             }
         }
 
-        /// <summary>The scanner currently assigned to the deposit, if any.</summary>
-        public bool TryGetActiveScan(ResourceDeposit deposit, out ShipScanner scanner)
+        /// <summary>The scanner currently assigned to the target, if any.</summary>
+        public bool TryGetActiveScan(IScanTarget target, out ShipScanner scanner)
         {
             foreach (ShipAgent ship in _registry.Ships)
             {
-                if (ship.TryGetComponent(out scanner) && scanner.State != ScanTaskState.Inactive && scanner.Target == deposit)
+                if (ship.TryGetComponent(out scanner) && scanner.State != ScanTaskState.Inactive && scanner.Target == target)
                 {
                     return true;
                 }
@@ -49,15 +50,15 @@ namespace LastFleet.Exploration
             return false;
         }
 
-        public bool RequestScan(ZoneView zone, ResourceDeposit deposit)
+        public bool RequestScan(ZoneView zone, IScanTarget target)
         {
-            return RequestScan(zone, deposit, _registry.Ships);
+            return RequestScan(zone, target, _registry.Ships);
         }
 
         /// <summary>Scans with one of the given ships, e.g. the selection of a context command.</summary>
-        public bool RequestScan(ZoneView zone, ResourceDeposit deposit, IReadOnlyList<ShipAgent> ships)
+        public bool RequestScan(ZoneView zone, IScanTarget target, IReadOnlyList<ShipAgent> ships)
         {
-            if (deposit.IsScanned || TryGetActiveScan(deposit, out ShipScanner _))
+            if (target.IsScanned || TryGetActiveScan(target, out ShipScanner _))
             {
                 return false;
             }
@@ -74,7 +75,7 @@ namespace LastFleet.Exploration
             int zoneIndex = zone.Record.PointOfInterestIndex;
             Vector2 zonePositionAU = zone.Record.PointOfInterest.PositionAU;
             ShipAvailability.PickFreeThenNearest(_candidates, ShipAvailability.IsFree,
-                ship => ScoutCost(ship, ShipAvailability.TravelCost(ship, zoneIndex, zonePositionAU, deposit.LocalPosition)), 1, _picked);
+                ship => ScoutCost(ship, ShipAvailability.TravelCost(ship, zoneIndex, zonePositionAU, target.LocalPosition)), 1, _picked);
             if (_picked.Count == 0)
             {
                 Notice?.Invoke(ExplorationTexts.NoShipToScan);
@@ -84,7 +85,7 @@ namespace LastFleet.Exploration
             ShipScanner scanner = _picked[0].GetComponent<ShipScanner>();
             scanner.ScanCompleted -= OnScanCompleted;
             scanner.ScanCompleted += OnScanCompleted;
-            scanner.BeginScan(zone, deposit);
+            scanner.BeginScan(zone, target);
             Notice?.Invoke(ExplorationTexts.ScanDispatched.Format(("ship", scanner.Ship.DisplayName)));
             return true;
         }
@@ -119,11 +120,29 @@ namespace LastFleet.Exploration
             return ship.TryGetComponent(out ShipScanner scanner) && scanner.IsScout ? travelCost : travelCost + NonScoutPenaltyUnits;
         }
 
-        void OnScanCompleted(ShipScanner scanner, ResourceDeposit deposit)
+        void OnScanCompleted(ShipScanner scanner, IScanTarget target)
         {
             scanner.ScanCompleted -= OnScanCompleted;
+            if (target is ZoneStation station)
+            {
+                Notice?.Invoke(ExplorationTexts.StationScanFinished.Format(("ship", scanner.Ship.DisplayName), ("station", station.Name),
+                    ("lifeSigns", LifeSigns(station.ScanReport))));
+                return;
+            }
+            if (!(target is ResourceDeposit deposit))
+            {
+                return;
+            }
             Notice?.Invoke(ExplorationTexts.ScanFinished.Format(("ship", scanner.Ship.DisplayName), ("size", ZoneTexts.SizeClasses.For(deposit.SizeClass)),
                 ("shape", ZoneTexts.Shapes.For(deposit.Shape)), ("resource", ZoneTexts.Resources.For(deposit.Resource))));
+        }
+
+        /// <summary>The life signs of a scan report: a range, or none at all.</summary>
+        public static GameText LifeSigns(StationScanReport report)
+        {
+            return report.HasLifeSigns
+                ? ExplorationTexts.LifeSignsRange.Format(("minimum", report.MinimumLifeSigns), ("maximum", report.MaximumLifeSigns))
+                : ExplorationTexts.NoLifeSigns;
         }
     }
 }
