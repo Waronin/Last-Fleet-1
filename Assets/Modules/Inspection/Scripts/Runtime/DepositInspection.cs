@@ -47,8 +47,8 @@ namespace LastFleet.Inspection
             if (_scouting.TryGetActiveScan(_deposit, out ShipScanner scanner))
             {
                 lines.Add(scanner.State == ScanTaskState.Scanning
-                    ? InspectionTexts.DepositScanning.Format(("ship", scanner.Ship.name), ("seconds", scanner.RemainingSeconds))
-                    : InspectionTexts.DepositScanApproaching.Format(("ship", scanner.Ship.name)));
+                    ? InspectionTexts.DepositScanning.Format(("ship", scanner.Ship.DisplayName), ("seconds", scanner.RemainingSeconds))
+                    : InspectionTexts.DepositScanApproaching.Format(("ship", scanner.Ship.DisplayName)));
             }
         }
 

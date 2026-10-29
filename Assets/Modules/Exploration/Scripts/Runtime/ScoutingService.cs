@@ -76,7 +76,7 @@ namespace LastFleet.Exploration
             scanner.ScanCompleted -= OnScanCompleted;
             scanner.ScanCompleted += OnScanCompleted;
             scanner.BeginScan(zone, deposit);
-            Notice?.Invoke(ExplorationTexts.ScanDispatched.Format(("ship", scanner.Ship.name)));
+            Notice?.Invoke(ExplorationTexts.ScanDispatched.Format(("ship", scanner.Ship.DisplayName)));
             return true;
         }
 
@@ -101,14 +101,14 @@ namespace LastFleet.Exploration
             }
 
             _picked[0].Order(ShipOrder.MoveTo(zoneIndex, Vector3.zero), false);
-            Notice?.Invoke(ExplorationTexts.ExplorationDispatched.Format(("ship", _picked[0].name), ("zone", pointOfInterest.Name)));
+            Notice?.Invoke(ExplorationTexts.ExplorationDispatched.Format(("ship", _picked[0].DisplayName), ("zone", pointOfInterest.Name)));
             return true;
         }
 
         void OnScanCompleted(ShipScanner scanner, ResourceDeposit deposit)
         {
             scanner.ScanCompleted -= OnScanCompleted;
-            Notice?.Invoke(ExplorationTexts.ScanFinished.Format(("ship", scanner.Ship.name), ("size", ZoneTexts.SizeClasses.For(deposit.SizeClass)),
+            Notice?.Invoke(ExplorationTexts.ScanFinished.Format(("ship", scanner.Ship.DisplayName), ("size", ZoneTexts.SizeClasses.For(deposit.SizeClass)),
                 ("shape", ZoneTexts.Shapes.For(deposit.Shape)), ("resource", ZoneTexts.Resources.For(deposit.Resource))));
         }
     }

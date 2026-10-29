@@ -32,7 +32,7 @@ namespace LastFleet.Shared.Text
             get { yield return this; }
         }
 
-        /// <summary>The text with named arguments for its placeholders, e.g. ("ship", ship.name) for {ship}.</summary>
+        /// <summary>The text with named arguments for its placeholders, e.g. ("zone", zoneName) for {zone}.</summary>
         public GameText Format(params GameTextArgument[] arguments)
         {
             return new GameText(this, arguments);

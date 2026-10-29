@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using LastFleet.Shared.Text;
 
 namespace LastFleet.Ships
 {
@@ -18,7 +19,10 @@ namespace LastFleet.Ships
 
         public int Number { get; }
         public string ClassName { get; }
+        /// <summary>Technical name for logs and developer tools; players see <see cref="DisplayName"/>.</summary>
         public string Name => $"{ClassName} Squad {Number}";
+
+        public GameText DisplayName => ShipTexts.SquadName.Format(("class", ShipTexts.Classes.For(ClassName)), ("number", Number));
         public IReadOnlyList<ShipAgent> Members => _members;
         public ShipAgent Leader => _members.Count > 0 ? _members[0] : null;
 

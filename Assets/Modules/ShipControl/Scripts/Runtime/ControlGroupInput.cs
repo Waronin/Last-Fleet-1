@@ -134,7 +134,7 @@ namespace LastFleet.ShipControl
             }
 
             Squad squad = _registry.Squads.Form(selection.Ships);
-            Notice?.Invoke(ShipControlTexts.SquadFormed.Format(("squad", squad.Name), ("count", squad.Members.Count)));
+            Notice?.Invoke(ShipControlTexts.SquadFormed.Format(("squad", squad.DisplayName), ("count", squad.Members.Count)));
         }
     }
 }

@@ -75,7 +75,7 @@ namespace LastFleet.Ships
             ShipAgent ship = Instantiate(prefab, zone.transform);
             _spawnedPerClass.TryGetValue(ship.ClassName, out int spawned);
             _spawnedPerClass[ship.ClassName] = spawned + 1;
-            ship.name = $"{ship.ClassName} {spawned + 1}";
+            ship.AssignSerialNumber(spawned + 1);
             ship.Initialize(_zoneWorld, zone, localPosition, headingDegrees);
             if (ship.TryGetComponent(out ShipPresentation presentation))
             {

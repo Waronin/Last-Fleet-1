@@ -11,6 +11,15 @@ namespace LastFleet.Ships
         public static readonly EnumTextKeys<ShipMotionPhase> MotionPhases = new EnumTextKeys<ShipMotionPhase>(Table, "motion");
         public static readonly EnumTextKeys<ShipSize> Sizes = new EnumTextKeys<ShipSize>(Table, "size");
 
+        /// <summary>Display names of the ship classes; every prefab's class name must be listed here.</summary>
+        public static readonly NamedTextKeys Classes = new NamedTextKeys(Table, "class", "Harvester", "Refinery", "Liner");
+
+        /// <summary>{class}, {number}</summary>
+        public static readonly GameTextKey ShipName = new GameTextKey(Table, "name.ship");
+
+        /// <summary>{class}, {number}</summary>
+        public static readonly GameTextKey SquadName = new GameTextKey(Table, "name.squad");
+
         /// <summary>{ship}, {cause}</summary>
         public static readonly GameTextKey ShipDestroyed = new GameTextKey(Table, "notice.destroyed");
 

@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using LastFleet.Galaxy;
 using LastFleet.Localization;
 using LastFleet.Mining;
+using LastFleet.People;
+using LastFleet.Shared.Text;
 using LastFleet.ShipControl;
 using LastFleet.Ships;
 using LastFleet.StarSystem;
@@ -12,7 +14,7 @@ namespace LastFleet.GenerationPreview
 {
     /// <summary>
     /// Developer overlay for the generation preview. Uses IMGUI and English text on purpose; only the
-    /// last player notice is resolved in the selected language. Player-facing UI will use the
+    /// recent player notices are resolved in the selected language. Player-facing UI will use the
     /// project's UI framework.
     /// </summary>
     public sealed class GenerationPreviewOverlay : MonoBehaviour
@@ -54,7 +56,10 @@ namespace LastFleet.GenerationPreview
                     break;
             }
             GUILayout.Space(6f);
-            GUILayout.Label(GameTextResolver.Resolve(_controller.LastAction));
+            foreach (GameText notice in _controller.RecentNotices)
+            {
+                GUILayout.Label(GameTextResolver.Resolve(notice));
+            }
             GUILayout.EndVertical();
             if (Event.current.type == EventType.Repaint)
             {
@@ -163,6 +168,8 @@ namespace LastFleet.GenerationPreview
         {
             GUILayout.Space(6f);
             GUILayout.Label("Capital ships and squads (click: select, Shift: add, double click: show)");
+            GUILayout.Label(GameTextResolver.Resolve(PeopleTexts.FleetPopulationLine.Format(
+                ("count", _controller.Population.TotalPassengers), ("capacity", _controller.Population.TotalCapacity))));
             foreach (ShipAgent ship in _controller.Ships)
             {
                 if (!ship.IsCapital || ship.Zone == null)

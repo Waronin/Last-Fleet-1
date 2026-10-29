@@ -4,6 +4,7 @@ using LastFleet.Exploration;
 using LastFleet.Galaxy;
 using LastFleet.Inspection;
 using LastFleet.Mining;
+using LastFleet.People;
 using LastFleet.Shared.Editor;
 using LastFleet.ShipControl;
 using LastFleet.Ships;
@@ -87,6 +88,8 @@ namespace LastFleet.GenerationPreview.Editor
             EditorAssetUtility.SetReferences(mining, ("_registry", shipRegistry));
             ScoutingService scouting = shipsObject.AddComponent<ScoutingService>();
             EditorAssetUtility.SetReferences(scouting, ("_registry", shipRegistry));
+            FleetPopulation population = shipsObject.AddComponent<FleetPopulation>();
+            EditorAssetUtility.SetReferences(population, ("_registry", shipRegistry));
 
             GameObject inspectionObject = new GameObject("Inspection Panel");
             InspectionPanel inspection = inspectionObject.AddComponent<InspectionPanel>();
@@ -105,8 +108,9 @@ namespace LastFleet.GenerationPreview.Editor
                 ("_galaxyMapView", mapView), ("_starSystemView", systemView), ("_zoneWorld", zoneWorld),
                 ("_environment", environment), ("_cameraRig", cameraRig), ("_shipRegistry", shipRegistry),
                 ("_shipInput", shipInput), ("_groupInput", groupInput), ("_hangarInput", hangarInput), ("_mining", mining),
-                ("_scouting", scouting), ("_inspection", inspection), ("_shipPanel", shipPanel),
+                ("_scouting", scouting), ("_population", population), ("_inspection", inspection), ("_shipPanel", shipPanel),
                 ("_refineryPrefab", ShipPrefabBuilder.LoadOrCreateRefinery()),
+                ("_linerPrefab", ShipPrefabBuilder.LoadOrCreateLiner()),
                 ("_harvesterPrefab", ShipPrefabBuilder.LoadOrCreateHarvester()));
             GenerationPreviewOverlay overlay = previewObject.AddComponent<GenerationPreviewOverlay>();
             EditorAssetUtility.SetReferences(overlay, ("_controller", preview));

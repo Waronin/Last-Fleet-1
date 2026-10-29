@@ -181,9 +181,11 @@ MonoBehaviour:
   _hangarInput: {fileID: 1722081850}
   _mining: {fileID: 1722081849}
   _scouting: {fileID: 1722081848}
+  _population: {fileID: 1722081855}
   _inspection: {fileID: 566518442}
   _shipPanel: {fileID: 550235170}
   _refineryPrefab: {fileID: 5142392371226416469, guid: c71e6b935d877254fb6b91100578858b, type: 3}
+  _linerPrefab: {fileID: 7877930830435579649, guid: 6ea1c669cd8e1114cb9423baf7aefa26, type: 3}
   _harvesterPrefab: {fileID: 7506755111648956259, guid: bd122c604b871644bacd59e217f7c455, type: 3}
   _pickRadiusPixels: 14
 --- !u!4 &536546184
@@ -638,6 +640,7 @@ GameObject:
   - component: {fileID: 1722081850}
   - component: {fileID: 1722081849}
   - component: {fileID: 1722081848}
+  - component: {fileID: 1722081855}
   m_Layer: 0
   m_Name: Ships
   m_TagString: Untagged
@@ -745,6 +748,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1722081855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1722081847}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddaed6c371259d54b91ab532bd1c275e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.People::LastFleet.People.FleetPopulation
+  _registry: {fileID: 1722081853}
 --- !u!1 &1736073902
 GameObject:
   m_ObjectHideFlags: 0

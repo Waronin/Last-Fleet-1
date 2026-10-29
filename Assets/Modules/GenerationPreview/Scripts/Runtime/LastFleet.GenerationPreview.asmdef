@@ -2,6 +2,7 @@
     "name": "LastFleet.GenerationPreview",
     "rootNamespace": "LastFleet.GenerationPreview",
     "references": [
+        "LastFleet.People",
         "LastFleet.Localization",
         "LastFleet.Shared",
         "LastFleet.Galaxy",

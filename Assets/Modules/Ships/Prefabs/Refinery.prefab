@@ -1243,6 +1243,7 @@ GameObject:
   - component: {fileID: 6664837717211786756}
   - component: {fileID: 6534870078712758903}
   - component: {fileID: 344354337137870335}
+  - component: {fileID: 8826223782057178221}
   m_Layer: 0
   m_Name: Refinery
   m_TagString: Untagged
@@ -1375,6 +1376,20 @@ MonoBehaviour:
   _tankCapacity: 5000
   _fuelPerKlick: 1
   _fuelPerAU: 50
+--- !u!114 &8826223782057178221
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8742294279212198465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09a26cd037baad545b2107651ef17d4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.People::LastFleet.People.ShipPassengers
+  _capacity: 1200
+  _startingPassengers: 800
 --- !u!1 &8914957691072129255
 GameObject:
   m_ObjectHideFlags: 0

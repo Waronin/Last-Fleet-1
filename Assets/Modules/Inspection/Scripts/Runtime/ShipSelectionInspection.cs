@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using LastFleet.Mining;
+using LastFleet.People;
 using LastFleet.Shared.Text;
 using LastFleet.ShipControl;
 using LastFleet.Ships;
@@ -29,7 +30,7 @@ namespace LastFleet.Inspection
         }
 
         public GameText Title => _selection.Count == 1
-            ? GameText.Verbatim(_selection.Ships[0].name)
+            ? _selection.Ships[0].DisplayName
             : InspectionTexts.ShipsSelected.Format(("count", _selection.Count));
 
         public bool IsValid => _selection.Count > 0;
@@ -44,7 +45,7 @@ namespace LastFleet.Inspection
             }
             foreach (ShipAgent ship in _selection.Ships)
             {
-                lines.Add(InspectionTexts.ShipGroupLine.Format(("ship", ship.name), ("hull", Hull(ship)), ("fuel", Fuel(ship)), ("task", Task(ship))));
+                lines.Add(InspectionTexts.ShipGroupLine.Format(("ship", ship.DisplayName), ("hull", Hull(ship)), ("fuel", Fuel(ship)), ("task", Task(ship))));
             }
         }
 
@@ -73,17 +74,26 @@ namespace LastFleet.Inspection
             }));
             bool canForm = _selection.Count > 1 && sameClass;
             actions.Add(new InspectionAction(InspectionTexts.FormSquadAction, FormSquadHint, canForm, InspectionTexts.FormSquadNeedsOneClass, () =>
-                InspectionTexts.SquadFormed.Format(("squad", _registry.Squads.Form(_selection.Ships).Name))));
+                InspectionTexts.SquadFormed.Format(("squad", _registry.Squads.Form(_selection.Ships).DisplayName))));
         }
 
         void DescribeShip(ShipAgent ship, List<GameText> lines)
         {
-            lines.Add(InspectionTexts.ShipClass.Format(("class", ship.ClassName), ("size", ShipTexts.Sizes.For(ship.Size))));
+            lines.Add(InspectionTexts.ShipClass.Format(("class", ship.ClassDisplayName), ("size", ShipTexts.Sizes.For(ship.Size))));
             lines.Add(Hull(ship));
             lines.Add(Fuel(ship));
             if (ship.Fuel.Tank.IsEmpty)
             {
                 lines.Add(InspectionTexts.OutOfFuel);
+            }
+            if (ship.TryGetComponent(out ShipPassengers passengers))
+            {
+                PassengerQuarters quarters = passengers.Quarters;
+                lines.Add(PeopleTexts.PassengersLine.Format(("count", quarters.Count), ("capacity", quarters.Capacity)));
+                if (quarters.IsOvercrowded)
+                {
+                    lines.Add(PeopleTexts.Overcrowded);
+                }
             }
             lines.Add(InspectionTexts.TaskLine.Format(("task", Task(ship))));
             if (!ship.IsDocked)
@@ -92,11 +102,11 @@ namespace LastFleet.Inspection
             }
             string zone = ship.Zone.Record.PointOfInterest.Name;
             lines.Add(ship.IsDocked
-                ? InspectionTexts.ZoneDockedLine.Format(("zone", zone), ("carrier", ship.DockedIn.Carrier.name))
+                ? InspectionTexts.ZoneDockedLine.Format(("zone", zone), ("carrier", ship.DockedIn.Carrier.DisplayName))
                 : InspectionTexts.ZoneLine.Format(("zone", zone)));
             if (_registry.Squads.TryGetSquad(ship, out Squad squad))
             {
-                lines.Add(InspectionTexts.SquadLine.Format(("squad", squad.Name)));
+                lines.Add(InspectionTexts.SquadLine.Format(("squad", squad.DisplayName)));
             }
             if (ship.TryGetComponent(out HarvesterMining mining))
             {

@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using LastFleet.Shared.Text;
 using NUnit.Framework;
 using UnityEditor.Localization;
+using UnityEngine.Assemblies;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
 using UnityEngine.Localization.Tables;
@@ -113,7 +114,7 @@ namespace LastFleet.Localization.Tests
         static List<GameTextKey> CollectDeclaredKeys()
         {
             List<GameTextKey> keys = new List<GameTextKey>();
-            foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
+            foreach (Assembly assembly in CurrentAssemblies.GetLoadedAssemblies())
             {
                 string name = assembly.GetName().Name;
                 if (!name.StartsWith("LastFleet.", StringComparison.Ordinal) || name.Contains(".Tests"))

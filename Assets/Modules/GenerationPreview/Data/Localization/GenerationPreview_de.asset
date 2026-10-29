@@ -25,7 +25,7 @@ MonoBehaviour:
       m_Items:
       - rid: 6743102046643421296
   - m_Id: 314126336
-    m_Localized: In {system} angekommen; {known} Zonen bekannt.
+    m_Localized: In {system} angekommen; {known:plural:{} Zone|{} Zonen} bekannt.
     m_Metadata:
       m_Items:
       - rid: 6743102046643421296

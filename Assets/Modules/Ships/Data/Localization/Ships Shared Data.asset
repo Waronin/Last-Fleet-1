@@ -79,6 +79,26 @@ MonoBehaviour:
     m_Key: notice.jump-refused-fuel
     m_Metadata:
       m_Items: []
+  - m_Id: 368647155036160
+    m_Key: class.Harvester
+    m_Metadata:
+      m_Items: []
+  - m_Id: 368647243116544
+    m_Key: class.Refinery
+    m_Metadata:
+      m_Items: []
+  - m_Id: 368647247310848
+    m_Key: class.Liner
+    m_Metadata:
+      m_Items: []
+  - m_Id: 368647247310849
+    m_Key: name.ship
+    m_Metadata:
+      m_Items: []
+  - m_Id: 368647247310850
+    m_Key: name.squad
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

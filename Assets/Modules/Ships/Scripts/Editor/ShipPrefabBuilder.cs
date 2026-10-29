@@ -1,5 +1,6 @@
 using LastFleet.Exploration;
 using LastFleet.Mining;
+using LastFleet.People;
 using LastFleet.Shared.Editor;
 using UnityEditor;
 using UnityEngine;
@@ -9,7 +10,8 @@ namespace LastFleet.Ships.Editor
 {
     /// <summary>
     /// Creates the blockout ship prefabs with their movement profiles and materials.
-    /// Game scale (GDD): a harvester looks like about 200 m (2 units), the refinery about 1 km (10 units).
+    /// Game scale (GDD): a harvester looks like about 200 m (2 units), the refinery about 1 km (10 units),
+    /// the liner about 1.6 km (16 units).
     /// Menu: Last Fleet / Rebuild Ship Prefabs.
     /// </summary>
     public static class ShipPrefabBuilder
@@ -20,11 +22,14 @@ namespace LastFleet.Ships.Editor
         const string MaterialFolder = ModuleRoot + "/Graphics/Blockout";
         const string HarvesterPrefabPath = PrefabFolder + "/Harvester.prefab";
         const string RefineryPrefabPath = PrefabFolder + "/Refinery.prefab";
+        const string LinerPrefabPath = PrefabFolder + "/Liner.prefab";
         const string LitShaderName = "Universal Render Pipeline/Lit";
         const string UnlitShaderName = "Universal Render Pipeline/Unlit";
         const string ParticleShaderName = "Universal Render Pipeline/Particles/Unlit";
         const float HarvesterHull = 100f;
         const float RefineryHull = 2000f;
+        const float LinerHull = 2500f;
+        const int LinerHangarCapacity = 6;
 
         // Blockout balance: a harvester tank lasts about 1000 km or 50 AU; the refinery carries enough
         // to refuel its harvesters several times. Zones are 50 km in radius, zone jumps a few AU.
@@ -34,6 +39,15 @@ namespace LastFleet.Ships.Editor
         const float RefineryTank = 5000f;
         const float RefineryFuelPerKlick = 1f;
         const float RefineryFuelPerAU = 50f;
+        const float LinerTank = 4000f;
+        const float LinerFuelPerKlick = 1f;
+        const float LinerFuelPerAU = 40f;
+
+        // GDD: capital ships start below capacity, so rescued people have room.
+        const int RefineryPassengerCapacity = 1200;
+        const int RefineryStartingPassengers = 800;
+        const int LinerPassengerCapacity = 8000;
+        const int LinerStartingPassengers = 6000;
         static readonly int BaseColorId = Shader.PropertyToID("_BaseColor");
 
         // Industrial design language (GDD): angular, yellow-black warning colors, rust, warm orange engines.
@@ -46,13 +60,21 @@ namespace LastFleet.Ships.Editor
         static readonly Color EngineColor = new Color(4f, 1.8f, 0.5f);
         static readonly Color TrailColor = new Color(1f, 0.5f, 0.15f);
 
+        // Civilian design language (GDD): bright, rounded, many windows, faded advertising.
+        static readonly Color LinerHullColor = new Color(0.86f, 0.87f, 0.83f);
+        static readonly Color LinerAccentColor = new Color(0.35f, 0.5f, 0.65f);
+        static readonly Color WindowColor = new Color(2f, 1.8f, 1.3f);
+        static readonly Color AdvertisingColor = new Color(0.62f, 0.32f, 0.3f);
+
         [MenuItem("Last Fleet/Rebuild Ship Prefabs")]
         public static void RebuildAll()
         {
             AssetDatabase.DeleteAsset(HarvesterPrefabPath);
             AssetDatabase.DeleteAsset(RefineryPrefabPath);
+            AssetDatabase.DeleteAsset(LinerPrefabPath);
             LoadOrCreateHarvester();
             LoadOrCreateRefinery();
+            LoadOrCreateLiner();
         }
 
         public static ShipAgent LoadOrCreateHarvester()
@@ -147,8 +169,93 @@ namespace LastFleet.Ships.Editor
             root.AddComponent<RawMaterialStorage>();
             AddDurability(root, RefineryHull);
             AddFuel(root, RefineryTank, RefineryFuelPerKlick, RefineryFuelPerAU);
+            AddPassengers(root, RefineryPassengerCapacity, RefineryStartingPassengers);
             AddPresentation(root, engineGlow, trail, bracket, 34f, 1f);
             return SavePrefab(root, RefineryPrefabPath);
+        }
+
+        /// <summary>Civilian passenger liner with a shuttle hangar (GDD: Interplanetary Liner 1).</summary>
+        public static ShipAgent LoadOrCreateLiner()
+        {
+            GameObject existing = AssetDatabase.LoadAssetAtPath<GameObject>(LinerPrefabPath);
+            if (existing != null)
+            {
+                return existing.GetComponent<ShipAgent>();
+            }
+
+            GameObject root = new GameObject("Liner");
+            Material hull = LoadOrCreateMaterial("LinerHull", LitShaderName, LinerHullColor);
+            Material accent = LoadOrCreateMaterial("LinerAccent", LitShaderName, LinerAccentColor);
+            Material advertising = LoadOrCreateMaterial("LinerAdvertising", LitShaderName, AdvertisingColor);
+            Material windows = LoadOrCreateMaterial("LinerWindows", UnlitShaderName, WindowColor);
+            Material bay = LoadOrCreateMaterial("HangarBay", UnlitShaderName, BayColor);
+
+            // Rounded hull along +z: a long cylinder with spherical bow and stern.
+            Renderer body = CreatePart(root.transform, PrimitiveType.Cylinder, "Hull", hull, new Vector3(0f, 0f, 0f), new Vector3(2.4f, 6.5f, 2.4f));
+            body.transform.localRotation = Quaternion.Euler(90f, 0f, 0f);
+            CreatePart(root.transform, PrimitiveType.Sphere, "Bow", hull, new Vector3(0f, 0f, 6.5f), new Vector3(2.4f, 2.4f, 3f));
+            CreatePart(root.transform, PrimitiveType.Sphere, "Stern", hull, new Vector3(0f, 0f, -6.5f), new Vector3(2.4f, 2.4f, 2f));
+            CreatePart(root.transform, PrimitiveType.Capsule, "Bridge", accent, new Vector3(0f, 1.3f, 4.5f), new Vector3(0.9f, 0.45f, 1.6f))
+                .transform.localRotation = Quaternion.Euler(90f, 0f, 0f);
+            CreatePart(root.transform, PrimitiveType.Cube, "Accent Stripe", accent, new Vector3(0f, -0.9f, 0f), new Vector3(2.2f, 0.25f, 12f));
+            CreatePart(root.transform, PrimitiveType.Cube, "Advertising", advertising, new Vector3(0f, 1.15f, -1.5f), new Vector3(1.4f, 0.1f, 3.5f));
+
+            // Rows of lit windows along both flanks.
+            for (int row = 0; row < 2; row++)
+            {
+                float height = 0.45f - row * 0.5f;
+                CreatePart(root.transform, PrimitiveType.Cube, $"Windows Port {row + 1}", windows, new Vector3(-1.19f, height, 0.5f), new Vector3(0.05f, 0.12f, 10f));
+                CreatePart(root.transform, PrimitiveType.Cube, $"Windows Starboard {row + 1}", windows, new Vector3(1.19f, height, 0.5f), new Vector3(0.05f, 0.12f, 10f));
+            }
+            CreatePart(root.transform, PrimitiveType.Cube, "Hangar Bay Door", bay, new Vector3(-1.2f, -0.3f, -3.5f), new Vector3(0.1f, 0.7f, 1.6f));
+
+            // Landing bay on the port side; its forward axis points out of the bay.
+            Transform bayTransform = new GameObject("Landing Bay").transform;
+            bayTransform.SetParent(root.transform, false);
+            bayTransform.localPosition = new Vector3(-1.5f, -0.3f, -3.5f);
+            bayTransform.localRotation = Quaternion.Euler(0f, -90f, 0f);
+
+            Transform engineGlow = new GameObject("Engine Glow").transform;
+            engineGlow.SetParent(root.transform, false);
+            engineGlow.localPosition = new Vector3(0f, 0f, -7.4f);
+            CreatePart(engineGlow, PrimitiveType.Sphere, "Engine Port", Engine(), new Vector3(-0.7f, 0f, 0f), Vector3.one * 0.7f);
+            CreatePart(engineGlow, PrimitiveType.Sphere, "Engine Center", Engine(), new Vector3(0f, 0f, -0.1f), Vector3.one * 0.8f);
+            CreatePart(engineGlow, PrimitiveType.Sphere, "Engine Starboard", Engine(), new Vector3(0.7f, 0f, 0f), Vector3.one * 0.7f);
+            TrailRenderer trail = CreateTrail(root.transform, new Vector3(0f, 0f, -7.8f), 1.4f, 9f);
+            LineRenderer bracket = CreateBracket(root.transform);
+
+            ShipAgent agent = root.AddComponent<ShipAgent>();
+            ShipMovementProfile profile = LoadOrCreateProfile("LinerMovement", ConfigureLinerMovement);
+            SerializedObject agentData = new SerializedObject(agent);
+            EditorAssetUtility.FindProperty(agentData, "_className").stringValue = "Liner";
+            EditorAssetUtility.FindProperty(agentData, "_size").enumValueIndex = (int)ShipSize.Capital;
+            EditorAssetUtility.FindProperty(agentData, "_movementProfile").objectReferenceValue = profile;
+            agentData.ApplyModifiedPropertiesWithoutUndo();
+
+            Hangar hangar = root.AddComponent<Hangar>();
+            SerializedObject hangarData = new SerializedObject(hangar);
+            EditorAssetUtility.FindProperty(hangarData, "_bay").objectReferenceValue = bayTransform;
+            EditorAssetUtility.FindProperty(hangarData, "_capacity").intValue = LinerHangarCapacity;
+            hangarData.ApplyModifiedPropertiesWithoutUndo();
+            AddDurability(root, LinerHull);
+            AddFuel(root, LinerTank, LinerFuelPerKlick, LinerFuelPerAU);
+            AddPassengers(root, LinerPassengerCapacity, LinerStartingPassengers);
+            AddPresentation(root, engineGlow, trail, bracket, 38f, 1f);
+            return SavePrefab(root, LinerPrefabPath);
+        }
+
+        /// <summary>A little livelier than the industrial ships, but still a capital ship.</summary>
+        static void ConfigureLinerMovement(SerializedObject profile)
+        {
+            EditorAssetUtility.FindProperty(profile, "_motion._maximumSpeed").floatValue = 12f;
+            EditorAssetUtility.FindProperty(profile, "_motion._mainDriveAcceleration").floatValue = 1f;
+            EditorAssetUtility.FindProperty(profile, "_motion._turnRateDegreesPerSecond").floatValue = 12f;
+            EditorAssetUtility.FindProperty(profile, "_motion._thrusterAcceleration").floatValue = 0.7f;
+            EditorAssetUtility.FindProperty(profile, "_motion._thrusterMaximumSpeed").floatValue = 2.5f;
+            EditorAssetUtility.FindProperty(profile, "_motion._maneuverRangeUnits").floatValue = 45f;
+            EditorAssetUtility.FindProperty(profile, "_motion._arrivalToleranceUnits").floatValue = 1.5f;
+            EditorAssetUtility.FindProperty(profile, "_motion._alignToleranceDegrees").floatValue = 4f;
+            EditorAssetUtility.FindProperty(profile, "_jumpChargeSeconds").floatValue = 15f;
         }
 
         /// <summary>Heavy and slow, like a flying building (GDD: capital ships).</summary>
@@ -215,6 +322,15 @@ namespace LastFleet.Ships.Editor
             EditorAssetUtility.FindProperty(serialized, "_tankCapacity").floatValue = tankCapacity;
             EditorAssetUtility.FindProperty(serialized, "_fuelPerKlick").floatValue = fuelPerKlick;
             EditorAssetUtility.FindProperty(serialized, "_fuelPerAU").floatValue = fuelPerAU;
+            serialized.ApplyModifiedPropertiesWithoutUndo();
+        }
+
+        static void AddPassengers(GameObject root, int capacity, int startingPassengers)
+        {
+            ShipPassengers passengers = root.AddComponent<ShipPassengers>();
+            SerializedObject serialized = new SerializedObject(passengers);
+            EditorAssetUtility.FindProperty(serialized, "_capacity").intValue = capacity;
+            EditorAssetUtility.FindProperty(serialized, "_startingPassengers").intValue = startingPassengers;
             serialized.ApplyModifiedPropertiesWithoutUndo();
         }
 

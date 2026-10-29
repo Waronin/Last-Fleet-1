@@ -2,6 +2,7 @@
     "name": "LastFleet.GenerationPreview.Editor",
     "rootNamespace": "LastFleet.GenerationPreview.Editor",
     "references": [
+        "LastFleet.People",
         "LastFleet.GenerationPreview",
         "LastFleet.Galaxy",
         "LastFleet.StarSystem",

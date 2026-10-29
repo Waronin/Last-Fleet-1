@@ -2,6 +2,7 @@
     "name": "LastFleet.Ships.Editor",
     "rootNamespace": "LastFleet.Ships.Editor",
     "references": [
+        "LastFleet.People",
         "LastFleet.Ships",
         "LastFleet.Mining",
         "LastFleet.Exploration",

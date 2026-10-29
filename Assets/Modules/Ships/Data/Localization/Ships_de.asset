@@ -85,6 +85,28 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - rid: 6743102046643421292
+  - m_Id: 368647155036160
+    m_Localized: Sammelschiff
+    m_Metadata:
+      m_Items: []
+  - m_Id: 368647243116544
+    m_Localized: Raffinerie
+    m_Metadata:
+      m_Items: []
+  - m_Id: 368647247310848
+    m_Localized: Liner
+    m_Metadata:
+      m_Items: []
+  - m_Id: 368647247310849
+    m_Localized: '{class} {number}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421292
+  - m_Id: 368647247310850
+    m_Localized: '{class}-Staffel {number}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421292
   references:
     version: 2
     RefIds:
@@ -95,3 +117,5 @@ MonoBehaviour:
         m_SharedEntries:
         - id: 318320653
         - id: 326709248
+        - id: 368647247310849
+        - id: 368647247310850

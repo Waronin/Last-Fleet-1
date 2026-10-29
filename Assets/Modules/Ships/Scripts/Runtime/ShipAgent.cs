@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using LastFleet.Shared.Text;
 using LastFleet.Zones;
 using UnityEngine;
 
@@ -41,7 +42,17 @@ namespace LastFleet.Ships
         ShipOrder _currentOrder;
         int _jumpTargetZoneIndex = -1;
 
+        /// <summary>Technical class identifier; players see <see cref="ClassDisplayName"/>.</summary>
         public string ClassName => _className;
+
+        public GameText ClassDisplayName => ShipTexts.Classes.For(_className);
+
+        /// <summary>Number within its class, given by the registry; 0 until the ship is spawned.</summary>
+        public int SerialNumber { get; private set; }
+
+        /// <summary>The name players see, e.g. "Harvester 3"; GameObject.name stays the technical name.</summary>
+        public GameText DisplayName => ShipTexts.ShipName.Format(("class", ClassDisplayName), ("number", SerialNumber));
+
         public ShipSize Size => _size;
         public bool IsCapital => _size == ShipSize.Capital;
 
@@ -125,6 +136,12 @@ namespace LastFleet.Ships
                 // A docked ship launches to carry out its orders.
                 _dockedIn.RequestLaunch(this);
             }
+        }
+
+        internal void AssignSerialNumber(int serialNumber)
+        {
+            SerialNumber = serialNumber;
+            name = $"{_className} {serialNumber}";
         }
 
         internal void SetHomeHangar(Hangar hangar)
