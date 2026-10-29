@@ -91,6 +91,8 @@ namespace LastFleet.GenerationPreview.Editor
             EditorAssetUtility.SetReferences(shipInput, ("_scouting", scouting));
             FleetPopulation population = shipsObject.AddComponent<FleetPopulation>();
             EditorAssetUtility.SetReferences(population, ("_registry", shipRegistry));
+            CrewRecruitment recruitment = shipsObject.AddComponent<CrewRecruitment>();
+            EditorAssetUtility.SetReferences(recruitment, ("_registry", shipRegistry));
 
             GameObject inspectionObject = new GameObject("Inspection Panel");
             InspectionPanel inspection = inspectionObject.AddComponent<InspectionPanel>();

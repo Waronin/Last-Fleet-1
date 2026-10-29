@@ -73,6 +73,10 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - rid: 6743102046643421290
+  - m_Id: 378058334351360
+    m_Localized: radiation
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

@@ -328,6 +328,26 @@ namespace LastFleet.GenerationPreview
             {
                 EmptySelectedTanks();
             }
+            else if (keyboard.nKey.wasPressedThisFrame)
+            {
+                KillSelectedCrewMember();
+            }
+        }
+
+        // Developer shortcut to try short-handed crews and derelicts without a radioactive rock.
+        void KillSelectedCrewMember()
+        {
+            _singleShip.Clear();
+            _singleShip.AddRange(Selection.Ships);
+            int killed = 0;
+            foreach (ShipAgent ship in _singleShip)
+            {
+                if (ship.Crew != null)
+                {
+                    killed += ship.Crew.Kill(1, DeveloperDamageCause);
+                }
+            }
+            ShowNotice(GameText.Verbatim($"Killed {killed} crew member(s)."));
         }
 
         // Developer shortcut to try the out-of-fuel rules without flying a tank dry.

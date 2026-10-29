@@ -65,6 +65,10 @@ namespace LastFleet.Mining
         /// <summary>Starts mining at a deposit, or at the nearest free one in the zone if it is full.</summary>
         public bool StartMining(ZoneView zone, ResourceDeposit deposit)
         {
+            if (_ship.IsDerelict)
+            {
+                return false;
+            }
             if (_coordinator == null)
             {
                 Debug.LogError($"{name} has no mining coordinator.", this);
@@ -138,13 +142,14 @@ namespace LastFleet.Mining
             }
 
             float multiplier = MiningYield.Multiplier(Deposit.MiningSeconds);
-            float wanted = Mathf.Min(_extractionPerSecond * deltaTime, Cargo.FreeSpace / multiplier);
+            // A short-handed crew mines more slowly.
+            float wanted = Mathf.Min(_extractionPerSecond * deltaTime * _ship.WorkEfficiency, Cargo.FreeSpace / multiplier);
             float extracted = Deposit.Extract(wanted);
             Deposit.RecordMining(deltaTime);
             Cargo.Load(Deposit.Resource, extracted * multiplier);
             _zone.RefreshDeposit(Deposit);
             // A ship destroyed here is removed at the end of the frame, so finishing this step is safe.
-            _coordinator.ApplyHazards(_zone, Deposit, deltaTime);
+            _coordinator.ApplyHazards(_ship, _zone, Deposit, deltaTime);
 
             if (Cargo.FreeSpace <= 0.01f)
             {

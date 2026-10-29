@@ -65,7 +65,7 @@ namespace LastFleet.Exploration
             _candidates.Clear();
             foreach (ShipAgent ship in ships)
             {
-                if (!ship.IsCapital && ship.TryGetComponent(out ShipScanner _))
+                if (!ship.IsCapital && !ship.IsDerelict && ship.TryGetComponent(out ShipScanner _))
                 {
                     _candidates.Add(ship);
                 }
@@ -95,7 +95,7 @@ namespace LastFleet.Exploration
             _candidates.Clear();
             foreach (ShipAgent ship in _registry.Ships)
             {
-                if (!ship.IsCapital)
+                if (!ship.IsCapital && !ship.IsDerelict)
                 {
                     _candidates.Add(ship);
                 }

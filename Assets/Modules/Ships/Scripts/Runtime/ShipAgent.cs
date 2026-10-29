@@ -36,6 +36,7 @@ namespace LastFleet.Ships
         readonly Queue<ShipOrder> _orders = new Queue<ShipOrder>();
         ShipMotion _motion;
         ShipFuel _fuel;
+        ShipCrew _crew;
         ZoneWorld _zoneWorld;
         ZoneView _zone;
         Hangar _dockedIn;
@@ -73,6 +74,15 @@ namespace LastFleet.Ships
         public int QueuedOrderCount => _orders.Count;
         public ShipFuel Fuel => _fuel != null ? _fuel : _fuel = GetComponent<ShipFuel>();
 
+        /// <summary>Crew of a small ship; null for capital ships, whose crew are their passengers.</summary>
+        public ShipCrew Crew => _crew != null ? _crew : _crew = GetComponent<ShipCrew>();
+
+        /// <summary>No crew left: the ship cannot fly or take orders until it is recovered.</summary>
+        public bool IsDerelict => Crew != null && Crew.IsDerelict;
+
+        /// <summary>Share of full working speed for tasks such as mining and scanning; 1 without a crew system.</summary>
+        public float WorkEfficiency => Crew != null ? Crew.Efficiency : 1f;
+
         /// <summary>Zone the ship is charging a jump to, or -1.</summary>
         public int TargetZoneIndex => Activity == ShipActivity.ChargingJump ? _jumpTargetZoneIndex : -1;
 
@@ -105,14 +115,25 @@ namespace LastFleet.Ships
             _zone = zone;
             _motion = CreateMotion(localPosition, headingDegrees);
             ApplyTransform();
+            if (Crew != null)
+            {
+                Crew.BecameDerelict += OnBecameDerelict;
+            }
         }
 
-        /// <summary>Replaces all orders, or appends to the queue (GDD: Shift chains commands).</summary>
+        /// <summary>
+        /// Replaces all orders, or appends to the queue (GDD: Shift chains commands). A derelict
+        /// without crew ignores orders; callers can check <see cref="IsDerelict"/> to explain why.
+        /// </summary>
         public void Order(ShipOrder order, bool append)
         {
             if (order.Kind == ShipOrderKind.Dock && IsCapital)
             {
                 throw new InvalidOperationException($"{name} is a capital ship and cannot land in a hangar.");
+            }
+            if (IsDerelict)
+            {
+                return;
             }
 
             if (!append)
@@ -227,7 +248,23 @@ namespace LastFleet.Ships
 
         void OnDestroy()
         {
+            if (Crew != null)
+            {
+                Crew.BecameDerelict -= OnBecameDerelict;
+            }
             Destroyed?.Invoke(this);
+        }
+
+        /// <summary>Nobody is left to fly: drop all orders and let the thrusters bring the ship to rest.</summary>
+        void OnBecameDerelict(ShipCrew crew)
+        {
+            _orders.Clear();
+            if (!IsDocked)
+            {
+                Activity = ShipActivity.Idle;
+                _motion.SetDestination(_motion.Position);
+            }
+            OrdersReplaced?.Invoke(this);
         }
 
         void StartOrder(ShipOrder order)

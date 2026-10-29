@@ -73,6 +73,10 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - rid: 6743102046643421294
+  - m_Id: 378058334351360
+    m_Localized: Strahlung
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

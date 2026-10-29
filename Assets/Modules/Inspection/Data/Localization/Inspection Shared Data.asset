@@ -239,6 +239,14 @@ MonoBehaviour:
     m_Key: action.form-squad.formed
     m_Metadata:
       m_Items: []
+  - m_Id: 378056329474048
+    m_Key: ship.crew
+    m_Metadata:
+      m_Items: []
+  - m_Id: 378056342056960
+    m_Key: ship.derelict
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

@@ -7,21 +7,26 @@ using UnityEngine;
 namespace LastFleet.People
 {
     /// <summary>
-    /// Everyone in the fleet (GDD: population in the resource bar) and the reports when people die.
-    /// It follows the registry, so ships that join or leave the fleet are counted automatically.
+    /// Everyone in the fleet, passengers and crews of small ships (GDD: population in the resource
+    /// bar), and the reports when people die or change ships. It follows the registry, so ships that
+    /// join or leave the fleet are counted automatically.
     /// </summary>
     public sealed class FleetPopulation : MonoBehaviour
     {
         [SerializeField] ShipRegistry _registry;
 
-        readonly List<ShipPassengers> _ships = new List<ShipPassengers>();
+        readonly List<ShipPassengers> _passengers = new List<ShipPassengers>();
+        readonly List<ShipCrew> _crews = new List<ShipCrew>();
+
+        // Crew and passengers of a destroyed ship report separately; one notice sums them up.
+        readonly Dictionary<ShipAgent, int> _lostWithShip = new Dictionary<ShipAgent, int>();
 
         public int TotalPassengers
         {
             get
             {
                 int total = 0;
-                foreach (ShipPassengers passengers in _ships)
+                foreach (ShipPassengers passengers in _passengers)
                 {
                     total += passengers.Quarters.Count;
                 }
@@ -29,13 +34,28 @@ namespace LastFleet.People
             }
         }
 
+        public int TotalCrew
+        {
+            get
+            {
+                int total = 0;
+                foreach (ShipCrew crew in _crews)
+                {
+                    total += crew.Complement.Count;
+                }
+                return total;
+            }
+        }
+
+        public int TotalPeople => TotalPassengers + TotalCrew;
+
         /// <summary>Living space only; the seats of transports are not housing.</summary>
         public int TotalCapacity
         {
             get
             {
                 int total = 0;
-                foreach (ShipPassengers passengers in _ships)
+                foreach (ShipPassengers passengers in _passengers)
                 {
                     total += passengers.IsHousing ? passengers.Quarters.Capacity : 0;
                 }
@@ -59,6 +79,7 @@ namespace LastFleet.People
         {
             _registry.ShipSpawned += OnShipSpawned;
             _registry.ShipRemoved += OnShipRemoved;
+            _registry.ShipLost += OnShipLost;
             foreach (ShipAgent ship in _registry.Ships)
             {
                 OnShipSpawned(ship);
@@ -69,48 +90,102 @@ namespace LastFleet.People
         {
             _registry.ShipSpawned -= OnShipSpawned;
             _registry.ShipRemoved -= OnShipRemoved;
-            foreach (ShipPassengers passengers in _ships)
+            _registry.ShipLost -= OnShipLost;
+            foreach (ShipPassengers passengers in _passengers)
             {
                 Unsubscribe(passengers);
             }
-            _ships.Clear();
+            foreach (ShipCrew crew in _crews)
+            {
+                Unsubscribe(crew);
+            }
+            _passengers.Clear();
+            _crews.Clear();
+            _lostWithShip.Clear();
         }
 
         void OnShipSpawned(ShipAgent ship)
         {
-            if (!ship.TryGetComponent(out ShipPassengers passengers) || _ships.Contains(passengers))
+            if (ship.TryGetComponent(out ShipPassengers passengers) && !_passengers.Contains(passengers))
             {
-                return;
+                _passengers.Add(passengers);
+                passengers.Casualties += OnPassengerCasualties;
+                passengers.LostWithShip += OnPassengersLostWithShip;
+                passengers.Disembarked += OnDisembarked;
             }
-            _ships.Add(passengers);
-            passengers.Casualties += OnCasualties;
-            passengers.LostWithShip += OnLostWithShip;
-            passengers.Disembarked += OnDisembarked;
+            if (ship.Crew != null && !_crews.Contains(ship.Crew))
+            {
+                _crews.Add(ship.Crew);
+                ship.Crew.CrewLost += OnCrewLost;
+                ship.Crew.LostWithShip += OnCrewLostWithShip;
+            }
         }
 
         void OnShipRemoved(ShipAgent ship)
         {
-            if (ship.TryGetComponent(out ShipPassengers passengers) && _ships.Remove(passengers))
+            if (ship.TryGetComponent(out ShipPassengers passengers) && _passengers.Remove(passengers))
             {
                 Unsubscribe(passengers);
             }
+            if (ship.Crew != null && _crews.Remove(ship.Crew))
+            {
+                Unsubscribe(ship.Crew);
+            }
+            _lostWithShip.Remove(ship);
         }
 
         void Unsubscribe(ShipPassengers passengers)
         {
-            passengers.Casualties -= OnCasualties;
-            passengers.LostWithShip -= OnLostWithShip;
+            passengers.Casualties -= OnPassengerCasualties;
+            passengers.LostWithShip -= OnPassengersLostWithShip;
             passengers.Disembarked -= OnDisembarked;
         }
 
-        void OnCasualties(ShipPassengers passengers, int deaths, GameText cause)
+        void Unsubscribe(ShipCrew crew)
         {
-            Notice?.Invoke(PeopleTexts.CasualtiesFromHit.Format(("count", deaths), ("ship", passengers.Ship.DisplayName), ("cause", cause)));
+            crew.CrewLost -= OnCrewLost;
+            crew.LostWithShip -= OnCrewLostWithShip;
         }
 
-        void OnLostWithShip(ShipPassengers passengers, int lost)
+        void OnPassengerCasualties(ShipPassengers passengers, int deaths, GameText cause)
         {
-            Notice?.Invoke(PeopleTexts.LostWithShip.Format(("count", lost), ("ship", passengers.Ship.DisplayName)));
+            ReportDeaths(passengers.Ship, deaths, cause);
+        }
+
+        void OnCrewLost(ShipCrew crew, int deaths, GameText cause)
+        {
+            ReportDeaths(crew.Ship, deaths, cause);
+        }
+
+        void ReportDeaths(ShipAgent ship, int deaths, GameText cause)
+        {
+            Notice?.Invoke(PeopleTexts.CasualtiesFromHit.Format(("count", deaths), ("ship", ship.DisplayName), ("cause", cause)));
+        }
+
+        void OnPassengersLostWithShip(ShipPassengers passengers, int lost)
+        {
+            AddLostWithShip(passengers.Ship, lost);
+        }
+
+        void OnCrewLostWithShip(ShipCrew crew, int lost)
+        {
+            AddLostWithShip(crew.Ship, lost);
+        }
+
+        void AddLostWithShip(ShipAgent ship, int lost)
+        {
+            _lostWithShip.TryGetValue(ship, out int total);
+            _lostWithShip[ship] = total + lost;
+        }
+
+        // The registry reports the loss after the ship's own components have counted their dead.
+        void OnShipLost(ShipAgent ship, GameText cause)
+        {
+            if (_lostWithShip.TryGetValue(ship, out int lost) && lost > 0)
+            {
+                Notice?.Invoke(PeopleTexts.LostWithShip.Format(("count", lost), ("ship", ship.DisplayName)));
+            }
+            _lostWithShip.Remove(ship);
         }
 
         void OnDisembarked(ShipPassengers transport, ShipPassengers carrier, int people)

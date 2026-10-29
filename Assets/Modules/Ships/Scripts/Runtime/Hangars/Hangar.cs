@@ -59,8 +59,13 @@ namespace LastFleet.Ships
             return true;
         }
 
+        /// <summary>Queues a docked ship for launch; a ship without crew stays in the hangar.</summary>
         public void RequestLaunch(ShipAgent ship)
         {
+            if (ship.IsDerelict)
+            {
+                return;
+            }
             Slots.RequestLaunch(ship);
         }
 

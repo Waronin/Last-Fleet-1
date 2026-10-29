@@ -95,6 +95,15 @@ namespace LastFleet.Inspection
                     lines.Add(PeopleTexts.Overcrowded);
                 }
             }
+            if (ship.Crew != null)
+            {
+                CrewComplement crew = ship.Crew.Complement;
+                lines.Add(InspectionTexts.CrewLine.Format(("count", crew.Count), ("required", crew.Required), ("efficiency", crew.Efficiency)));
+                if (ship.IsDerelict)
+                {
+                    lines.Add(InspectionTexts.Derelict);
+                }
+            }
             lines.Add(InspectionTexts.TaskLine.Format(("task", Task(ship))));
             if (!ship.IsDocked)
             {

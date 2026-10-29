@@ -2314,6 +2314,7 @@ GameObject:
   - component: {fileID: 8935419841807991543}
   - component: {fileID: 4783859190931281156}
   - component: {fileID: 1099331768947732533}
+  - component: {fileID: 8489758990507259205}
   m_Layer: 0
   m_Name: Harvester
   m_TagString: Untagged
@@ -2415,6 +2416,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: LastFleet.Exploration::LastFleet.Exploration.ShipScanner
   _scanSeconds: 3
+  _isScout: 0
 --- !u!114 &4783859190931281156
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2446,6 +2448,19 @@ MonoBehaviour:
   _tankCapacity: 100
   _fuelPerKlick: 0.1
   _fuelPerAU: 2
+--- !u!114 &8489758990507259205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4785350210512641969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f65305e66c9dfcf42b1e4f3a7f2e3e3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.Ships::LastFleet.Ships.ShipCrew
+  _requiredCrew: 3
 --- !u!1 &5358699967121527773
 GameObject:
   m_ObjectHideFlags: 0

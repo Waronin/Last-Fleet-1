@@ -103,7 +103,7 @@ namespace LastFleet.Mining
             _harvesters.Clear();
             foreach (ShipAgent ship in selectedShips)
             {
-                if (ship.TryGetComponent(out HarvesterMining _))
+                if (!ship.IsDerelict && ship.TryGetComponent(out HarvesterMining _))
                 {
                     _harvesters.Add(ship);
                 }
@@ -114,7 +114,7 @@ namespace LastFleet.Mining
                 _harvesterCandidates.Clear();
                 foreach (ShipAgent ship in _registry.Ships)
                 {
-                    if (ship.TryGetComponent(out HarvesterMining mining) && mining.Deposit != deposit)
+                    if (!ship.IsDerelict && ship.TryGetComponent(out HarvesterMining mining) && mining.Deposit != deposit)
                     {
                         _harvesterCandidates.Add(ship);
                     }
@@ -157,11 +157,21 @@ namespace LastFleet.Mining
         }
 
         /// <summary>Rolls the deposit's hazard for one ship's mining time and applies what goes off.</summary>
-        public void ApplyHazards(ZoneView zone, ResourceDeposit deposit, float miningSeconds)
+        public void ApplyHazards(ShipAgent ship, ZoneView zone, ResourceDeposit deposit, float miningSeconds)
         {
             HazardEvent hazardEvent = MiningHazardRules.Roll(deposit.Hazard, miningSeconds, UnityEngine.Random.value);
             if (hazardEvent == HazardEvent.None)
             {
+                return;
+            }
+
+            if (hazardEvent == HazardEvent.Radiation)
+            {
+                // The crew report the loss; the deposit stays as it is.
+                if (ship.Crew != null)
+                {
+                    ship.Crew.Kill(1, MiningTexts.RadiationCause);
+                }
                 return;
             }
 

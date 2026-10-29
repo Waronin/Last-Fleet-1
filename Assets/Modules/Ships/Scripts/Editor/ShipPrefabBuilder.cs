@@ -56,6 +56,10 @@ namespace LastFleet.Ships.Editor
         const int LinerStartingPassengers = 6000;
         // A shuttle carries more people than any other small ship (GDD: Small ships), and starts empty.
         const int ShuttleSeats = 40;
+
+        // Crew of small ships: a harvester needs a pilot and two for mining, a shuttle two pilots.
+        const int HarvesterCrew = 3;
+        const int ShuttleCrew = 2;
         static readonly int BaseColorId = Shader.PropertyToID("_BaseColor");
 
         // Industrial design language (GDD): angular, yellow-black warning colors, rust, warm orange engines.
@@ -122,6 +126,7 @@ namespace LastFleet.Ships.Editor
             EditorAssetUtility.SetReferences(root.GetComponent<ShipPresentation>(), ("_model", model));
             AddDurability(root, HarvesterHull);
             AddFuel(root, HarvesterTank, HarvesterFuelPerKlick, HarvesterFuelPerAU);
+            AddCrew(root, HarvesterCrew);
             root.AddComponent<HarvesterMining>();
             root.AddComponent<ShipScanner>();
             MiningAttachment attachment = root.AddComponent<MiningAttachment>();
@@ -294,6 +299,7 @@ namespace LastFleet.Ships.Editor
             AddPresentation(root, engineGlow, trail, bracket, 20f, 1f);
             AddDurability(root, ShuttleHull);
             AddFuel(root, ShuttleTank, ShuttleFuelPerKlick, ShuttleFuelPerAU);
+            AddCrew(root, ShuttleCrew);
             ShipScanner scanner = root.AddComponent<ShipScanner>();
             SerializedObject scannerData = new SerializedObject(scanner);
             EditorAssetUtility.FindProperty(scannerData, "_scanSeconds").floatValue = ShuttleScanSeconds;
@@ -395,6 +401,14 @@ namespace LastFleet.Ships.Editor
             EditorAssetUtility.FindProperty(serialized, "_tankCapacity").floatValue = tankCapacity;
             EditorAssetUtility.FindProperty(serialized, "_fuelPerKlick").floatValue = fuelPerKlick;
             EditorAssetUtility.FindProperty(serialized, "_fuelPerAU").floatValue = fuelPerAU;
+            serialized.ApplyModifiedPropertiesWithoutUndo();
+        }
+
+        static void AddCrew(GameObject root, int requiredCrew)
+        {
+            ShipCrew crew = root.AddComponent<ShipCrew>();
+            SerializedObject serialized = new SerializedObject(crew);
+            EditorAssetUtility.FindProperty(serialized, "_requiredCrew").intValue = requiredCrew;
             serialized.ApplyModifiedPropertiesWithoutUndo();
         }
 

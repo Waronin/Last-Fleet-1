@@ -7,18 +7,23 @@ namespace LastFleet.Mining
     {
         None,
         Shatter,
-        GasExplosion
+        GasExplosion,
+
+        /// <summary>One crew member of the mining ship dies; the deposit stays radioactive.</summary>
+        Radiation
     }
 
     /// <summary>
     /// When mining hazards go off (GDD: brittle rocks break apart, gas pockets explode). Every mining
-    /// ship drills, so the risk grows with the number of ships on a rock. Radiation harms the crew
-    /// and waits for the crew system. Values are balancing starting points.
+    /// ship drills, so the risk grows with the number of ships on a rock. Radiation takes the crew of
+    /// each mining ship one by one (GDD: the crew suffers over time; a doctor will reduce it later).
+    /// Values are balancing starting points.
     /// </summary>
     public static class MiningHazardRules
     {
         public const float BrittleMeanSeconds = 60f;
         public const float GasPocketsMeanSeconds = 45f;
+        public const float RadiationMeanSeconds = 40f;
         public const float ShatterDamage = 40f;
         public const float GasExplosionDamage = 70f;
         public const float ShatterRangeUnits = 10f;
@@ -31,6 +36,7 @@ namespace LastFleet.Mining
             {
                 DepositHazard.Brittle => BrittleMeanSeconds,
                 DepositHazard.GasPockets => GasPocketsMeanSeconds,
+                DepositHazard.Radioactive => RadiationMeanSeconds,
                 _ => float.PositiveInfinity
             };
             // Exponential waiting time, so the chance does not depend on the frame rate.
@@ -44,7 +50,12 @@ namespace LastFleet.Mining
             {
                 return HazardEvent.None;
             }
-            return hazard == DepositHazard.Brittle ? HazardEvent.Shatter : HazardEvent.GasExplosion;
+            return hazard switch
+            {
+                DepositHazard.Brittle => HazardEvent.Shatter,
+                DepositHazard.GasPockets => HazardEvent.GasExplosion,
+                _ => HazardEvent.Radiation
+            };
         }
     }
 }

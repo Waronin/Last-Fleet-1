@@ -272,6 +272,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - rid: 6743102046643421291
+  - m_Id: 378056329474048
+    m_Localized: Crew {count}/{required} ({efficiency:0%} efficiency)
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421291
+  - m_Id: 378056342056960
+    m_Localized: 'Derelict: no crew aboard, the ship cannot fly'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:
@@ -309,3 +318,4 @@ MonoBehaviour:
         - id: 330903598
         - id: 330903599
         - id: 330903606
+        - id: 378056329474048

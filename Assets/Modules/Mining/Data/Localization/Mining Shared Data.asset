@@ -63,6 +63,10 @@ MonoBehaviour:
     m_Key: notice.stopped-for-fuel
     m_Metadata:
       m_Items: []
+  - m_Id: 378058334351360
+    m_Key: cause.radiation
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

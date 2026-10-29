@@ -87,7 +87,8 @@ namespace LastFleet.Exploration
                     }
                     break;
                 case ScanTaskState.Scanning:
-                    RemainingSeconds -= Time.deltaTime;
+                    // A short-handed crew scans more slowly.
+                    RemainingSeconds -= Time.deltaTime * _ship.WorkEfficiency;
                     if (RemainingSeconds <= 0f)
                     {
                         CompleteScan();

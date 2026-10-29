@@ -146,7 +146,7 @@ namespace LastFleet.GenerationPreview
             DrawShips();
             GUILayout.Space(6f);
             GUILayout.Label("Left click / drag: select ships (Shift: add)   Right click: move (Shift: queue), on a deposit: mine");
-            GUILayout.Label("V: scan nearest deposit (Shift: whole zone)   X: extract nearest deposit   K: damage selected (Shift: heavy)   J: empty selected tanks");
+            GUILayout.Label("V: scan nearest deposit (Shift: whole zone)   X: extract nearest deposit   K: damage selected (Shift: heavy)   J: empty selected tanks   N: kill a crew member");
             GUILayout.Label("Tab / Shift+Tab: next revealed zone   F: follow ship   Esc: system map");
         }
 
@@ -169,7 +169,7 @@ namespace LastFleet.GenerationPreview
             GUILayout.Space(6f);
             GUILayout.Label("Capital ships and squads (click: select, Shift: add, double click: show)");
             GUILayout.Label(GameTextResolver.Resolve(PeopleTexts.FleetPopulationLine.Format(
-                ("count", _controller.Population.TotalPassengers), ("capacity", _controller.Population.TotalCapacity))));
+                ("count", _controller.Population.TotalPeople), ("capacity", _controller.Population.TotalCapacity))));
             foreach (ShipAgent ship in _controller.Ships)
             {
                 if (!ship.IsCapital || ship.Zone == null)

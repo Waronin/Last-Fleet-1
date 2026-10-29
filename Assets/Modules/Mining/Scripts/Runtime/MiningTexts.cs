@@ -11,6 +11,7 @@ namespace LastFleet.Mining
 
         public static readonly GameTextKey ShatterCause = new GameTextKey(Table, "cause.shatter");
         public static readonly GameTextKey GasExplosionCause = new GameTextKey(Table, "cause.gas-explosion");
+        public static readonly GameTextKey RadiationCause = new GameTextKey(Table, "cause.radiation");
 
         /// <summary>{zone}, {count}</summary>
         public static readonly GameTextKey ShatterReport = new GameTextKey(Table, "notice.shatter");

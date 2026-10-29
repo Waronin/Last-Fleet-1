@@ -95,6 +95,11 @@ namespace LastFleet.Inspection
 
         public static readonly GameTextKey OutOfFuel = new GameTextKey(Table, "ship.out-of-fuel");
 
+        /// <summary>{count}, {required}, {efficiency}</summary>
+        public static readonly GameTextKey CrewLine = new GameTextKey(Table, "ship.crew");
+
+        public static readonly GameTextKey Derelict = new GameTextKey(Table, "ship.derelict");
+
         /// <summary>{task}</summary>
         public static readonly GameTextKey TaskLine = new GameTextKey(Table, "ship.task");
 

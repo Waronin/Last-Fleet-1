@@ -10,7 +10,6 @@ namespace LastFleet.Mining.Tests
         public void HarmlessDeposits_NeverGoOff()
         {
             Assert.AreEqual(0f, MiningHazardRules.Probability(DepositHazard.None, 1000f));
-            Assert.AreEqual(0f, MiningHazardRules.Probability(DepositHazard.Radioactive, 1000f), "Radiation waits for the crew system.");
             Assert.AreEqual(HazardEvent.None, MiningHazardRules.Roll(DepositHazard.None, 1000f, 0f));
         }
 
@@ -32,6 +31,14 @@ namespace LastFleet.Mining.Tests
             Assert.AreEqual(HazardEvent.Shatter, MiningHazardRules.Roll(DepositHazard.Brittle, 10f, 0f));
             Assert.AreEqual(HazardEvent.GasExplosion, MiningHazardRules.Roll(DepositHazard.GasPockets, 10f, 0f));
             Assert.AreEqual(HazardEvent.None, MiningHazardRules.Roll(DepositHazard.GasPockets, 10f, 0.999f));
+            Assert.AreEqual(HazardEvent.Radiation, MiningHazardRules.Roll(DepositHazard.Radioactive, 10f, 0f));
+        }
+
+        [Test]
+        public void Radiation_TakesACrewMemberAboutEveryMeanWaitingTime()
+        {
+            float expected = 1f - Mathf.Exp(-1f);
+            Assert.AreEqual(expected, MiningHazardRules.Probability(DepositHazard.Radioactive, MiningHazardRules.RadiationMeanSeconds), 0.0001f);
         }
 
         [Test]
