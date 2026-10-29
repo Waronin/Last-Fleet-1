@@ -319,6 +319,53 @@ MonoBehaviour:
     m_Localized: "Gesinnung unbekannt: Rufen verr\xE4t mehr."
     m_Metadata:
       m_Items: []
+  - m_Id: 402245417512960
+    m_Localized: 'Gesinnung: {value}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421293
+  - m_Id: 402245434290176
+    m_Localized: Keine Antwort auf Rufe.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 402245434290177
+    m_Localized: Rufen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 402245434290178
+    m_Localized: Bereits gerufen.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 402245434290179
+    m_Localized: 'Kein Schiff in Funkreichweite: Schicke eines in diese Zone.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 402245434290180
+    m_Localized: ...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 402245434290181
+    m_Localized: Willkommen, Reisende. Es ist lange her, dass jemand vorbeikam.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 402245434290182
+    m_Localized: Halten Sie Abstand und nennen Sie Ihr Anliegen.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 402245434290183
+    m_Localized: "Drehen Sie ab. Kommen Sie n\xE4her, er\xF6ffnen wir das Feuer."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 402245434290184
+    m_Localized: "{station}: \u201E{reply}\u201C"
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421293
+  - m_Id: 402245434290185
+    m_Localized: '{station} antwortet nicht.'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421293
   references:
     version: 2
     RefIds:
@@ -363,3 +410,6 @@ MonoBehaviour:
         - id: 394656487124992
         - id: 394656487124993
         - id: 394656487124994
+        - id: 402245417512960
+        - id: 402245434290184
+        - id: 402245434290185

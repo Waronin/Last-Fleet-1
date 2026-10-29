@@ -114,6 +114,22 @@ MonoBehaviour:
     m_Localized: elevated
     m_Metadata:
       m_Items: []
+  - m_Id: 402250148687872
+    m_Localized: none
+    m_Metadata:
+      m_Items: []
+  - m_Id: 402250165465088
+    m_Localized: friendly
+    m_Metadata:
+      m_Items: []
+  - m_Id: 402250165465089
+    m_Localized: wary
+    m_Metadata:
+      m_Items: []
+  - m_Id: 402250165465090
+    m_Localized: hostile
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

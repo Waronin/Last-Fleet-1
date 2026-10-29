@@ -319,6 +319,53 @@ MonoBehaviour:
     m_Localized: 'Attitude unknown: hail them to find out.'
     m_Metadata:
       m_Items: []
+  - m_Id: 402245417512960
+    m_Localized: 'Attitude: {value}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421291
+  - m_Id: 402245434290176
+    m_Localized: No answer to hails.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 402245434290177
+    m_Localized: Hail
+    m_Metadata:
+      m_Items: []
+  - m_Id: 402245434290178
+    m_Localized: Already hailed.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 402245434290179
+    m_Localized: 'No ship in radio range: send one to this zone.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 402245434290180
+    m_Localized: ...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 402245434290181
+    m_Localized: Welcome, travellers. It has been a long time since anyone came by.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 402245434290182
+    m_Localized: Keep your distance and state your business.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 402245434290183
+    m_Localized: Turn around. Come any closer and we open fire.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 402245434290184
+    m_Localized: "{station}: \u201C{reply}\u201D"
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421291
+  - m_Id: 402245434290185
+    m_Localized: '{station} does not answer.'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421291
   references:
     version: 2
     RefIds:
@@ -363,3 +410,6 @@ MonoBehaviour:
         - id: 394656487124992
         - id: 394656487124993
         - id: 394656487124994
+        - id: 402245417512960
+        - id: 402245434290184
+        - id: 402245434290185

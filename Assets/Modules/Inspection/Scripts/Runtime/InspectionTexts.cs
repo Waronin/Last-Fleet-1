@@ -1,4 +1,5 @@
 using LastFleet.Shared.Text;
+using LastFleet.Zones;
 
 namespace LastFleet.Inspection
 {
@@ -97,6 +98,23 @@ namespace LastFleet.Inspection
         public static readonly GameTextKey StationLifeSigns = new GameTextKey(Table, "station.life-signs");
 
         public static readonly GameTextKey StationAttitudeUnknown = new GameTextKey(Table, "station.attitude-unknown");
+
+        /// <summary>{value}</summary>
+        public static readonly GameTextKey StationAttitudeLine = new GameTextKey(Table, "station.attitude");
+
+        public static readonly GameTextKey StationNoAnswer = new GameTextKey(Table, "station.no-answer");
+        public static readonly GameTextKey HailAction = new GameTextKey(Table, "action.hail");
+        public static readonly GameTextKey AlreadyHailed = new GameTextKey(Table, "action.hail.already-hailed");
+        public static readonly GameTextKey NoShipInRadioRange = new GameTextKey(Table, "action.hail.no-ship-in-range");
+
+        /// <summary>The radio reply of a station, per attitude; None is silence.</summary>
+        public static readonly EnumTextKeys<StationAttitude> HailReplies = new EnumTextKeys<StationAttitude>(Table, "hail.reply");
+
+        /// <summary>{station}, {reply}</summary>
+        public static readonly GameTextKey HailAnswered = new GameTextKey(Table, "notice.hail-answered");
+
+        /// <summary>{station}</summary>
+        public static readonly GameTextKey HailNoAnswer = new GameTextKey(Table, "notice.hail-no-answer");
 
         // Ship window
         /// <summary>{count}</summary>

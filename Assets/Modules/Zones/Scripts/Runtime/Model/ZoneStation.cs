@@ -6,8 +6,8 @@ namespace LastFleet.Zones
     /// <summary>
     /// A station inside a station zone. It lies on the zone plane, where ships fly, so its docking
     /// bays can be reached. What it really is (<see cref="Profile"/>) stays hidden; a scan reveals
-    /// part of it (<see cref="ScanReport"/>), hails and docking the rest. Scan state is run state and
-    /// stays when the fleet leaves the zone.
+    /// part of it (<see cref="ScanReport"/>), a hail its attitude (<see cref="HailResponse"/>) and docking
+    /// the rest. Scan and hail results are run state and stay when the fleet leaves the zone.
     /// </summary>
     public sealed class ZoneStation : IScanTarget
     {
@@ -41,6 +41,21 @@ namespace LastFleet.Zones
         public void CompleteScan(float accuracyRoll)
         {
             ScanReport ??= StationScanReport.FromProfile(Profile, accuracyRoll);
+        }
+
+        /// <summary>Null until the station has been hailed.</summary>
+        public StationHailResponse HailResponse { get; private set; }
+
+        public bool IsHailed => HailResponse != null;
+
+        /// <summary>
+        /// Hails the station once and returns its answer. The crew tells the truth for now; this is
+        /// where a lying crew will answer with a false attitude later.
+        /// </summary>
+        public StationHailResponse Hail()
+        {
+            HailResponse ??= new StationHailResponse(Profile.Attitude);
+            return HailResponse;
         }
     }
 }

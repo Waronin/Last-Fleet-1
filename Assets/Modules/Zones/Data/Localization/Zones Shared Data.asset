@@ -111,6 +111,22 @@ MonoBehaviour:
     m_Key: radiation.Elevated
     m_Metadata:
       m_Items: []
+  - m_Id: 402250148687872
+    m_Key: attitude.None
+    m_Metadata:
+      m_Items: []
+  - m_Id: 402250165465088
+    m_Key: attitude.Friendly
+    m_Metadata:
+      m_Items: []
+  - m_Id: 402250165465089
+    m_Key: attitude.Wary
+    m_Metadata:
+      m_Items: []
+  - m_Id: 402250165465090
+    m_Key: attitude.Hostile
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

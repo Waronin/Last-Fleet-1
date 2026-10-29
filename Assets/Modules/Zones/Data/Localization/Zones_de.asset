@@ -114,6 +114,22 @@ MonoBehaviour:
     m_Localized: "erh\xF6ht"
     m_Metadata:
       m_Items: []
+  - m_Id: 402250148687872
+    m_Localized: keine
+    m_Metadata:
+      m_Items: []
+  - m_Id: 402250165465088
+    m_Localized: freundlich
+    m_Metadata:
+      m_Items: []
+  - m_Id: 402250165465089
+    m_Localized: misstrauisch
+    m_Metadata:
+      m_Items: []
+  - m_Id: 402250165465090
+    m_Localized: feindlich
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

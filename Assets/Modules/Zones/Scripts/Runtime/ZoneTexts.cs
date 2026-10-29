@@ -15,5 +15,6 @@ namespace LastFleet.Zones
         public static readonly EnumTextKeys<StationAtmosphere> Atmospheres = new EnumTextKeys<StationAtmosphere>(Table, "atmosphere");
         public static readonly EnumTextKeys<StationCondition> Conditions = new EnumTextKeys<StationCondition>(Table, "condition");
         public static readonly EnumTextKeys<StationRadiation> Radiation = new EnumTextKeys<StationRadiation>(Table, "radiation");
+        public static readonly EnumTextKeys<StationAttitude> Attitudes = new EnumTextKeys<StationAttitude>(Table, "attitude");
     }
 }

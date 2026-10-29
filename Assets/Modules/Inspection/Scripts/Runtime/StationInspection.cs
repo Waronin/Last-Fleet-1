@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using LastFleet.Exploration;
 using LastFleet.Shared.Text;
+using LastFleet.Ships;
 using LastFleet.Zones;
 
 namespace LastFleet.Inspection
@@ -9,19 +10,21 @@ namespace LastFleet.Inspection
     /// <summary>
     /// A station in a zone: its type, size and docking bays are visible from afar. A scan reveals
     /// atmosphere, condition, radiation and a range of life signs; whether the people aboard are
-    /// hostile stays unknown until they are hailed.
+    /// hostile stays unknown until they are hailed, which takes a ship of the fleet in the zone.
     /// </summary>
     public sealed class StationInspection : IInspectionTarget
     {
         readonly ZoneView _zone;
         readonly ZoneStation _station;
         readonly ScoutingService _scouting;
+        readonly ShipRegistry _registry;
 
-        public StationInspection(ZoneView zone, ZoneStation station, ScoutingService scouting)
+        public StationInspection(ZoneView zone, ZoneStation station, ScoutingService scouting, ShipRegistry registry)
         {
             _zone = zone;
             _station = station ?? throw new ArgumentNullException(nameof(station));
             _scouting = scouting;
+            _registry = registry;
         }
 
         public ZoneStation Station => _station;
@@ -35,6 +38,7 @@ namespace LastFleet.Inspection
             lines.Add(TypeLine(_station));
             lines.Add(InspectionTexts.StationBays.Format(("count", _station.DockingBayCount)));
             DescribeScan(_station.ScanReport, lines);
+            DescribeHail(_station, lines);
 
             if (_scouting.TryGetActiveScan(_station, out ShipScanner scanner))
             {
@@ -51,6 +55,9 @@ namespace LastFleet.Inspection
             GameText scanBlocked = _station.IsScanned ? InspectionTexts.AlreadyScanned : scanActive ? InspectionTexts.ScanAlreadyAssigned : null;
             actions.Add(new InspectionAction(InspectionTexts.ScanAction, InspectionTexts.RightClickHint, scanBlocked == null, scanBlocked,
                 () => _scouting.RequestScan(_zone, _station) ? InspectionTexts.ScanRequested : ExplorationTexts.NoShipToScan));
+
+            GameText hailBlocked = _station.IsHailed ? InspectionTexts.AlreadyHailed : !HasShipInZone() ? InspectionTexts.NoShipInRadioRange : null;
+            actions.Add(new InspectionAction(InspectionTexts.HailAction, null, hailBlocked == null, hailBlocked, Hail));
         }
 
         /// <summary>Type and rough size, which are visible from afar.</summary>
@@ -73,10 +80,43 @@ namespace LastFleet.Inspection
             lines.Add(InspectionTexts.StationCondition.Format(("value", ZoneTexts.Conditions.For(report.Condition))));
             lines.Add(InspectionTexts.StationRadiation.Format(("value", ZoneTexts.Radiation.For(report.Radiation))));
             lines.Add(InspectionTexts.StationLifeSigns.Format(("lifeSigns", ScoutingService.LifeSigns(report))));
-            if (report.HasLifeSigns)
+        }
+
+        /// <summary>The attitude the station claimed, or a hint to hail it once a scan shows people aboard.</summary>
+        public static void DescribeHail(ZoneStation station, List<GameText> lines)
+        {
+            if (station.IsHailed)
+            {
+                lines.Add(station.HailResponse.Answered
+                    ? InspectionTexts.StationAttitudeLine.Format(("value", ZoneTexts.Attitudes.For(station.HailResponse.ClaimedAttitude)))
+                    : InspectionTexts.StationNoAnswer);
+                return;
+            }
+            if (station.IsScanned && station.ScanReport.HasLifeSigns)
             {
                 lines.Add(InspectionTexts.StationAttitudeUnknown);
             }
+        }
+
+        GameText Hail()
+        {
+            StationHailResponse response = _station.Hail();
+            return response.Answered
+                ? InspectionTexts.HailAnswered.Format(("station", _station.Name), ("reply", InspectionTexts.HailReplies.For(response.ClaimedAttitude)))
+                : InspectionTexts.HailNoAnswer.Format(("station", _station.Name));
+        }
+
+        /// <summary>Radio range: any ship of the fleet in the station's zone, docked ones included.</summary>
+        bool HasShipInZone()
+        {
+            foreach (ShipAgent ship in _registry.Ships)
+            {
+                if (ship.Zone == _zone)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

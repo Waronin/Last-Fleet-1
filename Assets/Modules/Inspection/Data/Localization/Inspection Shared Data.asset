@@ -279,6 +279,50 @@ MonoBehaviour:
     m_Key: station.attitude-unknown
     m_Metadata:
       m_Items: []
+  - m_Id: 402245417512960
+    m_Key: station.attitude
+    m_Metadata:
+      m_Items: []
+  - m_Id: 402245434290176
+    m_Key: station.no-answer
+    m_Metadata:
+      m_Items: []
+  - m_Id: 402245434290177
+    m_Key: action.hail
+    m_Metadata:
+      m_Items: []
+  - m_Id: 402245434290178
+    m_Key: action.hail.already-hailed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 402245434290179
+    m_Key: action.hail.no-ship-in-range
+    m_Metadata:
+      m_Items: []
+  - m_Id: 402245434290180
+    m_Key: hail.reply.None
+    m_Metadata:
+      m_Items: []
+  - m_Id: 402245434290181
+    m_Key: hail.reply.Friendly
+    m_Metadata:
+      m_Items: []
+  - m_Id: 402245434290182
+    m_Key: hail.reply.Wary
+    m_Metadata:
+      m_Items: []
+  - m_Id: 402245434290183
+    m_Key: hail.reply.Hostile
+    m_Metadata:
+      m_Items: []
+  - m_Id: 402245434290184
+    m_Key: notice.hail-answered
+    m_Metadata:
+      m_Items: []
+  - m_Id: 402245434290185
+    m_Key: notice.hail-no-answer
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
