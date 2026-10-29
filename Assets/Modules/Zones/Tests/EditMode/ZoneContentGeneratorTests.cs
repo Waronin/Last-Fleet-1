@@ -70,7 +70,7 @@ namespace LastFleet.Zones.Tests
                     }
                     foreach (ZoneStation station in contents.Stations)
                     {
-                        objects.Add((station.LocalPosition, station.SizeUnits));
+                        objects.Add((station.LocalPosition, station.FootprintRadiusUnits));
                     }
 
                     for (int i = 0; i < objects.Count; i++)
@@ -99,6 +99,7 @@ namespace LastFleet.Zones.Tests
                     {
                         Assert.AreEqual(1, zone.Reveal().Stations.Count);
                         Assert.AreEqual(zone.PointOfInterest.Name, zone.Contents.Stations[0].Name);
+                        Assert.AreEqual(0f, zone.Contents.Stations[0].LocalPosition.y, "Stations lie on the plane where ships fly.");
                     }
                 }
             }

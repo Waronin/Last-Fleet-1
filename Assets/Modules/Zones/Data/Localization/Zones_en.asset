@@ -66,6 +66,22 @@ MonoBehaviour:
     m_Localized: large
     m_Metadata:
       m_Items: []
+  - m_Id: 385611390857216
+    m_Localized: Outpost
+    m_Metadata:
+      m_Items: []
+  - m_Id: 385611449577472
+    m_Localized: Research station
+    m_Metadata:
+      m_Items: []
+  - m_Id: 385611449577473
+    m_Localized: Industrial station
+    m_Metadata:
+      m_Items: []
+  - m_Id: 385611449577474
+    m_Localized: Habitat ring
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

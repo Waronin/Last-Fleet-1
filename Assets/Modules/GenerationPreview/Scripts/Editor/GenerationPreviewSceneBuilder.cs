@@ -5,6 +5,7 @@ using LastFleet.Galaxy;
 using LastFleet.Inspection;
 using LastFleet.Mining;
 using LastFleet.People;
+using LastFleet.Stations.Editor;
 using LastFleet.Shared.Editor;
 using LastFleet.ShipControl;
 using LastFleet.Ships;
@@ -142,7 +143,7 @@ namespace LastFleet.GenerationPreview.Editor
             ZoneWorld zoneWorld = worldObject.AddComponent<ZoneWorld>();
             EditorAssetUtility.SetReferences(zoneWorld,
                 ("_gridMaterial", SpaceSceneFactory.LoadOrCreateGridMaterial()), ("_bodyMaterial", litMaterial),
-                ("_glowMaterial", unlitMaterial), ("_zoneSun", zoneSun));
+                ("_glowMaterial", unlitMaterial), ("_zoneSun", zoneSun), ("_stationViews", StationPrefabBuilder.LoadOrCreateCatalog()));
             worldObject.SetActive(true);
             return zoneWorld;
         }

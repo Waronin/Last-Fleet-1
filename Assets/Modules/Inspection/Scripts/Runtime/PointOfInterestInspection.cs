@@ -58,6 +58,10 @@ namespace LastFleet.Inspection
             }
             lines.Add(InspectionTexts.DepositCount.Format(("count", contents.Deposits.Count), ("scanned", scanned)));
             lines.Add(InspectionTexts.StationCount.Format(("count", contents.Stations.Count)));
+            foreach (ZoneStation station in contents.Stations)
+            {
+                lines.Add(StationInspection.TypeLine(station));
+            }
         }
 
         public void CollectActions(List<InspectionAction> actions)

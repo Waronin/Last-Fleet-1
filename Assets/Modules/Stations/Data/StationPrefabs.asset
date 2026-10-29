@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8cc7b743f917dc4ba7536140fc43fbd, type: 3}
+  m_Name: StationPrefabs
+  m_EditorClassIdentifier: LastFleet.Stations::LastFleet.Stations.StationPrefabCatalog
+  _prefabs:
+  - {fileID: 2514773488598824499, guid: 9b6f4d01201220842a183f87ece1bfb1, type: 3}
+  - {fileID: 687548253086858886, guid: b4075f6b1291db1499c7eaa5e8a64687, type: 3}
+  - {fileID: 852180791181487118, guid: 7e5ca2a93fd166c479fea8838998488b, type: 3}
+  - {fileID: 2584940984935869821, guid: 83d7a14ba2e9ff14a896adbe61714191, type: 3}

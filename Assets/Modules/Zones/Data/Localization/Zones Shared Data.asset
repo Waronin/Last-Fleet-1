@@ -63,6 +63,22 @@ MonoBehaviour:
     m_Key: size.Large
     m_Metadata:
       m_Items: []
+  - m_Id: 385611390857216
+    m_Key: station-type.Outpost
+    m_Metadata:
+      m_Items: []
+  - m_Id: 385611449577472
+    m_Key: station-type.Research
+    m_Metadata:
+      m_Items: []
+  - m_Id: 385611449577473
+    m_Key: station-type.Industrial
+    m_Metadata:
+      m_Items: []
+  - m_Id: 385611449577474
+    m_Key: station-type.Habitat
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

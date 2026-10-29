@@ -75,6 +75,15 @@ namespace LastFleet.Inspection
         public static readonly GameTextKey ExploreAction = new GameTextKey(Table, "action.explore");
         public static readonly GameTextKey AlreadyExplored = new GameTextKey(Table, "action.explore.already-explored");
 
+        // Stations
+        /// <summary>{type}, {length}</summary>
+        public static readonly GameTextKey StationTypeLine = new GameTextKey(Table, "station.type");
+
+        /// <summary>{count}</summary>
+        public static readonly GameTextKey StationBays = new GameTextKey(Table, "station.bays");
+
+        public static readonly GameTextKey StationUnscanned = new GameTextKey(Table, "station.unscanned");
+
         // Ship window
         /// <summary>{count}</summary>
         public static readonly GameTextKey ShipsSelected = new GameTextKey(Table, "ship.selected-count");

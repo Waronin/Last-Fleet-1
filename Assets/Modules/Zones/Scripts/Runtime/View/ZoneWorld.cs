@@ -15,6 +15,8 @@ namespace LastFleet.Zones
         [SerializeField] Material _gridMaterial;
         [SerializeField] Material _bodyMaterial;
         [SerializeField] Material _glowMaterial;
+        [Tooltip("Creates the station models; they live in the Stations module.")]
+        [SerializeField] StationViewSource _stationViews;
         [Tooltip("Directional light for the zone being viewed; it shines from the system's star.")]
         [SerializeField] Light _zoneSun;
         [Tooltip("Distance between zone centers. Must exceed a zone plus its backdrop and the camera far clip.")]
@@ -33,9 +35,9 @@ namespace LastFleet.Zones
 
         void Awake()
         {
-            if (_gridMaterial == null || _bodyMaterial == null || _glowMaterial == null || _zoneSun == null)
+            if (_gridMaterial == null || _bodyMaterial == null || _glowMaterial == null || _zoneSun == null || _stationViews == null)
             {
-                Debug.LogError("ZoneWorld needs grid, body and glow materials and a zone sun.", this);
+                Debug.LogError("ZoneWorld needs grid, body and glow materials, a zone sun and the station views.", this);
             }
             SetSunEnabled(false);
         }
@@ -121,7 +123,7 @@ namespace LastFleet.Zones
             viewObject.transform.localPosition = ZoneOrigin(zone.PointOfInterestIndex);
 
             ZoneView view = viewObject.AddComponent<ZoneView>();
-            view.Build(zone, _gridMaterial, _bodyMaterial, _glowMaterial);
+            view.Build(zone, _gridMaterial, _bodyMaterial, _glowMaterial, _stationViews);
             _views.Add(zone.PointOfInterestIndex, view);
             return view;
         }

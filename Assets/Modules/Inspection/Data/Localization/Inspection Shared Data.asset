@@ -247,6 +247,18 @@ MonoBehaviour:
     m_Key: ship.derelict
     m_Metadata:
       m_Items: []
+  - m_Id: 385606701625344
+    m_Key: station.type
+    m_Metadata:
+      m_Items: []
+  - m_Id: 385606714208256
+    m_Key: station.bays
+    m_Metadata:
+      m_Items: []
+  - m_Id: 385606714208257
+    m_Key: station.unscanned
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

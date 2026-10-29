@@ -8,7 +8,7 @@ using UnityEngine.Rendering;
 namespace LastFleet.Zones
 {
     /// <summary>
-    /// Blockout presentation of one revealed zone: grid, resource deposits, stations and the
+    /// Blockout presentation of one revealed zone: grid, resource deposits, station models and the
     /// backdrop body. Reads the zone's run state; call <see cref="Refresh"/> after deposits change.
     /// </summary>
     public sealed class ZoneView : MonoBehaviour
@@ -25,12 +25,13 @@ namespace LastFleet.Zones
 
         readonly List<DepositView> _depositViews = new List<DepositView>();
         readonly Dictionary<ResourceDeposit, DepositView> _viewByDeposit = new Dictionary<ResourceDeposit, DepositView>();
+        readonly Dictionary<ZoneStation, Transform> _viewByStation = new Dictionary<ZoneStation, Transform>();
         MaterialPropertyBlock _propertyBlock;
 
         public ZoneRecord Record { get; private set; }
         public SpaceZone Zone { get; private set; }
 
-        public void Build(ZoneRecord record, Material gridMaterial, Material bodyMaterial, Material glowMaterial)
+        public void Build(ZoneRecord record, Material gridMaterial, Material bodyMaterial, Material glowMaterial, StationViewSource stationViews)
         {
             Record = record;
             _propertyBlock = new MaterialPropertyBlock();
@@ -55,7 +56,7 @@ namespace LastFleet.Zones
             }
             foreach (ZoneStation station in contents.Stations)
             {
-                CreateStation(station, glowMaterial);
+                _viewByStation.Add(station, stationViews.CreateView(station, transform));
             }
         }
 
@@ -110,6 +111,35 @@ namespace LastFleet.Zones
             return deposit != null;
         }
 
+        /// <summary>The station whose footprint contains the point on the zone plane under a screen position.</summary>
+        public bool TryPickStation(Camera camera, Vector2 screenPosition, out ZoneStation station)
+        {
+            station = null;
+            if (!Zone.TryRaycastPlane(camera.ScreenPointToRay(screenPosition), out Vector3 worldPoint))
+            {
+                return false;
+            }
+
+            Vector3 localPoint = transform.InverseTransformPoint(worldPoint);
+            float bestDistance = float.MaxValue;
+            foreach (ZoneStation candidate in Record.Contents.Stations)
+            {
+                float distance = new Vector2(localPoint.x - candidate.LocalPosition.x, localPoint.z - candidate.LocalPosition.z).magnitude;
+                if (distance <= candidate.FootprintRadiusUnits && distance < bestDistance)
+                {
+                    bestDistance = distance;
+                    station = candidate;
+                }
+            }
+            return station != null;
+        }
+
+        /// <summary>The model of a station in this zone, e.g. to find its docking bays.</summary>
+        public bool TryGetStationView(ZoneStation station, out Transform view)
+        {
+            return _viewByStation.TryGetValue(station, out view);
+        }
+
         /// <summary>Returns the index of the non-depleted deposit closest to a world point, or -1.</summary>
         public int FindNearestDeposit(Vector3 worldPoint)
         {
@@ -132,14 +162,6 @@ namespace LastFleet.Zones
                 }
             }
             return nearestIndex;
-        }
-
-        void CreateStation(ZoneStation station, Material glowMaterial)
-        {
-            Renderer renderer = BlockoutPrimitives.CreatePrimitive(PrimitiveType.Cube, transform, glowMaterial, station.Name);
-            renderer.transform.localPosition = station.LocalPosition;
-            renderer.transform.localScale = new Vector3(station.SizeUnits, station.SizeUnits * 0.5f, station.SizeUnits);
-            BlockoutPrimitives.SetColor(renderer, new Color(0.9f, 0.9f, 0.95f), _propertyBlock);
         }
 
         void CreateBackdrop(ZoneBackdrop backdrop, Material bodyMaterial, Material glowMaterial)

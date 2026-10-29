@@ -1,0 +1,17 @@
+{
+    "name": "LastFleet.Stations",
+    "rootNamespace": "LastFleet.Stations",
+    "references": [
+        "LastFleet.Shared",
+        "LastFleet.Zones"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

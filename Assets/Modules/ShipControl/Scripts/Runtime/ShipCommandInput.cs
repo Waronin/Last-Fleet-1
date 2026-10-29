@@ -49,6 +49,9 @@ namespace LastFleet.ShipControl
         /// <summary>A deposit was left-clicked. The ship selection is kept, so ships can be put to work on it.</summary>
         public event System.Action<ZoneView, ResourceDeposit> DepositClicked;
 
+        /// <summary>A station was left-clicked. The ship selection is kept, so ships can be sent to it.</summary>
+        public event System.Action<ZoneView, ZoneStation> StationClicked;
+
         /// <summary>Empty space was left-clicked; the selection was cleared.</summary>
         public event System.Action EmptySpaceClicked;
 
@@ -266,6 +269,11 @@ namespace LastFleet.ShipControl
                 if (_activeZone.TryPickDeposit(_camera, pointer, _pickRadiusPixels, out ResourceDeposit deposit))
                 {
                     DepositClicked?.Invoke(_activeZone, deposit);
+                    return;
+                }
+                if (_activeZone.TryPickStation(_camera, pointer, out ZoneStation station))
+                {
+                    StationClicked?.Invoke(_activeZone, station);
                     return;
                 }
                 if (!additive)

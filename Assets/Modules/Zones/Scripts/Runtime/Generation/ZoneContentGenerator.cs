@@ -83,7 +83,8 @@ namespace LastFleet.Zones
                     AddDeposits(random, placement, deposits, random.Range(30, 61), beltRecipe);
                     break;
                 case PointOfInterestKind.Station:
-                    AddStation(random, placement, stations, pointOfInterest.Name);
+                    // The station is placed first, so its large footprint always fits; debris drifts around it.
+                    AddStation(random, placement, stations, pointOfInterest.Name, pointOfInterest.AssociatedPlanet != null);
                     AddDeposits(random, placement, deposits, random.Range(3, 9), StationDebris);
                     break;
                 case PointOfInterestKind.Star:
@@ -132,12 +133,16 @@ namespace LastFleet.Zones
             }
         }
 
-        static void AddStation(DeterministicRandom random, ZonePlacement placement, List<ZoneStation> stations, string name)
+        static void AddStation(DeterministicRandom random, ZonePlacement placement, List<ZoneStation> stations, string name, bool isOrbital)
         {
-            float size = random.Range(3f, 6f);
-            if (placement.TryPlace(size, out Vector3 position))
+            StationType type = StationGeneration.PickType(random, isOrbital);
+            StationProfile profile = StationGeneration.RollProfile(random, type);
+            float headingDegrees = random.AngleDegrees();
+            if (placement.TryPlace(StationTypes.FootprintRadiusUnits(type), out Vector3 position))
             {
-                stations.Add(new ZoneStation(name, position, size));
+                // On the zone plane, where ships fly, so the docking bays can be reached.
+                position.y = 0f;
+                stations.Add(new ZoneStation(name, type, position, headingDegrees, profile));
             }
         }
 

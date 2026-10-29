@@ -1,0 +1,20 @@
+{
+    "name": "LastFleet.Stations.Editor",
+    "rootNamespace": "LastFleet.Stations.Editor",
+    "references": [
+        "LastFleet.Stations",
+        "LastFleet.Zones",
+        "LastFleet.Shared.Editor"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

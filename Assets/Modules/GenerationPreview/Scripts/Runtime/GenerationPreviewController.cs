@@ -120,6 +120,7 @@ namespace LastFleet.GenerationPreview
             _population.Notice += ShowNotice;
             _inspection.Notice += ShowNotice;
             _shipInput.DepositClicked += InspectDeposit;
+            _shipInput.StationClicked += InspectStation;
             _shipInput.EmptySpaceClicked += _inspection.Clear;
             _shipRegistry.ShipLost += OnShipLost;
             _shipRegistry.JumpRefusedForFuel += OnJumpRefusedForFuel;
@@ -150,6 +151,7 @@ namespace LastFleet.GenerationPreview
             _population.Notice -= ShowNotice;
             _inspection.Notice -= ShowNotice;
             _shipInput.DepositClicked -= InspectDeposit;
+            _shipInput.StationClicked -= InspectStation;
             _shipInput.EmptySpaceClicked -= _inspection.Clear;
             _shipRegistry.ShipLost -= OnShipLost;
             _shipRegistry.JumpRefusedForFuel -= OnJumpRefusedForFuel;
@@ -159,6 +161,11 @@ namespace LastFleet.GenerationPreview
         void InspectDeposit(ZoneView zone, ResourceDeposit deposit)
         {
             _inspection.Show(new DepositInspection(zone, deposit, _mining, _scouting, () => Selection.Ships));
+        }
+
+        void InspectStation(ZoneView zone, ZoneStation station)
+        {
+            _inspection.Show(new StationInspection(zone, station));
         }
 
         void InspectPointOfInterest(int index)

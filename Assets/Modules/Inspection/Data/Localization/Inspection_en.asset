@@ -281,6 +281,20 @@ MonoBehaviour:
     m_Localized: 'Derelict: no crew aboard, the ship cannot fly'
     m_Metadata:
       m_Items: []
+  - m_Id: 385606701625344
+    m_Localized: '{type}, about {length:0} km'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421291
+  - m_Id: 385606714208256
+    m_Localized: '{count:plural:{} docking bay|{} docking bays}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421291
+  - m_Id: 385606714208257
+    m_Localized: 'Not scanned: crew, atmosphere, condition and radiation are unknown.'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:
@@ -319,3 +333,5 @@ MonoBehaviour:
         - id: 330903599
         - id: 330903606
         - id: 378056329474048
+        - id: 385606701625344
+        - id: 385606714208256

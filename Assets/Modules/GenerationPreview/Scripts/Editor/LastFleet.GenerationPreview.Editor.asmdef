@@ -3,6 +3,8 @@
     "rootNamespace": "LastFleet.GenerationPreview.Editor",
     "references": [
         "LastFleet.People",
+        "LastFleet.Stations",
+        "LastFleet.Stations.Editor",
         "LastFleet.GenerationPreview",
         "LastFleet.Galaxy",
         "LastFleet.StarSystem",
