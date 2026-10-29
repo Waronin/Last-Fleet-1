@@ -251,10 +251,6 @@ MonoBehaviour:
     m_Key: station.type
     m_Metadata:
       m_Items: []
-  - m_Id: 385606714208256
-    m_Key: station.bays
-    m_Metadata:
-      m_Items: []
   - m_Id: 385606714208257
     m_Key: station.unscanned
     m_Metadata:
@@ -321,6 +317,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 402245434290185
     m_Key: notice.hail-no-answer
+    m_Metadata:
+      m_Items: []
+  - m_Id: 491644121591808
+    m_Key: station.ports
     m_Metadata:
       m_Items: []
   m_Metadata:

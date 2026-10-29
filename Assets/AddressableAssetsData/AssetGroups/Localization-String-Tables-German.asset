@@ -63,6 +63,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Locale-de
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 912ecc4d49398bd4fb07296a3def9811
+    m_Address: Stations_de
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-de
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b2b596cb765b1d34ca21ab165445cb70
     m_Address: StarSystem_de
     m_ReadOnly: 1

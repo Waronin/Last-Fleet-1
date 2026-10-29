@@ -204,6 +204,84 @@ namespace LastFleet.Ships.Tests
             Assert.AreEqual(0f, motion.Speed, 1e-4f);
         }
 
+        [Test]
+        public void PreciseManeuver_CreepsOnThrusters_AndEndsOnItsHeading()
+        {
+            ShipMotion motion = new ShipMotion(Settings, Vector2.zero, 90f);
+            const float maximumSpeed = 0.8f;
+            Vector2 destination = new Vector2(0f, 4f);
+            motion.SetPreciseDestination(destination, maximumSpeed, 0f);
+
+            float elapsed = 0f;
+            while (!motion.HasArrived && elapsed < MaximumSimulatedSeconds)
+            {
+                motion.Step(StepSeconds);
+                elapsed += StepSeconds;
+                Assert.IsFalse(motion.MainDriveActive, "A maneuver never lights the main drive.");
+                Assert.LessOrEqual(motion.Speed, maximumSpeed + 0.001f);
+            }
+
+            Assert.IsTrue(motion.HasArrived);
+            Assert.AreEqual(destination, motion.Position);
+            Assert.AreEqual(0f, motion.HeadingDegrees, 0.001f);
+            Assert.Greater(elapsed, (4f - Settings.ArrivalToleranceUnits) / maximumSpeed, "Creeping at 0.8 units per second takes its time.");
+        }
+
+        [Test]
+        public void PreciseManeuver_BacksAwayWithoutTurning()
+        {
+            // Docked facing +z; backing out to -z keeps the nose on the port.
+            ShipMotion motion = new ShipMotion(Settings, Vector2.zero, 0f);
+            motion.SetPreciseDestination(new Vector2(0f, -4f), 1.2f, 0f);
+
+            float elapsed = 0f;
+            while (!motion.HasArrived && elapsed < MaximumSimulatedSeconds)
+            {
+                motion.Step(StepSeconds);
+                elapsed += StepSeconds;
+                Assert.AreEqual(0f, Mathf.DeltaAngle(motion.HeadingDegrees, 0f), 0.001f);
+            }
+
+            Assert.IsTrue(motion.HasArrived);
+        }
+
+        [Test]
+        public void NormalMove_ClearsAPreciseManeuver()
+        {
+            ShipMotion motion = new ShipMotion(Settings, Vector2.zero, 0f);
+            motion.SetPreciseDestination(new Vector2(0f, 500f), 0.8f, 0f);
+            motion.SetDestination(new Vector2(0f, 500f));
+
+            HashSet<ShipMotionPhase> phases = Simulate(motion);
+
+            CollectionAssert.Contains(phases, ShipMotionPhase.Burning, "A normal move burns again after a maneuver.");
+        }
+
+        [Test]
+        public void PreciseManeuver_SettlesSoftly_WithoutSnappingTheLastMeters()
+        {
+            const float maximumSpeed = 0.8f;
+            ShipMotion motion = new ShipMotion(Settings, Vector2.zero, 30f);
+            motion.SetPreciseDestination(new Vector2(0f, 4f), maximumSpeed, 0f);
+
+            float elapsed = 0f;
+            float largestStep = 0f;
+            float lastSpeed = 0f;
+            while (!motion.HasArrived && elapsed < MaximumSimulatedSeconds)
+            {
+                Vector2 before = motion.Position;
+                lastSpeed = motion.Speed;
+                motion.Step(StepSeconds);
+                elapsed += StepSeconds;
+                largestStep = Mathf.Max(largestStep, (motion.Position - before).magnitude);
+            }
+
+            Assert.IsTrue(motion.HasArrived);
+            // At most one frame of creeping plus a centimeter-scale settle, never the old 50 m snap.
+            Assert.LessOrEqual(largestStep, maximumSpeed * StepSeconds + 0.02f);
+            Assert.Less(lastSpeed, 0.1f, "The ship has almost stopped before it touches the port.");
+        }
+
         static HashSet<ShipMotionPhase> Simulate(ShipMotion motion)
         {
             HashSet<ShipMotionPhase> phases = new HashSet<ShipMotionPhase>();

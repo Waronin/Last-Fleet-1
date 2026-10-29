@@ -19,13 +19,13 @@ namespace LastFleet.Zones
     }
 
     /// <summary>
-    /// Fixed size and docking bays per station type. Each type has one model whose size is set in
+    /// Fixed size and docking ports per station type. Each type has one model whose size is set in
     /// its prefab (stations are 3–6 times the size of capital ships); the generator only needs the
     /// footprint to keep other objects clear, and a test checks that every prefab fits it.
     /// </summary>
     public static class StationTypes
     {
-        /// <summary>Radius on the zone plane that the station model, bays included, stays within.</summary>
+        /// <summary>Radius on the zone plane that the station model, docking arms included, stays within.</summary>
         public static float FootprintRadiusUnits(StationType type)
         {
             return type switch
@@ -67,7 +67,7 @@ namespace LastFleet.Zones
             };
         }
 
-        public static int DockingBayCount(StationType type)
+        public static int DockingPortCount(StationType type)
         {
             return type switch
             {

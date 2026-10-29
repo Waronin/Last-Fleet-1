@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using LastFleet.Exploration;
 using LastFleet.Shared.Text;
 using LastFleet.Ships;
+using LastFleet.Stations;
 using LastFleet.Zones;
 
 namespace LastFleet.Inspection
 {
     /// <summary>
-    /// A station in a zone: its type, size and docking bays are visible from afar. A scan reveals
+    /// A station in a zone: its type, size and docking ports are visible from afar. A scan reveals
     /// atmosphere, condition, radiation and a range of life signs; whether the people aboard are
-    /// hostile stays unknown until they are hailed, which takes a ship of the fleet in the zone.
+    /// hostile stays unknown until they are hailed, which takes a ship of the fleet in the zone. Small
+    /// ships can dock at its ports, on their own risk if the station was not scanned.
     /// </summary>
     public sealed class StationInspection : IInspectionTarget
     {
@@ -18,13 +20,20 @@ namespace LastFleet.Inspection
         readonly ZoneStation _station;
         readonly ScoutingService _scouting;
         readonly ShipRegistry _registry;
+        readonly DockingService _docking;
+        readonly Func<IReadOnlyList<ShipAgent>> _selectedShips;
+        readonly List<ShipAgent> _assigned = new List<ShipAgent>();
+        readonly List<ShipAgent> _selectedSmallShips = new List<ShipAgent>();
 
-        public StationInspection(ZoneView zone, ZoneStation station, ScoutingService scouting, ShipRegistry registry)
+        public StationInspection(ZoneView zone, ZoneStation station, ScoutingService scouting, ShipRegistry registry,
+            DockingService docking, Func<IReadOnlyList<ShipAgent>> selectedShips)
         {
             _zone = zone;
             _station = station ?? throw new ArgumentNullException(nameof(station));
             _scouting = scouting;
             _registry = registry;
+            _docking = docking;
+            _selectedShips = selectedShips;
         }
 
         public ZoneStation Station => _station;
@@ -36,9 +45,10 @@ namespace LastFleet.Inspection
             lines.Clear();
             lines.Add(InspectionTexts.ZoneLine.Format(("zone", _zone.Record.PointOfInterest.Name)));
             lines.Add(TypeLine(_station));
-            lines.Add(InspectionTexts.StationBays.Format(("count", _station.DockingBayCount)));
+            lines.Add(InspectionTexts.StationPorts.Format(("count", _station.DockingPortCount)));
             DescribeScan(_station.ScanReport, lines);
             DescribeHail(_station, lines);
+            DescribeDocking(lines);
 
             if (_scouting.TryGetActiveScan(_station, out ShipScanner scanner))
             {
@@ -58,6 +68,9 @@ namespace LastFleet.Inspection
 
             GameText hailBlocked = _station.IsHailed ? InspectionTexts.AlreadyHailed : !HasShipInZone() ? InspectionTexts.NoShipInRadioRange : null;
             actions.Add(new InspectionAction(InspectionTexts.HailAction, null, hailBlocked == null, hailBlocked, Hail));
+
+            GameText dockBlocked = _docking.FreePortCount(_station) == 0 ? StationTexts.AllPortsTaken : null;
+            actions.Add(new InspectionAction(StationTexts.DockAction, InspectionTexts.RightClickHint, dockBlocked == null, dockBlocked, Dock));
         }
 
         /// <summary>Type and rough size, which are visible from afar.</summary>
@@ -96,6 +109,41 @@ namespace LastFleet.Inspection
             {
                 lines.Add(InspectionTexts.StationAttitudeUnknown);
             }
+        }
+
+        void DescribeDocking(List<GameText> lines)
+        {
+            _docking.CollectAssignedShips(_station, _assigned);
+            lines.Add(StationTexts.PortsInUse.Format(("used", _assigned.Count), ("total", _station.DockingPortCount)));
+            foreach (ShipAgent ship in _assigned)
+            {
+                if (ship.TryGetComponent(out StationDocking docking))
+                {
+                    lines.Add(StationTexts.DockedShipLine.Format(("ship", ship.DisplayName), ("state", StationTexts.DockingStates.For(docking.State))));
+                }
+            }
+        }
+
+        /// <summary>Selected small ships dock if there are any; otherwise a free ship is picked, scouts first.</summary>
+        GameText Dock()
+        {
+            _selectedSmallShips.Clear();
+            foreach (ShipAgent ship in _selectedShips())
+            {
+                if (!ship.IsCapital)
+                {
+                    _selectedSmallShips.Add(ship);
+                }
+            }
+            if (_selectedSmallShips.Count > 0)
+            {
+                _docking.RequestDocking(_zone, _station, _selectedSmallShips);
+            }
+            else
+            {
+                _docking.RequestDocking(_zone, _station);
+            }
+            return null;
         }
 
         GameText Hail()

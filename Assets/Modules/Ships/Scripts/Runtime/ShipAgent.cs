@@ -41,6 +41,7 @@ namespace LastFleet.Ships
         ZoneView _zone;
         Hangar _dockedIn;
         ShipOrder _currentOrder;
+        ShipOrder? _departure;
         int _jumpTargetZoneIndex = -1;
 
         /// <summary>Technical class identifier; players see <see cref="ClassDisplayName"/>.</summary>
@@ -152,12 +153,37 @@ namespace LastFleet.Ships
                 return;
             }
 
+            // A ship held at a docking port first backs away from it, then carries out the order.
+            if (_departure.HasValue && !IsDocked)
+            {
+                _orders.Enqueue(_departure.Value);
+                _departure = null;
+            }
+
             _orders.Enqueue(order);
             if (IsDocked)
             {
                 // A docked ship launches to carry out its orders.
                 _dockedIn.RequestLaunch(this);
             }
+        }
+
+        /// <summary>
+        /// A maneuver the ship flies before its next order, e.g. backing away from a docking port on
+        /// thrusters before it turns and burns. The next order uses it up.
+        /// </summary>
+        public void SetDepartureManeuver(ShipOrder maneuver)
+        {
+            if (maneuver.Kind != ShipOrderKind.Maneuver)
+            {
+                throw new ArgumentException("A departure must be a maneuver.", nameof(maneuver));
+            }
+            _departure = maneuver;
+        }
+
+        public void ClearDepartureManeuver()
+        {
+            _departure = null;
         }
 
         internal void AssignSerialNumber(int serialNumber)
@@ -282,7 +308,15 @@ namespace LastFleet.Ships
                 return;
             }
 
-            _motion.SetDestination(ToPlane(OrderLocalPoint(order, _zone)));
+            Vector2 destination = ToPlane(OrderLocalPoint(order, _zone));
+            if (order.Kind == ShipOrderKind.Maneuver)
+            {
+                _motion.SetPreciseDestination(destination, order.MaximumSpeed, order.HeadingDegrees);
+            }
+            else
+            {
+                _motion.SetDestination(destination);
+            }
             Activity = order.TargetsHangar ? ShipActivity.Docking : ShipActivity.Moving;
         }
 
@@ -381,7 +415,7 @@ namespace LastFleet.Ships
 
         static int OrderZoneIndex(ShipOrder order)
         {
-            if (order.Kind == ShipOrderKind.Move)
+            if (order.Kind == ShipOrderKind.Move || order.Kind == ShipOrderKind.Maneuver)
             {
                 return order.ZoneIndex;
             }
@@ -390,7 +424,7 @@ namespace LastFleet.Ships
 
         static Vector3 OrderLocalPoint(ShipOrder order, ZoneView zone)
         {
-            return order.Kind == ShipOrderKind.Move ? order.LocalPoint : zone.transform.InverseTransformPoint(order.Hangar.BayWorldPosition);
+            return order.TargetsHangar ? zone.transform.InverseTransformPoint(order.Hangar.BayWorldPosition) : order.LocalPoint;
         }
 
         /// <summary>Direction on the zone plane from the current zone towards another zone of the system.</summary>

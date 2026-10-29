@@ -2,6 +2,7 @@
     "name": "LastFleet.ShipControl",
     "rootNamespace": "LastFleet.ShipControl",
     "references": [
+        "LastFleet.Stations",
         "LastFleet.Shared",
         "LastFleet.Ships",
         "LastFleet.Mining",

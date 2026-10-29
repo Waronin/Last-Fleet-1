@@ -182,6 +182,7 @@ MonoBehaviour:
   _mining: {fileID: 1722081849}
   _scouting: {fileID: 1722081848}
   _population: {fileID: 1722081855}
+  _docking: {fileID: 1722081857}
   _inspection: {fileID: 566518442}
   _shipPanel: {fileID: 550235170}
   _refineryPrefab: {fileID: 5142392371226416469, guid: c71e6b935d877254fb6b91100578858b, type: 3}
@@ -644,6 +645,7 @@ GameObject:
   - component: {fileID: 1722081848}
   - component: {fileID: 1722081855}
   - component: {fileID: 1722081856}
+  - component: {fileID: 1722081857}
   m_Layer: 0
   m_Name: Ships
   m_TagString: Untagged
@@ -720,6 +722,7 @@ MonoBehaviour:
   _camera: {fileID: 1736073903}
   _registry: {fileID: 1722081853}
   _scouting: {fileID: 1722081848}
+  _docking: {fileID: 1722081857}
   _pickRadiusPixels: 18
   _selectionBoxColor: {r: 0.4, g: 0.8, b: 1, a: 0.25}
 --- !u!114 &1722081853
@@ -779,6 +782,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: LastFleet.People::LastFleet.People.CrewRecruitment
   _registry: {fileID: 1722081853}
   _secondsPerCrewMember: 10
+--- !u!114 &1722081857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1722081847}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db143b11eb43d7142855c7ec1b23c094, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.Stations::LastFleet.Stations.DockingService
+  _registry: {fileID: 1722081853}
 --- !u!1 &1736073902
 GameObject:
   m_ObjectHideFlags: 0

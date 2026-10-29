@@ -9,7 +9,7 @@ namespace LastFleet.Stations.Tests
 {
     /// <summary>
     /// Keeps the station prefabs in line with the station types the zone generator relies on: one
-    /// model per type, inside its footprint, with the declared number of reachable docking bays.
+    /// model per type, inside its footprint, with the declared number of reachable docking ports.
     /// </summary>
     public class StationPrefabTests
     {
@@ -44,19 +44,19 @@ namespace LastFleet.Stations.Tests
         }
 
         [Test]
-        public void EveryModel_HasItsDockingBaysOnThePlane_FacingOutward()
+        public void EveryModel_HasItsDockingPortsOnThePlane_FacingOutward()
         {
             foreach (StationView prefab in AllPrefabs())
             {
-                Assert.AreEqual(StationTypes.DockingBayCount(prefab.Type), prefab.DockingBays.Count, $"{prefab.Type} bay count");
-                foreach (Transform bay in prefab.DockingBays)
+                Assert.AreEqual(StationTypes.DockingPortCount(prefab.Type), prefab.DockingPorts.Count, $"{prefab.Type} port count");
+                foreach (Transform port in prefab.DockingPorts)
                 {
-                    Assert.IsNotNull(bay, $"{prefab.Type} has an empty bay slot.");
-                    Vector3 local = prefab.transform.InverseTransformPoint(bay.position);
-                    Vector3 forward = prefab.transform.InverseTransformDirection(bay.forward);
-                    Assert.AreEqual(0f, local.y, PlaneToleranceUnits, $"{prefab.Type} {bay.name} is off the plane.");
+                    Assert.IsNotNull(port, $"{prefab.Type} has an empty port slot.");
+                    Vector3 local = prefab.transform.InverseTransformPoint(port.position);
+                    Vector3 forward = prefab.transform.InverseTransformDirection(port.forward);
+                    Assert.AreEqual(0f, local.y, PlaneToleranceUnits, $"{prefab.Type} {port.name} is off the plane.");
                     Assert.Greater(Vector2.Dot(new Vector2(local.x, local.z), new Vector2(forward.x, forward.z)), 0f,
-                        $"{prefab.Type} {bay.name} faces into the station.");
+                        $"{prefab.Type} {port.name} faces into the station.");
                 }
             }
         }

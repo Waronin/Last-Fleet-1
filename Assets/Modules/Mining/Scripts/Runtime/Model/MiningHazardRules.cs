@@ -1,4 +1,4 @@
-using System;
+using LastFleet.Shared.Randomness;
 using LastFleet.Zones;
 
 namespace LastFleet.Mining
@@ -39,8 +39,7 @@ namespace LastFleet.Mining
                 DepositHazard.Radioactive => RadiationMeanSeconds,
                 _ => float.PositiveInfinity
             };
-            // Exponential waiting time, so the chance does not depend on the frame rate.
-            return float.IsPositiveInfinity(meanSeconds) ? 0f : 1f - (float)Math.Exp(-miningSeconds / meanSeconds);
+            return HazardTiming.ChanceWithin(meanSeconds, miningSeconds);
         }
 
         /// <summary>The event caused by this much mining, given a random roll in [0, 1).</summary>

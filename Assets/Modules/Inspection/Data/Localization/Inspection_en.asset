@@ -286,8 +286,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - rid: 6743102046643421291
-  - m_Id: 385606714208256
-    m_Localized: '{count:plural:{} docking bay|{} docking bays}'
+  - m_Id: 491644121591808
+    m_Localized: '{count:plural:{} docking port|{} docking ports}'
     m_Metadata:
       m_Items:
       - rid: 6743102046643421291
@@ -405,7 +405,7 @@ MonoBehaviour:
         - id: 330903606
         - id: 378056329474048
         - id: 385606701625344
-        - id: 385606714208256
+        - id: 491644121591808
         - id: 394656457764864
         - id: 394656487124992
         - id: 394656487124993

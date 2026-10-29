@@ -2,6 +2,7 @@ using LastFleet.Exploration;
 using LastFleet.Mining;
 using LastFleet.People;
 using LastFleet.Shared.Editor;
+using LastFleet.Stations;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -60,6 +61,7 @@ namespace LastFleet.Ships.Editor
         // Crew of small ships: a harvester needs a pilot and two for mining, a shuttle two pilots.
         const int HarvesterCrew = 3;
         const int ShuttleCrew = 2;
+        const float AirlockCollarHalfDepthUnits = 0.06f;
         static readonly int BaseColorId = Shader.PropertyToID("_BaseColor");
 
         // Industrial design language (GDD): angular, yellow-black warning colors, rust, warm orange engines.
@@ -127,6 +129,8 @@ namespace LastFleet.Ships.Editor
             AddDurability(root, HarvesterHull);
             AddFuel(root, HarvesterTank, HarvesterFuelPerKlick, HarvesterFuelPerAU);
             AddCrew(root, HarvesterCrew);
+            StationDocking harvesterDocking = root.AddComponent<StationDocking>();
+            EditorAssetUtility.SetReferences(harvesterDocking, ("_airlock", AddAirlock(model, new Vector3(0f, 0f, 1.0f), 0.18f)));
             root.AddComponent<HarvesterMining>();
             root.AddComponent<ShipScanner>();
             MiningAttachment attachment = root.AddComponent<MiningAttachment>();
@@ -300,6 +304,8 @@ namespace LastFleet.Ships.Editor
             AddDurability(root, ShuttleHull);
             AddFuel(root, ShuttleTank, ShuttleFuelPerKlick, ShuttleFuelPerAU);
             AddCrew(root, ShuttleCrew);
+            StationDocking shuttleDocking = root.AddComponent<StationDocking>();
+            EditorAssetUtility.SetReferences(shuttleDocking, ("_airlock", AddAirlock(root.transform, new Vector3(0f, 0f, 0.85f), 0.2f)));
             ShipScanner scanner = root.AddComponent<ShipScanner>();
             SerializedObject scannerData = new SerializedObject(scanner);
             EditorAssetUtility.FindProperty(scannerData, "_scanSeconds").floatValue = ShuttleScanSeconds;
@@ -402,6 +408,22 @@ namespace LastFleet.Ships.Editor
             EditorAssetUtility.FindProperty(serialized, "_fuelPerKlick").floatValue = fuelPerKlick;
             EditorAssetUtility.FindProperty(serialized, "_fuelPerAU").floatValue = fuelPerAU;
             serialized.ApplyModifiedPropertiesWithoutUndo();
+        }
+
+        /// <summary>
+        /// A lit collar at the bow and the airlock point just in front of it; the ship docks with this point
+        /// against a station's port, so the collar matches the port frames.
+        /// </summary>
+        static Transform AddAirlock(Transform parent, Vector3 localPosition, float radius)
+        {
+            Renderer collar = CreatePart(parent, PrimitiveType.Cylinder, "Airlock Collar", LoadOrCreateMaterial("HangarBay", UnlitShaderName, BayColor),
+                localPosition, new Vector3(radius * 2f, AirlockCollarHalfDepthUnits, radius * 2f));
+            collar.transform.localRotation = Quaternion.Euler(90f, 0f, 0f);
+
+            Transform airlock = new GameObject("Airlock").transform;
+            airlock.SetParent(parent, false);
+            airlock.localPosition = localPosition + Vector3.forward * AirlockCollarHalfDepthUnits;
+            return airlock;
         }
 
         static void AddCrew(GameObject root, int requiredCrew)

@@ -81,13 +81,13 @@ namespace LastFleet.Zones.Tests
         }
 
         [Test]
-        public void LargerTypes_HaveLargerFootprintsAndMoreBays()
+        public void LargerTypes_HaveLargerFootprintsAndMorePorts()
         {
             StationType[] bySize = { StationType.Outpost, StationType.Research, StationType.Industrial, StationType.Habitat };
             for (int i = 1; i < bySize.Length; i++)
             {
                 Assert.Greater(StationTypes.FootprintRadiusUnits(bySize[i]), StationTypes.FootprintRadiusUnits(bySize[i - 1]));
-                Assert.Greater(StationTypes.DockingBayCount(bySize[i]), StationTypes.DockingBayCount(bySize[i - 1]));
+                Assert.Greater(StationTypes.DockingPortCount(bySize[i]), StationTypes.DockingPortCount(bySize[i - 1]));
             }
         }
 

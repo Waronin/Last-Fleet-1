@@ -81,7 +81,7 @@ namespace LastFleet.Inspection
         public static readonly GameTextKey StationTypeLine = new GameTextKey(Table, "station.type");
 
         /// <summary>{count}</summary>
-        public static readonly GameTextKey StationBays = new GameTextKey(Table, "station.bays");
+        public static readonly GameTextKey StationPorts = new GameTextKey(Table, "station.ports");
 
         public static readonly GameTextKey StationUnscanned = new GameTextKey(Table, "station.unscanned");
 

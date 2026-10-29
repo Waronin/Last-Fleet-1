@@ -4,6 +4,8 @@
     "references": [
         "LastFleet.Stations",
         "LastFleet.Zones",
+        "LastFleet.Ships",
+        "LastFleet.Shared",
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner"
     ],

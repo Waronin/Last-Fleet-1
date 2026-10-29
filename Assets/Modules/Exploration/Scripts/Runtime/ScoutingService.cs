@@ -115,7 +115,8 @@ namespace LastFleet.Exploration
             return true;
         }
 
-        static float ScoutCost(ShipAgent ship, float travelCost)
+        /// <summary>Travel cost with scouts first: any non-scout costs more than every scout in the system.</summary>
+        public static float ScoutCost(ShipAgent ship, float travelCost)
         {
             return ship.TryGetComponent(out ShipScanner scanner) && scanner.IsScout ? travelCost : travelCost + NonScoutPenaltyUnits;
         }

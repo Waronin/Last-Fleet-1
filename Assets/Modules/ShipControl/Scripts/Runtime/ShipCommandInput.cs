@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using LastFleet.Exploration;
 using LastFleet.Mining;
 using LastFleet.Shared.Text;
+using LastFleet.Stations;
 using LastFleet.Ships;
 using LastFleet.Zones;
 using UnityEngine;
@@ -25,6 +26,7 @@ namespace LastFleet.ShipControl
         [SerializeField] Camera _camera;
         [SerializeField] ShipRegistry _registry;
         [SerializeField] ScoutingService _scouting;
+        [SerializeField] DockingService _docking;
         [SerializeField, Min(1f)] float _pickRadiusPixels = 18f;
         [SerializeField] Color _selectionBoxColor = new Color(0.4f, 0.8f, 1f, 0.25f);
 
@@ -57,9 +59,9 @@ namespace LastFleet.ShipControl
 
         void Awake()
         {
-            if (_camera == null || _registry == null || _scouting == null)
+            if (_camera == null || _registry == null || _scouting == null || _docking == null)
             {
-                Debug.LogError("ShipCommandInput needs the camera, the ship registry and the scouting service.", this);
+                Debug.LogError("ShipCommandInput needs the camera, the ship registry, the scouting and the docking service.", this);
                 enabled = false;
             }
         }
@@ -190,13 +192,13 @@ namespace LastFleet.ShipControl
             }
 
             // Context command (GDD): right click on a deposit sends harvesters mining or scouts scanning, on
-            // an unscanned station scouts scan it; otherwise it is a move.
+            // an unscanned station scouts scan it, otherwise small ships dock at it; elsewhere it is a move.
             if (_activeZone.TryPickDeposit(_camera, pointer, _pickRadiusPixels, out ResourceDeposit deposit) &&
                 (TryOrderMining(deposit) || TryOrderScan(deposit)))
             {
                 return;
             }
-            if (_activeZone.TryPickStation(_camera, pointer, out ZoneStation station) && TryOrderScan(station))
+            if (_activeZone.TryPickStation(_camera, pointer, out ZoneStation station) && (TryOrderScan(station) || TryOrderDocking(station)))
             {
                 return;
             }
@@ -238,6 +240,26 @@ namespace LastFleet.ShipControl
                 ship.Order(ShipOrder.MoveTo(_activeZone.Record.PointOfInterestIndex, deposit.LocalPosition), false);
             }
             Notice?.Invoke(ShipControlTexts.HarvestersMining.Format(("count", started), ("withoutSlot", harvesters - started)));
+            return true;
+        }
+
+        /// <summary>Selected small ships dock at the station, one per free bay.</summary>
+        bool TryOrderDocking(ZoneStation station)
+        {
+            _ordered.Clear();
+            foreach (ShipAgent ship in _selection.Ships)
+            {
+                if (!ship.IsCapital)
+                {
+                    _ordered.Add(ship);
+                }
+            }
+            if (_ordered.Count == 0)
+            {
+                return false;
+            }
+            // The click is handled even if no bay is free: the service says so, and nobody flies into the hull.
+            _docking.RequestDocking(_activeZone, station, _ordered);
             return true;
         }
 

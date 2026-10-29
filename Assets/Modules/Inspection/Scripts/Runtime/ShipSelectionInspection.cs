@@ -4,6 +4,7 @@ using LastFleet.People;
 using LastFleet.Shared.Text;
 using LastFleet.ShipControl;
 using LastFleet.Ships;
+using LastFleet.Stations;
 using LastFleet.Zones;
 
 namespace LastFleet.Inspection
@@ -153,6 +154,10 @@ namespace LastFleet.Inspection
 
         static GameText Task(ShipAgent ship)
         {
+            if (ship.TryGetComponent(out StationDocking docking) && docking.State != DockingState.Inactive)
+            {
+                return StationTexts.DockingTask.Format(("state", StationTexts.DockingStates.For(docking.State)), ("station", docking.Station.Name));
+            }
             if (ship.TryGetComponent(out HarvesterMining mining) && mining.State != MiningState.Inactive)
             {
                 return InspectionTexts.MiningTask.Format(("state", MiningTexts.States.For(mining.State)));

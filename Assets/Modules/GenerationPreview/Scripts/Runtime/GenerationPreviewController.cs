@@ -9,6 +9,7 @@ using LastFleet.People;
 using LastFleet.Shared.Text;
 using LastFleet.ShipControl;
 using LastFleet.Ships;
+using LastFleet.Stations;
 using LastFleet.Space;
 using LastFleet.StarSystem;
 using LastFleet.Zones;
@@ -63,6 +64,7 @@ namespace LastFleet.GenerationPreview
         [SerializeField] MiningCoordinator _mining;
         [SerializeField] ScoutingService _scouting;
         [SerializeField] FleetPopulation _population;
+        [SerializeField] DockingService _docking;
         [SerializeField] InspectionPanel _inspection;
         [SerializeField] InspectionPanel _shipPanel;
         [Tooltip("Spawned on arrival in a system until fleet jumps carry the fleet along.")]
@@ -100,7 +102,7 @@ namespace LastFleet.GenerationPreview
         {
             if (_galaxyMapView == null || _starSystemView == null || _zoneWorld == null || _environment == null ||
                 _cameraRig == null || _shipRegistry == null || _shipInput == null || _groupInput == null ||
-                _hangarInput == null || _mining == null || _scouting == null || _population == null || _inspection == null || _shipPanel == null ||
+                _hangarInput == null || _mining == null || _scouting == null || _population == null || _docking == null || _inspection == null || _shipPanel == null ||
                 _refineryPrefab == null || _linerPrefab == null || _harvesterPrefab == null || _shuttlePrefab == null)
             {
                 Debug.LogError("GenerationPreviewController is missing a scene reference.", this);
@@ -118,6 +120,7 @@ namespace LastFleet.GenerationPreview
             _mining.Notice += ShowNotice;
             _scouting.Notice += ShowNotice;
             _population.Notice += ShowNotice;
+            _docking.Notice += ShowNotice;
             _inspection.Notice += ShowNotice;
             _shipInput.DepositClicked += InspectDeposit;
             _shipInput.StationClicked += InspectStation;
@@ -149,6 +152,7 @@ namespace LastFleet.GenerationPreview
             _mining.Notice -= ShowNotice;
             _scouting.Notice -= ShowNotice;
             _population.Notice -= ShowNotice;
+            _docking.Notice -= ShowNotice;
             _inspection.Notice -= ShowNotice;
             _shipInput.DepositClicked -= InspectDeposit;
             _shipInput.StationClicked -= InspectStation;
@@ -165,7 +169,7 @@ namespace LastFleet.GenerationPreview
 
         void InspectStation(ZoneView zone, ZoneStation station)
         {
-            _inspection.Show(new StationInspection(zone, station, _scouting, _shipRegistry));
+            _inspection.Show(new StationInspection(zone, station, _scouting, _shipRegistry, _docking, () => Selection.Ships));
         }
 
         void InspectPointOfInterest(int index)

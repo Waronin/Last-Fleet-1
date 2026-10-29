@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: StationPrefabs
   m_EditorClassIdentifier: LastFleet.Stations::LastFleet.Stations.StationPrefabCatalog
   _prefabs:
-  - {fileID: 2514773488598824499, guid: 9b6f4d01201220842a183f87ece1bfb1, type: 3}
-  - {fileID: 687548253086858886, guid: b4075f6b1291db1499c7eaa5e8a64687, type: 3}
-  - {fileID: 852180791181487118, guid: 7e5ca2a93fd166c479fea8838998488b, type: 3}
-  - {fileID: 2584940984935869821, guid: 83d7a14ba2e9ff14a896adbe61714191, type: 3}
+  - {fileID: 3252268794247298908, guid: 9b6f4d01201220842a183f87ece1bfb1, type: 3}
+  - {fileID: 3834968396532246272, guid: b4075f6b1291db1499c7eaa5e8a64687, type: 3}
+  - {fileID: 2766535785462023669, guid: 7e5ca2a93fd166c479fea8838998488b, type: 3}
+  - {fileID: 2529275778170545278, guid: 83d7a14ba2e9ff14a896adbe61714191, type: 3}

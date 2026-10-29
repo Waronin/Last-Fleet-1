@@ -3,7 +3,11 @@
     "rootNamespace": "LastFleet.Stations",
     "references": [
         "LastFleet.Shared",
-        "LastFleet.Zones"
+        "LastFleet.Zones",
+        "LastFleet.Ships",
+        "LastFleet.People",
+        "LastFleet.Exploration",
+        "LastFleet.StarSystem"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

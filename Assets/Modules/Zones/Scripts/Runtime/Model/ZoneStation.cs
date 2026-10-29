@@ -5,7 +5,7 @@ namespace LastFleet.Zones
 {
     /// <summary>
     /// A station inside a station zone. It lies on the zone plane, where ships fly, so its docking
-    /// bays can be reached. What it really is (<see cref="Profile"/>) stays hidden; a scan reveals
+    /// ports can be reached. What it really is (<see cref="Profile"/>) stays hidden; a scan reveals
     /// part of it (<see cref="ScanReport"/>), a hail its attitude (<see cref="HailResponse"/>) and docking
     /// the rest. Scan and hail results are run state and stay when the fleet leaves the zone.
     /// </summary>
@@ -29,7 +29,7 @@ namespace LastFleet.Zones
         public float HeadingDegrees { get; }
         public StationProfile Profile { get; }
         public float FootprintRadiusUnits => StationTypes.FootprintRadiusUnits(Type);
-        public int DockingBayCount => StationTypes.DockingBayCount(Type);
+        public int DockingPortCount => StationTypes.DockingPortCount(Type);
 
         /// <summary>Null until the station has been scanned.</summary>
         public StationScanReport ScanReport { get; private set; }

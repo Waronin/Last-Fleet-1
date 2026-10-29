@@ -11,7 +11,7 @@ namespace LastFleet.Stations.Editor
     /// Creates the blockout station prefabs at their real size and the catalog that maps types to
     /// them. Stations are 3–6 times the size of capital ships (1 unit = 100 m): outpost about 3 km,
     /// research station 5 km, industrial station 7 km, habitat ring 9 km. Every model stays inside
-    /// its type's footprint, and every docking bay sits on the zone plane at the end of an arm.
+    /// its type's footprint, and every docking port sits on the zone plane at the end of an arm.
     /// Menu: Last Fleet / Rebuild Station Prefabs.
     /// </summary>
     public static class StationPrefabBuilder
@@ -24,7 +24,8 @@ namespace LastFleet.Stations.Editor
         const string LitShaderName = "Universal Render Pipeline/Lit";
         const string UnlitShaderName = "Universal Render Pipeline/Unlit";
         const float ArmThicknessUnits = 1.2f;
-        const float BayFrameSizeUnits = 2.4f;
+        const float PortFrameSizeUnits = 2.4f;
+        const float PortFrameDepthUnits = 0.3f;
         static readonly int BaseColorId = Shader.PropertyToID("_BaseColor");
 
         static readonly Color HullColor = new Color(0.62f, 0.64f, 0.68f);
@@ -33,7 +34,7 @@ namespace LastFleet.Stations.Editor
         static readonly Color RustColor = new Color(0.5f, 0.3f, 0.2f);
         static readonly Color WarningColor = new Color(0.9f, 0.75f, 0.1f);
         static readonly Color WindowColor = new Color(2f, 1.8f, 1.3f);
-        static readonly Color BayColor = new Color(0.3f, 1.5f, 2f);
+        static readonly Color PortColor = new Color(0.3f, 1.5f, 2f);
 
         [MenuItem("Last Fleet/Rebuild Station Prefabs")]
         public static void RebuildAll()
@@ -86,17 +87,17 @@ namespace LastFleet.Stations.Editor
             }
 
             GameObject root = new GameObject($"{type} Station");
-            List<Transform> bays = new List<Transform>();
-            build(root.transform, bays);
+            List<Transform> ports = new List<Transform>();
+            build(root.transform, ports);
 
             StationView view = root.AddComponent<StationView>();
             SerializedObject serialized = new SerializedObject(view);
             EditorAssetUtility.FindProperty(serialized, "_type").enumValueIndex = (int)type;
-            SerializedProperty bayList = EditorAssetUtility.FindProperty(serialized, "_dockingBays");
-            bayList.arraySize = bays.Count;
-            for (int i = 0; i < bays.Count; i++)
+            SerializedProperty portList = EditorAssetUtility.FindProperty(serialized, "_dockingPorts");
+            portList.arraySize = ports.Count;
+            for (int i = 0; i < ports.Count; i++)
             {
-                bayList.GetArrayElementAtIndex(i).objectReferenceValue = bays[i];
+                portList.GetArrayElementAtIndex(i).objectReferenceValue = ports[i];
             }
             serialized.ApplyModifiedPropertiesWithoutUndo();
 
@@ -112,7 +113,7 @@ namespace LastFleet.Stations.Editor
         }
 
         /// <summary>About 3 km: a squat hub with a dome, an antenna, two solar wings and two docking arms.</summary>
-        static void BuildOutpost(Transform root, List<Transform> bays)
+        static void BuildOutpost(Transform root, List<Transform> ports)
         {
             CreatePart(root, PrimitiveType.Cylinder, "Hub", Hull(), new Vector3(0f, 0f, 0f), new Vector3(10f, 1.5f, 10f));
             CreatePart(root, PrimitiveType.Sphere, "Dome", Dark(), new Vector3(0f, 1.5f, 0f), new Vector3(7f, 3.5f, 7f));
@@ -123,12 +124,12 @@ namespace LastFleet.Stations.Editor
                 CreatePart(root, PrimitiveType.Cube, side < 0f ? "Solar Port" : "Solar Starboard", Solar(),
                     new Vector3(side * 10f, 0.5f, 0f), new Vector3(9f, 0.2f, 4f));
             }
-            AddDockingArm(root, bays, 0f, 5f, 7f);
-            AddDockingArm(root, bays, 180f, 5f, 7f);
+            AddDockingArm(root, ports, 0f, 5f, 7f);
+            AddDockingArm(root, ports, 180f, 5f, 7f);
         }
 
         /// <summary>About 5 km: a central sphere, a segmented ring on three spokes and three docking arms.</summary>
-        static void BuildResearchStation(Transform root, List<Transform> bays)
+        static void BuildResearchStation(Transform root, List<Transform> ports)
         {
             const float ringRadius = 20f;
             CreatePart(root, PrimitiveType.Sphere, "Core", Hull(), Vector3.zero, Vector3.one * 14f);
@@ -138,12 +139,12 @@ namespace LastFleet.Stations.Editor
             {
                 float angle = i * 120f + 60f;
                 CreateSpoke(root, $"Spoke {i + 1}", angle, 6.5f, ringRadius - 1.5f, 1.2f, Dark());
-                AddDockingArm(root, bays, i * 120f, ringRadius + 1.5f, 2f);
+                AddDockingArm(root, ports, i * 120f, ringRadius + 1.5f, 2f);
             }
         }
 
         /// <summary>About 7 km: a long truss with tanks, rusty modules, warning stripes and four docking arms.</summary>
-        static void BuildIndustrialStation(Transform root, List<Transform> bays)
+        static void BuildIndustrialStation(Transform root, List<Transform> ports)
         {
             Material rust = LoadOrCreateMaterial("StationRust", LitShaderName, RustColor);
             Material warning = LoadOrCreateMaterial("StationWarning", LitShaderName, WarningColor);
@@ -160,13 +161,13 @@ namespace LastFleet.Stations.Editor
             CreatePart(root, PrimitiveType.Cube, "Control Windows", Windows(), new Vector3(20f, 3.5f, 2.55f), new Vector3(5f, 0.6f, 0.1f));
             foreach (float x in new[] { -16f, 16f })
             {
-                AddDockingArm(root, bays, 0f, 4f, 6f, new Vector3(x, 0f, 0f));
-                AddDockingArm(root, bays, 180f, 4f, 6f, new Vector3(x, 0f, 0f));
+                AddDockingArm(root, ports, 0f, 4f, 6f, new Vector3(x, 0f, 0f));
+                AddDockingArm(root, ports, 180f, 4f, 6f, new Vector3(x, 0f, 0f));
             }
         }
 
         /// <summary>About 9 km: a lit habitat ring on four spokes around a tall hub, with six docking arms.</summary>
-        static void BuildHabitatRing(Transform root, List<Transform> bays)
+        static void BuildHabitatRing(Transform root, List<Transform> ports)
         {
             const float ringRadius = 40f;
             CreatePart(root, PrimitiveType.Cylinder, "Hub", Hull(), Vector3.zero, new Vector3(12f, 8f, 12f));
@@ -178,7 +179,7 @@ namespace LastFleet.Stations.Editor
             }
             for (int i = 0; i < 6; i++)
             {
-                AddDockingArm(root, bays, i * 60f, ringRadius + 2.5f, 1.5f);
+                AddDockingArm(root, ports, i * 60f, ringRadius + 2.5f, 1.5f);
             }
         }
 
@@ -209,31 +210,32 @@ namespace LastFleet.Stations.Editor
         }
 
         /// <summary>
-        /// An arm reaching out on the zone plane with a lit bay frame at its tip. The bay transform sits
-        /// just outside the frame with its forward axis pointing away from the station.
+        /// An arm reaching out on the zone plane with a lit port frame at its tip. The port transform sits
+        /// on the frame's outer face, where a ship's airlock meets it, with its forward axis pointing away
+        /// from the station.
         /// </summary>
-        static void AddDockingArm(Transform root, List<Transform> bays, float angleDegrees, float startRadius, float length)
+        static void AddDockingArm(Transform root, List<Transform> ports, float angleDegrees, float startRadius, float length)
         {
-            AddDockingArm(root, bays, angleDegrees, startRadius, length, Vector3.zero);
+            AddDockingArm(root, ports, angleDegrees, startRadius, length, Vector3.zero);
         }
 
-        static void AddDockingArm(Transform root, List<Transform> bays, float angleDegrees, float startRadius, float length, Vector3 origin)
+        static void AddDockingArm(Transform root, List<Transform> ports, float angleDegrees, float startRadius, float length, Vector3 origin)
         {
             Quaternion rotation = Quaternion.Euler(0f, angleDegrees, 0f);
             Vector3 outward = rotation * Vector3.forward;
-            int number = bays.Count + 1;
+            int number = ports.Count + 1;
             Renderer arm = CreatePart(root, PrimitiveType.Cube, $"Docking Arm {number}", Dark(),
                 origin + outward * (startRadius + length * 0.5f), new Vector3(ArmThicknessUnits, ArmThicknessUnits, length));
             arm.transform.localRotation = rotation;
-            Renderer frame = CreatePart(root, PrimitiveType.Cube, $"Bay Frame {number}", Bay(),
-                origin + outward * (startRadius + length), new Vector3(BayFrameSizeUnits, BayFrameSizeUnits * 0.5f, 0.3f));
+            Renderer frame = CreatePart(root, PrimitiveType.Cube, $"Port Frame {number}", Port(),
+                origin + outward * (startRadius + length), new Vector3(PortFrameSizeUnits, PortFrameSizeUnits * 0.5f, PortFrameDepthUnits));
             frame.transform.localRotation = rotation;
 
-            Transform bay = new GameObject($"Docking Bay {number}").transform;
-            bay.SetParent(root, false);
-            bay.localPosition = origin + outward * (startRadius + length + 0.5f);
-            bay.localRotation = rotation;
-            bays.Add(bay);
+            Transform port = new GameObject($"Docking Port {number}").transform;
+            port.SetParent(root, false);
+            port.localPosition = origin + outward * (startRadius + length + PortFrameDepthUnits * 0.5f);
+            port.localRotation = rotation;
+            ports.Add(port);
         }
 
         static Material Hull()
@@ -256,9 +258,9 @@ namespace LastFleet.Stations.Editor
             return LoadOrCreateMaterial("StationWindows", UnlitShaderName, WindowColor);
         }
 
-        static Material Bay()
+        static Material Port()
         {
-            return LoadOrCreateMaterial("StationBay", UnlitShaderName, BayColor);
+            return LoadOrCreateMaterial("StationPort", UnlitShaderName, PortColor);
         }
 
         static Material LoadOrCreateMaterial(string name, string shaderName, Color color)

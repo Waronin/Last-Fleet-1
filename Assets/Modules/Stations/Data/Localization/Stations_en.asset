@@ -1,0 +1,111 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Stations_en
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: bcc5611870a923142947d23a2eb5aefc, type: 2}
+  m_Metadata:
+    m_Items:
+    - rid: 6743102069811707982
+  m_TableData:
+  - m_Id: 746139648
+    m_Localized: not docked
+    m_Metadata:
+      m_Items: []
+  - m_Id: 775499776
+    m_Localized: approaching
+    m_Metadata:
+      m_Items: []
+  - m_Id: 779694080
+    m_Localized: docked
+    m_Metadata:
+      m_Items: []
+  - m_Id: 779694081
+    m_Localized: '{ship} is on its way to dock at {station}.'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707982
+  - m_Id: 783888384
+    m_Localized: '{ship} docked at {station}.'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707982
+  - m_Id: 5783475007488
+    m_Localized: 'Docking ports in use: {used}/{total}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707982
+  - m_Id: 783888386
+    m_Localized: No ship available to dock.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 783888387
+    m_Localized: '{station} captured {ship}: {count:plural:{} person|{} people} aboard are lost.'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707982
+  - m_Id: 783888388
+    m_Localized: toxic atmosphere
+    m_Metadata:
+      m_Items: []
+  - m_Id: 783888389
+    m_Localized: station radiation
+    m_Metadata:
+      m_Items: []
+  - m_Id: 783888390
+    m_Localized: attack by the station crew
+    m_Metadata:
+      m_Items: []
+  - m_Id: 783888391
+    m_Localized: '{state} at {station}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707982
+  - m_Id: 5783466618880
+    m_Localized: '{station} has no free docking port.'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707982
+  - m_Id: 783888393
+    m_Localized: '  {ship}: {state}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707982
+  - m_Id: 783888394
+    m_Localized: Dock
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5783424675840
+    m_Localized: connecting
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5783475007489
+    m_Localized: All docking ports are taken.
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 6743102069811707982
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 
+        m_SharedEntries:
+        - id: 779694081
+        - id: 783888384
+        - id: 5783475007488
+        - id: 783888387
+        - id: 783888391
+        - id: 5783466618880
+        - id: 783888393

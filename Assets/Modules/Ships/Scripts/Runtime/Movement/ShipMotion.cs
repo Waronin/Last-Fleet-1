@@ -35,9 +35,20 @@ namespace LastFleet.Ships
     {
         const float SnapSpeedFactor = 0.25f;
 
+        // Precise maneuvers settle within about a meter, at a crawl and on their heading.
+        const float PreciseArrivalToleranceUnits = 0.01f;
+        const float PreciseArrivalSpeed = 0.05f;
+        const float PreciseHeadingToleranceDegrees = 0.1f;
+
+        /// <summary>A precise approach starts slowing down this far out (about 100 m), so the touch is soft.</summary>
+        const float PreciseBrakingDistanceUnits = 1f;
+
         readonly ShipMotionSettings _settings;
         Vector2 _destination;
         Vector2 _courseDirection;
+        bool _isPrecise;
+        float _preciseMaximumSpeed;
+        float _preciseHeadingDegrees;
 
         public ShipMotion(ShipMotionSettings settings, Vector2 position, float headingDegrees)
         {
@@ -67,6 +78,7 @@ namespace LastFleet.Ships
 
         public void SetDestination(Vector2 destination)
         {
+            _isPrecise = false;
             _destination = destination;
             HasArrived = false;
             float distance = (destination - Position).magnitude;
@@ -74,6 +86,26 @@ namespace LastFleet.Ships
             Phase = thrustersSuffice || !MainDriveAvailable
                 ? ShipMotionPhase.Maneuvering
                 : ShipMotionPhase.Aligning;
+        }
+
+        /// <summary>
+        /// Creeps to a destination on thrusters only, no faster than the given speed, while turning to and
+        /// holding a heading, e.g. the last meters to a docking port or backing away from it. The ship has
+        /// arrived once it rests at the destination with that heading.
+        /// </summary>
+        public void SetPreciseDestination(Vector2 destination, float maximumSpeed, float headingDegrees)
+        {
+            if (maximumSpeed <= 0f)
+            {
+                throw new ArgumentOutOfRangeException(nameof(maximumSpeed), "A maneuver needs a positive speed.");
+            }
+
+            _destination = destination;
+            HasArrived = false;
+            _isPrecise = true;
+            _preciseMaximumSpeed = Mathf.Min(maximumSpeed, _settings.ThrusterMaximumSpeed);
+            _preciseHeadingDegrees = headingDegrees;
+            Phase = ShipMotionPhase.Maneuvering;
         }
 
         /// <summary>
@@ -103,6 +135,7 @@ namespace LastFleet.Ships
             }
 
             _courseDirection = direction.normalized;
+            _isPrecise = false;
             HasArrived = false;
             Phase = ShipMotionPhase.Cruising;
         }
@@ -249,24 +282,50 @@ namespace LastFleet.Ships
         {
             Vector2 toDestination = _destination - Position;
             float distance = toDestination.magnitude;
-            if (distance <= _settings.ArrivalToleranceUnits && Speed <= _settings.ThrusterMaximumSpeed * SnapSpeedFactor)
+            if (_isPrecise)
+            {
+                RotateTowards(_preciseHeadingDegrees, deltaTime);
+            }
+            if (HasReachedDestination(distance))
             {
                 Position = _destination;
                 Velocity = Vector2.zero;
+                if (_isPrecise)
+                {
+                    HeadingDegrees = _preciseHeadingDegrees;
+                }
                 Phase = ShipMotionPhase.Idle;
                 HasArrived = true;
                 return;
             }
-            if (distance > _settings.ManeuverRangeUnits * 2f && MainDriveAvailable)
+            // A precise maneuver stays on thrusters however far it goes.
+            if (distance > _settings.ManeuverRangeUnits * 2f && MainDriveAvailable && !_isPrecise)
             {
                 Phase = ShipMotionPhase.Aligning;
                 return;
             }
 
-            // Approach speed that the thrusters can still cancel before reaching the destination.
-            float approachSpeed = Mathf.Min(_settings.ThrusterMaximumSpeed, Mathf.Sqrt(_settings.ThrusterAcceleration * distance));
+            // Approach speed that the thrusters can still cancel before reaching the destination. A precise
+            // maneuver brakes gently all the way down to rest, so the last meters are a soft touch.
+            float approachSpeed = _isPrecise
+                ? _preciseMaximumSpeed * Mathf.Sqrt(Mathf.Min(1f, distance / PreciseBrakingDistanceUnits))
+                : Mathf.Min(_settings.ThrusterMaximumSpeed, Mathf.Sqrt(_settings.ThrusterAcceleration * distance));
             Vector2 desiredVelocity = distance > 1e-6f ? toDestination / distance * approachSpeed : Vector2.zero;
             ApplyThrusters(desiredVelocity, deltaTime);
+        }
+
+        /// <summary>
+        /// Normal moves snap within the arrival tolerance; a precise maneuver only once it practically
+        /// rests on the destination with its heading, so it never visibly jumps the last meters.
+        /// </summary>
+        bool HasReachedDestination(float distance)
+        {
+            if (!_isPrecise)
+            {
+                return distance <= _settings.ArrivalToleranceUnits && Speed <= _settings.ThrusterMaximumSpeed * SnapSpeedFactor;
+            }
+            return distance <= PreciseArrivalToleranceUnits && Speed <= PreciseArrivalSpeed &&
+                   Mathf.Abs(Mathf.DeltaAngle(HeadingDegrees, _preciseHeadingDegrees)) <= PreciseHeadingToleranceDegrees;
         }
 
         void StepCruising(float deltaTime)

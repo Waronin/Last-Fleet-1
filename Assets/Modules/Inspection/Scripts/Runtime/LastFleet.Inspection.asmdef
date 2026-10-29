@@ -2,6 +2,7 @@
     "name": "LastFleet.Inspection",
     "rootNamespace": "LastFleet.Inspection",
     "references": [
+        "LastFleet.Stations",
         "LastFleet.People",
         "LastFleet.Localization",
         "LastFleet.Shared",

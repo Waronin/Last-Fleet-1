@@ -5,6 +5,7 @@ using LastFleet.Galaxy;
 using LastFleet.Inspection;
 using LastFleet.Mining;
 using LastFleet.People;
+using LastFleet.Stations;
 using LastFleet.Stations.Editor;
 using LastFleet.Shared.Editor;
 using LastFleet.ShipControl;
@@ -89,7 +90,9 @@ namespace LastFleet.GenerationPreview.Editor
             EditorAssetUtility.SetReferences(mining, ("_registry", shipRegistry));
             ScoutingService scouting = shipsObject.AddComponent<ScoutingService>();
             EditorAssetUtility.SetReferences(scouting, ("_registry", shipRegistry));
-            EditorAssetUtility.SetReferences(shipInput, ("_scouting", scouting));
+            DockingService docking = shipsObject.AddComponent<DockingService>();
+            EditorAssetUtility.SetReferences(docking, ("_registry", shipRegistry));
+            EditorAssetUtility.SetReferences(shipInput, ("_scouting", scouting), ("_docking", docking));
             FleetPopulation population = shipsObject.AddComponent<FleetPopulation>();
             EditorAssetUtility.SetReferences(population, ("_registry", shipRegistry));
             CrewRecruitment recruitment = shipsObject.AddComponent<CrewRecruitment>();
@@ -112,7 +115,7 @@ namespace LastFleet.GenerationPreview.Editor
                 ("_galaxyMapView", mapView), ("_starSystemView", systemView), ("_zoneWorld", zoneWorld),
                 ("_environment", environment), ("_cameraRig", cameraRig), ("_shipRegistry", shipRegistry),
                 ("_shipInput", shipInput), ("_groupInput", groupInput), ("_hangarInput", hangarInput), ("_mining", mining),
-                ("_scouting", scouting), ("_population", population), ("_inspection", inspection), ("_shipPanel", shipPanel),
+                ("_scouting", scouting), ("_population", population), ("_docking", docking), ("_inspection", inspection), ("_shipPanel", shipPanel),
                 ("_refineryPrefab", ShipPrefabBuilder.LoadOrCreateRefinery()),
                 ("_linerPrefab", ShipPrefabBuilder.LoadOrCreateLiner()),
                 ("_shuttlePrefab", ShipPrefabBuilder.LoadOrCreateShuttle()),
