@@ -17,12 +17,20 @@ namespace LastFleet.Ships
         /// Creep to a point on thrusters only, slowly and with a fixed heading, e.g. the last meters to a
         /// docking port or backing away from it.
         /// </summary>
-        Maneuver
+        Maneuver,
+
+        /// <summary>
+        /// Fly at another ship at a set speed without stopping, pass beside it and come about for the
+        /// next pass, across zones if it jumps away: an attack run. The order lasts until the target is
+        /// gone or lands in a hangar.
+        /// </summary>
+        Intercept
     }
 
     public readonly struct ShipOrder
     {
-        ShipOrder(ShipOrderKind kind, int zoneIndex, Vector3 localPoint, Hangar hangar, float headingDegrees, float maximumSpeed)
+        ShipOrder(ShipOrderKind kind, int zoneIndex, Vector3 localPoint, Hangar hangar, float headingDegrees, float maximumSpeed,
+            ShipAgent target = null, float passOffsetUnits = 0f, float breakOffUnits = 0f)
         {
             Kind = kind;
             ZoneIndex = zoneIndex;
@@ -30,6 +38,9 @@ namespace LastFleet.Ships
             Hangar = hangar;
             HeadingDegrees = headingDegrees;
             MaximumSpeed = maximumSpeed;
+            Target = target;
+            PassOffsetUnits = passOffsetUnits;
+            BreakOffUnits = breakOffUnits;
         }
 
         public ShipOrderKind Kind { get; }
@@ -46,8 +57,17 @@ namespace LastFleet.Ships
         /// <summary>Heading the ship holds during a maneuver.</summary>
         public float HeadingDegrees { get; }
 
-        /// <summary>Speed limit of a maneuver in units per second.</summary>
+        /// <summary>Speed limit of a maneuver or an intercept in units per second.</summary>
         public float MaximumSpeed { get; }
+
+        /// <summary>Ship to intercept (intercept orders).</summary>
+        public ShipAgent Target { get; }
+
+        /// <summary>How far beside the target an intercepting ship passes; the sign picks the side.</summary>
+        public float PassOffsetUnits { get; }
+
+        /// <summary>How far an intercepting ship flies on past its target before it comes about.</summary>
+        public float BreakOffUnits { get; }
 
         public static ShipOrder MoveTo(int zoneIndex, Vector3 localPoint)
         {
@@ -68,6 +88,26 @@ namespace LastFleet.Ships
         {
             return new ShipOrder(ShipOrderKind.Approach, -1, Vector3.zero, hangar, 0f, 0f);
         }
+
+        public static ShipOrder Intercept(ShipAgent target, float speedUnitsPerSecond, float passOffsetUnits, float breakOffUnits)
+        {
+            if (target == null)
+            {
+                throw new System.ArgumentNullException(nameof(target));
+            }
+            if (speedUnitsPerSecond <= 0f)
+            {
+                throw new System.ArgumentOutOfRangeException(nameof(speedUnitsPerSecond), "An intercept needs a positive speed.");
+            }
+            if (breakOffUnits < 0f)
+            {
+                throw new System.ArgumentOutOfRangeException(nameof(breakOffUnits), "The break-off distance must not be negative.");
+            }
+            return new ShipOrder(ShipOrderKind.Intercept, -1, Vector3.zero, null, 0f, speedUnitsPerSecond, target, passOffsetUnits, breakOffUnits);
+        }
+
+        /// <summary>Whether the order follows something that moves: a hangar's landing bay or another ship.</summary>
+        public bool FollowsMovingTarget => TargetsHangar || Kind == ShipOrderKind.Intercept;
 
         /// <summary>Whether the order targets a hangar's landing bay (dock or approach).</summary>
         public bool TargetsHangar => Kind == ShipOrderKind.Dock || Kind == ShipOrderKind.Approach;

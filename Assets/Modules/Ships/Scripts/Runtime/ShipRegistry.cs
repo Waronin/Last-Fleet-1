@@ -6,9 +6,15 @@ using UnityEngine;
 
 namespace LastFleet.Ships
 {
-    /// <summary>Spawns the ships of the current star system and keeps track of them, their squads and hangars.</summary>
+    /// <summary>
+    /// Spawns the ships of one side in the current star system and keeps track of them, their squads
+    /// and hangars. Each side has its own registry, so systems that work for the player's fleet never
+    /// see enemy ships. <see cref="ShipRemoved"/> means "no longer ours": the ship was destroyed or
+    /// changed sides; losses are reported separately by <see cref="ShipLost"/>.
+    /// </summary>
     public sealed class ShipRegistry : MonoBehaviour
     {
+        [SerializeField] Allegiance _allegiance = Allegiance.HumanFleet;
         [SerializeField] ZoneWorld _zoneWorld;
         [SerializeField] Camera _camera;
         [SerializeField, Min(0.5f)] float _formationSpacingUnits = 6f;
@@ -19,6 +25,7 @@ namespace LastFleet.Ships
         readonly Dictionary<string, int> _spawnedPerClass = new Dictionary<string, int>();
         readonly List<ShipDurability> _damageTargets = new List<ShipDurability>();
 
+        public Allegiance Allegiance => _allegiance;
         public IReadOnlyList<ShipAgent> Ships => _ships;
         public IReadOnlyList<Hangar> Hangars => _hangars;
         public SquadRoster Squads => _squads;
@@ -73,19 +80,65 @@ namespace LastFleet.Ships
             }
 
             ShipAgent ship = Instantiate(prefab, zone.transform);
-            _spawnedPerClass.TryGetValue(ship.ClassName, out int spawned);
-            _spawnedPerClass[ship.ClassName] = spawned + 1;
-            ship.AssignSerialNumber(spawned + 1);
             ship.Initialize(_zoneWorld, zone, localPosition, headingDegrees);
             if (ship.TryGetComponent(out ShipPresentation presentation))
             {
                 presentation.Initialize(_camera);
             }
+            Register(ship);
+            return ship;
+        }
+
+        public bool Contains(ShipAgent ship)
+        {
+            return _ships.Contains(ship);
+        }
+
+        /// <summary>
+        /// Hands a ship over to another side, e.g. when it is captured or a stranded ship joins the
+        /// fleet. It keeps flying where it is, but loses its orders, its squad and its number: the new
+        /// side numbers it among its own ships. Ships docked in a transferred carrier stay where they are.
+        /// </summary>
+        public void TransferTo(ShipAgent ship, ShipRegistry newOwner)
+        {
+            if (ship == null)
+            {
+                throw new ArgumentNullException(nameof(ship));
+            }
+            if (newOwner == null)
+            {
+                throw new ArgumentNullException(nameof(newOwner));
+            }
+            if (newOwner == this)
+            {
+                throw new ArgumentException("A ship cannot be transferred to the registry that owns it.", nameof(newOwner));
+            }
+            if (!_ships.Contains(ship))
+            {
+                throw new InvalidOperationException($"{ship.name} does not belong to this registry.");
+            }
+
+            Unregister(ship);
+            ship.CancelOrders();
+            ship.SetHomeHangar(null);
+            newOwner.Register(ship);
+        }
+
+        /// <summary>Takes a ship into this registry: numbers it, gives it this side and reports it.</summary>
+        internal void Register(ShipAgent ship)
+        {
+            _spawnedPerClass.TryGetValue(ship.ClassName, out int spawned);
+            _spawnedPerClass[ship.ClassName] = spawned + 1;
+            ship.AssignSerialNumber(spawned + 1);
+            ship.SetAllegiance(_allegiance);
+            if (ship.TryGetComponent(out ShipPresentation presentation))
+            {
+                presentation.RefreshBracket();
+            }
             if (ship.TryGetComponent(out Hangar hangar))
             {
                 _hangars.Add(hangar);
             }
-
             if (ship.TryGetComponent(out ShipDurability durability))
             {
                 durability.DestroyedBy += OnShipDestroyedBy;
@@ -95,7 +148,6 @@ namespace LastFleet.Ships
             ship.JumpRefusedForFuel += OnJumpRefusedForFuel;
             _ships.Add(ship);
             ShipSpawned?.Invoke(ship);
-            return ship;
         }
 
         /// <summary>Spawns ships in wedge formation around a lead position and forms them into a squad.</summary>
@@ -171,6 +223,11 @@ namespace LastFleet.Ships
 
         // Ships are children of their zone view or carrier, so leaving a system destroys them with the zones.
         void OnShipDestroyed(ShipAgent ship)
+        {
+            Unregister(ship);
+        }
+
+        void Unregister(ShipAgent ship)
         {
             ship.Destroyed -= OnShipDestroyed;
             ship.JumpRefusedForFuel -= OnJumpRefusedForFuel;

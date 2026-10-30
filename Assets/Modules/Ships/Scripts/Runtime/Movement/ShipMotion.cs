@@ -46,6 +46,7 @@ namespace LastFleet.Ships
         readonly ShipMotionSettings _settings;
         Vector2 _destination;
         Vector2 _courseDirection;
+        float _courseMaximumSpeed = float.PositiveInfinity;
         bool _isPrecise;
         float _preciseMaximumSpeed;
         float _preciseHeadingDegrees;
@@ -126,18 +127,37 @@ namespace LastFleet.Ships
             _destination = destination;
         }
 
-        /// <summary>Accelerates along a direction until told otherwise.</summary>
-        public void SetCourse(Vector2 direction)
+        /// <summary>
+        /// Accelerates along a direction until told otherwise, never braking for a destination. A speed
+        /// limit holds the ship at that speed, e.g. for an attack run; it can be renewed every frame to
+        /// steer without restarting anything.
+        /// </summary>
+        public void SetCourse(Vector2 direction, float maximumSpeed = float.PositiveInfinity)
         {
             if (direction.sqrMagnitude < 1e-8f)
             {
                 throw new ArgumentException("A course needs a direction.", nameof(direction));
             }
+            if (maximumSpeed <= 0f)
+            {
+                throw new ArgumentOutOfRangeException(nameof(maximumSpeed), "A course needs a positive speed.");
+            }
 
             _courseDirection = direction.normalized;
+            _courseMaximumSpeed = maximumSpeed;
             _isPrecise = false;
             HasArrived = false;
             Phase = ShipMotionPhase.Cruising;
+        }
+
+        /// <summary>
+        /// Brakes to rest from the current motion, e.g. when an order is dropped mid-flight: the ship
+        /// comes to a stop where its momentum carries it instead of turning back to where it was.
+        /// </summary>
+        public void Stop()
+        {
+            Vector2 ahead = Speed > 1e-4f ? Velocity / Speed * StoppingDistance(Speed) : Vector2.zero;
+            SetDestination(Position + ahead);
         }
 
         /// <summary>Moves the ship without changing velocity or heading, e.g. when it exits a jump.</summary>
@@ -204,7 +224,8 @@ namespace LastFleet.Ships
         {
             Vector2 toDestination = _destination - Position;
             float distance = toDestination.magnitude;
-            if (distance <= _settings.ManeuverRangeUnits && Speed <= _settings.ThrusterMaximumSpeed)
+            // Already there: let the thrusters take out the remaining speed, there is no direction to turn to.
+            if (distance <= 1e-6f || (distance <= _settings.ManeuverRangeUnits && Speed <= _settings.ThrusterMaximumSpeed))
             {
                 Phase = ShipMotionPhase.Maneuvering;
                 return;
@@ -331,18 +352,22 @@ namespace LastFleet.Ships
         void StepCruising(float deltaTime)
         {
             RotateTowards(DirectionToHeading(_courseDirection), deltaTime);
-            if (MainDriveAvailable && IsHeadingAligned(_courseDirection))
+            float speedAlong = Vector2.Dot(Velocity, _courseDirection);
+            if (MainDriveAvailable && IsHeadingAligned(_courseDirection) && speedAlong < _courseMaximumSpeed)
             {
-                Velocity += Forward * (_settings.MainDriveAcceleration * deltaTime);
+                Velocity += Forward * (Mathf.Min(_settings.MainDriveAcceleration * deltaTime, _courseMaximumSpeed - speedAlong));
                 MainDriveActive = true;
             }
-            KeepMotionTowards(_courseDirection, deltaTime);
+            KeepMotionTowards(_courseDirection, deltaTime, _courseMaximumSpeed);
         }
 
-        /// <summary>Thrusters cancel all velocity that does not point towards the given direction.</summary>
-        void KeepMotionTowards(Vector2 direction, float deltaTime)
+        /// <summary>
+        /// Thrusters cancel all velocity that does not point towards the given direction, and any speed
+        /// along it beyond the limit.
+        /// </summary>
+        void KeepMotionTowards(Vector2 direction, float deltaTime, float maximumSpeed = float.PositiveInfinity)
         {
-            float along = Mathf.Max(0f, Vector2.Dot(Velocity, direction));
+            float along = Mathf.Clamp(Vector2.Dot(Velocity, direction), 0f, maximumSpeed);
             ApplyThrusters(direction * along, deltaTime);
         }
 

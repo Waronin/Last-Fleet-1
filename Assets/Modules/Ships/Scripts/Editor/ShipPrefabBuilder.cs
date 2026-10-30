@@ -19,15 +19,15 @@ namespace LastFleet.Ships.Editor
     public static class ShipPrefabBuilder
     {
         const string ModuleRoot = "Assets/Modules/Ships";
-        const string PrefabFolder = ModuleRoot + "/Prefabs";
+        internal const string PrefabFolder = ModuleRoot + "/Prefabs";
         const string DataFolder = ModuleRoot + "/Data";
         const string MaterialFolder = ModuleRoot + "/Graphics/Blockout";
         const string HarvesterPrefabPath = PrefabFolder + "/Harvester.prefab";
         const string RefineryPrefabPath = PrefabFolder + "/Refinery.prefab";
         const string LinerPrefabPath = PrefabFolder + "/Liner.prefab";
         const string ShuttlePrefabPath = PrefabFolder + "/Shuttle.prefab";
-        const string LitShaderName = "Universal Render Pipeline/Lit";
-        const string UnlitShaderName = "Universal Render Pipeline/Unlit";
+        internal const string LitShaderName = "Universal Render Pipeline/Lit";
+        internal const string UnlitShaderName = "Universal Render Pipeline/Unlit";
         const string ParticleShaderName = "Universal Render Pipeline/Particles/Unlit";
         const float HarvesterHull = 100f;
         const float RefineryHull = 2000f;
@@ -71,8 +71,8 @@ namespace LastFleet.Ships.Editor
         static readonly Color RefineryHullColor = new Color(0.32f, 0.32f, 0.34f);
         static readonly Color RustColor = new Color(0.5f, 0.3f, 0.2f);
         static readonly Color WarningColor = new Color(0.9f, 0.75f, 0.1f);
-        static readonly Color BayColor = new Color(0.3f, 1.5f, 2f);
-        static readonly Color EngineColor = new Color(4f, 1.8f, 0.5f);
+        internal static readonly Color BayColor = new Color(0.3f, 1.5f, 2f);
+        internal static readonly Color EngineColor = new Color(4f, 1.8f, 0.5f);
         static readonly Color TrailColor = new Color(1f, 0.5f, 0.15f);
 
         // Civilian design language (GDD): bright, rounded, many windows, faded advertising.
@@ -92,6 +92,7 @@ namespace LastFleet.Ships.Editor
             LoadOrCreateRefinery();
             LoadOrCreateLiner();
             LoadOrCreateShuttle();
+            CombatShipPrefabBuilder.RebuildAll();
         }
 
         public static ShipAgent LoadOrCreateHarvester()
@@ -362,7 +363,7 @@ namespace LastFleet.Ships.Editor
             EditorAssetUtility.FindProperty(profile, "_jumpChargeSeconds").floatValue = 15f;
         }
 
-        static ShipMovementProfile LoadOrCreateProfile(string name, System.Action<SerializedObject> configure)
+        internal static ShipMovementProfile LoadOrCreateProfile(string name, System.Action<SerializedObject> configure)
         {
             string path = $"{DataFolder}/{name}.asset";
             ShipMovementProfile profile = AssetDatabase.LoadAssetAtPath<ShipMovementProfile>(path);
@@ -384,7 +385,7 @@ namespace LastFleet.Ships.Editor
             return profile;
         }
 
-        static void AddPresentation(GameObject root, Transform engineGlow, TrailRenderer trail, LineRenderer bracket,
+        internal static void AddPresentation(GameObject root, Transform engineGlow, TrailRenderer trail, LineRenderer bracket,
             float bracketSizePixels, float engineGlowScale)
         {
             ShipPresentation presentation = root.AddComponent<ShipPresentation>();
@@ -397,7 +398,7 @@ namespace LastFleet.Ships.Editor
             serialized.ApplyModifiedPropertiesWithoutUndo();
         }
 
-        static void AddDurability(GameObject root, float maximumHull)
+        internal static void AddDurability(GameObject root, float maximumHull)
         {
             ShipDurability durability = root.AddComponent<ShipDurability>();
             SerializedObject serialized = new SerializedObject(durability);
@@ -405,7 +406,7 @@ namespace LastFleet.Ships.Editor
             serialized.ApplyModifiedPropertiesWithoutUndo();
         }
 
-        static void AddFuel(GameObject root, float tankCapacity, float fuelPerKlick, float fuelPerAU)
+        internal static void AddFuel(GameObject root, float tankCapacity, float fuelPerKlick, float fuelPerAU)
         {
             ShipFuel fuel = root.AddComponent<ShipFuel>();
             SerializedObject serialized = new SerializedObject(fuel);
@@ -431,7 +432,7 @@ namespace LastFleet.Ships.Editor
             return airlock;
         }
 
-        static void AddCrew(GameObject root, int requiredCrew)
+        internal static void AddCrew(GameObject root, int requiredCrew)
         {
             ShipCrew crew = root.AddComponent<ShipCrew>();
             SerializedObject serialized = new SerializedObject(crew);
@@ -448,7 +449,7 @@ namespace LastFleet.Ships.Editor
             serialized.ApplyModifiedPropertiesWithoutUndo();
         }
 
-        static ShipAgent SavePrefab(GameObject root, string path)
+        internal static ShipAgent SavePrefab(GameObject root, string path)
         {
             EditorAssetUtility.EnsureFolder(PrefabFolder);
             GameObject prefab = PrefabUtility.SaveAsPrefabAsset(root, path);
@@ -456,7 +457,7 @@ namespace LastFleet.Ships.Editor
             return prefab.GetComponent<ShipAgent>();
         }
 
-        static Material Engine()
+        internal static Material Engine()
         {
             return LoadOrCreateMaterial("ShipEngine", UnlitShaderName, EngineColor);
         }
@@ -465,7 +466,7 @@ namespace LastFleet.Ships.Editor
         /// One material per blockout color: property blocks are not saved in prefabs, so colors that
         /// must survive in the asset need their own material.
         /// </summary>
-        static Material LoadOrCreateMaterial(string name, string shaderName, Color color)
+        internal static Material LoadOrCreateMaterial(string name, string shaderName, Color color)
         {
             string path = $"{MaterialFolder}/{name}.mat";
             bool isNew = AssetDatabase.LoadAssetAtPath<Material>(path) == null;
@@ -478,7 +479,7 @@ namespace LastFleet.Ships.Editor
             return material;
         }
 
-        static Renderer CreatePart(Transform parent, PrimitiveType type, string name, Material material,
+        internal static Renderer CreatePart(Transform parent, PrimitiveType type, string name, Material material,
             Vector3 localPosition, Vector3 localScale)
         {
             GameObject part = GameObject.CreatePrimitive(type);
@@ -494,7 +495,8 @@ namespace LastFleet.Ships.Editor
             return renderer;
         }
 
-        static TrailRenderer CreateTrail(Transform parent, Vector3 localPosition, float width, float seconds)
+        /// <summary>An engine trail; without a material it glows in the warm human engine color.</summary>
+        internal static TrailRenderer CreateTrail(Transform parent, Vector3 localPosition, float width, float seconds, Material material = null)
         {
             GameObject trailObject = new GameObject("Engine Trail");
             trailObject.transform.SetParent(parent, false);
@@ -502,7 +504,7 @@ namespace LastFleet.Ships.Editor
 
             // The trail is longer than the ship so direction and speed read from afar (GDD: Light LOD).
             TrailRenderer trail = trailObject.AddComponent<TrailRenderer>();
-            trail.sharedMaterial = LoadOrCreateMaterial("ShipTrail", UnlitShaderName, TrailColor);
+            trail.sharedMaterial = material != null ? material : LoadOrCreateMaterial("ShipTrail", UnlitShaderName, TrailColor);
             trail.time = seconds;
             trail.minVertexDistance = 0.5f;
             trail.widthMultiplier = width;
@@ -558,7 +560,7 @@ namespace LastFleet.Ships.Editor
             return debris;
         }
 
-        static LineRenderer CreateBracket(Transform parent)
+        internal static LineRenderer CreateBracket(Transform parent)
         {
             GameObject bracketObject = new GameObject("Bracket");
             bracketObject.transform.SetParent(parent, false);

@@ -16,7 +16,10 @@ namespace LastFleet.Ships
         Docking,
 
         /// <summary>Inside a hangar: no GameObject in the zone, travels with the carrier.</summary>
-        Docked
+        Docked,
+
+        /// <summary>Following another ship, e.g. to attack it.</summary>
+        Pursuing
     }
 
     /// <summary>
@@ -41,6 +44,7 @@ namespace LastFleet.Ships
         ZoneView _zone;
         Hangar _dockedIn;
         ShipOrder _currentOrder;
+        bool _holdingInterceptCourse;
         ShipOrder? _departure;
         int _jumpTargetZoneIndex = -1;
 
@@ -57,6 +61,9 @@ namespace LastFleet.Ships
 
         public ShipSize Size => _size;
         public bool IsCapital => _size == ShipSize.Capital;
+
+        /// <summary>The side the ship fights for, set by the registry that owns it.</summary>
+        public Allegiance Allegiance { get; private set; }
 
         /// <summary>The zone the ship is in; docked ships are in their carrier's zone.</summary>
         public ZoneView Zone => _dockedIn != null ? _dockedIn.Carrier.Zone : _zone;
@@ -132,6 +139,10 @@ namespace LastFleet.Ships
             {
                 throw new InvalidOperationException($"{name} is a capital ship and cannot land in a hangar.");
             }
+            if (order.Kind == ShipOrderKind.Intercept && order.Target == this)
+            {
+                throw new ArgumentException($"{name} cannot intercept itself.", nameof(order));
+            }
             if (IsDerelict)
             {
                 return;
@@ -192,6 +203,28 @@ namespace LastFleet.Ships
             name = $"{_className} {serialNumber}";
         }
 
+        internal void SetAllegiance(Allegiance allegiance)
+        {
+            Allegiance = allegiance;
+        }
+
+        /// <summary>
+        /// Drops every order and lets the thrusters bring the ship to rest, e.g. when nobody is left to
+        /// fly it or it changes sides. Automations stop on <see cref="OrdersReplaced"/>.
+        /// </summary>
+        internal void CancelOrders()
+        {
+            _orders.Clear();
+            _departure = null;
+            if (!IsDocked && _motion != null)
+            {
+                Activity = ShipActivity.Idle;
+                JumpChargeRemainingSeconds = 0f;
+                _motion.SetDestination(_motion.Position);
+            }
+            OrdersReplaced?.Invoke(this);
+        }
+
         internal void SetHomeHangar(Hangar hangar)
         {
             HomeHangar = hangar;
@@ -236,9 +269,9 @@ namespace LastFleet.Ships
             {
                 StartOrder(_orders.Dequeue());
             }
-            if (Activity == ShipActivity.Docking)
+            if (Activity == ShipActivity.Docking || Activity == ShipActivity.Pursuing)
             {
-                FollowDockingTarget();
+                FollowMovingTarget();
             }
 
             float deltaTime = Time.deltaTime;
@@ -284,18 +317,13 @@ namespace LastFleet.Ships
         /// <summary>Nobody is left to fly: drop all orders and let the thrusters bring the ship to rest.</summary>
         void OnBecameDerelict(ShipCrew crew)
         {
-            _orders.Clear();
-            if (!IsDocked)
-            {
-                Activity = ShipActivity.Idle;
-                _motion.SetDestination(_motion.Position);
-            }
-            OrdersReplaced?.Invoke(this);
+            CancelOrders();
         }
 
         void StartOrder(ShipOrder order)
         {
             _currentOrder = order;
+            _holdingInterceptCourse = false;
             int zoneIndex = OrderZoneIndex(order);
             if (zoneIndex < 0)
             {
@@ -317,7 +345,16 @@ namespace LastFleet.Ships
             {
                 _motion.SetDestination(destination);
             }
-            Activity = order.TargetsHangar ? ShipActivity.Docking : ShipActivity.Moving;
+            Activity = ActivityFor(order);
+        }
+
+        static ShipActivity ActivityFor(ShipOrder order)
+        {
+            if (order.TargetsHangar)
+            {
+                return ShipActivity.Docking;
+            }
+            return order.Kind == ShipOrderKind.Intercept ? ShipActivity.Pursuing : ShipActivity.Moving;
         }
 
         /// <summary>Powered travel costs fuel per km; drifting is free, and so are thrusters on an empty tank.</summary>
@@ -351,7 +388,7 @@ namespace LastFleet.Ships
         {
             Vector2 direction = JumpDirection(_jumpTargetZoneIndex);
             ZoneView target = _zoneWorld.Reveal(_jumpTargetZoneIndex);
-            if (_currentOrder.TargetsHangar && _currentOrder.Hangar == null)
+            if (_currentOrder.FollowsMovingTarget && OrderZoneIndex(_currentOrder) < 0)
             {
                 Activity = ShipActivity.Idle;
                 return;
@@ -367,25 +404,32 @@ namespace LastFleet.Ships
             _motion.Teleport(exit);
             _motion.SetDestination(arrival);
             JumpChargeRemainingSeconds = 0f;
-            Activity = _currentOrder.TargetsHangar ? ShipActivity.Docking : ShipActivity.Moving;
+            Activity = ActivityFor(_currentOrder);
             ApplyTransform();
             ZoneChanged?.Invoke(this);
         }
 
-        /// <summary>The carrier may move or jump away while the ship approaches; follow it.</summary>
-        void FollowDockingTarget()
+        /// <summary>
+        /// A carrier or a pursued ship may move or jump away while the ship approaches; follow it. The
+        /// order ends when the target is gone or, for a pursued ship, has landed in a hangar.
+        /// </summary>
+        void FollowMovingTarget()
         {
-            Hangar hangar = _currentOrder.Hangar;
-            if (hangar == null)
+            int targetZoneIndex = OrderZoneIndex(_currentOrder);
+            if (targetZoneIndex < 0)
             {
                 Activity = ShipActivity.Idle;
+                _motion.Stop();
                 return;
             }
-
-            int carrierZoneIndex = OrderZoneIndex(_currentOrder);
-            if (carrierZoneIndex != _zone.Record.PointOfInterestIndex)
+            if (targetZoneIndex != _zone.Record.PointOfInterestIndex)
             {
-                BeginJump(carrierZoneIndex);
+                BeginJump(targetZoneIndex);
+                return;
+            }
+            if (_currentOrder.Kind == ShipOrderKind.Intercept)
+            {
+                SteerIntercept();
                 return;
             }
             _motion.RetargetDestination(ToPlane(OrderLocalPoint(_currentOrder, _zone)));
@@ -419,12 +463,52 @@ namespace LastFleet.Ships
             {
                 return order.ZoneIndex;
             }
+            if (order.Kind == ShipOrderKind.Intercept)
+            {
+                // Unity's overloaded equality treats a destroyed target as null.
+                ShipAgent target = order.Target;
+                return target != null && !target.IsDocked && target.Zone != null ? target.Zone.Record.PointOfInterestIndex : -1;
+            }
             return order.Hangar != null && order.Hangar.Carrier.Zone != null ? order.Hangar.Carrier.Zone.Record.PointOfInterestIndex : -1;
         }
 
-        static Vector3 OrderLocalPoint(ShipOrder order, ZoneView zone)
+        Vector3 OrderLocalPoint(ShipOrder order, ZoneView zone)
         {
-            return order.TargetsHangar ? zone.transform.InverseTransformPoint(order.Hangar.BayWorldPosition) : order.LocalPoint;
+            if (order.TargetsHangar)
+            {
+                return zone.transform.InverseTransformPoint(order.Hangar.BayWorldPosition);
+            }
+            return order.Kind == ShipOrderKind.Intercept ? InterceptPoint(order, zone) : order.LocalPoint;
+        }
+
+        /// <summary>
+        /// The point beside the target the ship aims for, seen from where it comes from: its own position
+        /// in the same zone, along the jump when it arrives from another zone.
+        /// </summary>
+        Vector3 InterceptPoint(ShipOrder order, ZoneView zone)
+        {
+            Vector2 target = ToPlane(zone.transform.InverseTransformPoint(order.Target.WorldPosition));
+            Vector2 from = zone == _zone ? _motion.Position : target - JumpDirection(zone.Record.PointOfInterestIndex);
+            Vector2 aim = InterceptRun.AimPoint(from, target, order.PassOffsetUnits);
+            return new Vector3(aim.x, 0f, aim.y);
+        }
+
+        /// <summary>Steers an attack run every frame; past the target the ship holds its course until it breaks off.</summary>
+        void SteerIntercept()
+        {
+            Vector2 target = ToPlane(_zone.transform.InverseTransformPoint(_currentOrder.Target.WorldPosition));
+            Vector2 toTarget = target - _motion.Position;
+            _holdingInterceptCourse = InterceptRun.HoldsCourse(_holdingInterceptCourse, _motion.Forward, toTarget, _currentOrder.BreakOffUnits);
+            if (_holdingInterceptCourse)
+            {
+                return;
+            }
+
+            Vector2 toAim = InterceptRun.AimPoint(_motion.Position, target, _currentOrder.PassOffsetUnits) - _motion.Position;
+            if (toAim.sqrMagnitude > 1e-8f)
+            {
+                _motion.SetCourse(toAim, _currentOrder.MaximumSpeed);
+            }
         }
 
         /// <summary>Direction on the zone plane from the current zone towards another zone of the system.</summary>

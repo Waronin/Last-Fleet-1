@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using LastFleet.Combat;
 using LastFleet.Mining;
 using LastFleet.People;
 using LastFleet.Rewards;
@@ -83,6 +84,10 @@ namespace LastFleet.Inspection
         {
             lines.Add(InspectionTexts.ShipClass.Format(("class", ship.ClassDisplayName), ("size", ShipTexts.Sizes.For(ship.Size))));
             lines.Add(Hull(ship));
+            if (ship.TryGetComponent(out ShipShield shield))
+            {
+                lines.Add(CombatTexts.ShieldLine.Format(("current", shield.Charge.Current), ("maximum", shield.Charge.Maximum)));
+            }
             lines.Add(Fuel(ship));
             if (ship.Fuel.Tank.IsEmpty)
             {
@@ -166,6 +171,10 @@ namespace LastFleet.Inspection
             if (ship.TryGetComponent(out StationDocking docking) && docking.State != DockingState.Inactive)
             {
                 return StationTexts.DockingTask.Format(("state", StationTexts.DockingStates.For(docking.State)), ("station", docking.Station.Name));
+            }
+            if (ship.TryGetComponent(out FighterCombat fighter) && fighter.State == CombatState.Engaging && fighter.Target != null)
+            {
+                return CombatTexts.EngagingTask.Format(("target", fighter.Target.DisplayName));
             }
             if (ship.TryGetComponent(out HarvesterMining mining) && mining.State != MiningState.Inactive)
             {

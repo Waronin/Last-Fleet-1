@@ -20,6 +20,11 @@ MonoBehaviour:
     m_ReadOnly: 1
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2571e10ba9141c04599020e45ce627aa
+    m_Address: Assets/Modules/Combat/Data/Localization/Combat Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 35aa94abff059ea45ad3d15b615e6e94
     m_Address: Assets/Modules/ShipControl/Data/Localization/ShipControl Shared Data.asset
     m_ReadOnly: 1

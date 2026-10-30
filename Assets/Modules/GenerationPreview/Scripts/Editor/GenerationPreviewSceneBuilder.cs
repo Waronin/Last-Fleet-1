@@ -1,5 +1,6 @@
 ﻿using LastFleet.CameraControl;
 using LastFleet.CameraControl.Editor;
+using LastFleet.Combat;
 using LastFleet.Exploration;
 using LastFleet.Galaxy;
 using LastFleet.Inspection;
@@ -81,8 +82,18 @@ namespace LastFleet.GenerationPreview.Editor
             GameObject shipsObject = new GameObject("Ships");
             ShipRegistry shipRegistry = shipsObject.AddComponent<ShipRegistry>();
             EditorAssetUtility.SetReferences(shipRegistry, ("_zoneWorld", zoneWorld), ("_camera", cameraRig.Camera));
+            // The enemy keeps its own registry, so fleet systems such as mining or recall never see its ships.
+            GameObject proninObject = new GameObject("Pronin Ships");
+            ShipRegistry proninRegistry = proninObject.AddComponent<ShipRegistry>();
+            SerializedObject proninData = new SerializedObject(proninRegistry);
+            EditorAssetUtility.FindProperty(proninData, "_allegiance").enumValueIndex = (int)Allegiance.Pronin;
+            proninData.ApplyModifiedPropertiesWithoutUndo();
+            EditorAssetUtility.SetReferences(proninRegistry, ("_zoneWorld", zoneWorld), ("_camera", cameraRig.Camera));
+            CombatService combat = shipsObject.AddComponent<CombatService>();
+            EditorAssetUtility.SetReferences(combat, ("_fleet", shipRegistry), ("_pronin", proninRegistry));
+
             ShipCommandInput shipInput = shipsObject.AddComponent<ShipCommandInput>();
-            EditorAssetUtility.SetReferences(shipInput, ("_camera", cameraRig.Camera), ("_registry", shipRegistry));
+            EditorAssetUtility.SetReferences(shipInput, ("_camera", cameraRig.Camera), ("_registry", shipRegistry), ("_combat", combat));
             ControlGroupInput groupInput = shipsObject.AddComponent<ControlGroupInput>();
             EditorAssetUtility.SetReferences(groupInput, ("_commandInput", shipInput), ("_registry", shipRegistry));
             HangarCommandInput hangarInput = shipsObject.AddComponent<HangarCommandInput>();
@@ -120,13 +131,18 @@ namespace LastFleet.GenerationPreview.Editor
                 ("_galaxyMapView", mapView), ("_starSystemView", systemView), ("_zoneWorld", zoneWorld),
                 ("_environment", environment), ("_cameraRig", cameraRig), ("_shipRegistry", shipRegistry),
                 ("_shipInput", shipInput), ("_groupInput", groupInput), ("_hangarInput", hangarInput), ("_mining", mining),
-                ("_scouting", scouting), ("_population", population), ("_docking", docking), ("_search", search), ("_rewards", rewards), ("_inspection", inspection), ("_shipPanel", shipPanel),
+                ("_scouting", scouting), ("_population", population), ("_docking", docking), ("_search", search), ("_rewards", rewards), ("_combat", combat), ("_inspection", inspection), ("_shipPanel", shipPanel),
+                ("_cruiserPrefab", CombatShipPrefabBuilder.LoadOrCreateCruiser()),
+                ("_fighterPrefab", CombatShipPrefabBuilder.LoadOrCreateFighter()),
                 ("_refineryPrefab", ShipPrefabBuilder.LoadOrCreateRefinery()),
                 ("_linerPrefab", ShipPrefabBuilder.LoadOrCreateLiner()),
                 ("_shuttlePrefab", ShipPrefabBuilder.LoadOrCreateShuttle()),
                 ("_harvesterPrefab", ShipPrefabBuilder.LoadOrCreateHarvester()));
             GenerationPreviewOverlay overlay = previewObject.AddComponent<GenerationPreviewOverlay>();
             EditorAssetUtility.SetReferences(overlay, ("_controller", preview));
+            DeveloperRaidInput raid = previewObject.AddComponent<DeveloperRaidInput>();
+            EditorAssetUtility.SetReferences(raid, ("_controller", preview), ("_pronin", proninRegistry),
+                ("_proninFighterPrefab", CombatShipPrefabBuilder.LoadOrCreateProninFighter()));
 
             EditorAssetUtility.EnsureFolder(SceneFolder);
             EditorSceneManager.SaveScene(scene, ScenePath);

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using LastFleet.CameraControl;
+using LastFleet.Combat;
 using LastFleet.Exploration;
 using LastFleet.Galaxy;
 using LastFleet.Inspection;
@@ -44,12 +45,14 @@ namespace LastFleet.GenerationPreview
         const float DeveloperExtractFraction = 0.5f;
         const int HarvestersPerSquad = 3;
         const int ShuttlesPerSquad = 2;
+        const int FightersPerSquad = 4;
         const int MaximumRecentNotices = 4;
         const float DeveloperLightDamage = 25f;
         const float DeveloperHeavyDamage = 100f;
         static readonly GameText DeveloperDamageCause = GameText.Verbatim("developer damage");
         static readonly Vector3 RefineryArrivalPosition = new Vector3(0f, 0f, 0f);
         static readonly Vector3 LinerArrivalPosition = new Vector3(-30f, 0f, 12f);
+        static readonly Vector3 CruiserArrivalPosition = new Vector3(30f, 0f, 12f);
 
         [SerializeField] int _galaxySeed = 1;
         [SerializeField] GalaxySettings _galaxySettings = new GalaxySettings();
@@ -68,6 +71,7 @@ namespace LastFleet.GenerationPreview
         [SerializeField] DockingService _docking;
         [SerializeField] SearchService _search;
         [SerializeField] RewardDelivery _rewards;
+        [SerializeField] CombatService _combat;
         [SerializeField] InspectionPanel _inspection;
         [SerializeField] InspectionPanel _shipPanel;
         [Tooltip("Spawned on arrival in a system until fleet jumps carry the fleet along.")]
@@ -75,6 +79,8 @@ namespace LastFleet.GenerationPreview
         [SerializeField] ShipAgent _linerPrefab;
         [SerializeField] ShipAgent _harvesterPrefab;
         [SerializeField] ShipAgent _shuttlePrefab;
+        [SerializeField] ShipAgent _cruiserPrefab;
+        [SerializeField] ShipAgent _fighterPrefab;
         [SerializeField, Min(1f)] float _pickRadiusPixels = 14f;
 
         readonly List<ShipAgent> _singleShip = new List<ShipAgent>(1);
@@ -106,8 +112,9 @@ namespace LastFleet.GenerationPreview
         {
             if (_galaxyMapView == null || _starSystemView == null || _zoneWorld == null || _environment == null ||
                 _cameraRig == null || _shipRegistry == null || _shipInput == null || _groupInput == null ||
-                _hangarInput == null || _mining == null || _scouting == null || _population == null || _docking == null || _search == null || _rewards == null || _inspection == null || _shipPanel == null ||
-                _refineryPrefab == null || _linerPrefab == null || _harvesterPrefab == null || _shuttlePrefab == null)
+                _hangarInput == null || _mining == null || _scouting == null || _population == null || _docking == null || _search == null || _rewards == null || _combat == null || _inspection == null || _shipPanel == null ||
+                _refineryPrefab == null || _linerPrefab == null || _harvesterPrefab == null || _shuttlePrefab == null ||
+                _cruiserPrefab == null || _fighterPrefab == null)
             {
                 Debug.LogError("GenerationPreviewController is missing a scene reference.", this);
                 enabled = false;
@@ -127,6 +134,7 @@ namespace LastFleet.GenerationPreview
             _docking.Notice += ShowNotice;
             _search.Notice += ShowNotice;
             _rewards.Notice += ShowNotice;
+            _combat.Notice += ShowNotice;
             _inspection.Notice += ShowNotice;
             _shipInput.DepositClicked += InspectDeposit;
             _shipInput.StationClicked += InspectStation;
@@ -161,6 +169,7 @@ namespace LastFleet.GenerationPreview
             _docking.Notice -= ShowNotice;
             _search.Notice -= ShowNotice;
             _rewards.Notice -= ShowNotice;
+            _combat.Notice -= ShowNotice;
             _inspection.Notice -= ShowNotice;
             _shipInput.DepositClicked -= InspectDeposit;
             _shipInput.StationClicked -= InspectStation;
@@ -210,7 +219,8 @@ namespace LastFleet.GenerationPreview
             _cameraRig.SnapTo(ship.WorldPosition, ZoneViewDistanceUnits);
         }
 
-        void ShowNotice(GameText message)
+        /// <summary>Adds a line to the notice feed, e.g. from developer tools of the preview scene.</summary>
+        public void ShowNotice(GameText message)
         {
             if (_recentNotices.Count == MaximumRecentNotices)
             {
@@ -503,8 +513,12 @@ namespace LastFleet.GenerationPreview
             _starSystemView.SetMarkerStyle(arrivalIndex, PointOfInterestMarkerStyle.Explored);
             _starSystemView.SelectPointOfInterest(arrivalIndex);
 
-            // Stand-in until fleet jumps exist: every arrival brings a liner with a shuttle squad and a
-            // refinery with two harvester squads in their hangars.
+            // Stand-in until fleet jumps exist: every arrival brings a liner with a shuttle squad, a
+            // refinery with two harvester squads and a cruiser with two fighter squads in their hangars.
+            ShipAgent cruiser = _shipRegistry.Spawn(_cruiserPrefab, arrival, CruiserArrivalPosition, 0f);
+            Hangar fighterHangar = cruiser.GetComponent<Hangar>();
+            _shipRegistry.SpawnSquadDocked(_fighterPrefab, fighterHangar, FightersPerSquad);
+            _shipRegistry.SpawnSquadDocked(_fighterPrefab, fighterHangar, FightersPerSquad);
             ShipAgent liner = _shipRegistry.Spawn(_linerPrefab, arrival, LinerArrivalPosition, 0f);
             _shipRegistry.SpawnSquadDocked(_shuttlePrefab, liner.GetComponent<Hangar>(), ShuttlesPerSquad);
             ShipAgent refinery = _shipRegistry.Spawn(_refineryPrefab, arrival, RefineryArrivalPosition, 0f);

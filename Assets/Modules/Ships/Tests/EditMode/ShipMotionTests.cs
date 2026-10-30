@@ -146,6 +146,64 @@ namespace LastFleet.Ships.Tests
         }
 
         [Test]
+        public void StopMidFlight_BrakesToRestAhead()
+        {
+            ShipMotion motion = new ShipMotion(Settings, Vector2.zero, 0f);
+            motion.SetCourse(Vector2.up, Settings.MaximumSpeed * 0.5f);
+            for (float t = 0f; t < 5f; t += StepSeconds)
+            {
+                motion.Step(StepSeconds);
+            }
+            float stoppedAt = motion.Position.y;
+
+            motion.Stop();
+            Simulate(motion);
+
+            Assert.IsTrue(motion.HasArrived);
+            Assert.AreEqual(0f, motion.Speed);
+            Assert.Greater(motion.Position.y, stoppedAt);
+        }
+
+        [Test]
+        public void DestinationAtTheCurrentPosition_AtSpeed_ComesToRestWithoutInvalidMotion()
+        {
+            ShipMotion motion = new ShipMotion(Settings, Vector2.zero, 0f);
+            motion.SetCourse(Vector2.up);
+            for (float t = 0f; t < 5f; t += StepSeconds)
+            {
+                motion.Step(StepSeconds);
+            }
+
+            motion.SetDestination(motion.Position);
+            Simulate(motion);
+
+            Assert.IsFalse(float.IsNaN(motion.Position.x) || float.IsNaN(motion.Velocity.y));
+            Assert.IsTrue(motion.HasArrived);
+        }
+
+        [Test]
+        public void Cruising_HoldsTheCourseSpeedLimit_AndComesAboutWhenTheCourseReverses()
+        {
+            float limit = Settings.MaximumSpeed * 0.5f;
+            ShipMotion motion = new ShipMotion(Settings, Vector2.zero, 0f);
+            motion.SetCourse(Vector2.up, limit);
+            for (float t = 0f; t < 10f; t += StepSeconds)
+            {
+                motion.Step(StepSeconds);
+            }
+            Assert.AreEqual(limit, motion.Speed, 0.01f);
+
+            // An attack run past the target: steering back makes the ship turn and fly the other way.
+            for (float t = 0f; t < 30f; t += StepSeconds)
+            {
+                motion.SetCourse(Vector2.down, limit);
+                motion.Step(StepSeconds);
+            }
+            Assert.AreEqual(-limit, motion.Velocity.y, 0.01f);
+            Assert.AreEqual(ShipMotionPhase.Cruising, motion.Phase);
+        }
+
+        [Test]
         public void WithoutMainDrive_LongMoveUsesThrustersOnly()
         {
             ShipMotion motion = new ShipMotion(Settings, Vector2.zero, 0f);

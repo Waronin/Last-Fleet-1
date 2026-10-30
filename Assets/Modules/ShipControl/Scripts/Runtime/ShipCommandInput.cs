@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using LastFleet.Combat;
 using LastFleet.Exploration;
 using LastFleet.Mining;
 using LastFleet.Shared.Text;
@@ -27,6 +28,7 @@ namespace LastFleet.ShipControl
         [SerializeField] ShipRegistry _registry;
         [SerializeField] ScoutingService _scouting;
         [SerializeField] DockingService _docking;
+        [SerializeField] CombatService _combat;
         [SerializeField, Min(1f)] float _pickRadiusPixels = 18f;
         [SerializeField] Color _selectionBoxColor = new Color(0.4f, 0.8f, 1f, 0.25f);
 
@@ -59,9 +61,9 @@ namespace LastFleet.ShipControl
 
         void Awake()
         {
-            if (_camera == null || _registry == null || _scouting == null || _docking == null)
+            if (_camera == null || _registry == null || _scouting == null || _docking == null || _combat == null)
             {
-                Debug.LogError("ShipCommandInput needs the camera, the ship registry, the scouting and the docking service.", this);
+                Debug.LogError("ShipCommandInput needs the camera, the ship registry and the scouting, docking and combat services.", this);
                 enabled = false;
             }
         }
@@ -191,8 +193,14 @@ namespace LastFleet.ShipControl
                 return;
             }
 
-            // Context command (GDD): right click on a deposit sends harvesters mining or scouts scanning, on
-            // an unscanned station scouts scan it, otherwise small ships dock at it; elsewhere it is a move.
+            // Context command (GDD): right click on an enemy attacks it, on a deposit sends harvesters mining
+            // or scouts scanning, on an unscanned station scouts scan it, otherwise small ships dock at it;
+            // elsewhere it is a move.
+            if (_combat.TryPickHostile(_activeZone, _camera, pointer, _pickRadiusPixels, out ShipAgent hostile))
+            {
+                _combat.OrderAttack(_selection.Ships, hostile);
+                return;
+            }
             if (_activeZone.TryPickDeposit(_camera, pointer, _pickRadiusPixels, out ResourceDeposit deposit) &&
                 (TryOrderMining(deposit) || TryOrderScan(deposit)))
             {

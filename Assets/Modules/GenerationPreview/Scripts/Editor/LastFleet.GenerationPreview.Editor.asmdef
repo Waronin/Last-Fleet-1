@@ -2,6 +2,7 @@
     "name": "LastFleet.GenerationPreview.Editor",
     "rootNamespace": "LastFleet.GenerationPreview.Editor",
     "references": [
+        "LastFleet.Combat",
         "LastFleet.Rewards",
         "LastFleet.People",
         "LastFleet.Stations",

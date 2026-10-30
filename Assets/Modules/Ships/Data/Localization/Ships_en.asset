@@ -111,6 +111,22 @@ MonoBehaviour:
     m_Localized: Shuttle
     m_Metadata:
       m_Items: []
+  - m_Id: 522033309495296
+    m_Localized: Pursuing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 522033322078208
+    m_Localized: Cruiser
+    m_Metadata:
+      m_Items: []
+  - m_Id: 522033322078209
+    m_Localized: Fighter
+    m_Metadata:
+      m_Items: []
+  - m_Id: 522033322078210
+    m_Localized: Pronin Fighter
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

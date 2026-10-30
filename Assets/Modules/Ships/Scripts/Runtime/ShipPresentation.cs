@@ -22,6 +22,8 @@ namespace LastFleet.Ships
         [SerializeField, Range(0f, 1f)] float _thrusterGlowFraction = 0.35f;
         [SerializeField] Color _bracketColor = new Color(0.4f, 0.8f, 1f);
         [SerializeField] Color _selectedBracketColor = new Color(1f, 0.85f, 0.2f);
+        [Tooltip("GDD: enemies are red in every zoom level.")]
+        [SerializeField] Color _hostileBracketColor = new Color(1f, 0.25f, 0.2f);
 
         ShipAgent _ship;
         Camera _camera;
@@ -39,7 +41,7 @@ namespace LastFleet.Ships
                 enabled = false;
                 return;
             }
-            SetBracketColor(_bracketColor);
+            RefreshBracket();
         }
 
         void OnEnable()
@@ -68,7 +70,22 @@ namespace LastFleet.Ships
         public void SetSelected(bool selected)
         {
             IsSelected = selected;
-            SetBracketColor(selected ? _selectedBracketColor : _bracketColor);
+            RefreshBracket();
+        }
+
+        /// <summary>Colors the bracket for the selection and the ship's side, e.g. after it changed sides.</summary>
+        public void RefreshBracket()
+        {
+            if (_propertyBlock == null || _bracket == null)
+            {
+                return;
+            }
+            if (IsSelected)
+            {
+                SetBracketColor(_selectedBracketColor);
+                return;
+            }
+            SetBracketColor(_ship.Allegiance == Allegiance.HumanFleet ? _bracketColor : _hostileBracketColor);
         }
 
         void LateUpdate()

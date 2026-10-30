@@ -103,6 +103,22 @@ MonoBehaviour:
     m_Key: class.Shuttle
     m_Metadata:
       m_Items: []
+  - m_Id: 522033309495296
+    m_Key: activity.Pursuing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 522033322078208
+    m_Key: class.Cruiser
+    m_Metadata:
+      m_Items: []
+  - m_Id: 522033322078209
+    m_Key: class.Fighter
+    m_Metadata:
+      m_Items: []
+  - m_Id: 522033322078210
+    m_Key: class.ProninFighter
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

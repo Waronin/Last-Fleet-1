@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Combat_de
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: de
+  m_SharedData: {fileID: 11400000, guid: 2571e10ba9141c04599020e45ce627aa, type: 2}
+  m_Metadata:
+    m_Items:
+    - rid: 6743102069811707988
+  m_TableData:
+  - m_Id: 800665600
+    m_Localized: Beschuss von {attacker}
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707988
+  - m_Id: 834220032
+    m_Localized: '{count:plural:{} Schiff greift|{} Schiffe greifen} {target} an.'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707988
+  - m_Id: 834220033
+    m_Localized: "Keines der ausgew\xE4hlten Schiffe kann angreifen."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 838414336
+    m_Localized: 'Schilde: {current:0} / {maximum:0}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707988
+  - m_Id: 838414337
+    m_Localized: Greift {target} an
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707988
+  references:
+    version: 2
+    RefIds:
+    - rid: 6743102069811707988
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 
+        m_SharedEntries:
+        - id: 800665600
+        - id: 834220032
+        - id: 838414336
+        - id: 838414337

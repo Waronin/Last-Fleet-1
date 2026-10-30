@@ -12,7 +12,8 @@ namespace LastFleet.Ships
         public static readonly EnumTextKeys<ShipSize> Sizes = new EnumTextKeys<ShipSize>(Table, "size");
 
         /// <summary>Display names of the ship classes; every prefab's class name must be listed here.</summary>
-        public static readonly NamedTextKeys Classes = new NamedTextKeys(Table, "class", "Harvester", "Refinery", "Liner", "Shuttle");
+        public static readonly NamedTextKeys Classes = new NamedTextKeys(Table, "class",
+            "Harvester", "Refinery", "Liner", "Shuttle", "Cruiser", "Fighter", "ProninFighter");
 
         /// <summary>{class}, {number}</summary>
         public static readonly GameTextKey ShipName = new GameTextKey(Table, "name.ship");

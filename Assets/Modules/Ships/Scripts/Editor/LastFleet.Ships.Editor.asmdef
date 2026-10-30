@@ -5,6 +5,7 @@
         "LastFleet.Rewards",
         "LastFleet.Stations",
         "LastFleet.People",
+        "LastFleet.Combat",
         "LastFleet.Ships",
         "LastFleet.Mining",
         "LastFleet.Exploration",
