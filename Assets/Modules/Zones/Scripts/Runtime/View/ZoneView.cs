@@ -27,6 +27,8 @@ namespace LastFleet.Zones
         readonly Dictionary<ResourceDeposit, DepositView> _viewByDeposit = new Dictionary<ResourceDeposit, DepositView>();
         readonly Dictionary<ZoneStation, Transform> _viewByStation = new Dictionary<ZoneStation, Transform>();
         MaterialPropertyBlock _propertyBlock;
+        Material _bodyMaterial;
+        Material _glowMaterial;
 
         public ZoneRecord Record { get; private set; }
         public SpaceZone Zone { get; private set; }
@@ -42,22 +44,35 @@ namespace LastFleet.Zones
             Zone = gameObject.AddComponent<SpaceZone>();
             Zone.Initialize(record.PointOfInterest.Name, contents.RadiusKlicks, grid);
 
+            _bodyMaterial = bodyMaterial;
+            _glowMaterial = glowMaterial;
             CreateBackdrop(contents.Backdrop, bodyMaterial, glowMaterial);
             for (int i = 0; i < contents.Deposits.Count; i++)
             {
-                ResourceDeposit deposit = contents.Deposits[i];
-                GameObject depositObject = new GameObject($"{deposit.Shape} {i + 1}");
-                depositObject.transform.SetParent(transform, false);
-                DepositView view = depositObject.AddComponent<DepositView>();
-                // Seeded from the zone, so a rebuilt zone shows the same rocks.
-                view.Build(deposit, DeterministicRandom.DeriveSeed(record.Seed, DepositVisualSalt + (ulong)i), bodyMaterial, glowMaterial);
-                _depositViews.Add(view);
-                _viewByDeposit.Add(deposit, view);
+                CreateDepositView(contents.Deposits[i], i);
             }
             foreach (ZoneStation station in contents.Stations)
             {
                 _viewByStation.Add(station, stationViews.CreateView(station, transform));
             }
+        }
+
+        /// <summary>Adds a deposit that appeared during the run, e.g. a wreck, to the zone's state and shows it.</summary>
+        public void AddDeposit(ResourceDeposit deposit)
+        {
+            Record.Contents.AddDeposit(deposit);
+            CreateDepositView(deposit, Record.Contents.Deposits.Count - 1);
+        }
+
+        void CreateDepositView(ResourceDeposit deposit, int index)
+        {
+            GameObject depositObject = new GameObject($"{deposit.Shape} {index + 1}");
+            depositObject.transform.SetParent(transform, false);
+            DepositView view = depositObject.AddComponent<DepositView>();
+            // Seeded from the zone and the index, so a rebuilt zone shows the same rocks and wrecks.
+            view.Build(deposit, DeterministicRandom.DeriveSeed(Record.Seed, DepositVisualSalt + (ulong)index), _bodyMaterial, _glowMaterial);
+            _depositViews.Add(view);
+            _viewByDeposit.Add(deposit, view);
         }
 
         /// <summary>Updates deposit visuals from their remaining amounts and scan state; depleted deposits disappear.</summary>

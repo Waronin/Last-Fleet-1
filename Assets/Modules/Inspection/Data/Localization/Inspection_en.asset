@@ -239,7 +239,7 @@ MonoBehaviour:
       m_Items:
       - rid: 6743102046643421291
   - m_Id: 330903599
-    m_Localized: 'Stored: Ore {ore:0}, Ice {ice:0}, Gas {gas:0}'
+    m_Localized: 'Stored: Ore {ore:0}, Ice {ice:0}, Gas {gas:0}, Metal {metal:0}'
     m_Metadata:
       m_Items:
       - rid: 6743102046643421291

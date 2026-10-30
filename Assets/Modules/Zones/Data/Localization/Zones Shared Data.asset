@@ -127,6 +127,14 @@ MonoBehaviour:
     m_Key: attitude.Hostile
     m_Metadata:
       m_Items: []
+  - m_Id: 671542756847616
+    m_Key: resource.Metal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 671542832345088
+    m_Key: shape.Wreck
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

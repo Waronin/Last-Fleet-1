@@ -43,6 +43,9 @@ namespace LastFleet.Ships.Editor
         const float ProninFighterFuelPerKlick = 0.08f;
         const float ProninFighterFuelPerAU = 1.5f;
 
+        // About a fifth of a harvester's hold: worth a short trip, not worth staying for long.
+        const float ProninFighterWreckMetal = 25f;
+
         // Military design language (GDD): dark hulls with painted bows like old warplanes.
         static readonly Color MilitaryHullColor = new Color(0.16f, 0.17f, 0.19f);
         static readonly Color MilitaryPlatingColor = new Color(0.26f, 0.27f, 0.25f);
@@ -140,6 +143,8 @@ namespace LastFleet.Ships.Editor
                 roundsPerBurst: 8, secondsBetweenBursts: 2.5f, firingArcDegrees: 360f, projectileSpeedUnitsPerSecond: 150f));
             AddProjectileView(root, turretMuzzles, 0.14f, 4f, 0.5f);
             ShipPrefabBuilder.AddPresentation(root, engineGlow, trail, bracket, 36f, 1f);
+            CombatEffectsBuilder.AddHitFeedback(root, 0f, 0.6f);
+            CombatEffectsBuilder.AddDestruction(root, 14f);
             return ShipPrefabBuilder.SavePrefab(root, CruiserPrefabPath);
         }
 
@@ -187,6 +192,8 @@ namespace LastFleet.Ships.Editor
                 roundsPerBurst: 6, secondsBetweenBursts: 1.2f, firingArcDegrees: 30f, projectileSpeedUnitsPerSecond: 150f));
             AddProjectileView(root, fighterMuzzles, 0.08f, 2.5f, 0.25f);
             root.AddComponent<FighterCombat>();
+            CombatEffectsBuilder.AddHitFeedback(root, 0.9f, 0.12f);
+            CombatEffectsBuilder.AddDestruction(root, 1.2f);
             return ShipPrefabBuilder.SavePrefab(root, FighterPrefabPath);
         }
 
@@ -235,6 +242,13 @@ namespace LastFleet.Ships.Editor
             EditorAssetUtility.FindProperty(combatData, "_defendWhenIdle").boolValue = false;
             combatData.ApplyModifiedPropertiesWithoutUndo();
             root.AddComponent<AutonomousHunting>();
+            CombatEffectsBuilder.AddHitFeedback(root, 0.8f, 0.12f);
+            CombatEffectsBuilder.AddDestruction(root, 1.2f);
+            // GDD: destroyed enemy fighters leave wreckage that yields metal.
+            ShipWreckage wreckage = root.AddComponent<ShipWreckage>();
+            SerializedObject wreckageData = new SerializedObject(wreckage);
+            EditorAssetUtility.FindProperty(wreckageData, "_metalAmount").floatValue = ProninFighterWreckMetal;
+            wreckageData.ApplyModifiedPropertiesWithoutUndo();
             return ShipPrefabBuilder.SavePrefab(root, ProninFighterPrefabPath);
         }
 

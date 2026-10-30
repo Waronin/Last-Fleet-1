@@ -35,7 +35,7 @@ namespace LastFleet.Mining.Tests
         [Test]
         public void Stock_StoresPerMaterialUpToCapacity()
         {
-            RawMaterialStock stock = new RawMaterialStock(100f, 50f, 0f);
+            RawMaterialStock stock = new RawMaterialStock(100f, 50f, 0f, 30f);
 
             Assert.AreEqual(80f, stock.Store(ResourceKind.Ore, 80f));
             Assert.AreEqual(20f, stock.Store(ResourceKind.Ore, 80f));
@@ -43,6 +43,7 @@ namespace LastFleet.Mining.Tests
             Assert.AreEqual(0f, stock.Store(ResourceKind.Gas, 5f));
             Assert.AreEqual(100f, stock.AmountOf(ResourceKind.Ore));
             Assert.AreEqual(0f, stock.FreeSpaceFor(ResourceKind.Ice));
+            Assert.AreEqual(30f, stock.Store(ResourceKind.Metal, 40f));
         }
 
         [Test]

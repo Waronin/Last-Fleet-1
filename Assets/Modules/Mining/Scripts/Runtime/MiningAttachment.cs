@@ -121,6 +121,7 @@ namespace LastFleet.Mining
                 ResourceKind.Ore => new Color(0.55f, 0.42f, 0.3f),
                 ResourceKind.Ice => new Color(0.85f, 0.95f, 1f),
                 ResourceKind.Gas => new Color(1f, 0.6f, 0.25f),
+                ResourceKind.Metal => new Color(0.7f, 0.74f, 0.8f),
                 _ => Color.magenta
             };
         }

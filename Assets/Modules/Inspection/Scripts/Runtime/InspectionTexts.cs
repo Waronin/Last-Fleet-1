@@ -168,7 +168,7 @@ namespace LastFleet.Inspection
         /// <summary>{docked}, {capacity}, {launching}</summary>
         public static readonly GameTextKey HangarLine = new GameTextKey(Table, "ship.hangar");
 
-        /// <summary>{ore}, {ice}, {gas}</summary>
+        /// <summary>{ore}, {ice}, {gas}, {metal}</summary>
         public static readonly GameTextKey StoredLine = new GameTextKey(Table, "ship.stored");
 
         public static readonly GameTextKey ReturnToHangarAction = new GameTextKey(Table, "action.return-to-hangar");

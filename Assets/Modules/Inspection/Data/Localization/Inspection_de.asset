@@ -239,7 +239,7 @@ MonoBehaviour:
       m_Items:
       - rid: 6743102046643421293
   - m_Id: 330903599
-    m_Localized: 'Lager: Erz {ore:0}, Eis {ice:0}, Gas {gas:0}'
+    m_Localized: 'Lager: Erz {ore:0}, Eis {ice:0}, Gas {gas:0}, Metall {metal:0}'
     m_Metadata:
       m_Items:
       - rid: 6743102046643421293

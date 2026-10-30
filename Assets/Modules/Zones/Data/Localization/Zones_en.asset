@@ -130,6 +130,14 @@ MonoBehaviour:
     m_Localized: hostile
     m_Metadata:
       m_Items: []
+  - m_Id: 671542756847616
+    m_Localized: Metal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 671542832345088
+    m_Localized: Wreckage
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

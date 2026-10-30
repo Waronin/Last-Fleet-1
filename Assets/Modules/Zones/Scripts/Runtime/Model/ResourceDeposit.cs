@@ -8,13 +8,19 @@ namespace LastFleet.Zones
     {
         Ore,
         Ice,
-        Gas
+        Gas,
+
+        /// <summary>Salvaged from wrecks (GDD: destroyed enemy fighters leave wreckage that yields metal).</summary>
+        Metal
     }
 
     public enum DepositShape
     {
         Asteroid,
-        GasCloud
+        GasCloud,
+
+        /// <summary>Wreckage of a destroyed ship, salvaged like a deposit.</summary>
+        Wreck
     }
 
     /// <summary>GDD: Asteroids and belts, hazards while mining. Known only after a scan.</summary>
@@ -55,6 +61,9 @@ namespace LastFleet.Zones
 
         const int MaximumGasCloudSlots = 4;
 
+        /// <summary>Wreckage of a fighter is a small, tumbling cluster of plates.</summary>
+        const float WreckRadiusUnits = 0.8f;
+
         public ResourceDeposit(DepositShape shape, ResourceKind resource, Vector3 localPosition, float radiusUnits, float amount,
             DepositHazard hazard, float slotAngleOffsetDegrees)
         {
@@ -66,9 +75,9 @@ namespace LastFleet.Zones
             {
                 throw new ArgumentOutOfRangeException(nameof(amount), "Amount must be positive.");
             }
-            if (shape == DepositShape.GasCloud && hazard != DepositHazard.None)
+            if (shape != DepositShape.Asteroid && hazard != DepositHazard.None)
             {
-                throw new ArgumentException("Gas clouds have no mining hazards.", nameof(hazard));
+                throw new ArgumentException("Only asteroids have mining hazards.", nameof(hazard));
             }
 
             Shape = shape;
@@ -79,6 +88,18 @@ namespace LastFleet.Zones
             RemainingAmount = amount;
             Hazard = hazard;
             SlotAngleOffsetDegrees = slotAngleOffsetDegrees;
+        }
+
+        /// <summary>
+        /// Wreckage left where a ship was destroyed. It is known on sight, since the fleet saw the ship
+        /// go down, so it needs no scan.
+        /// </summary>
+        public static ResourceDeposit Wreck(Vector3 localPosition, float metalAmount, float slotAngleOffsetDegrees)
+        {
+            ResourceDeposit wreck = new ResourceDeposit(DepositShape.Wreck, ResourceKind.Metal, localPosition, WreckRadiusUnits, metalAmount,
+                DepositHazard.None, slotAngleOffsetDegrees);
+            wreck.Scan();
+            return wreck;
         }
 
         public DepositShape Shape { get; }

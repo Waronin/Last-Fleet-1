@@ -19,7 +19,10 @@ GDD references: *Kampf*, *Kleine Schiffe*, *Kapitalschiffe*, *Der Feind*, *Resso
 | `FighterCombat` | Combat | Attack runs after an order; follow-up target after a kill; self-defense when idle (`_defendWhenIdle`). |
 | `AutonomousHunting` + `HuntingRules` | Combat | Enemy AI: small ships before capital ships, isolated before escorted, near before far. Off for ships on the player's side. |
 | `ProjectileShotView` / `BeamShotView` | Combat/View | Looks only: human tracer rounds with muzzle flash, Pronin energy beams. |
-| `CombatShipPrefabBuilder` | Ships/Editor | Builds Cruiser, Fighter and ProninFighter; all balance values below live there. |
+| `HitFeedbackView` | Combat/View | Shield hit: a ring around the ship flares and fades. Hull hit (weapons or hazards): sparks. |
+| `DestructionView` + `ExplosionEffect` | Combat/View | Explosion (fireball, shock ring, debris) in the zone where a ship is destroyed. Prefab: `Combat/Prefabs/Explosion`. |
+| `ShipWreckage` | Ships | On destruction the ship leaves a wreck: a `ResourceDeposit` of shape `Wreck` and resource `Metal`, added to the zone's run state. Harvesters salvage it with their normal mining loop and deliver the metal to the refinery. |
+| `CombatShipPrefabBuilder` + `CombatEffectsBuilder` | Ships/Editor | Build Cruiser, Fighter, ProninFighter and the explosion; all balance values below live there. |
 | `DeveloperRaidInput` | GenerationPreview | **P** drops 3 Pronin fighters into the viewed zone. |
 
 Controls: right click on an enemy attacks it with the selected ships. Fighters without orders attack
@@ -44,6 +47,11 @@ Scale: 1 unit = 100 m, a zone is 50 km (500 units) in radius.
 | Attack run speed / break-off | 30 / 25 | 30 / 25 | – |
 | Self-defense when idle | on | off (hunts instead) | always fires (turrets) |
 | Hangar | – | – | 8 slots, 1 launch per second |
+| Wreck on destruction | – | 25 metal (1 salvage slot) | – |
+| Explosion size | 1.2 | 1.2 | 14 |
+
+Metal: the refinery stores up to 5000. A harvester holds 120, so one Pronin wreck is about a fifth of
+a load; harvesters move on to the next wreck in the zone by themselves.
 
 Derived numbers (raw, assuming the target stays in the arc):
 
@@ -62,6 +70,7 @@ Newest first. Note the date, the setup, what happened and the version of the val
 
 | Date | Setup | Result | Notes |
 | --- | --- | --- | --- |
+| 2026-10-30 | 8 fighters + cruiser vs 6 Pronin, then 3 harvesters sent to the wrecks | Pronin destroyed in ~12 s (1 fighter lost); 6 wrecks of 25 metal; the harvesters salvaged all of them in ~40 s, 151 metal arrived at the refinery | Explosions, shield rings, sparks and wreck plates all visible. The extra metal is the harvesters' mining bonus. |
 | 2026-10-30 | 8 idle fighters, 3 Pronin from behind | Fighters engaged on their own after ~3 s; Pronin went for the outermost fighters | Before self-defense idle fighters never fired: the 30° arc never pointed at the attacker. |
 | 2026-10-30 | 8 fighters + cruiser vs 6 Pronin, 160 units away, range 250, linear falloff | All Pronin destroyed in ~12 s, 1 fighter lost | Long range plus linear falloff is very lethal; the cruiser joins at once. Too short again. |
 | 2026-10-29 | 8 fighters vs 6 Pronin, ranges 35/40/70, falloff quadratic, attack runs | ~90 s, no losses | Runs visible as oscillating distance (5–80 units). Felt long; fighters too strong. |
@@ -75,7 +84,10 @@ Newest first. Note the date, the setup, what happened and the version of the val
   burst pause, cruiser range.
 - **Focus fire**: all ships take the nearest enemy, so squads gang up on one target. Spreading
   targets could reuse the claims pattern (`MiningSlotClaims`, `DockingPortClaims`).
-- **Feedback**: no shield flash, hull sparks, explosions or wrecks yet (GDD: wrecks give metal).
+- **Wrecks**: only Pronin fighters leave wrecks; human ships do not yet. Wrecks stay for the whole run
+  and nothing announces them, the player has to spot them. Metal has no use yet (repairs, ammunition
+  and upgrades come later).
+- **Effects** are blockout: no sound, no camera shake, the shock ring is a flat circle.
 - **Stances** (aggressive, defensive, escort, retreat) and **target priorities** for capital ships
   are not built; `FighterCombat._defendWhenIdle` is the first switch towards them.
 - **Ammunition** is not consumed yet (GDD: projectile weapons need ammunition from the cruiser).
@@ -92,7 +104,8 @@ Newest first. Note the date, the setup, what happened and the version of the val
   Preview Scene*). Serialized values in a prefab override new field defaults.
 - When rebuilding through the Unity CLI, build each prefab in its own call and check that no
   `MonoBehaviour` was saved with `m_Enabled: 0`; one combined rebuild right after a script reload
-  saved several components disabled. Only the Pronin beam's `LineRenderer` is meant to be disabled.
+  saved several components disabled. Only `LineRenderer`s are meant to be saved disabled: the Pronin
+  beam and the shield flash rings.
 
 ## Notes
 

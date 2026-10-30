@@ -13,6 +13,7 @@ namespace LastFleet.Zones
     public sealed class DepositView : MonoBehaviour
     {
         const int AsteroidLumpCount = 5;
+        const int WreckPlateCount = 6;
         const float GasCloudHeightFactor = 0.35f;
         const float HazardRingRadiusFactor = 1.4f;
         const float HazardRingWidthUnits = 0.15f;
@@ -43,6 +44,10 @@ namespace LastFleet.Zones
             if (deposit.Shape == DepositShape.Asteroid)
             {
                 CreateAsteroidLumps(random, bodyMaterial);
+            }
+            else if (deposit.Shape == DepositShape.Wreck)
+            {
+                CreateWreckPlates(random, bodyMaterial);
             }
             else
             {
@@ -108,6 +113,20 @@ namespace LastFleet.Zones
             }
         }
 
+        /// <summary>Torn hull plates at odd angles, so wreckage reads differently from a rock.</summary>
+        void CreateWreckPlates(DeterministicRandom random, Material bodyMaterial)
+        {
+            _body.localRotation = Quaternion.Euler(random.AngleDegrees(), random.AngleDegrees(), random.AngleDegrees());
+            for (int i = 0; i < WreckPlateCount; i++)
+            {
+                Renderer plate = BlockoutPrimitives.CreatePrimitive(PrimitiveType.Cube, _body, bodyMaterial, $"Plate {i + 1}");
+                plate.transform.localPosition = random.InsideUnitSphere() * 0.3f;
+                plate.transform.localRotation = Quaternion.Euler(random.AngleDegrees(), random.AngleDegrees(), random.AngleDegrees());
+                plate.transform.localScale = new Vector3(random.Range(0.3f, 0.7f), random.Range(0.04f, 0.1f), random.Range(0.2f, 0.5f));
+                _bodyParts.Add(plate);
+            }
+        }
+
         static Color ResourceColor(ResourceKind resource)
         {
             return resource switch
@@ -115,6 +134,7 @@ namespace LastFleet.Zones
                 ResourceKind.Ore => new Color(0.6f, 0.45f, 0.32f),
                 ResourceKind.Ice => new Color(0.75f, 0.9f, 1f),
                 ResourceKind.Gas => new Color(1f, 0.6f, 0.25f),
+                ResourceKind.Metal => new Color(0.7f, 0.74f, 0.8f),
                 _ => Color.magenta
             };
         }

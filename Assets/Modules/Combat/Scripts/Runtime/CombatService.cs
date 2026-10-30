@@ -128,7 +128,7 @@ namespace LastFleet.Combat
                 return;
             }
 
-            float throughShield = target.TryGetComponent(out ShipShield shield) ? shield.Charge.Absorb(damage) : damage;
+            float throughShield = target.TryGetComponent(out ShipShield shield) ? shield.Absorb(damage) : damage;
             if (throughShield > 0f)
             {
                 durability.ApplyDamage(throughShield, CombatTexts.WeaponFireCause.Format(("attacker", attacker.DisplayName)));

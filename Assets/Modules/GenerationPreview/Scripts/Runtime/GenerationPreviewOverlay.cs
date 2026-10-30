@@ -274,7 +274,7 @@ namespace LastFleet.GenerationPreview
 
         static string DescribeStock(RawMaterialStock stock)
         {
-            return $"Ore {stock.AmountOf(ResourceKind.Ore):0}, Ice {stock.AmountOf(ResourceKind.Ice):0}, Gas {stock.AmountOf(ResourceKind.Gas):0}";
+            return $"Ore {stock.AmountOf(ResourceKind.Ore):0}, Ice {stock.AmountOf(ResourceKind.Ice):0}, Gas {stock.AmountOf(ResourceKind.Gas):0}, Metal {stock.AmountOf(ResourceKind.Metal):0}";
         }
 
         string DescribeGroups()

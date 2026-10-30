@@ -1,3 +1,4 @@
+using System;
 using LastFleet.Ships;
 using UnityEngine;
 
@@ -18,6 +19,21 @@ namespace LastFleet.Combat
         ShieldCharge _charge;
 
         public ShieldCharge Charge => _charge ??= new ShieldCharge(_maximum, _rechargePerSecond, _rechargeDelaySeconds);
+
+        /// <summary>The shield took part of a hit: the amount it absorbed.</summary>
+        public event Action<float> Absorbed;
+
+        /// <summary>Absorbs what the shield holds of a hit and returns the damage that gets through.</summary>
+        public float Absorb(float damage)
+        {
+            float throughShield = Charge.Absorb(damage);
+            float absorbed = damage - throughShield;
+            if (absorbed > 0f)
+            {
+                Absorbed?.Invoke(absorbed);
+            }
+            return throughShield;
+        }
 
         void Update()
         {

@@ -13,11 +13,12 @@ namespace LastFleet.Mining
         readonly Dictionary<ResourceKind, float> _amounts = new Dictionary<ResourceKind, float>();
         readonly Dictionary<ResourceKind, float> _capacities = new Dictionary<ResourceKind, float>();
 
-        public RawMaterialStock(float oreCapacity, float iceCapacity, float gasCapacity)
+        public RawMaterialStock(float oreCapacity, float iceCapacity, float gasCapacity, float metalCapacity)
         {
             SetCapacity(ResourceKind.Ore, oreCapacity);
             SetCapacity(ResourceKind.Ice, iceCapacity);
             SetCapacity(ResourceKind.Gas, gasCapacity);
+            SetCapacity(ResourceKind.Metal, metalCapacity);
         }
 
         public float AmountOf(ResourceKind resource)

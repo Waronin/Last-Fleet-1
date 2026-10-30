@@ -145,7 +145,7 @@ namespace LastFleet.Inspection
             {
                 RawMaterialStock stock = storage.Stock;
                 lines.Add(InspectionTexts.StoredLine.Format(("ore", stock.AmountOf(ResourceKind.Ore)), ("ice", stock.AmountOf(ResourceKind.Ice)),
-                    ("gas", stock.AmountOf(ResourceKind.Gas))));
+                    ("gas", stock.AmountOf(ResourceKind.Gas)), ("metal", stock.AmountOf(ResourceKind.Metal))));
             }
         }
 

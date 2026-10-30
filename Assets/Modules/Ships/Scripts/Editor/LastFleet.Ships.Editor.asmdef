@@ -9,6 +9,7 @@
         "LastFleet.Ships",
         "LastFleet.Mining",
         "LastFleet.Exploration",
+        "LastFleet.Shared",
         "LastFleet.Shared.Editor"
     ],
     "includePlatforms": [
