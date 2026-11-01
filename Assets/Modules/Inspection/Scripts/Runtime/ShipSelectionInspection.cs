@@ -176,6 +176,10 @@ namespace LastFleet.Inspection
             {
                 return CombatTexts.EngagingTask.Format(("target", fighter.Target.DisplayName));
             }
+            if (fighter != null && fighter.State == CombatState.Escorting && fighter.Escort != null && !fighter.Escort.IsOver)
+            {
+                return CombatTexts.EscortingTask.Format(("target", fighter.Escort.DisplayName));
+            }
             if (ship.TryGetComponent(out HarvesterMining mining) && mining.State != MiningState.Inactive)
             {
                 return InspectionTexts.MiningTask.Format(("state", MiningTexts.States.For(mining.State)));

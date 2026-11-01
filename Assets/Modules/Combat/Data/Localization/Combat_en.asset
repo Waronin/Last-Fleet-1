@@ -43,6 +43,20 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - rid: 6743102069811707987
+  - m_Id: 988262507819008
+    m_Localized: '{count:plural:{} fighter escorts|{} fighters escort} {target}.'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707987
+  - m_Id: 988262520401920
+    m_Localized: None of the selected ships can escort.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 988262520401921
+    m_Localized: Escorting {target}
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707987
   references:
     version: 2
     RefIds:
@@ -55,3 +69,5 @@ MonoBehaviour:
         - id: 834220032
         - id: 838414336
         - id: 838414337
+        - id: 988262507819008
+        - id: 988262520401921

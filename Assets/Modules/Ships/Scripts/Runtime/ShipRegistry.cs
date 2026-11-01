@@ -17,6 +17,8 @@ namespace LastFleet.Ships
         [SerializeField] Allegiance _allegiance = Allegiance.HumanFleet;
         [SerializeField] ZoneWorld _zoneWorld;
         [SerializeField] Camera _camera;
+        [Tooltip("Optional. Lets the ships fly around rocks, stations and capital ships.")]
+        [SerializeField] ObstacleField _obstacles;
         [SerializeField, Min(0.5f)] float _formationSpacingUnits = 6f;
 
         readonly List<ShipAgent> _ships = new List<ShipAgent>();
@@ -80,7 +82,7 @@ namespace LastFleet.Ships
             }
 
             ShipAgent ship = Instantiate(prefab, zone.transform);
-            ship.Initialize(_zoneWorld, zone, localPosition, headingDegrees);
+            ship.Initialize(_zoneWorld, _obstacles, zone, localPosition, headingDegrees);
             if (ship.TryGetComponent(out ShipPresentation presentation))
             {
                 presentation.Initialize(_camera);

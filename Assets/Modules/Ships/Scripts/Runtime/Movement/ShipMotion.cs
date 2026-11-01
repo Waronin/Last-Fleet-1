@@ -50,6 +50,8 @@ namespace LastFleet.Ships
         bool _isPrecise;
         float _preciseMaximumSpeed;
         float _preciseHeadingDegrees;
+        Vector2 _avoidanceDirection;
+        bool _isAvoiding;
 
         public ShipMotion(ShipMotionSettings settings, Vector2 position, float headingDegrees)
         {
@@ -76,6 +78,32 @@ namespace LastFleet.Ships
         public bool MainDriveAvailable { get; set; } = true;
 
         public Vector2 Forward => HeadingToDirection(HeadingDegrees);
+
+        /// <summary>Whether the ship travels under its main drive, the phases in which it can steer around obstacles.</summary>
+        public bool IsTravelling => Phase == ShipMotionPhase.Aligning || Phase == ShipMotionPhase.Burning || Phase == ShipMotionPhase.Cruising;
+
+        /// <summary>Where the ship is heading: its destination, or far ahead along its course.</summary>
+        public Vector2 IntendedDestination => Phase == ShipMotionPhase.Cruising ? Position + _courseDirection * 1e5f : _destination;
+
+        /// <summary>
+        /// Flies this direction instead of straight at the destination or along the course, e.g. to pass
+        /// an obstacle, until cleared. Braking and thruster maneuvers are not affected.
+        /// </summary>
+        public void SetAvoidance(Vector2 direction)
+        {
+            _isAvoiding = direction.sqrMagnitude > 1e-8f;
+            _avoidanceDirection = _isAvoiding ? direction.normalized : Vector2.zero;
+        }
+
+        public void ClearAvoidance()
+        {
+            _isAvoiding = false;
+        }
+
+        Vector2 Steer(Vector2 direction)
+        {
+            return _isAvoiding ? _avoidanceDirection : direction;
+        }
 
         public void SetDestination(Vector2 destination)
         {
@@ -231,7 +259,7 @@ namespace LastFleet.Ships
                 return;
             }
 
-            Vector2 direction = toDestination / distance;
+            Vector2 direction = Steer(toDestination / distance);
             RotateTowards(DirectionToHeading(direction), deltaTime);
             KeepMotionTowards(direction, deltaTime);
             if (IsHeadingAligned(direction))
@@ -251,10 +279,12 @@ namespace LastFleet.Ships
                 return;
             }
 
-            RotateTowards(DirectionToHeading(direction), deltaTime);
+            // Braking is planned along the straight line; only the heading bends around obstacles.
+            Vector2 steer = Steer(direction);
+            RotateTowards(DirectionToHeading(steer), deltaTime);
             Velocity += Forward * (_settings.MainDriveAcceleration * deltaTime);
             MainDriveActive = true;
-            KeepMotionTowards(direction, deltaTime);
+            KeepMotionTowards(steer, deltaTime);
         }
 
         void StepFlipping(float deltaTime)
@@ -351,14 +381,15 @@ namespace LastFleet.Ships
 
         void StepCruising(float deltaTime)
         {
-            RotateTowards(DirectionToHeading(_courseDirection), deltaTime);
-            float speedAlong = Vector2.Dot(Velocity, _courseDirection);
-            if (MainDriveAvailable && IsHeadingAligned(_courseDirection) && speedAlong < _courseMaximumSpeed)
+            Vector2 direction = Steer(_courseDirection);
+            RotateTowards(DirectionToHeading(direction), deltaTime);
+            float speedAlong = Vector2.Dot(Velocity, direction);
+            if (MainDriveAvailable && IsHeadingAligned(direction) && speedAlong < _courseMaximumSpeed)
             {
                 Velocity += Forward * (Mathf.Min(_settings.MainDriveAcceleration * deltaTime, _courseMaximumSpeed - speedAlong));
                 MainDriveActive = true;
             }
-            KeepMotionTowards(_courseDirection, deltaTime, _courseMaximumSpeed);
+            KeepMotionTowards(direction, deltaTime, _courseMaximumSpeed);
         }
 
         /// <summary>

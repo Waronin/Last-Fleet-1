@@ -47,7 +47,7 @@ namespace LastFleet.Combat
             ShipAgent prey = _combat.FindHuntTarget(_ship);
             if (prey != null)
             {
-                _fighter.Engage(prey);
+                _fighter.Attack(prey);
             }
         }
     }

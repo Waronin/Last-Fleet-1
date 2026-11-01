@@ -127,6 +127,10 @@ MonoBehaviour:
     m_Localized: "Pronin-J\xE4ger"
     m_Metadata:
       m_Items: []
+  - m_Id: 1510294878236672
+    m_Localized: Folgt
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

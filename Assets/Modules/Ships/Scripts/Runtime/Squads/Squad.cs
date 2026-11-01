@@ -70,6 +70,7 @@ namespace LastFleet.Ships
                 ShipActivity.ChargingJump => 4,
                 ShipActivity.Docking => 3,
                 ShipActivity.Pursuing => 3,
+                ShipActivity.Following => 2,
                 ShipActivity.Moving => 2,
                 ShipActivity.Idle => 1,
                 _ => 0

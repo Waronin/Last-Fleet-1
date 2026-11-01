@@ -35,6 +35,18 @@ MonoBehaviour:
     m_Key: task.engaging
     m_Metadata:
       m_Items: []
+  - m_Id: 988262507819008
+    m_Key: notice.escort
+    m_Metadata:
+      m_Items: []
+  - m_Id: 988262520401920
+    m_Key: notice.no-escorts
+    m_Metadata:
+      m_Items: []
+  - m_Id: 988262520401921
+    m_Key: task.escorting
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

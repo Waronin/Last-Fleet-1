@@ -119,6 +119,10 @@ MonoBehaviour:
     m_Key: class.ProninFighter
     m_Metadata:
       m_Items: []
+  - m_Id: 1510294878236672
+    m_Key: activity.Following
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

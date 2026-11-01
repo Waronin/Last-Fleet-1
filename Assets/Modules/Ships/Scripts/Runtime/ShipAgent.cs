@@ -18,8 +18,11 @@ namespace LastFleet.Ships
         /// <summary>Inside a hangar: no GameObject in the zone, travels with the carrier.</summary>
         Docked,
 
-        /// <summary>Following another ship, e.g. to attack it.</summary>
-        Pursuing
+        /// <summary>Flying attack runs at another ship.</summary>
+        Pursuing,
+
+        /// <summary>Keeping station next to another ship, e.g. as its escort.</summary>
+        Following
     }
 
     /// <summary>
@@ -35,8 +38,22 @@ namespace LastFleet.Ships
         [SerializeField] string _className = "Harvester";
         [SerializeField] ShipSize _size = ShipSize.Small;
         [SerializeField] ShipMovementProfile _movementProfile;
+        [Tooltip("Radius others fly around and hide behind; 0 for small ships, which do not block anyone.")]
+        [SerializeField, Min(0f)] float _obstacleRadiusUnits;
+
+        // Obstacle avoidance looks this far ahead, at least the minimum, and keeps this much room.
+        const float AvoidanceLookAheadSeconds = 2.5f;
+        const float AvoidanceMinimumLookAheadUnits = 15f;
+        const float AvoidanceClearanceUnits = 2f;
+
+        // Station keeping: each unit of gap adds this much speed over the followed ship's; closer than the
+        // settle distance to a resting ship, the thrusters take over.
+        const float FollowCatchUpPerUnit = 0.6f;
+        const float FollowSettleDistanceUnits = 1.5f;
+        const float FollowRestingSpeed = 0.5f;
 
         readonly Queue<ShipOrder> _orders = new Queue<ShipOrder>();
+        ObstacleField _obstacles;
         ShipMotion _motion;
         ShipFuel _fuel;
         ShipCrew _crew;
@@ -61,6 +78,7 @@ namespace LastFleet.Ships
 
         public ShipSize Size => _size;
         public bool IsCapital => _size == ShipSize.Capital;
+        public float ObstacleRadiusUnits => _obstacleRadiusUnits;
 
         /// <summary>The side the ship fights for, set by the registry that owns it.</summary>
         public Allegiance Allegiance { get; private set; }
@@ -108,7 +126,8 @@ namespace LastFleet.Ships
         /// <summary>A zone jump was not started because the tank held less than the given cost; the order is dropped.</summary>
         public event Action<ShipAgent, int, float> JumpRefusedForFuel;
 
-        public void Initialize(ZoneWorld zoneWorld, ZoneView zone, Vector3 localPosition, float headingDegrees)
+        /// <summary>Places the ship in a zone; without an obstacle field it flies straight through everything.</summary>
+        public void Initialize(ZoneWorld zoneWorld, ObstacleField obstacles, ZoneView zone, Vector3 localPosition, float headingDegrees)
         {
             if (_movementProfile == null)
             {
@@ -120,6 +139,7 @@ namespace LastFleet.Ships
             }
 
             _zoneWorld = zoneWorld;
+            _obstacles = obstacles;
             _zone = zone;
             _motion = CreateMotion(localPosition, headingDegrees);
             ApplyTransform();
@@ -139,9 +159,9 @@ namespace LastFleet.Ships
             {
                 throw new InvalidOperationException($"{name} is a capital ship and cannot land in a hangar.");
             }
-            if (order.Kind == ShipOrderKind.Intercept && order.Target == this)
+            if (order.TargetsShip && order.Target == this)
             {
-                throw new ArgumentException($"{name} cannot intercept itself.", nameof(order));
+                throw new ArgumentException($"{name} cannot intercept or follow itself.", nameof(order));
             }
             if (IsDerelict)
             {
@@ -269,10 +289,11 @@ namespace LastFleet.Ships
             {
                 StartOrder(_orders.Dequeue());
             }
-            if (Activity == ShipActivity.Docking || Activity == ShipActivity.Pursuing)
+            if (Activity == ShipActivity.Docking || Activity == ShipActivity.Pursuing || Activity == ShipActivity.Following)
             {
                 FollowMovingTarget();
             }
+            UpdateAvoidance();
 
             float deltaTime = Time.deltaTime;
             Vector2 previousPosition = _motion.Position;
@@ -312,6 +333,31 @@ namespace LastFleet.Ships
                 Crew.BecameDerelict -= OnBecameDerelict;
             }
             Destroyed?.Invoke(this);
+        }
+
+        /// <summary>
+        /// Bends the course around rocks, stations and capital ships ahead while the main drive carries
+        /// the ship; the obstacle holding the destination is left alone, so the ship can still get there.
+        /// </summary>
+        void UpdateAvoidance()
+        {
+            if (_obstacles == null || !_motion.IsTravelling)
+            {
+                _motion.ClearAvoidance();
+                return;
+            }
+
+            Vector2 destination = _motion.IntendedDestination;
+            Vector2 desired = destination - _motion.Position;
+            float lookAhead = Mathf.Max(AvoidanceMinimumLookAheadUnits, _motion.Speed * AvoidanceLookAheadSeconds);
+            Vector2 steer = ObstacleAvoidance.Steer(_motion.Position, desired, destination, lookAhead,
+                AvoidanceClearanceUnits + _obstacleRadiusUnits, _obstacles.In(_zone), this);
+            if (desired.sqrMagnitude < 1e-8f || Vector2.Dot(steer, desired.normalized) > 0.9999f)
+            {
+                _motion.ClearAvoidance();
+                return;
+            }
+            _motion.SetAvoidance(steer);
         }
 
         /// <summary>Nobody is left to fly: drop all orders and let the thrusters bring the ship to rest.</summary>
@@ -354,7 +400,12 @@ namespace LastFleet.Ships
             {
                 return ShipActivity.Docking;
             }
-            return order.Kind == ShipOrderKind.Intercept ? ShipActivity.Pursuing : ShipActivity.Moving;
+            return order.Kind switch
+            {
+                ShipOrderKind.Intercept => ShipActivity.Pursuing,
+                ShipOrderKind.Follow => ShipActivity.Following,
+                _ => ShipActivity.Moving
+            };
         }
 
         /// <summary>Powered travel costs fuel per km; drifting is free, and so are thrusters on an empty tank.</summary>
@@ -432,7 +483,32 @@ namespace LastFleet.Ships
                 SteerIntercept();
                 return;
             }
+            if (_currentOrder.Kind == ShipOrderKind.Follow)
+            {
+                SteerFollow();
+                return;
+            }
             _motion.RetargetDestination(ToPlane(OrderLocalPoint(_currentOrder, _zone)));
+        }
+
+        /// <summary>
+        /// Keeps station next to a moving ship: fly towards the station point at the followed ship's speed
+        /// plus a share of the gap, so the ship closes in smoothly instead of braking for every position
+        /// the station had. Once there and the followed ship rests, it settles on thrusters.
+        /// </summary>
+        void SteerFollow()
+        {
+            ShipAgent target = _currentOrder.Target;
+            Vector2 toStation = ToPlane(OrderLocalPoint(_currentOrder, _zone)) - _motion.Position;
+            float gap = toStation.magnitude;
+            if (target.Speed < FollowRestingSpeed && gap < FollowSettleDistanceUnits)
+            {
+                _motion.RetargetDestination(_motion.Position + toStation);
+                return;
+            }
+
+            Vector2 course = gap > FollowSettleDistanceUnits ? toStation : ShipMotion.HeadingToDirection(target.HeadingDegrees);
+            _motion.SetCourse(course, Mathf.Max(FollowRestingSpeed, target.Speed + gap * FollowCatchUpPerUnit));
         }
 
         void TryLand()
@@ -463,7 +539,7 @@ namespace LastFleet.Ships
             {
                 return order.ZoneIndex;
             }
-            if (order.Kind == ShipOrderKind.Intercept)
+            if (order.TargetsShip)
             {
                 // Unity's overloaded equality treats a destroyed target as null.
                 ShipAgent target = order.Target;
@@ -478,7 +554,20 @@ namespace LastFleet.Ships
             {
                 return zone.transform.InverseTransformPoint(order.Hangar.BayWorldPosition);
             }
-            return order.Kind == ShipOrderKind.Intercept ? InterceptPoint(order, zone) : order.LocalPoint;
+            return order.Kind switch
+            {
+                ShipOrderKind.Intercept => InterceptPoint(order, zone),
+                ShipOrderKind.Follow => FollowPoint(order, zone),
+                _ => order.LocalPoint
+            };
+        }
+
+        /// <summary>The station next to the followed ship: the order's offset turned with the ship's heading.</summary>
+        static Vector3 FollowPoint(ShipOrder order, ZoneView zone)
+        {
+            Vector3 targetLocal = zone.transform.InverseTransformPoint(order.Target.WorldPosition);
+            Vector3 offset = Quaternion.Euler(0f, order.Target.HeadingDegrees, 0f) * order.LocalPoint;
+            return new Vector3(targetLocal.x + offset.x, 0f, targetLocal.z + offset.z);
         }
 
         /// <summary>

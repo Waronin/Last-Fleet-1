@@ -33,6 +33,9 @@ namespace LastFleet.Ships.Editor
         const float RefineryHull = 2000f;
         const float LinerHull = 2500f;
         const int LinerHangarCapacity = 6;
+        // Capital ships are obstacles and cover, as circles about as wide as their hull is long.
+        const float RefineryObstacleRadius = 4.5f;
+        const float LinerObstacleRadius = 6.5f;
         const float ShuttleHull = 80f;
         const float ShuttleScanSeconds = 2f;
 
@@ -185,6 +188,7 @@ namespace LastFleet.Ships.Editor
             EditorAssetUtility.FindProperty(agentData, "_className").stringValue = "Refinery";
             EditorAssetUtility.FindProperty(agentData, "_size").enumValueIndex = (int)ShipSize.Capital;
             EditorAssetUtility.FindProperty(agentData, "_movementProfile").objectReferenceValue = profile;
+            EditorAssetUtility.FindProperty(agentData, "_obstacleRadiusUnits").floatValue = RefineryObstacleRadius;
             agentData.ApplyModifiedPropertiesWithoutUndo();
 
             Hangar hangar = root.AddComponent<Hangar>();
@@ -253,6 +257,7 @@ namespace LastFleet.Ships.Editor
             EditorAssetUtility.FindProperty(agentData, "_className").stringValue = "Liner";
             EditorAssetUtility.FindProperty(agentData, "_size").enumValueIndex = (int)ShipSize.Capital;
             EditorAssetUtility.FindProperty(agentData, "_movementProfile").objectReferenceValue = profile;
+            EditorAssetUtility.FindProperty(agentData, "_obstacleRadiusUnits").floatValue = LinerObstacleRadius;
             agentData.ApplyModifiedPropertiesWithoutUndo();
 
             Hangar hangar = root.AddComponent<Hangar>();

@@ -89,8 +89,18 @@ namespace LastFleet.GenerationPreview.Editor
             EditorAssetUtility.FindProperty(proninData, "_allegiance").enumValueIndex = (int)Allegiance.Pronin;
             proninData.ApplyModifiedPropertiesWithoutUndo();
             EditorAssetUtility.SetReferences(proninRegistry, ("_zoneWorld", zoneWorld), ("_camera", cameraRig.Camera));
+            // Rocks, stations and capital ships of both sides are flown around and give cover.
+            ObstacleField obstacles = shipsObject.AddComponent<ObstacleField>();
+            SerializedObject obstacleData = new SerializedObject(obstacles);
+            SerializedProperty registries = EditorAssetUtility.FindProperty(obstacleData, "_registries");
+            registries.arraySize = 2;
+            registries.GetArrayElementAtIndex(0).objectReferenceValue = shipRegistry;
+            registries.GetArrayElementAtIndex(1).objectReferenceValue = proninRegistry;
+            obstacleData.ApplyModifiedPropertiesWithoutUndo();
+            EditorAssetUtility.SetReferences(shipRegistry, ("_obstacles", obstacles));
+            EditorAssetUtility.SetReferences(proninRegistry, ("_obstacles", obstacles));
             CombatService combat = shipsObject.AddComponent<CombatService>();
-            EditorAssetUtility.SetReferences(combat, ("_fleet", shipRegistry), ("_pronin", proninRegistry));
+            EditorAssetUtility.SetReferences(combat, ("_fleet", shipRegistry), ("_pronin", proninRegistry), ("_obstacles", obstacles));
 
             ShipCommandInput shipInput = shipsObject.AddComponent<ShipCommandInput>();
             EditorAssetUtility.SetReferences(shipInput, ("_camera", cameraRig.Camera), ("_registry", shipRegistry), ("_combat", combat));

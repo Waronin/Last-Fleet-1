@@ -26,6 +26,7 @@ namespace LastFleet.Ships.Editor
 
         const float CruiserHull = 3500f;
         const int CruiserHangarCapacity = 8;
+        const float CruiserObstacleRadius = 6f;
         const float CruiserTank = 4500f;
         const float CruiserFuelPerKlick = 1f;
         const float CruiserFuelPerAU = 45f;
@@ -127,7 +128,7 @@ namespace LastFleet.Ships.Editor
 
             ShipAgent agent = root.AddComponent<ShipAgent>();
             ShipMovementProfile profile = ShipPrefabBuilder.LoadOrCreateProfile("CruiserMovement", ConfigureCruiserMovement);
-            ConfigureAgent(agent, "Cruiser", ShipSize.Capital, profile);
+            ConfigureAgent(agent, "Cruiser", ShipSize.Capital, profile, CruiserObstacleRadius);
 
             Hangar hangar = root.AddComponent<Hangar>();
             SerializedObject hangarData = new SerializedObject(hangar);
@@ -288,12 +289,15 @@ namespace LastFleet.Ships.Editor
             EditorAssetUtility.FindProperty(profile, "_jumpChargeSeconds").floatValue = 3f;
         }
 
-        static void ConfigureAgent(ShipAgent agent, string className, ShipSize size, ShipMovementProfile profile)
+        /// <summary>Class, size and movement; capital ships also get the radius others fly around and hide behind.</summary>
+        static void ConfigureAgent(ShipAgent agent, string className, ShipSize size, ShipMovementProfile profile,
+            float obstacleRadiusUnits = 0f)
         {
             SerializedObject agentData = new SerializedObject(agent);
             EditorAssetUtility.FindProperty(agentData, "_className").stringValue = className;
             EditorAssetUtility.FindProperty(agentData, "_size").enumValueIndex = (int)size;
             EditorAssetUtility.FindProperty(agentData, "_movementProfile").objectReferenceValue = profile;
+            EditorAssetUtility.FindProperty(agentData, "_obstacleRadiusUnits").floatValue = obstacleRadiusUnits;
             agentData.ApplyModifiedPropertiesWithoutUndo();
         }
 

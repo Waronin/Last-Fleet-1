@@ -127,6 +127,10 @@ MonoBehaviour:
     m_Localized: Pronin Fighter
     m_Metadata:
       m_Items: []
+  - m_Id: 1510294878236672
+    m_Localized: Following
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

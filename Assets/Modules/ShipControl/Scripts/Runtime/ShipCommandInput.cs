@@ -14,7 +14,8 @@ namespace LastFleet.ShipControl
     /// <summary>
     /// Mouse control of small ships in the viewed zone (GDD: Controls). Click selects the ship's
     /// squad, double click all ships of that class in the zone, drag selects the ships inside the
-    /// rectangle; Shift adds. Right click orders a move in formation; Shift appends to the queue.
+    /// rectangle; Shift adds. Right click orders a move in formation; Shift appends to the queue. On an
+    /// enemy it attacks, on another of our ships selected fighters escort it.
     /// Picking works in screen space around each ship, so tiny ships stay easy to hit.
     /// </summary>
     public sealed class ShipCommandInput : MonoBehaviour
@@ -193,12 +194,18 @@ namespace LastFleet.ShipControl
                 return;
             }
 
-            // Context command (GDD): right click on an enemy attacks it, on a deposit sends harvesters mining
-            // or scouts scanning, on an unscanned station scouts scan it, otherwise small ships dock at it;
-            // elsewhere it is a move.
+            // Context command (GDD): right click on an enemy attacks it, selected fighters on another of our
+            // ships escort it (or its squad), on a deposit sends harvesters mining or scouts scanning, on an
+            // unscanned station scouts scan it, otherwise small ships dock at it; elsewhere it is a move.
             if (_combat.TryPickHostile(_activeZone, _camera, pointer, _pickRadiusPixels, out ShipAgent hostile))
             {
                 _combat.OrderAttack(_selection.Ships, hostile);
+                return;
+            }
+            ShipAgent friendly = PickShip(pointer);
+            if (friendly != null && !_selection.Contains(friendly) && CombatService.CanEscort(_selection.Ships, friendly))
+            {
+                _combat.OrderEscort(_selection.Ships, friendly);
                 return;
             }
             if (_activeZone.TryPickDeposit(_camera, pointer, _pickRadiusPixels, out ResourceDeposit deposit) &&

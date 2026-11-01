@@ -146,7 +146,7 @@ namespace LastFleet.GenerationPreview
             }
             DrawShips();
             GUILayout.Space(6f);
-            GUILayout.Label("Left click / drag: select ships (Shift: add)   Right click: move (Shift: queue), on a deposit: mine, on an enemy: attack");
+            GUILayout.Label("Left click / drag: select ships (Shift: add)   Right click: move (Shift: queue), on a deposit: mine, on an enemy: attack, fighters on our ship: escort");
             GUILayout.Label("V: scan nearest deposit (Shift: whole zone)   X: extract nearest deposit   K: damage selected (Shift: heavy)   J: empty selected tanks   N: kill a crew member   P: Pronin raid");
             GUILayout.Label("Tab / Shift+Tab: next revealed zone   F: follow ship   Esc: system map");
         }

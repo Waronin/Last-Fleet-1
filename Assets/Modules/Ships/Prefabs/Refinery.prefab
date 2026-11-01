@@ -1293,6 +1293,7 @@ MonoBehaviour:
   _className: Refinery
   _size: 1
   _movementProfile: {fileID: 11400000, guid: a1f316e5428aca44bbb5a9b246491636, type: 2}
+  _obstacleRadiusUnits: 4.5
 --- !u!114 &580532212553525597
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1326,6 +1327,7 @@ MonoBehaviour:
   _oreCapacity: 5000
   _iceCapacity: 5000
   _gasCapacity: 5000
+  _metalCapacity: 5000
 --- !u!114 &6664837717211786756
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1361,6 +1363,7 @@ MonoBehaviour:
   _thrusterGlowFraction: 0.35
   _bracketColor: {r: 0.4, g: 0.8, b: 1, a: 1}
   _selectedBracketColor: {r: 1, g: 0.85, b: 0.2, a: 1}
+  _hostileBracketColor: {r: 1, g: 0.25, b: 0.2, a: 1}
 --- !u!114 &344354337137870335
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1390,6 +1393,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: LastFleet.People::LastFleet.People.ShipPassengers
   _capacity: 1200
   _startingPassengers: 800
+  _disembarkWhenDocked: 0
 --- !u!1 &8914957691072129255
 GameObject:
   m_ObjectHideFlags: 0

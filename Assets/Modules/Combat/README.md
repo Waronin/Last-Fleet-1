@@ -12,11 +12,15 @@ GDD references: *Kampf*, *Kleine Schiffe*, *Kapitalschiffe*, *Der Feind*, *Resso
 | `Allegiance` | Ships | Side of a ship (`HumanFleet`, `Pronin`), set by the registry that owns it. |
 | `ShipRegistry` (one per side) | Ships | Fleet systems (mining, recall, selection, population) only see their own side. `TransferTo` moves a ship to the other side, e.g. on capture; `ShipRemoved` means "no longer ours", losses come through `ShipLost`. |
 | `ShipOrder.Intercept` + `InterceptRun` | Ships | Attack run: aim beside the target, fly past at run speed, hold course to the break-off distance, come about. Follows the target across zones. |
-| `ShipMotion.SetCourse(direction, maximumSpeed)` | Ships | Course without braking and with a speed limit; used by attack runs and jump charging. |
+| `ShipMotion.SetCourse(direction, maximumSpeed)` | Ships | Course without braking and with a speed limit; used by attack runs, station keeping and jump charging. |
+| `ObstacleField` + `ObstacleAvoidance` + `Obstacle` | Ships | Rocks and wrecks, stations and capital ships of both sides as circles per zone. Ships under main drive steer past them (look-ahead, tangent past the nearer side); the obstacle holding the destination (mining slot, docking port, landing bay) is never avoided. Small ships are not obstacles. |
+| `ShipOrder.Follow` | Ships | Station keeping at an offset in the followed ship's frame, at its speed plus a share of the gap; across zones. |
+| Cover (`CombatService.HasLineOfFire`) | Combat | Weapons only fire with a free line of fire; obstacles between shooter and target block it (the two themselves do not). Chasing and self-defense still pick targets in cover and fly around. |
+| `EscortDuty` | Combat | Whom an escort protects: one ship or its whole squad (led by the current leader). While the lead sits in a hangar the escort waits at the carrier and picks the lead up again on launch. |
 | `CombatService` | Combat | The only place that knows both registries: finds targets, resolves hits (shield first, then hull), carries out attack orders, reports enemy losses. |
 | `ShipWeapons` + `WeaponSettings` + `WeaponCycle` | Combat | Range, damage, bursts, firing arc, linear hit falloff, round speed. A hit is rolled on firing and lands when the round arrives. |
 | `ShipShield` + `ShieldCharge` | Combat | Absorbs weapon hits only; recharges after a delay without hits. Hazards bypass it. |
-| `FighterCombat` | Combat | Attack runs after an order; follow-up target after a kill; self-defense when idle (`_defendWhenIdle`). |
+| `FighterCombat` | Combat | Attack runs after an order; follow-up target after a kill; self-defense when idle (`_defendWhenIdle`). Escort: keep station around the protected ships, attack enemies within the guard radius of any of them, break a chase off at the leash and return. |
 | `AutonomousHunting` + `HuntingRules` | Combat | Enemy AI: small ships before capital ships, isolated before escorted, near before far. Off for ships on the player's side. |
 | `ProjectileShotView` / `BeamShotView` | Combat/View | Looks only: human tracer rounds with muzzle flash, Pronin energy beams. |
 | `HitFeedbackView` | Combat/View | Shield hit: a ring around the ship flares and fades. Hull hit (weapons or hazards): sparks. |
@@ -25,8 +29,10 @@ GDD references: *Kampf*, *Kleine Schiffe*, *Kapitalschiffe*, *Der Feind*, *Resso
 | `CombatShipPrefabBuilder` + `CombatEffectsBuilder` | Ships/Editor | Build Cruiser, Fighter, ProninFighter and the explosion; all balance values below live there. |
 | `DeveloperRaidInput` | GenerationPreview | **P** drops 3 Pronin fighters into the viewed zone. |
 
-Controls: right click on an enemy attacks it with the selected ships. Fighters without orders attack
-enemies in weapon range on their own; ships following an order (e.g. returning to the hangar) do not.
+Controls: right click on an enemy attacks it with the selected ships. Right click with fighters selected
+on another of our ships makes them escort it, or its squad, spread evenly around it. Fighters without
+orders attack enemies in weapon range on their own; ships following an order (e.g. returning to the
+hangar) do not. Any new order ends an escort.
 
 ## Current values
 
@@ -49,6 +55,11 @@ Scale: 1 unit = 100 m, a zone is 50 km (500 units) in radius.
 | Hangar | – | – | 8 slots, 1 launch per second |
 | Wreck on destruction | – | 25 metal (1 salvage slot) | – |
 | Explosion size | 1.2 | 1.2 | 14 |
+| Obstacle / cover radius | – | – | 6 (liner 6.5, refinery 4.5) |
+| Escort: distance / guard radius / leash | 8 / 150 / 250 | – (does not escort) | – |
+
+Obstacle avoidance: ships look ahead 2.5 s of travel (at least 15 units) and keep 2 units plus their
+own radius clear. Rocks and wrecks count with their rock radius, stations with their footprint.
 
 Metal: the refinery stores up to 5000. A harvester holds 120, so one Pronin wreck is about a fifth of
 a load; harvesters move on to the next wreck in the zone by themselves.
@@ -70,6 +81,9 @@ Newest first. Note the date, the setup, what happened and the version of the val
 
 | Date | Setup | Result | Notes |
 | --- | --- | --- | --- |
+| 2026-11-01 | Fighter sent straight through the liner (radius 6.5) | Passed beside it, closest 7.3 units from its center | Without avoidance it would have flown through the hull. Closest point came while flipping, where avoidance does not steer. |
+| 2026-11-01 | Pronin fighter parked behind the liner as seen from the cruiser | No line of fire from the cruiser or the refinery | Cover works for capital ships as cover; rocks were not in the test zone. |
+| 2026-11-01 | 4 fighters escort a harvester squad of 3 on a 200-unit trip, then 3 Pronin appear 120 units away | Escorts stayed within ~45 units while moving and settled at 8; all went for the raid, destroyed it and took their stations again; after the harvesters landed the escort waited at the refinery | First try without station keeping overshot by up to 130 units; now they match the protected ship's speed. |
 | 2026-10-30 | 8 fighters + cruiser vs 6 Pronin, then 3 harvesters sent to the wrecks | Pronin destroyed in ~12 s (1 fighter lost); 6 wrecks of 25 metal; the harvesters salvaged all of them in ~40 s, 151 metal arrived at the refinery | Explosions, shield rings, sparks and wreck plates all visible. The extra metal is the harvesters' mining bonus. |
 | 2026-10-30 | 8 idle fighters, 3 Pronin from behind | Fighters engaged on their own after ~3 s; Pronin went for the outermost fighters | Before self-defense idle fighters never fired: the 30° arc never pointed at the attacker. |
 | 2026-10-30 | 8 fighters + cruiser vs 6 Pronin, 160 units away, range 250, linear falloff | All Pronin destroyed in ~12 s, 1 fighter lost | Long range plus linear falloff is very lethal; the cruiser joins at once. Too short again. |
@@ -88,8 +102,13 @@ Newest first. Note the date, the setup, what happened and the version of the val
   and nothing announces them, the player has to spot them. Metal has no use yet (repairs, ammunition
   and upgrades come later).
 - **Effects** are blockout: no sound, no camera shake, the shock ring is a flat circle.
-- **Stances** (aggressive, defensive, escort, retreat) and **target priorities** for capital ships
-  are not built; `FighterCombat._defendWhenIdle` is the first switch towards them.
+- **Stances**: escort exists; aggressive, defensive and retreat and **target priorities** for capital
+  ships are not built. `FighterCombat._defendWhenIdle` is the switch for idle self-defense.
+- **Avoidance limits**: only while the main drive carries the ship; braking, flipping and thruster
+  maneuvers fly straight. Capital ships are circles, so long hulls block more than they look. Pronin
+  hunters chase into cover but do not seek it themselves; nobody looks for cover on purpose yet.
+- **Escort**: an escort counts its distance from the lead only; it can lose a squad member that
+  strays far from the leader.
 - **Ammunition** is not consumed yet (GDD: projectile weapons need ammunition from the cruiser).
 - **Hazards** (shards, gas, radiation) only hit the player's registry; the GDD wants them for both
   sides. Shields do not block hazards.

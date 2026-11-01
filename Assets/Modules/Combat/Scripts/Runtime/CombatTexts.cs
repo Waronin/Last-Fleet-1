@@ -20,5 +20,13 @@ namespace LastFleet.Combat
 
         /// <summary>{target}</summary>
         public static readonly GameTextKey EngagingTask = new GameTextKey(Table, "task.engaging");
+
+        /// <summary>{count}, {target}</summary>
+        public static readonly GameTextKey EscortOrdered = new GameTextKey(Table, "notice.escort");
+
+        public static readonly GameTextKey NoEscorts = new GameTextKey(Table, "notice.no-escorts");
+
+        /// <summary>{target}</summary>
+        public static readonly GameTextKey EscortingTask = new GameTextKey(Table, "task.escorting");
     }
 }

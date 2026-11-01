@@ -1178,6 +1178,7 @@ MonoBehaviour:
   _className: Liner
   _size: 1
   _movementProfile: {fileID: 11400000, guid: 0c3aa2f5bab86f946bcd2c5dcdb2e0eb, type: 2}
+  _obstacleRadiusUnits: 6.5
 --- !u!114 &2896250026495935092
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1238,6 +1239,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: LastFleet.People::LastFleet.People.ShipPassengers
   _capacity: 8000
   _startingPassengers: 6000
+  _disembarkWhenDocked: 0
 --- !u!114 &8052538720260350554
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1260,6 +1262,7 @@ MonoBehaviour:
   _thrusterGlowFraction: 0.35
   _bracketColor: {r: 0.4, g: 0.8, b: 1, a: 1}
   _selectedBracketColor: {r: 1, g: 0.85, b: 0.2, a: 1}
+  _hostileBracketColor: {r: 1, g: 0.25, b: 0.2, a: 1}
 --- !u!1 &6716980367706488725
 GameObject:
   m_ObjectHideFlags: 0

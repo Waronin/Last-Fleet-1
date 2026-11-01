@@ -16,6 +16,10 @@ namespace LastFleet.Combat
     {
         [SerializeField] ShipRegistry _fleet;
         [SerializeField] ShipRegistry _pronin;
+        [Tooltip("Optional. Rocks, stations and capital ships give cover against weapon fire.")]
+        [SerializeField] ObstacleField _obstacles;
+
+        readonly List<FighterCombat> _escorts = new List<FighterCombat>();
 
         /// <summary>Short feedback for the player, e.g. when an enemy is shot down.</summary>
         public event Action<GameText> Notice;
@@ -62,14 +66,48 @@ namespace LastFleet.Combat
             return ship.Allegiance == _fleet.Allegiance ? _pronin : _fleet;
         }
 
-        /// <summary>The nearest enemy flying in the ship's zone within the distance, or null.</summary>
-        public ShipAgent FindNearestHostile(ShipAgent ship, float maximumDistanceUnits)
+        /// <summary>
+        /// Whether nothing blocks the line from the shooter to the target (GDD: cover in asteroid
+        /// fields). Rocks, stations and capital ships other than the two block it.
+        /// </summary>
+        public bool HasLineOfFire(ShipAgent shooter, ShipAgent target)
         {
-            return FindNearestHostile(ship, maximumDistanceUnits, Vector2.up, 360f);
+            return _obstacles == null || !_obstacles.IsLineBlocked(shooter, target);
         }
 
-        /// <summary>The nearest enemy within the distance and inside a cone around a forward direction, or null.</summary>
-        public ShipAgent FindNearestHostile(ShipAgent ship, float maximumDistanceUnits, Vector2 forward, float arcDegrees)
+        /// <summary>The nearest enemy flying in the ship's zone within the distance, in cover or not, or null.</summary>
+        public ShipAgent FindNearestHostile(ShipAgent ship, float maximumDistanceUnits)
+        {
+            return FindNearestHostileNear(ship, ship.WorldPosition, maximumDistanceUnits);
+        }
+
+        /// <summary>The enemy of a ship that is nearest to a point in the ship's zone within the distance, or null.</summary>
+        public ShipAgent FindNearestHostileNear(ShipAgent ship, Vector3 worldPoint, float maximumDistanceUnits)
+        {
+            ShipAgent nearest = null;
+            float bestDistanceSquared = maximumDistanceUnits * maximumDistanceUnits;
+            foreach (ShipAgent candidate in OpponentsOf(ship).Ships)
+            {
+                if (!IsHostileInZone(ship, candidate))
+                {
+                    continue;
+                }
+                Vector3 offset = candidate.WorldPosition - worldPoint;
+                float distanceSquared = offset.x * offset.x + offset.z * offset.z;
+                if (distanceSquared <= bestDistanceSquared)
+                {
+                    bestDistanceSquared = distanceSquared;
+                    nearest = candidate;
+                }
+            }
+            return nearest;
+        }
+
+        /// <summary>
+        /// The nearest enemy the ship's weapons can fire at: within the distance, inside the cone around
+        /// the forward direction and not in cover; or null.
+        /// </summary>
+        public ShipAgent FindTargetInSight(ShipAgent ship, float maximumDistanceUnits, Vector2 forward, float arcDegrees)
         {
             ShipAgent nearest = null;
             float bestDistance = maximumDistanceUnits;
@@ -80,16 +118,14 @@ namespace LastFleet.Combat
                     continue;
                 }
                 Vector3 offset = candidate.WorldPosition - ship.WorldPosition;
-                if (!WeaponSettings.IsInArc(forward, new Vector2(offset.x, offset.z), arcDegrees))
+                float distance = PlanarDistance(ship, candidate);
+                if (distance > bestDistance || !WeaponSettings.IsInArc(forward, new Vector2(offset.x, offset.z), arcDegrees) ||
+                    !HasLineOfFire(ship, candidate))
                 {
                     continue;
                 }
-                float distance = PlanarDistance(ship, candidate);
-                if (distance <= bestDistance)
-                {
-                    bestDistance = distance;
-                    nearest = candidate;
-                }
+                bestDistance = distance;
+                nearest = candidate;
             }
             return nearest;
         }
@@ -168,7 +204,7 @@ namespace LastFleet.Combat
             {
                 if (ship.TryGetComponent(out FighterCombat fighter))
                 {
-                    if (fighter.Engage(target))
+                    if (fighter.Attack(target))
                     {
                         attacking++;
                     }
@@ -184,6 +220,57 @@ namespace LastFleet.Combat
                 ? CombatTexts.NoAttackers
                 : CombatTexts.AttackOrdered.Format(("count", attacking), ("target", target.DisplayName)));
             return attacking;
+        }
+
+        /// <summary>Whether any of the ships can take an escort order, so a click on a friendly ship means escort.</summary>
+        public static bool CanEscort(IReadOnlyList<ShipAgent> ships, ShipAgent protectedShip)
+        {
+            foreach (ShipAgent ship in ships)
+            {
+                if (ship != protectedShip && ship.TryGetComponent(out FighterCombat _))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// The fighters among the ships escort a friendly ship, or its whole squad if it flies in one,
+        /// spread evenly around it. Members of that squad do not escort themselves. Returns how many
+        /// ships took the order.
+        /// </summary>
+        public int OrderEscort(IReadOnlyList<ShipAgent> ships, ShipAgent protectedShip)
+        {
+            RegistryOf(protectedShip).Squads.TryGetSquad(protectedShip, out Squad squad);
+            _escorts.Clear();
+            foreach (ShipAgent ship in ships)
+            {
+                bool protectsItself = ship == protectedShip || (squad != null && RegistryOf(ship).Squads.TryGetSquad(ship, out Squad own) && own == squad);
+                if (!protectsItself && ship.TryGetComponent(out FighterCombat fighter))
+                {
+                    _escorts.Add(fighter);
+                }
+            }
+
+            int escorting = 0;
+            for (int i = 0; i < _escorts.Count; i++)
+            {
+                if (_escorts[i].StartEscort(protectedShip, squad, 360f * i / _escorts.Count))
+                {
+                    escorting++;
+                }
+            }
+            GameText protectedName = squad != null ? squad.DisplayName : protectedShip.DisplayName;
+            Notice?.Invoke(escorting == 0
+                ? CombatTexts.NoEscorts
+                : CombatTexts.EscortOrdered.Format(("count", escorting), ("target", protectedName)));
+            return escorting;
+        }
+
+        ShipRegistry RegistryOf(ShipAgent ship)
+        {
+            return ship.Allegiance == _fleet.Allegiance ? _fleet : _pronin;
         }
 
         static int CountEscorts(ShipAgent ship, IReadOnlyList<ShipAgent> side)

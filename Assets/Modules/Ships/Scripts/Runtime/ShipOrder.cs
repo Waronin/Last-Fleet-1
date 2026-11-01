@@ -24,7 +24,13 @@ namespace LastFleet.Ships
         /// next pass, across zones if it jumps away: an attack run. The order lasts until the target is
         /// gone or lands in a hangar.
         /// </summary>
-        Intercept
+        Intercept,
+
+        /// <summary>
+        /// Keep station at an offset from another ship, turning with it and following it across zones,
+        /// e.g. to escort it. The order lasts until the ship is gone or lands in a hangar.
+        /// </summary>
+        Follow
     }
 
     public readonly struct ShipOrder
@@ -48,7 +54,10 @@ namespace LastFleet.Ships
         /// <summary>Point-of-interest index of the target zone (move and maneuver orders).</summary>
         public int ZoneIndex { get; }
 
-        /// <summary>Target point relative to the zone center (move and maneuver orders).</summary>
+        /// <summary>
+        /// Target point relative to the zone center (move and maneuver orders), or the offset from the
+        /// followed ship in its own frame, x to its right and z ahead (follow orders).
+        /// </summary>
         public Vector3 LocalPoint { get; }
 
         /// <summary>Target hangar (dock orders).</summary>
@@ -106,8 +115,20 @@ namespace LastFleet.Ships
             return new ShipOrder(ShipOrderKind.Intercept, -1, Vector3.zero, null, 0f, speedUnitsPerSecond, target, passOffsetUnits, breakOffUnits);
         }
 
+        public static ShipOrder Follow(ShipAgent target, Vector3 offsetInTargetFrame)
+        {
+            if (target == null)
+            {
+                throw new System.ArgumentNullException(nameof(target));
+            }
+            return new ShipOrder(ShipOrderKind.Follow, -1, offsetInTargetFrame, null, 0f, 0f, target);
+        }
+
+        /// <summary>Whether the order targets another ship (intercept and follow orders).</summary>
+        public bool TargetsShip => Kind == ShipOrderKind.Intercept || Kind == ShipOrderKind.Follow;
+
         /// <summary>Whether the order follows something that moves: a hangar's landing bay or another ship.</summary>
-        public bool FollowsMovingTarget => TargetsHangar || Kind == ShipOrderKind.Intercept;
+        public bool FollowsMovingTarget => TargetsHangar || TargetsShip;
 
         /// <summary>Whether the order targets a hangar's landing bay (dock or approach).</summary>
         public bool TargetsHangar => Kind == ShipOrderKind.Dock || Kind == ShipOrderKind.Approach;

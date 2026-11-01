@@ -9,7 +9,8 @@ namespace LastFleet.Combat
     /// Weapons of a ship, fighter or capital ship alike (GDD: capital ships fire automatically). They
     /// fire in bursts at the focus target when it is in range and inside the firing arc, otherwise at
     /// the nearest enemy that is, so a ship defends itself even without orders. Forward guns therefore
-    /// only fire while the ship points at an enemy. A hit is rolled when the shot is fired and lands
+    /// only fire while the ship points at an enemy, and nobody fires at a target in cover behind a
+    /// rock, a station or a capital ship. A hit is rolled when the shot is fired and lands
     /// when its round arrives; how a shot looks is up to a view such as <see cref="ProjectileShotView"/>.
     /// Rounds still in flight are lost when the ship lands or is destroyed.
     /// </summary>
@@ -70,7 +71,7 @@ namespace LastFleet.Combat
             Vector2 forward = Forward();
             CurrentTarget = CanFireAt(FocusTarget, forward)
                 ? FocusTarget
-                : _combat.FindNearestHostile(_ship, RangeUnits, forward, _weapon.FiringArcDegrees);
+                : _combat.FindTargetInSight(_ship, RangeUnits, forward, _weapon.FiringArcDegrees);
             if (CurrentTarget == null)
             {
                 return;
@@ -112,7 +113,7 @@ namespace LastFleet.Combat
         bool CanFireAt(ShipAgent target, Vector2 forward)
         {
             return CombatService.IsHostileInZone(_ship, target) && CombatService.PlanarDistance(_ship, target) <= RangeUnits &&
-                   _weapon.IsInArc(forward, ToTarget(target));
+                   _weapon.IsInArc(forward, ToTarget(target)) && _combat.HasLineOfFire(_ship, target);
         }
 
         Vector2 Forward()
