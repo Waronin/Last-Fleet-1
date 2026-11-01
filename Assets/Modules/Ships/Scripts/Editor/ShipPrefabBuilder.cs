@@ -13,7 +13,7 @@ namespace LastFleet.Ships.Editor
     /// <summary>
     /// Creates the blockout ship prefabs with their movement profiles and materials.
     /// Game scale (GDD): a harvester looks like about 200 m (2 units), the refinery about 1 km (10 units),
-    /// the liner about 1.6 km (16 units).
+    /// the tanker about 1.2 km (12 units), the liner about 1.6 km (16 units).
     /// Menu: Last Fleet / Rebuild Ship Prefabs.
     /// </summary>
     public static class ShipPrefabBuilder
@@ -26,16 +26,21 @@ namespace LastFleet.Ships.Editor
         const string RefineryPrefabPath = PrefabFolder + "/Refinery.prefab";
         const string LinerPrefabPath = PrefabFolder + "/Liner.prefab";
         const string ShuttlePrefabPath = PrefabFolder + "/Shuttle.prefab";
+        const string TankerPrefabPath = PrefabFolder + "/Tanker.prefab";
+        // All industrial ships share one profile; the asset keeps the name of the first of them.
+        const string IndustrialMovementProfileName = "RefineryMovement";
         internal const string LitShaderName = "Universal Render Pipeline/Lit";
         internal const string UnlitShaderName = "Universal Render Pipeline/Unlit";
         const string ParticleShaderName = "Universal Render Pipeline/Particles/Unlit";
         const float HarvesterHull = 100f;
         const float RefineryHull = 2000f;
         const float LinerHull = 2500f;
+        const float TankerHull = 1800f;
         const int LinerHangarCapacity = 6;
         // Capital ships are obstacles and cover, as circles about as wide as their hull is long.
         const float RefineryObstacleRadius = 4.5f;
         const float LinerObstacleRadius = 6.5f;
+        const float TankerObstacleRadius = 6f;
         const float ShuttleHull = 80f;
         const float ShuttleScanSeconds = 2f;
 
@@ -53,12 +58,21 @@ namespace LastFleet.Ships.Editor
         const float ShuttleTank = 120f;
         const float ShuttleFuelPerKlick = 0.08f;
         const float ShuttleFuelPerAU = 1.5f;
+        // The tanker's own drive burns like the refinery's. Its store holds four times the refinery's
+        // tank and arrives filled to 40 %, a reserve for a few jumps (GDD: about 3 fleet jumps at start).
+        const float TankerTank = 5000f;
+        const float TankerFuelPerKlick = 1f;
+        const float TankerFuelPerAU = 50f;
+        const float TankerFuelStoreCapacity = 20000f;
+        const float TankerStartingFuel = 8000f;
 
         // GDD: capital ships start below capacity, so rescued people have room.
         const int RefineryPassengerCapacity = 1200;
         const int RefineryStartingPassengers = 800;
         const int LinerPassengerCapacity = 8000;
         const int LinerStartingPassengers = 6000;
+        const int TankerPassengerCapacity = 600;
+        const int TankerStartingPassengers = 400;
         // A shuttle carries more people than any other small ship (GDD: Small ships), and starts empty.
         const int ShuttleSeats = 40;
 
@@ -74,6 +88,7 @@ namespace LastFleet.Ships.Editor
         static readonly Color RefineryHullColor = new Color(0.32f, 0.32f, 0.34f);
         static readonly Color RustColor = new Color(0.5f, 0.3f, 0.2f);
         static readonly Color WarningColor = new Color(0.9f, 0.75f, 0.1f);
+        static readonly Color FuelTankColor = new Color(0.72f, 0.4f, 0.16f);
         internal static readonly Color BayColor = new Color(0.3f, 1.5f, 2f);
         internal static readonly Color EngineColor = new Color(4f, 1.8f, 0.5f);
         static readonly Color TrailColor = new Color(1f, 0.5f, 0.15f);
@@ -91,10 +106,12 @@ namespace LastFleet.Ships.Editor
             AssetDatabase.DeleteAsset(RefineryPrefabPath);
             AssetDatabase.DeleteAsset(LinerPrefabPath);
             AssetDatabase.DeleteAsset(ShuttlePrefabPath);
+            AssetDatabase.DeleteAsset(TankerPrefabPath);
             LoadOrCreateHarvester();
             LoadOrCreateRefinery();
             LoadOrCreateLiner();
             LoadOrCreateShuttle();
+            LoadOrCreateTanker();
             CombatShipPrefabBuilder.RebuildAll();
         }
 
@@ -174,22 +191,12 @@ namespace LastFleet.Ships.Editor
             bayTransform.localPosition = new Vector3(1.4f, 0f, -1.5f);
             bayTransform.localRotation = Quaternion.Euler(0f, 90f, 0f);
 
-            Transform engineGlow = new GameObject("Engine Glow").transform;
-            engineGlow.SetParent(root.transform, false);
-            engineGlow.localPosition = new Vector3(0f, 0f, -3.7f);
-            CreatePart(engineGlow, PrimitiveType.Sphere, "Engine Port", Engine(), new Vector3(-0.6f, 0f, 0f), Vector3.one * 0.8f);
-            CreatePart(engineGlow, PrimitiveType.Sphere, "Engine Starboard", Engine(), new Vector3(0.6f, 0f, 0f), Vector3.one * 0.8f);
+            Transform engineGlow = CreateTwinEngines(root.transform, new Vector3(0f, 0f, -3.7f));
             TrailRenderer trail = CreateTrail(root.transform, new Vector3(0f, 0f, -4f), 1.2f, 8f);
             LineRenderer bracket = CreateBracket(root.transform);
 
             ShipAgent agent = root.AddComponent<ShipAgent>();
-            ShipMovementProfile profile = LoadOrCreateProfile("RefineryMovement", ConfigureRefineryMovement);
-            SerializedObject agentData = new SerializedObject(agent);
-            EditorAssetUtility.FindProperty(agentData, "_className").stringValue = "Refinery";
-            EditorAssetUtility.FindProperty(agentData, "_size").enumValueIndex = (int)ShipSize.Capital;
-            EditorAssetUtility.FindProperty(agentData, "_movementProfile").objectReferenceValue = profile;
-            EditorAssetUtility.FindProperty(agentData, "_obstacleRadiusUnits").floatValue = RefineryObstacleRadius;
-            agentData.ApplyModifiedPropertiesWithoutUndo();
+            ConfigureAgent(agent, "Refinery", ShipSize.Capital, LoadOrCreateIndustrialProfile(), RefineryObstacleRadius);
 
             Hangar hangar = root.AddComponent<Hangar>();
             EditorAssetUtility.SetReferences(hangar, ("_bay", bayTransform));
@@ -199,6 +206,60 @@ namespace LastFleet.Ships.Editor
             AddPassengers(root, RefineryPassengerCapacity, RefineryStartingPassengers);
             AddPresentation(root, engineGlow, trail, bracket, 34f, 1f);
             return SavePrefab(root, RefineryPrefabPath);
+        }
+
+        /// <summary>
+        /// Industrial fuel tanker (GDD: space tanker): stores fuel and pumps it into the capital ships
+        /// around it. A long spine carrying a row of spherical tanks, built like the refinery from the
+        /// industrial parts: same engines, movement, store and warning colors. It has no hangar.
+        /// </summary>
+        public static ShipAgent LoadOrCreateTanker()
+        {
+            GameObject existing = AssetDatabase.LoadAssetAtPath<GameObject>(TankerPrefabPath);
+            if (existing != null)
+            {
+                return existing.GetComponent<ShipAgent>();
+            }
+
+            GameObject root = new GameObject("Tanker");
+            Material hull = LoadOrCreateMaterial("RefineryHull", LitShaderName, RefineryHullColor);
+            Material rust = LoadOrCreateMaterial("RefineryRust", LitShaderName, RustColor);
+            Material warning = LoadOrCreateMaterial("RefineryWarning", LitShaderName, WarningColor);
+            Material fuelTank = LoadOrCreateMaterial("TankerFuelTank", LitShaderName, FuelTankColor);
+
+            CreatePart(root.transform, PrimitiveType.Cube, "Spine", hull, new Vector3(0f, 0f, 0f), new Vector3(0.8f, 0.8f, 11f));
+            CreatePart(root.transform, PrimitiveType.Cube, "Drive Section", hull, new Vector3(0f, 0f, -4.6f), new Vector3(2f, 1.4f, 2f));
+            CreatePart(root.transform, PrimitiveType.Cube, "Bridge", hull, new Vector3(0f, 0.9f, 4.9f), new Vector3(1f, 0.6f, 1.2f));
+            float[] tankPositions = { 3.2f, 1.0f, -1.2f, -3.3f };
+            for (int i = 0; i < tankPositions.Length; i++)
+            {
+                CreatePart(root.transform, PrimitiveType.Sphere, $"Fuel Tank {i + 1}", fuelTank, new Vector3(0f, 0f, tankPositions[i]), Vector3.one * 2.1f);
+                CreatePart(root.transform, PrimitiveType.Cube, $"Tank Band {i + 1}", warning, new Vector3(0f, 0f, tankPositions[i]), new Vector3(2.2f, 0.25f, 0.3f));
+            }
+            // Refuelling booms on both flanks, swung out toward the ships it supplies.
+            CreatePart(root.transform, PrimitiveType.Cube, "Boom Port", rust, new Vector3(-1.6f, 0.6f, 4.2f), new Vector3(2.4f, 0.15f, 0.15f));
+            CreatePart(root.transform, PrimitiveType.Cube, "Boom Starboard", rust, new Vector3(1.6f, 0.6f, 4.2f), new Vector3(2.4f, 0.15f, 0.15f));
+
+            Transform engineGlow = CreateTwinEngines(root.transform, new Vector3(0f, 0f, -5.7f));
+            TrailRenderer trail = CreateTrail(root.transform, new Vector3(0f, 0f, -6f), 1.2f, 8f);
+            LineRenderer bracket = CreateBracket(root.transform);
+
+            ShipAgent agent = root.AddComponent<ShipAgent>();
+            ConfigureAgent(agent, "Tanker", ShipSize.Capital, LoadOrCreateIndustrialProfile(), TankerObstacleRadius);
+
+            SupplyStorage storage = root.AddComponent<SupplyStorage>();
+            SerializedObject storageData = new SerializedObject(storage);
+            EditorAssetUtility.FindProperty(storageData, "_fuelCapacity").floatValue = TankerFuelStoreCapacity;
+            EditorAssetUtility.FindProperty(storageData, "_metalCapacity").floatValue = 0f;
+            EditorAssetUtility.FindProperty(storageData, "_waterCapacity").floatValue = 0f;
+            EditorAssetUtility.FindProperty(storageData, "_startingFuel").floatValue = TankerStartingFuel;
+            storageData.ApplyModifiedPropertiesWithoutUndo();
+            root.AddComponent<FuelTanker>();
+            AddDurability(root, TankerHull);
+            AddFuel(root, TankerTank, TankerFuelPerKlick, TankerFuelPerAU);
+            AddPassengers(root, TankerPassengerCapacity, TankerStartingPassengers);
+            AddPresentation(root, engineGlow, trail, bracket, 34f, 1f);
+            return SavePrefab(root, TankerPrefabPath);
         }
 
         /// <summary>Civilian passenger liner with a shuttle hangar (GDD: Interplanetary Liner 1).</summary>
@@ -252,13 +313,7 @@ namespace LastFleet.Ships.Editor
             LineRenderer bracket = CreateBracket(root.transform);
 
             ShipAgent agent = root.AddComponent<ShipAgent>();
-            ShipMovementProfile profile = LoadOrCreateProfile("LinerMovement", ConfigureLinerMovement);
-            SerializedObject agentData = new SerializedObject(agent);
-            EditorAssetUtility.FindProperty(agentData, "_className").stringValue = "Liner";
-            EditorAssetUtility.FindProperty(agentData, "_size").enumValueIndex = (int)ShipSize.Capital;
-            EditorAssetUtility.FindProperty(agentData, "_movementProfile").objectReferenceValue = profile;
-            EditorAssetUtility.FindProperty(agentData, "_obstacleRadiusUnits").floatValue = LinerObstacleRadius;
-            agentData.ApplyModifiedPropertiesWithoutUndo();
+            ConfigureAgent(agent, "Liner", ShipSize.Capital, LoadOrCreateProfile("LinerMovement", ConfigureLinerMovement), LinerObstacleRadius);
 
             Hangar hangar = root.AddComponent<Hangar>();
             SerializedObject hangarData = new SerializedObject(hangar);
@@ -302,12 +357,7 @@ namespace LastFleet.Ships.Editor
             LineRenderer bracket = CreateBracket(root.transform);
 
             ShipAgent agent = root.AddComponent<ShipAgent>();
-            ShipMovementProfile profile = LoadOrCreateProfile("ShuttleMovement", ConfigureShuttleMovement);
-            SerializedObject agentData = new SerializedObject(agent);
-            EditorAssetUtility.FindProperty(agentData, "_className").stringValue = "Shuttle";
-            EditorAssetUtility.FindProperty(agentData, "_size").enumValueIndex = (int)ShipSize.Small;
-            EditorAssetUtility.FindProperty(agentData, "_movementProfile").objectReferenceValue = profile;
-            agentData.ApplyModifiedPropertiesWithoutUndo();
+            ConfigureAgent(agent, "Shuttle", ShipSize.Small, LoadOrCreateProfile("ShuttleMovement", ConfigureShuttleMovement));
 
             AddPresentation(root, engineGlow, trail, bracket, 20f, 1f);
             AddDurability(root, ShuttleHull);
@@ -355,7 +405,7 @@ namespace LastFleet.Ships.Editor
         }
 
         /// <summary>Heavy and slow, like a flying building (GDD: capital ships).</summary>
-        static void ConfigureRefineryMovement(SerializedObject profile)
+        static void ConfigureIndustrialMovement(SerializedObject profile)
         {
             EditorAssetUtility.FindProperty(profile, "_motion._maximumSpeed").floatValue = 10f;
             EditorAssetUtility.FindProperty(profile, "_motion._mainDriveAcceleration").floatValue = 0.8f;
@@ -366,6 +416,34 @@ namespace LastFleet.Ships.Editor
             EditorAssetUtility.FindProperty(profile, "_motion._arrivalToleranceUnits").floatValue = 1.5f;
             EditorAssetUtility.FindProperty(profile, "_motion._alignToleranceDegrees").floatValue = 4f;
             EditorAssetUtility.FindProperty(profile, "_jumpChargeSeconds").floatValue = 15f;
+        }
+
+        static ShipMovementProfile LoadOrCreateIndustrialProfile()
+        {
+            return LoadOrCreateProfile(IndustrialMovementProfileName, ConfigureIndustrialMovement);
+        }
+
+        /// <summary>Class, size and movement; capital ships also get the radius others fly around and hide behind.</summary>
+        internal static void ConfigureAgent(ShipAgent agent, string className, ShipSize size, ShipMovementProfile profile,
+            float obstacleRadiusUnits = 0f)
+        {
+            SerializedObject agentData = new SerializedObject(agent);
+            EditorAssetUtility.FindProperty(agentData, "_className").stringValue = className;
+            EditorAssetUtility.FindProperty(agentData, "_size").enumValueIndex = (int)size;
+            EditorAssetUtility.FindProperty(agentData, "_movementProfile").objectReferenceValue = profile;
+            EditorAssetUtility.FindProperty(agentData, "_obstacleRadiusUnits").floatValue = obstacleRadiusUnits;
+            agentData.ApplyModifiedPropertiesWithoutUndo();
+        }
+
+        /// <summary>The paired engine glow of the heavy capital ships; the returned parent scales with thrust.</summary>
+        internal static Transform CreateTwinEngines(Transform parent, Vector3 localPosition)
+        {
+            Transform engineGlow = new GameObject("Engine Glow").transform;
+            engineGlow.SetParent(parent, false);
+            engineGlow.localPosition = localPosition;
+            CreatePart(engineGlow, PrimitiveType.Sphere, "Engine Port", Engine(), new Vector3(-0.6f, 0f, 0f), Vector3.one * 0.8f);
+            CreatePart(engineGlow, PrimitiveType.Sphere, "Engine Starboard", Engine(), new Vector3(0.6f, 0f, 0f), Vector3.one * 0.8f);
+            return engineGlow;
         }
 
         internal static ShipMovementProfile LoadOrCreateProfile(string name, System.Action<SerializedObject> configure)

@@ -1,4 +1,5 @@
 using System;
+using LastFleet.Ships;
 using LastFleet.Zones;
 using NUnit.Framework;
 
@@ -35,14 +36,43 @@ namespace LastFleet.Mining.Tests
         [Test]
         public void Stock_StoresPerSupplyUpToCapacity()
         {
-            SupplyStock stock = new SupplyStock(100f, 50f);
+            SupplyStock stock = new SupplyStock(0f, 100f, 50f);
 
             Assert.AreEqual(80f, stock.Store(Supply.Metal, 80f));
             Assert.AreEqual(20f, stock.Store(Supply.Metal, 80f));
             Assert.AreEqual(50f, stock.Store(Supply.Water, 70f));
             Assert.AreEqual(100f, stock.AmountOf(Supply.Metal));
             Assert.AreEqual(0f, stock.FreeSpaceFor(Supply.Water));
-            Assert.AreEqual(0f, stock.Store(Supply.Fuel, 5f), "Fuel is kept in the tanks, not in a store.");
+            Assert.AreEqual(0f, stock.Store(Supply.Fuel, 5f), "A store without fuel capacity keeps no fuel.");
+        }
+
+        [Test]
+        public void Stock_GivesOutNoMoreThanItHolds()
+        {
+            SupplyStock stock = new SupplyStock(100f, 0f, 0f);
+            stock.Store(Supply.Fuel, 30f);
+
+            Assert.AreEqual(20f, stock.Take(Supply.Fuel, 20f));
+            Assert.AreEqual(10f, stock.Take(Supply.Fuel, 50f));
+            Assert.AreEqual(0f, stock.AmountOf(Supply.Fuel));
+            Assert.Throws<ArgumentOutOfRangeException>(() => stock.Take(Supply.Fuel, -1f));
+        }
+
+        [Test]
+        public void Pumping_IsLimitedByRateStoreAndFreeTankSpace()
+        {
+            SupplyStock store = new SupplyStock(1000f, 0f, 0f);
+            store.Store(Supply.Fuel, 100f);
+            FuelTank tank = new FuelTank(200f);
+            tank.Drain(50f);
+
+            Assert.AreEqual(40f, FuelPumping.Pump(store, tank, 40f), "The rate limits a single step.");
+            Assert.AreEqual(10f, FuelPumping.Pump(store, tank, 40f), "The tank takes only what is free.");
+            Assert.AreEqual(50f, store.AmountOf(Supply.Fuel));
+
+            tank.Drain(200f);
+            Assert.AreEqual(50f, FuelPumping.Pump(store, tank, 500f), "An empty store stops the pump.");
+            Assert.AreEqual(0f, FuelPumping.Pump(store, tank, 500f));
         }
 
         [Test]

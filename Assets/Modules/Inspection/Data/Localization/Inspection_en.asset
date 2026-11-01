@@ -239,7 +239,7 @@ MonoBehaviour:
       m_Items:
       - rid: 6743102046643421291
   - m_Id: 330903599
-    m_Localized: 'Stored: Metal {metal:0}, Water {water:0}'
+    m_Localized: 'Stored: {stock}'
     m_Metadata:
       m_Items:
       - rid: 6743102046643421291

@@ -31,7 +31,7 @@ namespace LastFleet.Mining
         CargoHold _cargo;
         ZoneView _zone;
         int _slot = -1;
-        SupplyStorage _storage;
+        Hangar _deliveryHangar;
         bool _isIssuingOrder;
 
         public MiningState State { get; private set; }
@@ -200,32 +200,32 @@ namespace LastFleet.Mining
             // Free the slot for other harvesters while this one is away.
             _coordinator.Claims.Release(_ship);
             Supply supply = SupplyConversion.From(Cargo.Resource);
-            _storage = _coordinator.FindStorage(_ship, supply);
-            if (_storage == null)
+            _deliveryHangar = _coordinator.FindDeliveryHangar(_ship, supply);
+            if (_deliveryHangar == null)
             {
                 _coordinator.Report(MiningTexts.NoStorage.Format(("ship", _ship.DisplayName), ("resource", MiningTexts.Supplies.For(supply))));
                 StopMining();
                 return;
             }
 
-            IssueOrder(ShipOrder.ApproachBay(_storage.Hangar));
+            IssueOrder(ShipOrder.ApproachBay(_deliveryHangar));
             State = MiningState.Delivering;
         }
 
         void CompleteDelivery()
         {
-            if (_storage == null)
+            if (_deliveryHangar == null)
             {
                 StopMining();
                 return;
             }
 
-            Unload(_storage.Hangar.Carrier);
+            Unload(_deliveryHangar.Carrier);
             // Unloading at the bay also tops up the tank, so the mining loop does not run dry.
-            _storage.Hangar.Refuel(_ship, _ship.Fuel.Tank.FreeSpace);
+            _deliveryHangar.Refuel(_ship, _ship.Fuel.Tank.FreeSpace);
             if (!Cargo.IsEmpty)
             {
-                _coordinator.Report(MiningTexts.StorageFull.Format(("storage", _storage.Hangar.Carrier.DisplayName),
+                _coordinator.Report(MiningTexts.StorageFull.Format(("storage", _deliveryHangar.Carrier.DisplayName),
                     ("resource", MiningTexts.Supplies.For(SupplyConversion.From(Cargo.Resource)))));
                 StopMining();
                 return;

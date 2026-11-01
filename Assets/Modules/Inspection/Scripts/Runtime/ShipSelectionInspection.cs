@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using LastFleet.Combat;
 using LastFleet.Mining;
@@ -143,8 +144,20 @@ namespace LastFleet.Inspection
             }
             if (ship.TryGetComponent(out SupplyStorage storage))
             {
-                SupplyStock stock = storage.Stock;
-                lines.Add(InspectionTexts.StoredLine.Format(("metal", stock.AmountOf(Supply.Metal)), ("water", stock.AmountOf(Supply.Water))));
+                AddStoredLines(storage.Stock, lines);
+            }
+        }
+
+        /// <summary>One line per supply the ship can store, e.g. "Stored: Fuel 8000/20000".</summary>
+        static void AddStoredLines(SupplyStock stock, List<GameText> lines)
+        {
+            foreach (Supply supply in (Supply[])Enum.GetValues(typeof(Supply)))
+            {
+                if (stock.CapacityOf(supply) > 0f)
+                {
+                    lines.Add(InspectionTexts.StoredLine.Format(("stock", MiningTexts.SupplyAmount.Format(("supply", MiningTexts.Supplies.For(supply)),
+                        ("amount", stock.AmountOf(supply)), ("capacity", stock.CapacityOf(supply))))));
+                }
             }
         }
 

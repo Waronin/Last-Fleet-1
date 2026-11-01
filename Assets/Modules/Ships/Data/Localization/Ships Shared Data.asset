@@ -123,6 +123,10 @@ MonoBehaviour:
     m_Key: activity.Following
     m_Metadata:
       m_Items: []
+  - m_Id: 1657695697973248
+    m_Key: class.Tanker
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

@@ -150,6 +150,7 @@ namespace LastFleet.GenerationPreview.Editor
                 ("_cruiserPrefab", CombatShipPrefabBuilder.LoadOrCreateCruiser()),
                 ("_fighterPrefab", CombatShipPrefabBuilder.LoadOrCreateFighter()),
                 ("_refineryPrefab", ShipPrefabBuilder.LoadOrCreateRefinery()),
+                ("_tankerPrefab", ShipPrefabBuilder.LoadOrCreateTanker()),
                 ("_linerPrefab", ShipPrefabBuilder.LoadOrCreateLiner()),
                 ("_shuttlePrefab", ShipPrefabBuilder.LoadOrCreateShuttle()),
                 ("_harvesterPrefab", ShipPrefabBuilder.LoadOrCreateHarvester()));

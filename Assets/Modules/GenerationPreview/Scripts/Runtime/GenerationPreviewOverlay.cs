@@ -274,7 +274,7 @@ namespace LastFleet.GenerationPreview
 
         static string DescribeStock(SupplyStock stock)
         {
-            return $"Metal {stock.AmountOf(Supply.Metal):0}, Water {stock.AmountOf(Supply.Water):0}";
+            return $"Fuel {stock.AmountOf(Supply.Fuel):0}, Metal {stock.AmountOf(Supply.Metal):0}, Water {stock.AmountOf(Supply.Water):0}";
         }
 
         string DescribeGroups()

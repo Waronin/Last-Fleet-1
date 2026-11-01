@@ -53,6 +53,7 @@ namespace LastFleet.GenerationPreview
         static readonly Vector3 RefineryArrivalPosition = new Vector3(0f, 0f, 0f);
         static readonly Vector3 LinerArrivalPosition = new Vector3(-30f, 0f, 12f);
         static readonly Vector3 CruiserArrivalPosition = new Vector3(30f, 0f, 12f);
+        static readonly Vector3 TankerArrivalPosition = new Vector3(0f, 0f, -22f);
 
         [SerializeField] int _galaxySeed = 1;
         [SerializeField] GalaxySettings _galaxySettings = new GalaxySettings();
@@ -76,6 +77,7 @@ namespace LastFleet.GenerationPreview
         [SerializeField] InspectionPanel _shipPanel;
         [Tooltip("Spawned on arrival in a system until fleet jumps carry the fleet along.")]
         [SerializeField] ShipAgent _refineryPrefab;
+        [SerializeField] ShipAgent _tankerPrefab;
         [SerializeField] ShipAgent _linerPrefab;
         [SerializeField] ShipAgent _harvesterPrefab;
         [SerializeField] ShipAgent _shuttlePrefab;
@@ -113,7 +115,7 @@ namespace LastFleet.GenerationPreview
             if (_galaxyMapView == null || _starSystemView == null || _zoneWorld == null || _environment == null ||
                 _cameraRig == null || _shipRegistry == null || _shipInput == null || _groupInput == null ||
                 _hangarInput == null || _mining == null || _scouting == null || _population == null || _docking == null || _search == null || _rewards == null || _combat == null || _inspection == null || _shipPanel == null ||
-                _refineryPrefab == null || _linerPrefab == null || _harvesterPrefab == null || _shuttlePrefab == null ||
+                _refineryPrefab == null || _tankerPrefab == null || _linerPrefab == null || _harvesterPrefab == null || _shuttlePrefab == null ||
                 _cruiserPrefab == null || _fighterPrefab == null)
             {
                 Debug.LogError("GenerationPreviewController is missing a scene reference.", this);
@@ -514,7 +516,7 @@ namespace LastFleet.GenerationPreview
             _starSystemView.SelectPointOfInterest(arrivalIndex);
 
             // Stand-in until fleet jumps exist: every arrival brings a liner with a shuttle squad, a
-            // refinery with two harvester squads and a cruiser with two fighter squads in their hangars.
+            // refinery with two harvester squads, a tanker and a cruiser with two fighter squads in their hangars.
             ShipAgent cruiser = _shipRegistry.Spawn(_cruiserPrefab, arrival, CruiserArrivalPosition, 0f);
             Hangar fighterHangar = cruiser.GetComponent<Hangar>();
             _shipRegistry.SpawnSquadDocked(_fighterPrefab, fighterHangar, FightersPerSquad);
@@ -525,6 +527,7 @@ namespace LastFleet.GenerationPreview
             Hangar hangar = refinery.GetComponent<Hangar>();
             Squad firstSquad = _shipRegistry.SpawnSquadDocked(_harvesterPrefab, hangar, HarvestersPerSquad);
             _shipRegistry.SpawnSquadDocked(_harvesterPrefab, hangar, HarvestersPerSquad);
+            _shipRegistry.Spawn(_tankerPrefab, arrival, TankerArrivalPosition, 0f);
             _shipInput.SelectSquad(firstSquad, false);
 
             ShowZone(arrival);

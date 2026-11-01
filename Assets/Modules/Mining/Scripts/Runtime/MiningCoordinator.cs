@@ -9,8 +9,8 @@ namespace LastFleet.Mining
 {
     /// <summary>
     /// Scene-wide mining services: hands mining slots to harvesters, finds the next deposit when one
-    /// is full or exhausted (GDD: the ship looks for the next spot in the same zone) and finds where
-    /// cargo is delivered.
+    /// is full or exhausted (GDD: the ship looks for the next spot in the same zone), finds where
+    /// cargo is delivered and connects tankers to the fleet they refuel.
     /// </summary>
     public sealed class MiningCoordinator : MonoBehaviour
     {
@@ -142,28 +142,34 @@ namespace LastFleet.Mining
         }
 
         /// <summary>
-        /// Where a harvester unloads: its home carrier's storage, otherwise any storage. The fleet
-        /// spreads what the carrier cannot keep, so there is none if the fleet has no room left.
+        /// Where a harvester unloads: the hangar of a store ship, its home carrier first. The fleet
+        /// spreads what that ship cannot keep, e.g. fuel to the tanker, so there is none if the fleet
+        /// has no room left.
         /// </summary>
-        public SupplyStorage FindStorage(ShipAgent ship, Supply supply)
+        public Hangar FindDeliveryHangar(ShipAgent ship, Supply supply)
         {
             if (!Supplies.HasRoomFor(supply))
             {
                 return null;
             }
-            if (ship.HomeHangar != null && ship.HomeHangar.TryGetComponent(out SupplyStorage home) && !home.Hangar.Carrier.IsDerelict)
+            if (IsDeliveryPoint(ship.HomeHangar))
             {
-                return home;
+                return ship.HomeHangar;
             }
 
-            foreach (ShipAgent candidate in _registry.Ships)
+            foreach (Hangar hangar in _registry.Hangars)
             {
-                if (!candidate.IsDerelict && candidate.TryGetComponent(out SupplyStorage storage))
+                if (IsDeliveryPoint(hangar))
                 {
-                    return storage;
+                    return hangar;
                 }
             }
             return null;
+        }
+
+        static bool IsDeliveryPoint(Hangar hangar)
+        {
+            return hangar != null && !hangar.Carrier.IsDerelict && hangar.TryGetComponent(out SupplyStorage _);
         }
 
         /// <summary>Rolls the deposit's hazard for one ship's mining time and applies what goes off.</summary>
@@ -213,6 +219,10 @@ namespace LastFleet.Mining
             if (ship.TryGetComponent(out HarvesterMining mining))
             {
                 mining.Initialize(this);
+            }
+            if (ship.TryGetComponent(out FuelTanker tanker))
+            {
+                tanker.Initialize(_registry);
             }
         }
     }

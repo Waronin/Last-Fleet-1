@@ -131,6 +131,10 @@ MonoBehaviour:
     m_Localized: Folgt
     m_Metadata:
       m_Items: []
+  - m_Id: 1657695697973248
+    m_Localized: Tankfrachter
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

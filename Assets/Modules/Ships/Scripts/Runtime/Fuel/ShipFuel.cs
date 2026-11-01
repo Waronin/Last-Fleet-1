@@ -5,7 +5,7 @@ namespace LastFleet.Ships
     /// <summary>
     /// Tank and consumption of a ship. Ships start a system with full tanks; small ships refuel in a
     /// hangar from their carrier's tank. An empty ship cannot jump or use its main drive and crawls on
-    /// its thrusters, which run on a reserve that costs nothing. The tanker and refining come later.
+    /// its thrusters, which run on a reserve that costs nothing. A tanker refills capital ships in its zone.
     /// </summary>
     [RequireComponent(typeof(ShipAgent))]
     public sealed class ShipFuel : MonoBehaviour

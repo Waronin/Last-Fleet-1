@@ -118,17 +118,13 @@ namespace LastFleet.Ships.Editor
             bayTransform.localPosition = new Vector3(2.4f, -0.3f, -2f);
             bayTransform.localRotation = Quaternion.Euler(0f, 90f, 0f);
 
-            Transform engineGlow = new GameObject("Engine Glow").transform;
-            engineGlow.SetParent(body, false);
-            engineGlow.localPosition = new Vector3(0f, 0f, -5.7f);
-            ShipPrefabBuilder.CreatePart(engineGlow, PrimitiveType.Sphere, "Engine Port", ShipPrefabBuilder.Engine(), new Vector3(-0.6f, 0f, 0f), Vector3.one * 0.8f);
-            ShipPrefabBuilder.CreatePart(engineGlow, PrimitiveType.Sphere, "Engine Starboard", ShipPrefabBuilder.Engine(), new Vector3(0.6f, 0f, 0f), Vector3.one * 0.8f);
+            Transform engineGlow = ShipPrefabBuilder.CreateTwinEngines(body, new Vector3(0f, 0f, -5.7f));
             TrailRenderer trail = ShipPrefabBuilder.CreateTrail(body, new Vector3(0f, 0f, -6f), 1.2f, 8f);
             LineRenderer bracket = ShipPrefabBuilder.CreateBracket(body);
 
             ShipAgent agent = root.AddComponent<ShipAgent>();
             ShipMovementProfile profile = ShipPrefabBuilder.LoadOrCreateProfile("CruiserMovement", ConfigureCruiserMovement);
-            ConfigureAgent(agent, "Cruiser", ShipSize.Capital, profile, CruiserObstacleRadius);
+            ShipPrefabBuilder.ConfigureAgent(agent, "Cruiser", ShipSize.Capital, profile, CruiserObstacleRadius);
 
             Hangar hangar = root.AddComponent<Hangar>();
             SerializedObject hangarData = new SerializedObject(hangar);
@@ -181,7 +177,7 @@ namespace LastFleet.Ships.Editor
 
             ShipAgent agent = root.AddComponent<ShipAgent>();
             ShipMovementProfile profile = ShipPrefabBuilder.LoadOrCreateProfile("FighterMovement", ConfigureFighterMovement);
-            ConfigureAgent(agent, "Fighter", ShipSize.Small, profile);
+            ShipPrefabBuilder.ConfigureAgent(agent, "Fighter", ShipSize.Small, profile);
 
             ShipPrefabBuilder.AddPresentation(root, engineGlow, trail, bracket, 18f, 1f);
             ShipPrefabBuilder.AddDurability(root, FighterHull);
@@ -227,7 +223,7 @@ namespace LastFleet.Ships.Editor
 
             ShipAgent agent = root.AddComponent<ShipAgent>();
             ShipMovementProfile profile = ShipPrefabBuilder.LoadOrCreateProfile("ProninFighterMovement", ConfigureProninFighterMovement);
-            ConfigureAgent(agent, "ProninFighter", ShipSize.Small, profile);
+            ShipPrefabBuilder.ConfigureAgent(agent, "ProninFighter", ShipSize.Small, profile);
 
             ShipPrefabBuilder.AddPresentation(root, engineGlow, trail, bracket, 18f, 1f);
             ShipPrefabBuilder.AddDurability(root, ProninFighterHull);
@@ -287,18 +283,6 @@ namespace LastFleet.Ships.Editor
             EditorAssetUtility.FindProperty(profile, "_motion._thrusterAcceleration").floatValue = 8f;
             EditorAssetUtility.FindProperty(profile, "_motion._thrusterMaximumSpeed").floatValue = 9f;
             EditorAssetUtility.FindProperty(profile, "_jumpChargeSeconds").floatValue = 3f;
-        }
-
-        /// <summary>Class, size and movement; capital ships also get the radius others fly around and hide behind.</summary>
-        static void ConfigureAgent(ShipAgent agent, string className, ShipSize size, ShipMovementProfile profile,
-            float obstacleRadiusUnits = 0f)
-        {
-            SerializedObject agentData = new SerializedObject(agent);
-            EditorAssetUtility.FindProperty(agentData, "_className").stringValue = className;
-            EditorAssetUtility.FindProperty(agentData, "_size").enumValueIndex = (int)size;
-            EditorAssetUtility.FindProperty(agentData, "_movementProfile").objectReferenceValue = profile;
-            EditorAssetUtility.FindProperty(agentData, "_obstacleRadiusUnits").floatValue = obstacleRadiusUnits;
-            agentData.ApplyModifiedPropertiesWithoutUndo();
         }
 
         /// <summary>Adds weapons with the given balance values; the settings type validates them first.</summary>
