@@ -141,11 +141,10 @@ namespace LastFleet.Inspection
                 lines.Add(InspectionTexts.HangarLine.Format(("docked", hangar.DockedShips.Count), ("capacity", hangar.Capacity),
                     ("launching", hangar.LaunchQueueCount)));
             }
-            if (ship.TryGetComponent(out RawMaterialStorage storage))
+            if (ship.TryGetComponent(out SupplyStorage storage))
             {
-                RawMaterialStock stock = storage.Stock;
-                lines.Add(InspectionTexts.StoredLine.Format(("ore", stock.AmountOf(ResourceKind.Ore)), ("ice", stock.AmountOf(ResourceKind.Ice)),
-                    ("gas", stock.AmountOf(ResourceKind.Gas)), ("metal", stock.AmountOf(ResourceKind.Metal))));
+                SupplyStock stock = storage.Stock;
+                lines.Add(InspectionTexts.StoredLine.Format(("metal", stock.AmountOf(Supply.Metal)), ("water", stock.AmountOf(Supply.Water))));
             }
         }
 

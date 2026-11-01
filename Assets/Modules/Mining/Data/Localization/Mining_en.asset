@@ -64,7 +64,7 @@ MonoBehaviour:
       m_Items:
       - rid: 6743102046643421290
   - m_Id: 326709248
-    m_Localized: '{storage}: storage for {resource} is full.'
+    m_Localized: '{storage}: no room left in the fleet for {resource}.'
     m_Metadata:
       m_Items:
       - rid: 6743102046643421290
@@ -77,6 +77,23 @@ MonoBehaviour:
     m_Localized: radiation
     m_Metadata:
       m_Items: []
+  - m_Id: 1653949484052480
+    m_Localized: Fuel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1653949513412608
+    m_Localized: Metal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1653949513412609
+    m_Localized: Water
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1653949513412610
+    m_Localized: '{supply} {amount:0}/{capacity:0}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421290
   references:
     version: 2
     RefIds:
@@ -91,3 +108,4 @@ MonoBehaviour:
         - id: 318320648
         - id: 326709248
         - id: 326709249
+        - id: 1653949513412610

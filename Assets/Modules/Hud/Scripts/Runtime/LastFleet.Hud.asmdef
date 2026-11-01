@@ -1,0 +1,20 @@
+{
+    "name": "LastFleet.Hud",
+    "rootNamespace": "LastFleet.Hud",
+    "references": [
+        "LastFleet.Shared",
+        "LastFleet.Localization",
+        "LastFleet.Ships",
+        "LastFleet.ShipControl",
+        "LastFleet.Mining"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

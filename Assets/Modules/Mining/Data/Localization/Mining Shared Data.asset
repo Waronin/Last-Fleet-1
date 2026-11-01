@@ -67,6 +67,22 @@ MonoBehaviour:
     m_Key: cause.radiation
     m_Metadata:
       m_Items: []
+  - m_Id: 1653949484052480
+    m_Key: supply.Fuel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1653949513412608
+    m_Key: supply.Metal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1653949513412609
+    m_Key: supply.Water
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1653949513412610
+    m_Key: supply-amount
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

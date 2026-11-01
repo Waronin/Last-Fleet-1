@@ -9,8 +9,8 @@ using UnityEngine;
 namespace LastFleet.Rewards
 {
     /// <summary>
-    /// Puts rewards where they belong: raw materials into storage (the carrier first), fuel into the
-    /// tanks of capital ships (the carrier first), items into the fleet inventory, survivors aboard.
+    /// Puts rewards where they belong: raw materials as supplies into storage and fuel into the tanks
+    /// of capital ships (the carrier first), items into the fleet inventory, survivors aboard.
     /// What finds no room stays aboard the ship that brought it.
     /// </summary>
     public sealed class RewardDelivery : MonoBehaviour
@@ -19,8 +19,10 @@ namespace LastFleet.Rewards
 
         readonly FleetInventory _inventory = new FleetInventory();
         readonly List<Reward> _remaining = new List<Reward>();
+        FleetSupplies _supplies;
 
         public FleetInventory Inventory => _inventory;
+        FleetSupplies Supplies => _supplies ??= new FleetSupplies(_registry);
 
         /// <summary>Short feedback for the player when finds are unloaded.</summary>
         public event Action<GameText> Notice;
@@ -75,9 +77,9 @@ namespace LastFleet.Rewards
             switch (reward.Kind)
             {
                 case RewardKind.Resource:
-                    return StoreResource(reward, carrier);
+                    return StoreSupply(SupplyConversion.From(reward.Resource), reward.Amount, carrier);
                 case RewardKind.Fuel:
-                    return StoreFuel(reward.Amount, carrier);
+                    return StoreSupply(Supply.Fuel, reward.Amount, carrier);
                 case RewardKind.Item:
                     _inventory.Add(reward.Item, reward.People);
                     return 0f;
@@ -88,42 +90,10 @@ namespace LastFleet.Rewards
             }
         }
 
-        float StoreResource(Reward reward, ShipAgent carrier)
+        /// <summary>Raw materials become supplies on delivery, like the harvesters' cargo.</summary>
+        float StoreSupply(Supply supply, float amount, ShipAgent carrier)
         {
-            float left = reward.Amount;
-            if (carrier.TryGetComponent(out RawMaterialStorage home))
-            {
-                left -= home.Stock.Store(reward.Resource, left);
-            }
-            foreach (ShipAgent ship in _registry.Ships)
-            {
-                if (left <= 0f)
-                {
-                    break;
-                }
-                if (ship != carrier && ship.TryGetComponent(out RawMaterialStorage storage))
-                {
-                    left -= storage.Stock.Store(reward.Resource, left);
-                }
-            }
-            return left;
-        }
-
-        float StoreFuel(float amount, ShipAgent carrier)
-        {
-            float left = amount - carrier.Fuel.Tank.Fill(amount);
-            foreach (ShipAgent ship in _registry.Ships)
-            {
-                if (left <= 0f)
-                {
-                    break;
-                }
-                if (ship != carrier && ship.IsCapital)
-                {
-                    left -= ship.Fuel.Tank.Fill(left);
-                }
-            }
-            return left;
+            return amount - Supplies.Store(supply, amount, carrier);
         }
 
         void OnShipSpawned(ShipAgent ship)

@@ -193,7 +193,7 @@ namespace LastFleet.Ships.Editor
 
             Hangar hangar = root.AddComponent<Hangar>();
             EditorAssetUtility.SetReferences(hangar, ("_bay", bayTransform));
-            root.AddComponent<RawMaterialStorage>();
+            root.AddComponent<SupplyStorage>();
             AddDurability(root, RefineryHull);
             AddFuel(root, RefineryTank, RefineryFuelPerKlick, RefineryFuelPerAU);
             AddPassengers(root, RefineryPassengerCapacity, RefineryStartingPassengers);

@@ -3,6 +3,7 @@ using LastFleet.CameraControl.Editor;
 using LastFleet.Combat;
 using LastFleet.Exploration;
 using LastFleet.Galaxy;
+using LastFleet.Hud;
 using LastFleet.Inspection;
 using LastFleet.Mining;
 using LastFleet.People;
@@ -134,6 +135,10 @@ namespace LastFleet.GenerationPreview.Editor
             EditorAssetUtility.FindProperty(shipPanelData, "_shipInput").objectReferenceValue = shipInput;
             EditorAssetUtility.FindProperty(shipPanelData, "_anchorBottom").boolValue = true;
             shipPanelData.ApplyModifiedPropertiesWithoutUndo();
+
+            GameObject supplyBarObject = new GameObject("Supply Bar");
+            SupplyBar supplyBar = supplyBarObject.AddComponent<SupplyBar>();
+            EditorAssetUtility.SetReferences(supplyBar, ("_mining", mining), ("_shipInput", shipInput));
 
             GameObject previewObject = new GameObject("Generation Preview");
             GenerationPreviewController preview = previewObject.AddComponent<GenerationPreviewController>();

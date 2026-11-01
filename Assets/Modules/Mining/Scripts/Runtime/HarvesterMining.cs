@@ -31,7 +31,7 @@ namespace LastFleet.Mining
         CargoHold _cargo;
         ZoneView _zone;
         int _slot = -1;
-        RawMaterialStorage _storage;
+        SupplyStorage _storage;
         bool _isIssuingOrder;
 
         public MiningState State { get; private set; }
@@ -199,10 +199,11 @@ namespace LastFleet.Mining
         {
             // Free the slot for other harvesters while this one is away.
             _coordinator.Claims.Release(_ship);
-            _storage = _coordinator.FindStorage(_ship, Cargo.Resource);
+            Supply supply = SupplyConversion.From(Cargo.Resource);
+            _storage = _coordinator.FindStorage(_ship, supply);
             if (_storage == null)
             {
-                _coordinator.Report(MiningTexts.NoStorage.Format(("ship", _ship.DisplayName), ("resource", ZoneTexts.Resources.For(Cargo.Resource))));
+                _coordinator.Report(MiningTexts.NoStorage.Format(("ship", _ship.DisplayName), ("resource", MiningTexts.Supplies.For(supply))));
                 StopMining();
                 return;
             }
@@ -219,13 +220,13 @@ namespace LastFleet.Mining
                 return;
             }
 
-            float stored = _storage.Stock.Store(Cargo.Resource, Cargo.Amount);
-            Cargo.Unload(stored);
+            Unload(_storage.Hangar.Carrier);
             // Unloading at the bay also tops up the tank, so the mining loop does not run dry.
             _storage.Hangar.Refuel(_ship, _ship.Fuel.Tank.FreeSpace);
             if (!Cargo.IsEmpty)
             {
-                _coordinator.Report(MiningTexts.StorageFull.Format(("storage", _storage.Hangar.Carrier.DisplayName), ("resource", ZoneTexts.Resources.For(Cargo.Resource))));
+                _coordinator.Report(MiningTexts.StorageFull.Format(("storage", _storage.Hangar.Carrier.DisplayName),
+                    ("resource", MiningTexts.Supplies.For(SupplyConversion.From(Cargo.Resource)))));
                 StopMining();
                 return;
             }
@@ -287,10 +288,17 @@ namespace LastFleet.Mining
         /// <summary>A harvester landing with cargo unloads into the carrier's storage.</summary>
         void OnDockedInHangar(ShipAgent ship, Hangar hangar)
         {
-            if (!Cargo.IsEmpty && hangar.TryGetComponent(out RawMaterialStorage storage))
+            if (!Cargo.IsEmpty && _coordinator != null && hangar.TryGetComponent(out SupplyStorage _))
             {
-                Cargo.Unload(storage.Stock.Store(Cargo.Resource, Cargo.Amount));
+                Unload(hangar.Carrier);
             }
+        }
+
+        /// <summary>Hands the cargo to the fleet as supplies, the receiving carrier first.</summary>
+        void Unload(ShipAgent carrier)
+        {
+            Supply supply = SupplyConversion.From(Cargo.Resource);
+            Cargo.Unload(_coordinator.Supplies.Store(supply, Cargo.Amount, carrier));
         }
     }
 }

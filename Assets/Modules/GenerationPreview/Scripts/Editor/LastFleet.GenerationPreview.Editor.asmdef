@@ -9,6 +9,7 @@
         "LastFleet.Stations.Editor",
         "LastFleet.GenerationPreview",
         "LastFleet.Galaxy",
+        "LastFleet.Hud",
         "LastFleet.StarSystem",
         "LastFleet.Zones",
         "LastFleet.Ships",

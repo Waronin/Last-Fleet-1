@@ -20,8 +20,12 @@ namespace LastFleet.Mining
         readonly List<(ResourceDeposit Deposit, float DistanceSquared)> _candidates = new List<(ResourceDeposit Deposit, float DistanceSquared)>();
         readonly List<ShipAgent> _harvesters = new List<ShipAgent>();
         readonly List<ShipAgent> _harvesterCandidates = new List<ShipAgent>();
+        FleetSupplies _supplies;
 
         public MiningSlotClaims Claims => _claims;
+
+        /// <summary>Where delivered cargo ends up, already turned into supplies.</summary>
+        public FleetSupplies Supplies => _supplies ??= new FleetSupplies(_registry);
 
         /// <summary>Short feedback for the player, e.g. when a harvester runs out of work.</summary>
         public event Action<GameText> Notice;
@@ -137,18 +141,24 @@ namespace LastFleet.Mining
             return started;
         }
 
-        /// <summary>The home carrier's storage if it has room, otherwise any storage with room.</summary>
-        public RawMaterialStorage FindStorage(ShipAgent ship, ResourceKind resource)
+        /// <summary>
+        /// Where a harvester unloads: its home carrier's storage, otherwise any storage. The fleet
+        /// spreads what the carrier cannot keep, so there is none if the fleet has no room left.
+        /// </summary>
+        public SupplyStorage FindStorage(ShipAgent ship, Supply supply)
         {
-            if (ship.HomeHangar != null && ship.HomeHangar.TryGetComponent(out RawMaterialStorage home) &&
-                home.Stock.FreeSpaceFor(resource) > 0f)
+            if (!Supplies.HasRoomFor(supply))
+            {
+                return null;
+            }
+            if (ship.HomeHangar != null && ship.HomeHangar.TryGetComponent(out SupplyStorage home) && !home.Hangar.Carrier.IsDerelict)
             {
                 return home;
             }
 
             foreach (ShipAgent candidate in _registry.Ships)
             {
-                if (candidate.TryGetComponent(out RawMaterialStorage storage) && storage.Stock.FreeSpaceFor(resource) > 0f)
+                if (!candidate.IsDerelict && candidate.TryGetComponent(out SupplyStorage storage))
                 {
                     return storage;
                 }

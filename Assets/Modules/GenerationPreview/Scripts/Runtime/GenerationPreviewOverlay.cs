@@ -193,7 +193,7 @@ namespace LastFleet.GenerationPreview
                 string hangar = ship.TryGetComponent(out Hangar shipHangar)
                     ? $", hangar {shipHangar.DockedShips.Count}/{shipHangar.Capacity}{(shipHangar.LaunchQueueCount > 0 ? $", launching {shipHangar.LaunchQueueCount}" : string.Empty)}"
                     : string.Empty;
-                string storage = ship.TryGetComponent(out RawMaterialStorage shipStorage) ? $", stored {DescribeStock(shipStorage.Stock)}" : string.Empty;
+                string storage = ship.TryGetComponent(out SupplyStorage shipStorage) ? $", stored {DescribeStock(shipStorage.Stock)}" : string.Empty;
                 string label = $"{(_controller.Selection.Contains(ship) ? "* " : string.Empty)}{ship.name} ({DescribeHull(ship)}) - {ship.Activity} " +
                                $"in {ship.Zone.Record.PointOfInterest.Name}{DescribeTarget(ship)}{hangar}{storage}";
                 if (GUILayout.Button(label, GUI.skin.label))
@@ -272,9 +272,9 @@ namespace LastFleet.GenerationPreview
             return $", mining {mining.State}, cargo {cargo}{bonus}";
         }
 
-        static string DescribeStock(RawMaterialStock stock)
+        static string DescribeStock(SupplyStock stock)
         {
-            return $"Ore {stock.AmountOf(ResourceKind.Ore):0}, Ice {stock.AmountOf(ResourceKind.Ice):0}, Gas {stock.AmountOf(ResourceKind.Gas):0}, Metal {stock.AmountOf(ResourceKind.Metal):0}";
+            return $"Metal {stock.AmountOf(Supply.Metal):0}, Water {stock.AmountOf(Supply.Water):0}";
         }
 
         string DescribeGroups()

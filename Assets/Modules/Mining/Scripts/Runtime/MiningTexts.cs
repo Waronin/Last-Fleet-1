@@ -9,6 +9,12 @@ namespace LastFleet.Mining
 
         public static readonly EnumTextKeys<MiningState> States = new EnumTextKeys<MiningState>(Table, "state");
 
+        /// <summary>Supply names, e.g. "Metal".</summary>
+        public static readonly EnumTextKeys<Supply> Supplies = new EnumTextKeys<Supply>(Table, "supply");
+
+        /// <summary>{supply}, {amount}, {capacity}</summary>
+        public static readonly GameTextKey SupplyAmount = new GameTextKey(Table, "supply-amount");
+
         public static readonly GameTextKey ShatterCause = new GameTextKey(Table, "cause.shatter");
         public static readonly GameTextKey GasExplosionCause = new GameTextKey(Table, "cause.gas-explosion");
         public static readonly GameTextKey RadiationCause = new GameTextKey(Table, "cause.radiation");

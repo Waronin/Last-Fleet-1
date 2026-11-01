@@ -33,17 +33,25 @@ namespace LastFleet.Mining.Tests
         }
 
         [Test]
-        public void Stock_StoresPerMaterialUpToCapacity()
+        public void Stock_StoresPerSupplyUpToCapacity()
         {
-            RawMaterialStock stock = new RawMaterialStock(100f, 50f, 0f, 30f);
+            SupplyStock stock = new SupplyStock(100f, 50f);
 
-            Assert.AreEqual(80f, stock.Store(ResourceKind.Ore, 80f));
-            Assert.AreEqual(20f, stock.Store(ResourceKind.Ore, 80f));
-            Assert.AreEqual(50f, stock.Store(ResourceKind.Ice, 70f));
-            Assert.AreEqual(0f, stock.Store(ResourceKind.Gas, 5f));
-            Assert.AreEqual(100f, stock.AmountOf(ResourceKind.Ore));
-            Assert.AreEqual(0f, stock.FreeSpaceFor(ResourceKind.Ice));
-            Assert.AreEqual(30f, stock.Store(ResourceKind.Metal, 40f));
+            Assert.AreEqual(80f, stock.Store(Supply.Metal, 80f));
+            Assert.AreEqual(20f, stock.Store(Supply.Metal, 80f));
+            Assert.AreEqual(50f, stock.Store(Supply.Water, 70f));
+            Assert.AreEqual(100f, stock.AmountOf(Supply.Metal));
+            Assert.AreEqual(0f, stock.FreeSpaceFor(Supply.Water));
+            Assert.AreEqual(0f, stock.Store(Supply.Fuel, 5f), "Fuel is kept in the tanks, not in a store.");
+        }
+
+        [Test]
+        public void DeliveredRawMaterials_BecomeSupplies()
+        {
+            Assert.AreEqual(Supply.Metal, SupplyConversion.From(ResourceKind.Ore));
+            Assert.AreEqual(Supply.Metal, SupplyConversion.From(ResourceKind.Metal));
+            Assert.AreEqual(Supply.Water, SupplyConversion.From(ResourceKind.Ice));
+            Assert.AreEqual(Supply.Fuel, SupplyConversion.From(ResourceKind.Gas));
         }
 
         [Test]
