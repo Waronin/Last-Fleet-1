@@ -4,10 +4,10 @@ using LastFleet.Ships;
 namespace LastFleet.Mining
 {
     /// <summary>
-    /// The supplies of the whole fleet: what lies in the stores of industrial ships, and for fuel also
-    /// what is in the tanks of capital ships. Fuel goes into the tanker's store first; without a tanker,
-    /// or once it is full, only the capital ships' tanks remain (GDD: Industrial ships). The tanks of
-    /// small ships are their own and do not count as stock.
+    /// The supplies of the whole fleet. Amounts and capacities count the stores of industrial ships
+    /// only; fuel already in a ship's tank is in use, not in stock. Fuel goes into the tanker's store
+    /// first; without a tanker, or once it is full, only the capital ships' tanks remain (GDD:
+    /// Industrial ships).
     /// </summary>
     public sealed class FleetSupplies
     {
@@ -43,10 +43,6 @@ namespace LastFleet.Mining
                 {
                     amount += storage.Stock.AmountOf(supply);
                 }
-                if (supply == Supply.Fuel && HoldsFuelStock(ship))
-                {
-                    amount += ship.Fuel.Tank.Amount;
-                }
             }
             return amount;
         }
@@ -60,17 +56,29 @@ namespace LastFleet.Mining
                 {
                     capacity += storage.Stock.CapacityOf(supply);
                 }
-                if (supply == Supply.Fuel && HoldsFuelStock(ship))
-                {
-                    capacity += ship.Fuel.Tank.Capacity;
-                }
             }
             return capacity;
         }
 
+        /// <summary>Whether a delivery fits somewhere: in a store, or for fuel also in a capital ship's tank.</summary>
         public bool HasRoomFor(Supply supply)
         {
-            return CapacityOf(supply) - AmountOf(supply) > 0f;
+            if (CapacityOf(supply) - AmountOf(supply) > 0f)
+            {
+                return true;
+            }
+            if (supply != Supply.Fuel)
+            {
+                return false;
+            }
+            foreach (ShipAgent ship in _registry.Ships)
+            {
+                if (HoldsFuelStock(ship) && ship.Fuel.Tank.FreeSpace > 0f)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         float StoreEverywhere(Supply supply, float amount, ShipAgent firstShip, Func<ShipAgent, Supply, float, float> storeOn)

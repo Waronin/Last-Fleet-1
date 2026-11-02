@@ -14,7 +14,8 @@ namespace LastFleet.Zones
     {
         const int AsteroidLumpCount = 5;
         const int WreckPlateCount = 6;
-        const float GasCloudHeightFactor = 0.35f;
+        /// <summary>Gas clouds are flattened: their height is this share of their width.</summary>
+        public const float GasCloudHeightFactor = 0.35f;
         const float HazardRingRadiusFactor = 1.4f;
         const float HazardRingWidthUnits = 0.15f;
         const int HazardRingSegments = 40;

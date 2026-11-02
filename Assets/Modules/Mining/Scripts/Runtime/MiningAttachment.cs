@@ -7,7 +7,7 @@ namespace LastFleet.Mining
     /// <summary>
     /// Presentation of mining: while extracting, the harvester's model glides onto the rock and clings
     /// to it like a remora, and debris sprays from the contact point. Only the model moves; the ship
-    /// itself stays at its mining slot, so movement and selection are unaffected.
+    /// itself stays at its mining slot, so movement is unaffected. Bracket and clicks follow the model.
     /// </summary>
     [RequireComponent(typeof(HarvesterMining))]
     public sealed class MiningAttachment : MonoBehaviour
@@ -65,7 +65,8 @@ namespace LastFleet.Mining
             {
                 // Follow the shrinking rock; the last pose is kept so detaching glides back from it.
                 float surfaceRadius = deposit.RadiusUnits * VisibleSurfaceFactor * Mathf.Pow(deposit.RemainingFraction, 1f / 3f);
-                HullClampPose.Compute(_mining.DepositWorldPosition, surfaceRadius, transform.position, transform.forward,
+                float verticalRadius = deposit.Shape == DepositShape.GasCloud ? surfaceRadius * DepositView.GasCloudHeightFactor : surfaceRadius;
+                HullClampPose.Compute(_mining.DepositWorldPosition, surfaceRadius, verticalRadius, transform.position, transform.forward,
                     _hullClearanceUnits, out _clampPosition, out _clampRotation);
                 UpdateDebrisColor(deposit.Resource);
             }

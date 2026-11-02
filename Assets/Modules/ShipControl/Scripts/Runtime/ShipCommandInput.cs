@@ -425,9 +425,11 @@ namespace LastFleet.ShipControl
             return new Vector2(toTarget.x, toTarget.z);
         }
 
+        /// <summary>Picks at the visible model, e.g. a harvester clamped onto a rock, not at its mining slot.</summary>
         bool TryGetScreenPosition(ShipAgent ship, out Vector2 screenPosition)
         {
-            Vector3 point = _camera.WorldToScreenPoint(ship.transform.position);
+            Vector3 visiblePosition = ship.TryGetComponent(out ShipPresentation presentation) ? presentation.VisiblePosition : ship.transform.position;
+            Vector3 point = _camera.WorldToScreenPoint(visiblePosition);
             screenPosition = new Vector2(point.x, point.y);
             return point.z > 0f;
         }

@@ -31,6 +31,9 @@ namespace LastFleet.Ships
 
         public bool IsSelected { get; private set; }
 
+        /// <summary>Where the ship is seen, and so where its bracket is drawn and clicks find it.</summary>
+        public Vector3 VisiblePosition => _model != null ? _model.position : transform.position;
+
         void Awake()
         {
             _ship = GetComponent<ShipAgent>();
