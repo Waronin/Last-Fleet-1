@@ -21,7 +21,9 @@ namespace LastFleet.Zones
         const float MinimumGapUnits = 2f;
         const float VerticalSpreadUnits = 8f;
         const int PlacementAttemptsPerObject = 40;
-        const float AsteroidAmountPerCubicUnit = 100f;
+        // Asteroids are drawn large so they read well and give cover; the yield per rock stays what it
+        // was at 40 % of today's radius (100 per cubic unit then, divided by 2.5 cubed).
+        const float AsteroidAmountPerCubicUnit = 6.4f;
         const float GasAmountPerSquareUnit = 50f;
 
         static readonly (ResourceKind Value, float Weight)[] OreOnly = { (ResourceKind.Ore, 1f) };
@@ -39,10 +41,10 @@ namespace LastFleet.Zones
         };
 
         static readonly DepositRecipe GasCloud = new DepositRecipe(DepositShape.GasCloud, GasOnly, 6f, 14f);
-        static readonly DepositRecipe GasAsteroid = new DepositRecipe(DepositShape.Asteroid, GasOnly, 1.5f, 4f);
-        static readonly DepositRecipe OreDebris = new DepositRecipe(DepositShape.Asteroid, OreOnly, 0.5f, 2.5f);
-        static readonly DepositRecipe IceDebris = new DepositRecipe(DepositShape.Asteroid, IceOnly, 0.6f, 3f);
-        static readonly DepositRecipe StationDebris = new DepositRecipe(DepositShape.Asteroid, OreOnly, 0.4f, 1.5f);
+        static readonly DepositRecipe GasAsteroid = new DepositRecipe(DepositShape.Asteroid, GasOnly, 3.75f, 10f);
+        static readonly DepositRecipe OreDebris = new DepositRecipe(DepositShape.Asteroid, OreOnly, 1.25f, 6.25f);
+        static readonly DepositRecipe IceDebris = new DepositRecipe(DepositShape.Asteroid, IceOnly, 1.5f, 7.5f);
+        static readonly DepositRecipe StationDebris = new DepositRecipe(DepositShape.Asteroid, OreOnly, 1f, 3.75f);
 
         public static ZoneContents Generate(ulong seed, PointOfInterest pointOfInterest, Star star)
         {
@@ -79,7 +81,7 @@ namespace LastFleet.Zones
                     AddDeposits(random, placement, deposits, random.Range(4, 11), moonRecipe);
                     break;
                 case PointOfInterestKind.AsteroidBelt:
-                    DepositRecipe beltRecipe = new DepositRecipe(DepositShape.Asteroid, BeltResources(pointOfInterest.Belt.Composition), 0.6f, 4f);
+                    DepositRecipe beltRecipe = new DepositRecipe(DepositShape.Asteroid, BeltResources(pointOfInterest.Belt.Composition), 1.5f, 10f);
                     AddDeposits(random, placement, deposits, random.Range(30, 61), beltRecipe);
                     break;
                 case PointOfInterestKind.Station:

@@ -10,9 +10,9 @@ namespace LastFleet.Zones.Tests
     {
         const int SystemSampleCount = 150;
 
-        [TestCase(1f, DepositSizeClass.Small, 1)]
-        [TestCase(2f, DepositSizeClass.Medium, 2)]
-        [TestCase(3.5f, DepositSizeClass.Large, 3)]
+        [TestCase(2f, DepositSizeClass.Small, 1)]
+        [TestCase(5f, DepositSizeClass.Medium, 2)]
+        [TestCase(9f, DepositSizeClass.Large, 3)]
         public void AsteroidSize_SetsClassAndMiningSlots(float radius, DepositSizeClass expectedClass, int expectedSlots)
         {
             ResourceDeposit deposit = CreateAsteroid(Vector3.zero, radius, DepositHazard.None);
@@ -24,7 +24,7 @@ namespace LastFleet.Zones.Tests
         [Test]
         public void MiningSlots_SitOutsideTheSurfaceAndApart()
         {
-            ResourceDeposit deposit = CreateAsteroid(new Vector3(10f, 2f, -5f), 3.5f, DepositHazard.None);
+            ResourceDeposit deposit = CreateAsteroid(new Vector3(10f, 2f, -5f), 9f, DepositHazard.None);
 
             for (int i = 0; i < deposit.MiningSlotCount; i++)
             {

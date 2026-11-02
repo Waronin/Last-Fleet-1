@@ -52,8 +52,8 @@ namespace LastFleet.Zones
     /// </summary>
     public sealed class ResourceDeposit : IScanTarget
     {
-        public const float MediumRadiusUnits = 1.5f;
-        public const float LargeRadiusUnits = 3f;
+        public const float MediumRadiusUnits = 3.75f;
+        public const float LargeRadiusUnits = 7.5f;
 
         /// <summary>Distance of a mining slot from the deposit surface, where a harvester attaches.</summary>
         public const float SlotClearanceUnits = 1.2f;

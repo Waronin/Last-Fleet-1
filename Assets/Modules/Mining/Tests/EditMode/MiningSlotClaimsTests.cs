@@ -28,7 +28,7 @@ namespace LastFleet.Mining.Tests
         public void Claim_TakesTheSlotNearestToTheShip()
         {
             MiningSlotClaims claims = new MiningSlotClaims();
-            ResourceDeposit deposit = CreateDeposit(3.5f);
+            ResourceDeposit deposit = CreateDeposit(ResourceDeposit.LargeRadiusUnits);
             Vector3 nearSlotTwo = deposit.GetMiningSlotLocalPosition(2) * 3f;
 
             Assert.IsTrue(claims.TryClaim(deposit, CreateShip(), nearSlotTwo, out int slot));
@@ -40,7 +40,7 @@ namespace LastFleet.Mining.Tests
         public void Claim_FailsWhenAllSlotsAreTaken()
         {
             MiningSlotClaims claims = new MiningSlotClaims();
-            ResourceDeposit deposit = CreateDeposit(2f);
+            ResourceDeposit deposit = CreateDeposit(ResourceDeposit.MediumRadiusUnits);
             for (int i = 0; i < deposit.MiningSlotCount; i++)
             {
                 Assert.IsTrue(claims.TryClaim(deposit, CreateShip(), Vector3.zero, out int _));
