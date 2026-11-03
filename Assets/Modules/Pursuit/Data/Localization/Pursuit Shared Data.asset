@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: Pursuit Shared Data
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.SharedTableData
+  m_TableCollectionName: Pursuit
+  m_TableCollectionNameGuidString: 4ea87d87f65c21e47adf64922eb81baf
+  m_Entries:
+  - m_Id: 1157181440
+    m_Key: status.warning
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1157181441
+    m_Key: status.arrived
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1161375744
+    m_Key: notice.countdown-started
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1161375746
+    m_Key: notice.warning
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6593948758016
+    m_Key: status.counting
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6593973923840
+    m_Key: notice.carrier-arrived
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6593973923841
+    m_Key: notice.carrier-strike
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14790461829120
+    m_Key: notice.carrier-wave
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 5599358707687751750
+  references:
+    version: 2
+    RefIds:
+    - rid: 5599358707687751750
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1793731893163

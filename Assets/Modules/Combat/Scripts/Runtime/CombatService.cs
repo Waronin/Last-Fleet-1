@@ -20,6 +20,7 @@ namespace LastFleet.Combat
         [SerializeField] ObstacleField _obstacles;
 
         readonly List<FighterCombat> _escorts = new List<FighterCombat>();
+        readonly List<ShipAgent> _candidates = new List<ShipAgent>();
 
         /// <summary>Short feedback for the player, e.g. when an enemy is shot down.</summary>
         public event Action<GameText> Notice;
@@ -154,6 +155,20 @@ namespace LastFleet.Combat
                 }
             }
             return best;
+        }
+
+        /// <summary>A random enemy of the hunter flying anywhere in the system, small or capital, or null.</summary>
+        public ShipAgent FindRandomHuntTarget(ShipAgent hunter)
+        {
+            _candidates.Clear();
+            foreach (ShipAgent candidate in OpponentsOf(hunter).Ships)
+            {
+                if (!candidate.IsDocked && candidate.Zone != null)
+                {
+                    _candidates.Add(candidate);
+                }
+            }
+            return _candidates.Count > 0 ? _candidates[UnityEngine.Random.Range(0, _candidates.Count)] : null;
         }
 
         /// <summary>A weapon hit: the shield takes what it can, the rest goes to the hull.</summary>

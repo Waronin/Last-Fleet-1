@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Pursuit_de
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: de
+  m_SharedData: {fileID: 11400000, guid: 4ea87d87f65c21e47adf64922eb81baf, type: 2}
+  m_Metadata:
+    m_Items:
+    - rid: 5599358707687751752
+  m_TableData:
+  - m_Id: 6593973923841
+    m_Localized: '{ship} springt nach {zone} zu unseren Kapitalschiffen!'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358707687751752
+  - m_Id: 1157181440
+    m_Localized: Pronin-Ankunft in {remaining}!
+    m_Metadata:
+      m_Items:
+      - rid: 5599358707687751752
+  - m_Id: 1157181441
+    m_Localized: Pronin im System
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1161375744
+    m_Localized: 'Langstreckensensoren: Die Pronin finden uns in {remaining}.'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358707687751752
+  - m_Id: 6593973923840
+    m_Localized: "{ship} ist in {zone} aufgetaucht und startet J\xE4ger!"
+    m_Metadata:
+      m_Items:
+      - rid: 5599358707687751752
+  - m_Id: 1161375746
+    m_Localized: 'Warnung: Pronin-Sprungsignaturen erfasst! Ankunft in {remaining}.'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358707687751752
+  - m_Id: 6593948758016
+    m_Localized: Pronin erwartet in {remaining}
+    m_Metadata:
+      m_Items:
+      - rid: 5599358707687751752
+  - m_Id: 14790461829120
+    m_Localized: "{ship} startet {count} J\xE4ger."
+    m_Metadata:
+      m_Items:
+      - rid: 5599358707687751752
+  references:
+    version: 2
+    RefIds:
+    - rid: 5599358707687751752
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 
+        m_SharedEntries:
+        - id: 6593973923841
+        - id: 6593973923840
+        - id: 1157181440
+        - id: 1161375744
+        - id: 6593948758016
+        - id: 1161375746
+        - id: 14790461829120

@@ -8,7 +8,7 @@ namespace LastFleet.Ships.Editor
 {
     /// <summary>
     /// Creates the blockout prefabs of armed ships: the human cruiser with its fighter hangar, the
-    /// human fighter and the Pronin fighter. All of them use the same weapon, shield and combat
+    /// human fighter, the Pronin fighter and the Pronin carrier. All of them use the same weapon, shield and combat
     /// components; only their numbers and looks differ. Game scale (GDD): a cruiser looks like about
     /// 1.4 km (14 units), a fighter about 100 m (1 unit).
     /// Built together with the other ships by Last Fleet / Rebuild Ship Prefabs.
@@ -18,6 +18,7 @@ namespace LastFleet.Ships.Editor
         const string CruiserPrefabPath = ShipPrefabBuilder.PrefabFolder + "/Cruiser.prefab";
         const string FighterPrefabPath = ShipPrefabBuilder.PrefabFolder + "/Fighter.prefab";
         const string ProninFighterPrefabPath = ShipPrefabBuilder.PrefabFolder + "/ProninFighter.prefab";
+        const string ProninCarrierPrefabPath = ShipPrefabBuilder.PrefabFolder + "/ProninCarrier.prefab";
         const string LitShaderName = ShipPrefabBuilder.LitShaderName;
         const string UnlitShaderName = ShipPrefabBuilder.UnlitShaderName;
 
@@ -44,6 +45,12 @@ namespace LastFleet.Ships.Editor
         const float ProninFighterFuelPerKlick = 0.08f;
         const float ProninFighterFuelPerAU = 1.5f;
 
+        // About 1.6 km long (16 units); a hangar for a full wave of fighters.
+        const float ProninCarrierHull = 4000f;
+        const int ProninCarrierHangarCapacity = 8;
+        const float ProninCarrierObstacleRadius = 7f;
+        const float ProninCarrierTank = 9000f;
+
         // About a fifth of a harvester's hold: worth a short trip, not worth staying for long.
         const float ProninFighterWreckMetal = 25f;
 
@@ -65,9 +72,11 @@ namespace LastFleet.Ships.Editor
             AssetDatabase.DeleteAsset(CruiserPrefabPath);
             AssetDatabase.DeleteAsset(FighterPrefabPath);
             AssetDatabase.DeleteAsset(ProninFighterPrefabPath);
+            AssetDatabase.DeleteAsset(ProninCarrierPrefabPath);
             LoadOrCreateCruiser();
             LoadOrCreateFighter();
             LoadOrCreateProninFighter();
+            LoadOrCreateProninCarrier();
         }
 
         /// <summary>Military capital ship with a fighter hangar and defensive guns (GDD: Cruiser 1).</summary>
@@ -247,6 +256,79 @@ namespace LastFleet.Ships.Editor
             EditorAssetUtility.FindProperty(wreckageData, "_metalAmount").floatValue = ProninFighterWreckMetal;
             wreckageData.ApplyModifiedPropertiesWithoutUndo();
             return ShipPrefabBuilder.SavePrefab(root, ProninFighterPrefabPath);
+        }
+
+        /// <summary>
+        /// Pronin carrier (GDD: the enemy fleet arrives and launches fighters, then its capital ships
+        /// join the attack): a long white hull with a glowing spine, a fighter hangar and beam turrets.
+        /// </summary>
+        public static ShipAgent LoadOrCreateProninCarrier()
+        {
+            GameObject existing = AssetDatabase.LoadAssetAtPath<GameObject>(ProninCarrierPrefabPath);
+            if (existing != null)
+            {
+                return existing.GetComponent<ShipAgent>();
+            }
+
+            GameObject root = new GameObject("ProninCarrier");
+            Material hull = LitMaterial("ProninHull", ProninHullColor);
+            Material glow = ShipPrefabBuilder.LoadOrCreateMaterial("ProninGlow", UnlitShaderName, ProninGlowColor);
+
+            Transform body = root.transform;
+            ShipPrefabBuilder.CreatePart(body, PrimitiveType.Capsule, "Hull", hull, new Vector3(0f, 0f, 0f), new Vector3(3f, 8f, 1.6f))
+                .transform.localRotation = Quaternion.Euler(90f, 0f, 0f);
+            ShipPrefabBuilder.CreatePart(body, PrimitiveType.Cube, "Wing Port", hull, new Vector3(-2.6f, 0f, -2f), new Vector3(3.2f, 0.25f, 4f))
+                .transform.localRotation = Quaternion.Euler(0f, -25f, 0f);
+            ShipPrefabBuilder.CreatePart(body, PrimitiveType.Cube, "Wing Starboard", hull, new Vector3(2.6f, 0f, -2f), new Vector3(3.2f, 0.25f, 4f))
+                .transform.localRotation = Quaternion.Euler(0f, 25f, 0f);
+            ShipPrefabBuilder.CreatePart(body, PrimitiveType.Cube, "Spine Glow", glow, new Vector3(0f, 0.85f, 0.5f), new Vector3(0.2f, 0.08f, 10f));
+            ShipPrefabBuilder.CreatePart(body, PrimitiveType.Cube, "Hangar Mouth", glow, new Vector3(0f, -0.2f, 7.95f), new Vector3(1.4f, 0.6f, 0.05f));
+
+            // Landing bay in the bow; fighters leave forwards.
+            Transform bayTransform = new GameObject("Landing Bay").transform;
+            bayTransform.SetParent(body, false);
+            bayTransform.localPosition = new Vector3(0f, -0.2f, 8f);
+
+            Transform engineGlow = ShipPrefabBuilder.CreatePart(body, PrimitiveType.Sphere, "Engine Glow", glow,
+                new Vector3(0f, 0f, -8f), new Vector3(1.6f, 1f, 0.8f)).transform;
+            TrailRenderer trail = ShipPrefabBuilder.CreateTrail(body, new Vector3(0f, 0f, -8.3f), 1.4f, 8f, glow);
+            LineRenderer bracket = ShipPrefabBuilder.CreateBracket(body);
+            LineRenderer beam = CreateBeam(body, new Vector3(0f, 1f, 3f));
+
+            ShipAgent agent = root.AddComponent<ShipAgent>();
+            ShipMovementProfile profile = ShipPrefabBuilder.LoadOrCreateProfile("ProninCarrierMovement", ConfigureProninCarrierMovement);
+            ShipPrefabBuilder.ConfigureAgent(agent, "ProninCarrier", ShipSize.Capital, profile, ProninCarrierObstacleRadius);
+
+            Hangar hangar = root.AddComponent<Hangar>();
+            SerializedObject hangarData = new SerializedObject(hangar);
+            EditorAssetUtility.FindProperty(hangarData, "_bay").objectReferenceValue = bayTransform;
+            EditorAssetUtility.FindProperty(hangarData, "_capacity").intValue = ProninCarrierHangarCapacity;
+            EditorAssetUtility.FindProperty(hangarData, "_launchIntervalSeconds").floatValue = 0.6f;
+            hangarData.ApplyModifiedPropertiesWithoutUndo();
+            ShipPrefabBuilder.AddDurability(root, ProninCarrierHull);
+            ShipPrefabBuilder.AddFuel(root, ProninCarrierTank, CruiserFuelPerKlick, CruiserFuelPerAU);
+            // Heavy beams in every direction: slower than the cruiser's guns, but each hit hurts.
+            AddWeapons(root, new WeaponSettings(HalfZoneRangeUnits, 9f, 1.2f, 0.7f, 0.05f, firingArcDegrees: 360f));
+            BeamShotView beamView = root.AddComponent<BeamShotView>();
+            EditorAssetUtility.SetReferences(beamView, ("_beam", beam));
+            ShipPrefabBuilder.AddPresentation(root, engineGlow, trail, bracket, 36f, 1f);
+            CombatEffectsBuilder.AddHitFeedback(root, 0f, 0.6f);
+            CombatEffectsBuilder.AddDestruction(root, 16f);
+            return ShipPrefabBuilder.SavePrefab(root, ProninCarrierPrefabPath);
+        }
+
+        /// <summary>Heavier than the cruiser, but its jump drive charges faster (GDD: the Pronin are far ahead).</summary>
+        static void ConfigureProninCarrierMovement(SerializedObject profile)
+        {
+            EditorAssetUtility.FindProperty(profile, "_motion._maximumSpeed").floatValue = 12f;
+            EditorAssetUtility.FindProperty(profile, "_motion._mainDriveAcceleration").floatValue = 1.2f;
+            EditorAssetUtility.FindProperty(profile, "_motion._turnRateDegreesPerSecond").floatValue = 12f;
+            EditorAssetUtility.FindProperty(profile, "_motion._thrusterAcceleration").floatValue = 0.8f;
+            EditorAssetUtility.FindProperty(profile, "_motion._thrusterMaximumSpeed").floatValue = 2.5f;
+            EditorAssetUtility.FindProperty(profile, "_motion._maneuverRangeUnits").floatValue = 40f;
+            EditorAssetUtility.FindProperty(profile, "_motion._arrivalToleranceUnits").floatValue = 2f;
+            EditorAssetUtility.FindProperty(profile, "_motion._alignToleranceDegrees").floatValue = 4f;
+            EditorAssetUtility.FindProperty(profile, "_jumpChargeSeconds").floatValue = 6f;
         }
 
         /// <summary>Faster to turn than the civilian capital ships, still a flying building.</summary>

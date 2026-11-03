@@ -21,13 +21,14 @@ GDD references: *Kampf*, *Kleine Schiffe*, *Kapitalschiffe*, *Der Feind*, *Resso
 | `ShipWeapons` + `WeaponSettings` + `WeaponCycle` | Combat | Range, damage, bursts, firing arc, linear hit falloff, round speed. A hit is rolled on firing and lands when the round arrives. |
 | `ShipShield` + `ShieldCharge` | Combat | Absorbs weapon hits only; recharges after a delay without hits. Hazards bypass it. |
 | `FighterCombat` | Combat | Attack runs after an order; follow-up target after a kill; self-defense when idle (`_defendWhenIdle`). Escort: keep station around the protected ships, attack enemies within the guard radius of any of them, break a chase off at the leash and return. |
-| `AutonomousHunting` + `HuntingRules` | Combat | Enemy AI: small ships before capital ships, isolated before escorted, near before far. Off for ships on the player's side. |
+| `AutonomousHunting` + `HuntingRules` | Combat | Enemy AI: small ships before capital ships, isolated before escorted, near before far; or random targets for carrier waves. Off for ships on the player's side. |
 | `ProjectileShotView` / `BeamShotView` | Combat/View | Looks only: human tracer rounds with muzzle flash, Pronin energy beams. |
 | `HitFeedbackView` | Combat/View | Shield hit: a ring around the ship flares and fades. Hull hit (weapons or hazards): sparks. |
 | `DestructionView` + `ExplosionEffect` | Combat/View | Explosion (fireball, shock ring, debris) in the zone where a ship is destroyed. Prefab: `Combat/Prefabs/Explosion`. |
 | `ShipWreckage` | Ships | On destruction the ship leaves a wreck: a `ResourceDeposit` of shape `Wreck` and resource `Metal`, added to the zone's run state. Harvesters salvage it with their normal mining loop and deliver the metal to the refinery. |
 | `CombatShipPrefabBuilder` + `CombatEffectsBuilder` | Ships/Editor | Build Cruiser, Fighter, ProninFighter and the explosion; all balance values below live there. |
 | `DeveloperRaidInput` | GenerationPreview | **P** drops 3 Pronin fighters into the viewed zone. |
+| `PursuitClock` + `ProninAttack` | Pursuit | Countdown (13 min) per system arrival. When it runs out, a Pronin carrier appears in a random zone (not the one with most of our capital ships) and launches 6 fighters that hunt random targets (`HuntTargetChoice.Random`: small or capital ships), then another wave every 60 s up to 12 living fighters (`CarrierSchedule`). After 30 s the carrier hunts: every 2 s it checks the zone with the most of our capital ships (counting ships still jumping there), jumps after them, stops 120 units short and fires its beams; it closes in again when they move away inside the zone. **T** skips the countdown 1 min ahead. |
 
 Controls: right click on an enemy attacks it with the selected ships. Right click with fighters selected
 on another of our ships makes them escort it, or its squad, spread evenly around it. Fighters without
@@ -81,6 +82,8 @@ Newest first. Note the date, the setup, what happened and the version of the val
 
 | Date | Setup | Result | Notes |
 | --- | --- | --- | --- |
+| 2026-11-03 | Capital ships sent to Belt A, then the countdown skipped; later sent back to the jump point | Carrier appeared in a moon zone, followed the fleet to Belt A and later back to the jump point; second wave at 60 s brought it to 12 fighters | Before the chase the carrier struck the empty jump point once and then idled there. |
+| 2026-11-03 | Countdown skipped to arrival, fleet docked at the jump point | Pronin carrier (hull 4000, beams 9 per 1.2 s, range 250) appeared in a moon zone, launched 6 fighters in ~4 s; they jumped to the jump point and spread over refinery and liner. After 30 s the carrier jumped in, stopped ~120 units from our capital ships and hit the liner; its hull was still full a minute later | The cruiser keeps shooting the nearest target, so it ignores the carrier while fighters are close. |
 | 2026-11-01 | Fighter sent straight through the liner (radius 6.5) | Passed beside it, closest 7.3 units from its center | Without avoidance it would have flown through the hull. Closest point came while flipping, where avoidance does not steer. |
 | 2026-11-01 | Pronin fighter parked behind the liner as seen from the cruiser | No line of fire from the cruiser or the refinery | Cover works for capital ships as cover; rocks were not in the test zone. |
 | 2026-11-01 | 4 fighters escort a harvester squad of 3 on a 200-unit trip, then 3 Pronin appear 120 units away | Escorts stayed within ~45 units while moving and settled at 8; all went for the raid, destroyed it and took their stations again; after the harvesters landed the escort waited at the refinery | First try without station keeping overshot by up to 130 units; now they match the protected ship's speed. |

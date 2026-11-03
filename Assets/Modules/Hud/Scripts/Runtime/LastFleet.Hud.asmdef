@@ -6,7 +6,8 @@
         "LastFleet.Localization",
         "LastFleet.Ships",
         "LastFleet.ShipControl",
-        "LastFleet.Mining"
+        "LastFleet.Mining",
+        "LastFleet.Pursuit"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

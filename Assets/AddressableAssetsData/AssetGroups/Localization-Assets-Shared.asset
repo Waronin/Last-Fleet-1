@@ -35,6 +35,11 @@ MonoBehaviour:
     m_ReadOnly: 1
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4ea87d87f65c21e47adf64922eb81baf
+    m_Address: Assets/Modules/Pursuit/Data/Localization/Pursuit Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 60d43db6b58c14d439ea6d57ed0e8a8a
     m_Address: Assets/Modules/People/Data/Localization/People Shared Data.asset
     m_ReadOnly: 1

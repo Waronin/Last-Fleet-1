@@ -7,6 +7,7 @@ using LastFleet.Hud;
 using LastFleet.Inspection;
 using LastFleet.Mining;
 using LastFleet.People;
+using LastFleet.Pursuit;
 using LastFleet.Rewards;
 using LastFleet.Stations;
 using LastFleet.Stations.Editor;
@@ -140,13 +141,23 @@ namespace LastFleet.GenerationPreview.Editor
             SupplyBar supplyBar = supplyBarObject.AddComponent<SupplyBar>();
             EditorAssetUtility.SetReferences(supplyBar, ("_mining", mining), ("_shipInput", shipInput));
 
+            GameObject pursuitObject = new GameObject("Pursuit Clock");
+            PursuitClock pursuit = pursuitObject.AddComponent<PursuitClock>();
+            ProninAttack proninAttack = pursuitObject.AddComponent<ProninAttack>();
+            EditorAssetUtility.SetReferences(proninAttack, ("_pursuit", pursuit), ("_zoneWorld", zoneWorld),
+                ("_fleet", shipRegistry), ("_pronin", proninRegistry),
+                ("_carrierPrefab", CombatShipPrefabBuilder.LoadOrCreateProninCarrier()),
+                ("_fighterPrefab", CombatShipPrefabBuilder.LoadOrCreateProninFighter()));
+            ThreatIndicator threatIndicator = supplyBarObject.AddComponent<ThreatIndicator>();
+            EditorAssetUtility.SetReferences(threatIndicator, ("_pursuit", pursuit), ("_shipInput", shipInput));
+
             GameObject previewObject = new GameObject("Generation Preview");
             GenerationPreviewController preview = previewObject.AddComponent<GenerationPreviewController>();
             EditorAssetUtility.SetReferences(preview,
                 ("_galaxyMapView", mapView), ("_starSystemView", systemView), ("_zoneWorld", zoneWorld),
                 ("_environment", environment), ("_cameraRig", cameraRig), ("_shipRegistry", shipRegistry),
                 ("_shipInput", shipInput), ("_groupInput", groupInput), ("_hangarInput", hangarInput), ("_mining", mining),
-                ("_scouting", scouting), ("_population", population), ("_docking", docking), ("_search", search), ("_rewards", rewards), ("_combat", combat), ("_inspection", inspection), ("_shipPanel", shipPanel),
+                ("_scouting", scouting), ("_population", population), ("_docking", docking), ("_search", search), ("_rewards", rewards), ("_combat", combat), ("_pursuit", pursuit), ("_proninAttack", proninAttack), ("_inspection", inspection), ("_shipPanel", shipPanel),
                 ("_cruiserPrefab", CombatShipPrefabBuilder.LoadOrCreateCruiser()),
                 ("_fighterPrefab", CombatShipPrefabBuilder.LoadOrCreateFighter()),
                 ("_refineryPrefab", ShipPrefabBuilder.LoadOrCreateRefinery()),

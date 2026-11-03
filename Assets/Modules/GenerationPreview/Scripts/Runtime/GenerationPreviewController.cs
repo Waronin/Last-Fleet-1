@@ -7,6 +7,7 @@ using LastFleet.Inspection;
 using LastFleet.Localization;
 using LastFleet.Mining;
 using LastFleet.People;
+using LastFleet.Pursuit;
 using LastFleet.Rewards;
 using LastFleet.Shared.Text;
 using LastFleet.ShipControl;
@@ -35,6 +36,7 @@ namespace LastFleet.GenerationPreview
     /// zone, right click sends the selected ships there (Shift appends), Esc returns to the galaxy.
     /// Zone: ship control via ShipCommandInput, Tab / Shift+Tab cycles revealed zones, F follows the
     /// selected ship, X extracts half of the nearest deposit, Esc opens the system map.
+    /// Every arrival in a system starts the pursuit countdown; T skips it ahead by a minute.
     /// </summary>
     public sealed class GenerationPreviewController : MonoBehaviour
     {
@@ -49,6 +51,7 @@ namespace LastFleet.GenerationPreview
         const int MaximumRecentNotices = 4;
         const float DeveloperLightDamage = 25f;
         const float DeveloperHeavyDamage = 100f;
+        const float DeveloperPursuitSkipSeconds = 60f;
         static readonly GameText DeveloperDamageCause = GameText.Verbatim("developer damage");
         static readonly Vector3 RefineryArrivalPosition = new Vector3(0f, 0f, 0f);
         static readonly Vector3 LinerArrivalPosition = new Vector3(-30f, 0f, 12f);
@@ -73,6 +76,8 @@ namespace LastFleet.GenerationPreview
         [SerializeField] SearchService _search;
         [SerializeField] RewardDelivery _rewards;
         [SerializeField] CombatService _combat;
+        [SerializeField] PursuitClock _pursuit;
+        [SerializeField] ProninAttack _proninAttack;
         [SerializeField] InspectionPanel _inspection;
         [SerializeField] InspectionPanel _shipPanel;
         [Tooltip("Spawned on arrival in a system until fleet jumps carry the fleet along.")]
@@ -114,7 +119,7 @@ namespace LastFleet.GenerationPreview
         {
             if (_galaxyMapView == null || _starSystemView == null || _zoneWorld == null || _environment == null ||
                 _cameraRig == null || _shipRegistry == null || _shipInput == null || _groupInput == null ||
-                _hangarInput == null || _mining == null || _scouting == null || _population == null || _docking == null || _search == null || _rewards == null || _combat == null || _inspection == null || _shipPanel == null ||
+                _hangarInput == null || _mining == null || _scouting == null || _population == null || _docking == null || _search == null || _rewards == null || _combat == null || _pursuit == null || _proninAttack == null || _inspection == null || _shipPanel == null ||
                 _refineryPrefab == null || _tankerPrefab == null || _linerPrefab == null || _harvesterPrefab == null || _shuttlePrefab == null ||
                 _cruiserPrefab == null || _fighterPrefab == null)
             {
@@ -137,6 +142,8 @@ namespace LastFleet.GenerationPreview
             _search.Notice += ShowNotice;
             _rewards.Notice += ShowNotice;
             _combat.Notice += ShowNotice;
+            _pursuit.Notice += ShowNotice;
+            _proninAttack.Notice += ShowNotice;
             _inspection.Notice += ShowNotice;
             _shipInput.DepositClicked += InspectDeposit;
             _shipInput.StationClicked += InspectStation;
@@ -172,6 +179,8 @@ namespace LastFleet.GenerationPreview
             _search.Notice -= ShowNotice;
             _rewards.Notice -= ShowNotice;
             _combat.Notice -= ShowNotice;
+            _pursuit.Notice -= ShowNotice;
+            _proninAttack.Notice -= ShowNotice;
             _inspection.Notice -= ShowNotice;
             _shipInput.DepositClicked -= InspectDeposit;
             _shipInput.StationClicked -= InspectStation;
@@ -247,6 +256,12 @@ namespace LastFleet.GenerationPreview
             if (keyboard.f9Key.wasPressedThisFrame)
             {
                 ShowNotice(GameText.Verbatim($"Language: {LanguageSelection.SelectNext()}"));
+            }
+            else if (keyboard.tKey.wasPressedThisFrame && _pursuit.Countdown != null)
+            {
+                // Developer shortcut: the countdown takes minutes.
+                _pursuit.SkipAhead(DeveloperPursuitSkipSeconds);
+                ShowNotice(GameText.Verbatim($"Pursuit countdown skipped ahead by {DeveloperPursuitSkipSeconds:0} s."));
             }
 
             switch (Mode)
@@ -532,10 +547,14 @@ namespace LastFleet.GenerationPreview
 
             ShowZone(arrival);
             ShowNotice(GenerationPreviewTexts.ArrivedInSystem.Format(("system", system.Layout.Name), ("known", system.RevealedCount)));
+
+            // Every arrival starts a new countdown, also on a return to a visited system.
+            _pursuit.Begin();
         }
 
         void LeaveStarSystem()
         {
+            _pursuit.Stop();
             _zoneWorld.Clear();
             _starSystemView.Clear();
             CurrentSystem = null;
@@ -568,6 +587,12 @@ namespace LastFleet.GenerationPreview
                 return;
             }
             _zoneWorld.Reveal(pointOfInterestIndex);
+        }
+
+        /// <summary>The view of a revealed zone of the current system.</summary>
+        public bool TryGetZoneView(int pointOfInterestIndex, out ZoneView view)
+        {
+            return _zoneWorld.TryGetView(pointOfInterestIndex, out view);
         }
 
         void ViewZone(int pointOfInterestIndex)

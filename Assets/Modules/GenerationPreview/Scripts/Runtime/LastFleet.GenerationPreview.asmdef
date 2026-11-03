@@ -3,6 +3,7 @@
     "rootNamespace": "LastFleet.GenerationPreview",
     "references": [
         "LastFleet.Combat",
+        "LastFleet.Pursuit",
         "LastFleet.Rewards",
         "LastFleet.Stations",
         "LastFleet.People",

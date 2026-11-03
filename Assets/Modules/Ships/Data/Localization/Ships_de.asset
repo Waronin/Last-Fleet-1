@@ -135,6 +135,10 @@ MonoBehaviour:
     m_Localized: Tankfrachter
     m_Metadata:
       m_Items: []
+  - m_Id: 2319961107804160
+    m_Localized: "Pronin-Tr\xE4ger"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:
