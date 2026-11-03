@@ -6,12 +6,15 @@ using UnityEngine;
 namespace LastFleet.Galaxy
 {
     /// <summary>
-    /// Blockout star map: one sphere per system, the jump range around the selected system and
-    /// lines to every system reachable with one jump. Holds no game state besides the selection.
+    /// Blockout star map: one sphere per system, the jump range around the fleet's current system
+    /// and lines to every system reachable from it with one jump. Selecting another system only
+    /// marks it; the range and the lines stay on the current system. Holds no game state besides
+    /// the current system and the selection.
     /// </summary>
     public sealed class GalaxyMapView : MonoBehaviour
     {
         const int RingSegmentCount = 96;
+        const float CurrentMarkerScale = 1.6f;
 
         [SerializeField] Material _markerMaterial;
         [SerializeField] Material _lineMaterial;
@@ -22,6 +25,7 @@ namespace LastFleet.Galaxy
         [Header("Colors")]
         [SerializeField] Color _systemColor = new Color(0.7f, 0.75f, 0.85f);
         [SerializeField] Color _startSystemColor = new Color(0.3f, 1f, 0.45f);
+        [SerializeField] Color _currentSystemColor = new Color(1f, 1f, 1f);
         [SerializeField] Color _selectedSystemColor = new Color(1f, 0.85f, 0.2f);
         [SerializeField] Color _reachableSystemColor = new Color(0.4f, 0.75f, 1f);
         [SerializeField] Color _jumpLineColor = new Color(0.3f, 0.6f, 1f);
@@ -33,6 +37,10 @@ namespace LastFleet.Galaxy
         GalaxyLayout _galaxy;
 
         public GalaxyLayout Galaxy => _galaxy;
+        /// <summary>Where the fleet is: the origin of the jump range and lines.</summary>
+        public int CurrentSystemIndex { get; private set; } = -1;
+
+        /// <summary>The marked system, e.g. the planned jump target; the current system when nothing else is marked.</summary>
         public int SelectedSystemIndex { get; private set; } = -1;
         public float ExtentUnits { get; private set; }
 
@@ -68,23 +76,37 @@ namespace LastFleet.Galaxy
 
             _jumpRangeRing = BlockoutPrimitives.CreateLine(transform, _lineMaterial, "Jump Range", _lineWidthUnits);
             BlockoutPrimitives.SetColor(_jumpRangeRing, _jumpLineColor, _propertyBlock);
-            Select(galaxy.StartSystemIndex);
+            SetCurrentSystem(galaxy.StartSystemIndex);
         }
 
+        /// <summary>The fleet arrived in a system: range and lines move there, and it becomes the selection.</summary>
+        public void SetCurrentSystem(int systemIndex)
+        {
+            ValidateIndex(systemIndex);
+            CurrentSystemIndex = systemIndex;
+            SelectedSystemIndex = systemIndex;
+            RefreshMarkerColors();
+            RefreshJumpLines();
+        }
+
+        /// <summary>Marks a system without moving the jump range away from the current system.</summary>
         public void Select(int systemIndex)
+        {
+            ValidateIndex(systemIndex);
+            SelectedSystemIndex = systemIndex;
+            RefreshMarkerColors();
+        }
+
+        void ValidateIndex(int systemIndex)
         {
             if (_galaxy == null)
             {
-                throw new InvalidOperationException("Show a galaxy before selecting a system.");
+                throw new InvalidOperationException("Show a galaxy before choosing a system.");
             }
             if (systemIndex < 0 || systemIndex >= _galaxy.Systems.Count)
             {
                 throw new ArgumentOutOfRangeException(nameof(systemIndex));
             }
-
-            SelectedSystemIndex = systemIndex;
-            RefreshMarkerColors();
-            RefreshJumpLines();
         }
 
         public Vector3 GetSystemWorldPosition(int systemIndex)
@@ -130,13 +152,14 @@ namespace LastFleet.Galaxy
             _jumpLines.Clear();
             _jumpRangeRing = null;
             _galaxy = null;
+            CurrentSystemIndex = -1;
             SelectedSystemIndex = -1;
             ExtentUnits = 0f;
         }
 
         void RefreshMarkerColors()
         {
-            IReadOnlyList<int> reachable = _galaxy.GetNeighbours(SelectedSystemIndex);
+            IReadOnlyList<int> reachable = _galaxy.GetNeighbours(CurrentSystemIndex);
             for (int i = 0; i < _markers.Count; i++)
             {
                 Color color = _systemColor;
@@ -148,20 +171,26 @@ namespace LastFleet.Galaxy
                 {
                     color = _reachableSystemColor;
                 }
-                if (i == SelectedSystemIndex)
+                if (i == CurrentSystemIndex)
+                {
+                    color = _currentSystemColor;
+                }
+                if (i == SelectedSystemIndex && i != CurrentSystemIndex)
                 {
                     color = _selectedSystemColor;
                 }
                 BlockoutPrimitives.SetColor(_markers[i], color, _propertyBlock);
+                // The fleet's system stands out by size as well, so the marked target cannot hide it.
+                _markers[i].transform.localScale = Vector3.one * (_markerDiameterUnits * (i == CurrentSystemIndex ? CurrentMarkerScale : 1f));
             }
         }
 
         void RefreshJumpLines()
         {
-            Vector3 origin = _markers[SelectedSystemIndex].transform.localPosition;
+            Vector3 origin = _markers[CurrentSystemIndex].transform.localPosition;
             BlockoutPrimitives.SetCircle(_jumpRangeRing, origin, _galaxy.JumpRangeLightYears * _unitsPerLightYear, RingSegmentCount);
 
-            IReadOnlyList<int> reachable = _galaxy.GetNeighbours(SelectedSystemIndex);
+            IReadOnlyList<int> reachable = _galaxy.GetNeighbours(CurrentSystemIndex);
             while (_jumpLines.Count < reachable.Count)
             {
                 LineRenderer line = BlockoutPrimitives.CreateLine(transform, _lineMaterial, "Jump Line", _lineWidthUnits);

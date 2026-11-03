@@ -250,6 +250,30 @@ namespace LastFleet.Ships
             HomeHangar = hangar;
         }
 
+        /// <summary>
+        /// Places the ship in a zone of another system after a fleet jump (GDD: The jump): its orders
+        /// end and it comes out at rest. Docked ships travel along inside its hangar.
+        /// </summary>
+        public void ArriveAfterFleetJump(ZoneView zone, Vector3 localPosition, float headingDegrees)
+        {
+            if (zone == null)
+            {
+                throw new ArgumentNullException(nameof(zone));
+            }
+            if (IsDocked)
+            {
+                throw new InvalidOperationException($"{name} is docked and travels with its carrier.");
+            }
+
+            CancelOrders();
+            _zone = zone;
+            transform.SetParent(zone.transform, false);
+            _motion = CreateMotion(localPosition, headingDegrees);
+            Activity = ShipActivity.Idle;
+            ApplyTransform();
+            ZoneChanged?.Invoke(this);
+        }
+
         /// <summary>Called by the hangar once the ship has landed.</summary>
         internal void EnterHangar(Hangar hangar)
         {
@@ -373,6 +397,8 @@ namespace LastFleet.Ships
             int zoneIndex = OrderZoneIndex(order);
             if (zoneIndex < 0)
             {
+                // The order's target is already gone; do not keep a previous course.
+                _motion.Stop();
                 Activity = ShipActivity.Idle;
                 return;
             }
@@ -424,6 +450,9 @@ namespace LastFleet.Ships
             float cost = JumpFuelCost(zoneIndex);
             if (!Fuel.Tank.TryDrain(cost))
             {
+                // Brake out of whatever the ship was doing: an attack run's course never brakes on
+                // its own and would carry the ship out of the zone.
+                _motion.Stop();
                 Activity = ShipActivity.Idle;
                 JumpRefusedForFuel?.Invoke(this, zoneIndex, cost);
                 return;
@@ -441,6 +470,8 @@ namespace LastFleet.Ships
             ZoneView target = _zoneWorld.Reveal(_jumpTargetZoneIndex);
             if (_currentOrder.FollowsMovingTarget && OrderZoneIndex(_currentOrder) < 0)
             {
+                // The followed target is gone: brake instead of keeping the jump course.
+                _motion.Stop();
                 Activity = ShipActivity.Idle;
                 return;
             }

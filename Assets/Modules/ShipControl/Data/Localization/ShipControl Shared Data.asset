@@ -51,6 +51,10 @@ MonoBehaviour:
     m_Key: notice.harvesters-mining
     m_Metadata:
       m_Items: []
+  - m_Id: 2346506719408128
+    m_Key: notice.launches-held
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

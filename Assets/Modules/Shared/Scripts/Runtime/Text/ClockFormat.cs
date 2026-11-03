@@ -1,6 +1,6 @@
 using System;
 
-namespace LastFleet.Pursuit
+namespace LastFleet.Shared.Text
 {
     /// <summary>Countdown times as "m:ss", the same in every language.</summary>
     public static class ClockFormat

@@ -1,0 +1,21 @@
+{
+    "name": "LastFleet.FleetJump",
+    "rootNamespace": "LastFleet.FleetJump",
+    "references": [
+        "LastFleet.Shared",
+        "LastFleet.Galaxy",
+        "LastFleet.Ships",
+        "LastFleet.Zones",
+        "LastFleet.Space",
+        "LastFleet.StarSystem"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -126,6 +126,38 @@ namespace LastFleet.Ships
             newOwner.Register(ship);
         }
 
+        /// <summary>
+        /// Gives a ship up for good, e.g. when it stays behind at a fleet jump: it is reported as lost
+        /// with the cause, together with the ships docked in it, and removed.
+        /// </summary>
+        public void Abandon(ShipAgent ship, GameText cause)
+        {
+            if (ship == null)
+            {
+                throw new ArgumentNullException(nameof(ship));
+            }
+            if (!_ships.Contains(ship))
+            {
+                throw new InvalidOperationException($"{ship.name} does not belong to this registry.");
+            }
+
+            if (ship.TryGetComponent(out Hangar hangar))
+            {
+                List<ShipAgent> docked = new List<ShipAgent>(hangar.DockedShips);
+                foreach (ShipAgent dockedShip in docked)
+                {
+                    if (_ships.Contains(dockedShip))
+                    {
+                        Abandon(dockedShip, cause);
+                    }
+                }
+            }
+
+            ShipLost?.Invoke(ship, cause);
+            Unregister(ship);
+            Destroy(ship.gameObject);
+        }
+
         /// <summary>Takes a ship into this registry: numbers it, gives it this side and reports it.</summary>
         internal void Register(ShipAgent ship)
         {

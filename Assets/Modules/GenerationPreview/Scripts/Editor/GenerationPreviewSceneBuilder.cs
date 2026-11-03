@@ -2,6 +2,7 @@
 using LastFleet.CameraControl.Editor;
 using LastFleet.Combat;
 using LastFleet.Exploration;
+using LastFleet.FleetJump;
 using LastFleet.Galaxy;
 using LastFleet.Hud;
 using LastFleet.Inspection;
@@ -151,13 +152,20 @@ namespace LastFleet.GenerationPreview.Editor
             ThreatIndicator threatIndicator = supplyBarObject.AddComponent<ThreatIndicator>();
             EditorAssetUtility.SetReferences(threatIndicator, ("_pursuit", pursuit), ("_shipInput", shipInput));
 
+            FleetJumpService fleetJump = pursuitObject.AddComponent<FleetJumpService>();
+            EditorAssetUtility.SetReferences(fleetJump, ("_fleet", shipRegistry));
+            JumpStatusIndicator jumpStatus = supplyBarObject.AddComponent<JumpStatusIndicator>();
+            EditorAssetUtility.SetReferences(jumpStatus, ("_fleetJump", fleetJump), ("_shipInput", shipInput));
+            FleetJumpDialog jumpDialog = supplyBarObject.AddComponent<FleetJumpDialog>();
+            EditorAssetUtility.SetReferences(jumpDialog, ("_fleetJump", fleetJump), ("_shipInput", shipInput));
+
             GameObject previewObject = new GameObject("Generation Preview");
             GenerationPreviewController preview = previewObject.AddComponent<GenerationPreviewController>();
             EditorAssetUtility.SetReferences(preview,
                 ("_galaxyMapView", mapView), ("_starSystemView", systemView), ("_zoneWorld", zoneWorld),
                 ("_environment", environment), ("_cameraRig", cameraRig), ("_shipRegistry", shipRegistry),
                 ("_shipInput", shipInput), ("_groupInput", groupInput), ("_hangarInput", hangarInput), ("_mining", mining),
-                ("_scouting", scouting), ("_population", population), ("_docking", docking), ("_search", search), ("_rewards", rewards), ("_combat", combat), ("_pursuit", pursuit), ("_proninAttack", proninAttack), ("_inspection", inspection), ("_shipPanel", shipPanel),
+                ("_scouting", scouting), ("_population", population), ("_docking", docking), ("_search", search), ("_rewards", rewards), ("_combat", combat), ("_pursuit", pursuit), ("_proninAttack", proninAttack), ("_fleetJump", fleetJump), ("_jumpDialog", jumpDialog), ("_jumpStatus", jumpStatus), ("_inspection", inspection), ("_shipPanel", shipPanel),
                 ("_cruiserPrefab", CombatShipPrefabBuilder.LoadOrCreateCruiser()),
                 ("_fighterPrefab", CombatShipPrefabBuilder.LoadOrCreateFighter()),
                 ("_refineryPrefab", ShipPrefabBuilder.LoadOrCreateRefinery()),

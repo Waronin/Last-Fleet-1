@@ -87,10 +87,12 @@ namespace LastFleet.GenerationPreview
 
             StarSystemNode selected = galaxy.Systems[_controller.SelectedSystemIndex];
             GUILayout.Label($"Galaxy seed {_controller.GalaxySeed}  |  {galaxy.Systems.Count} systems  |  {_controller.VisitedSystemCount} visited");
-            GUILayout.Label($"Selected: {selected.Name}{(selected.Index == galaxy.StartSystemIndex ? " (start)" : string.Empty)}");
-            GUILayout.Label($"Reachable with one jump: {galaxy.GetNeighbours(selected.Index).Count}");
+            int currentIndex = _controller.CurrentSystem != null ? _controller.CurrentSystem.SystemIndex : selected.Index;
+            GUILayout.Label($"Fleet in: {galaxy.Systems[currentIndex].Name}  |  reachable with one jump: {galaxy.GetNeighbours(currentIndex).Count}");
+            GUILayout.Label($"Selected: {selected.Name}{(selected.Index == galaxy.StartSystemIndex ? " (start)" : string.Empty)}, " +
+                            $"{galaxy.DistanceLightYears(currentIndex, selected.Index):0} ly");
             GUILayout.Space(6f);
-            GUILayout.Label("Click: select   Enter / double click: enter system   R: new run   F9: switch language");
+            GUILayout.Label("Click: select   Enter / double click: jump there (in range)   Esc: last zone   R: new run   F9: switch language");
             GUILayout.Label("WASD: pan   Q/E or middle mouse: rotate   Wheel: zoom");
         }
 
@@ -147,7 +149,7 @@ namespace LastFleet.GenerationPreview
             DrawShips();
             GUILayout.Space(6f);
             GUILayout.Label("Left click / drag: select ships (Shift: add)   Right click: move (Shift: queue), on a deposit: mine, on an enemy: attack, fighters on our ship: escort");
-            GUILayout.Label("V: scan nearest deposit (Shift: whole zone)   X: extract nearest deposit   K: damage selected (Shift: heavy)   J: empty selected tanks   N: kill a crew member   P: Pronin raid   T: pursuit countdown +1 min");
+            GUILayout.Label("V: scan nearest deposit (Shift: whole zone)   X: extract nearest deposit   K: damage selected (Shift: heavy)   J: empty selected tanks   N: kill a crew member   P: Pronin raid   T: countdown and jump drive +1 min");
             GUILayout.Label("Tab / Shift+Tab: next revealed zone   F: follow ship   Esc: system map");
         }
 

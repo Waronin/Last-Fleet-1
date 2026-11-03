@@ -61,6 +61,16 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - rid: 6743102046643421297
+  - m_Id: 2346400846786560
+    m_Localized: "{count:plural:1 Schiff kann|{} Schiffe k\xF6nnen} nicht starten, solange der Sprungantrieb l\xE4dt."
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421297
+  - m_Id: 2346506719408128
+    m_Localized: "{count:plural:1 Schiff kann|{} Schiffe k\xF6nnen} nicht starten, solange der Sprungantrieb l\xE4dt."
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421297
   references:
     version: 2
     RefIds:
@@ -75,3 +85,5 @@ MonoBehaviour:
         - id: 343486466
         - id: 343486467
         - id: 343486469
+        - id: 2346400846786560
+        - id: 2346506719408128

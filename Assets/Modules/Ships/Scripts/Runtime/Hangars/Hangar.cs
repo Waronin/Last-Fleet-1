@@ -24,6 +24,7 @@ namespace LastFleet.Ships
 
         HangarBay _slots;
         ShipAgent _carrier;
+        bool _launchesHeld;
 
         public ShipAgent Carrier => _carrier != null ? _carrier : _carrier = GetComponent<ShipAgent>();
         public int Capacity => _capacity;
@@ -32,6 +33,36 @@ namespace LastFleet.Ships
         public bool HasSpace => Slots.HasSpace;
         public float DockingRadiusUnits => _dockingRadiusUnits;
         public Vector3 BayWorldPosition => _bay.position;
+
+        /// <summary>
+        /// No launches while set, e.g. while the fleet charges its large jump; landing stays possible.
+        /// Launch requests are refused meanwhile, not saved for later. When the hold ends, docked ships
+        /// that still have orders launch to carry them out.
+        /// </summary>
+        public bool LaunchesHeld
+        {
+            get => _launchesHeld;
+            set
+            {
+                if (_launchesHeld == value)
+                {
+                    return;
+                }
+                _launchesHeld = value;
+                if (value)
+                {
+                    Slots.ClearLaunchQueue();
+                    return;
+                }
+                foreach (ShipAgent docked in Slots.Docked)
+                {
+                    if (docked != null && docked.QueuedOrderCount > 0)
+                    {
+                        RequestLaunch(docked);
+                    }
+                }
+            }
+        }
 
         // Created on first use, so ships can dock in the same frame the carrier is instantiated.
         HangarBay Slots => _slots ??= new HangarBay(_capacity, _launchIntervalSeconds);
@@ -59,14 +90,30 @@ namespace LastFleet.Ships
             return true;
         }
 
-        /// <summary>Queues a docked ship for launch; a ship without crew stays in the hangar.</summary>
+        /// <summary>Queues a docked ship for launch; a ship without crew stays in the hangar, and nobody launches while launches are held.</summary>
         public void RequestLaunch(ShipAgent ship)
         {
-            if (ship.IsDerelict)
+            if (ship.IsDerelict || LaunchesHeld)
             {
                 return;
             }
             Slots.RequestLaunch(ship);
+        }
+
+        /// <summary>
+        /// Drops the launch queue and the orders of every docked ship, e.g. after a fleet jump: their
+        /// targets lay in the old system.
+        /// </summary>
+        public void CancelDockedOrders()
+        {
+            Slots.ClearLaunchQueue();
+            foreach (ShipAgent docked in Slots.Docked)
+            {
+                if (docked != null)
+                {
+                    docked.CancelOrders();
+                }
+            }
         }
 
         /// <summary>Pumps up to the given amount from the carrier's tank into a ship and returns how much moved.</summary>
@@ -81,7 +128,7 @@ namespace LastFleet.Ships
 
         void Update()
         {
-            bool canLaunch = Carrier.Zone != null && Carrier.Activity != ShipActivity.ChargingJump;
+            bool canLaunch = Carrier.Zone != null && Carrier.Activity != ShipActivity.ChargingJump && !LaunchesHeld;
             ShipAgent launching = Slots.Tick(Time.deltaTime, canLaunch);
             if (launching != null)
             {

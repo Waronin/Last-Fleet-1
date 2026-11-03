@@ -1,0 +1,25 @@
+{
+    "name": "LastFleet.FleetJump.Tests.EditMode",
+    "rootNamespace": "LastFleet.FleetJump.Tests",
+    "references": [
+        "LastFleet.FleetJump",
+        "LastFleet.Shared",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

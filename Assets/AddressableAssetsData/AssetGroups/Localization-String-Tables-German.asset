@@ -93,6 +93,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Locale-de
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e823d0031269446408f4b7c1080a1c2c
+    m_Address: FleetJump_de
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-de
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: d293d647f1a6ca24ca70f0088d863f25, type: 2}
   m_SchemaSet:

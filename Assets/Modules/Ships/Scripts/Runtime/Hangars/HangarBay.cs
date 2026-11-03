@@ -62,6 +62,11 @@ namespace LastFleet.Ships
             }
         }
 
+        public void ClearLaunchQueue()
+        {
+            _launchQueue.Clear();
+        }
+
         /// <summary>Advances the launch timer and returns the ship that leaves the bay now, if any.</summary>
         public ShipAgent Tick(float deltaTime, bool canLaunch)
         {

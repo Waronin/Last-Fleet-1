@@ -4,6 +4,7 @@
     "references": [
         "LastFleet.Combat",
         "LastFleet.Pursuit",
+        "LastFleet.FleetJump",
         "LastFleet.Rewards",
         "LastFleet.People",
         "LastFleet.Stations",

@@ -1,0 +1,125 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: FleetJump_en
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: 9fbe85c7d55652a4a8faae6f217124a7, type: 2}
+  m_Metadata:
+    m_Items:
+    - rid: 5599358707687751757
+  m_TableData:
+  - m_Id: 821637120
+    m_Localized: 'Jump drive cooling down: {remaining}'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358707687751757
+  - m_Id: 850997248
+    m_Localized: Jump ready
+    m_Metadata:
+      m_Items: []
+  - m_Id: 855191552
+    m_Localized: Jump to {system} in {remaining}
+    m_Metadata:
+      m_Items:
+      - rid: 5599358707687751757
+  - m_Id: 855191553
+    m_Localized: Cancel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 855191554
+    m_Localized: Jump (Enter)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 855191555
+    m_Localized: Jump to {system} ({distance} ly)?
+    m_Metadata:
+      m_Items:
+      - rid: 5599358707687751757
+  - m_Id: 855191556
+    m_Localized: '{ship}: -{cost} fuel, {left} left ({jumps:plural:1 more full jump|{} more full jumps})'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358707687751757
+  - m_Id: 855191557
+    m_Localized: '{ship} stays behind: needs {cost} fuel, has {left}.'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358707687751757
+  - m_Id: 855191558
+    m_Localized: '{count:plural:1 small ship is|{} small ships are} not in a hangar and will be lost:'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358707687751757
+  - m_Id: 855191559
+    m_Localized: All small ships are in a hangar.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 855191560
+    m_Localized: No capital ship has enough fuel for this jump.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 855191561
+    m_Localized: The jump drive is still cooling down ({remaining}).
+    m_Metadata:
+      m_Items:
+      - rid: 5599358707687751757
+  - m_Id: 855191562
+    m_Localized: '{system} is out of jump range.'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358707687751757
+  - m_Id: 855191563
+    m_Localized: 'Jump drive charging: jump to {system} in {remaining}. Recall the small ships!'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358707687751757
+  - m_Id: 855191564
+    m_Localized: Jump cancelled.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 855191565
+    m_Localized: The jump drive is already charging.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 855191566
+    m_Localized: The fleet jumped to {system} with {count:plural:1 capital ship|{} capital ships}.
+    m_Metadata:
+      m_Items:
+      - rid: 5599358707687751757
+  - m_Id: 855191567
+    m_Localized: No capital ship has enough fuel; the jump does not happen.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 855191568
+    m_Localized: being left behind at the jump
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 5599358707687751757
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 
+        m_SharedEntries:
+        - id: 821637120
+        - id: 855191552
+        - id: 855191555
+        - id: 855191556
+        - id: 855191557
+        - id: 855191558
+        - id: 855191561
+        - id: 855191562
+        - id: 855191563
+        - id: 855191566

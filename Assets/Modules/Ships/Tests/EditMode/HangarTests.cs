@@ -69,6 +69,41 @@ namespace LastFleet.Ships.Tests
         }
 
         [Test]
+        public void Bay_ClearLaunchQueue_KeepsShipsDocked()
+        {
+            HangarBay bay = new HangarBay(4, LaunchInterval);
+            ShipAgent ship = CreateShip();
+            bay.TryDock(ship);
+            bay.RequestLaunch(ship);
+
+            bay.ClearLaunchQueue();
+
+            Assert.AreEqual(0, bay.LaunchQueueCount);
+            Assert.IsNull(bay.Tick(10f, true));
+            Assert.AreEqual(1, bay.Docked.Count);
+        }
+
+        [Test]
+        public void Hangar_RefusesLaunchRequestsWhileLaunchesAreHeld()
+        {
+            Hangar hangar = CreateHangar();
+            ShipAgent ship = CreateShip();
+            hangar.TryDock(ship);
+            hangar.RequestLaunch(ship);
+            Assert.AreEqual(1, hangar.LaunchQueueCount);
+
+            // Holding drops what was queued, and nothing new is queued until the hold ends.
+            hangar.LaunchesHeld = true;
+            Assert.AreEqual(0, hangar.LaunchQueueCount);
+            hangar.RequestLaunch(ship);
+            Assert.AreEqual(0, hangar.LaunchQueueCount);
+
+            hangar.LaunchesHeld = false;
+            hangar.RequestLaunch(ship);
+            Assert.AreEqual(1, hangar.LaunchQueueCount);
+        }
+
+        [Test]
         public void Bay_IgnoresLaunchRequestsOfShipsNotDocked()
         {
             HangarBay bay = new HangarBay(4, LaunchInterval);

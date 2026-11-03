@@ -2,7 +2,9 @@
 using LastFleet.CameraControl;
 using LastFleet.Combat;
 using LastFleet.Exploration;
+using LastFleet.FleetJump;
 using LastFleet.Galaxy;
+using LastFleet.Hud;
 using LastFleet.Inspection;
 using LastFleet.Localization;
 using LastFleet.Mining;
@@ -30,13 +32,18 @@ namespace LastFleet.GenerationPreview
 
     /// <summary>
     /// Developer scene for generation and ship control. A run starts in the jump point zone of the
-    /// start system with one harvester. Zone state is kept per system for the whole run.
-    /// Galaxy map: click selects, Enter / double click enters a system, R starts a new run.
+    /// start system with the starting fleet; later systems are reached only by fleet jumps, which
+    /// carry the fleet along. Zone state is kept per system for the whole run.
+    /// Galaxy map: click selects, Enter / double click on a system in range opens the jump warning
+    /// (on the current system: back to the system map), a click only marks a target while range and
+    /// lines stay on the fleet's system, Esc returns to the zone viewed last, R starts a new run. The
+    /// "jump ready" button of the jump status opens the galaxy map.
     /// System map: click selects a point of interest, C detail-scans it, Enter / double click views its
-    /// zone, right click sends the selected ships there (Shift appends), Esc returns to the galaxy.
+    /// zone, right click sends the selected ships there (Shift appends), Esc opens the galaxy map.
     /// Zone: ship control via ShipCommandInput, Tab / Shift+Tab cycles revealed zones, F follows the
     /// selected ship, X extracts half of the nearest deposit, Esc opens the system map.
-    /// Every arrival in a system starts the pursuit countdown; T skips it ahead by a minute.
+    /// Every arrival in a system starts the pursuit countdown and the jump drive's cooldown; T skips
+    /// both ahead by a minute.
     /// </summary>
     public sealed class GenerationPreviewController : MonoBehaviour
     {
@@ -52,6 +59,9 @@ namespace LastFleet.GenerationPreview
         const float DeveloperLightDamage = 25f;
         const float DeveloperHeavyDamage = 100f;
         const float DeveloperPursuitSkipSeconds = 60f;
+        // Capital ships are up to about 16 units long; 30 units keep them clear of each other.
+        const int ArrivalShipsPerRow = 3;
+        const float ArrivalSpacingUnits = 30f;
         static readonly GameText DeveloperDamageCause = GameText.Verbatim("developer damage");
         static readonly Vector3 RefineryArrivalPosition = new Vector3(0f, 0f, 0f);
         static readonly Vector3 LinerArrivalPosition = new Vector3(-30f, 0f, 12f);
@@ -78,6 +88,9 @@ namespace LastFleet.GenerationPreview
         [SerializeField] CombatService _combat;
         [SerializeField] PursuitClock _pursuit;
         [SerializeField] ProninAttack _proninAttack;
+        [SerializeField] FleetJumpService _fleetJump;
+        [SerializeField] FleetJumpDialog _jumpDialog;
+        [SerializeField] JumpStatusIndicator _jumpStatus;
         [SerializeField] InspectionPanel _inspection;
         [SerializeField] InspectionPanel _shipPanel;
         [Tooltip("Spawned on arrival in a system until fleet jumps carry the fleet along.")]
@@ -96,6 +109,7 @@ namespace LastFleet.GenerationPreview
         RunZoneRegistry _runZones;
         float _lastClickTime = float.NegativeInfinity;
         int _lastClickedIndex = -1;
+        ZoneView _lastZone;
 
         public GenerationPreviewMode Mode { get; private set; }
         public int GalaxySeed => _galaxySeed;
@@ -119,7 +133,7 @@ namespace LastFleet.GenerationPreview
         {
             if (_galaxyMapView == null || _starSystemView == null || _zoneWorld == null || _environment == null ||
                 _cameraRig == null || _shipRegistry == null || _shipInput == null || _groupInput == null ||
-                _hangarInput == null || _mining == null || _scouting == null || _population == null || _docking == null || _search == null || _rewards == null || _combat == null || _pursuit == null || _proninAttack == null || _inspection == null || _shipPanel == null ||
+                _hangarInput == null || _mining == null || _scouting == null || _population == null || _docking == null || _search == null || _rewards == null || _combat == null || _pursuit == null || _proninAttack == null || _fleetJump == null || _jumpDialog == null || _jumpStatus == null || _inspection == null || _shipPanel == null ||
                 _refineryPrefab == null || _tankerPrefab == null || _linerPrefab == null || _harvesterPrefab == null || _shuttlePrefab == null ||
                 _cruiserPrefab == null || _fighterPrefab == null)
             {
@@ -144,6 +158,9 @@ namespace LastFleet.GenerationPreview
             _combat.Notice += ShowNotice;
             _pursuit.Notice += ShowNotice;
             _proninAttack.Notice += ShowNotice;
+            _fleetJump.Notice += ShowNotice;
+            _fleetJump.Jumped += OnFleetJumped;
+            _jumpStatus.JumpMapRequested += ShowGalaxyMap;
             _inspection.Notice += ShowNotice;
             _shipInput.DepositClicked += InspectDeposit;
             _shipInput.StationClicked += InspectStation;
@@ -181,6 +198,9 @@ namespace LastFleet.GenerationPreview
             _combat.Notice -= ShowNotice;
             _pursuit.Notice -= ShowNotice;
             _proninAttack.Notice -= ShowNotice;
+            _fleetJump.Notice -= ShowNotice;
+            _fleetJump.Jumped -= OnFleetJumped;
+            _jumpStatus.JumpMapRequested -= ShowGalaxyMap;
             _inspection.Notice -= ShowNotice;
             _shipInput.DepositClicked -= InspectDeposit;
             _shipInput.StationClicked -= InspectStation;
@@ -249,7 +269,8 @@ namespace LastFleet.GenerationPreview
         {
             Keyboard keyboard = Keyboard.current;
             Mouse mouse = Mouse.current;
-            if (keyboard == null || mouse == null)
+            // The jump warning takes the keyboard while it is open.
+            if (keyboard == null || mouse == null || _jumpDialog.IsOpen)
             {
                 return;
             }
@@ -259,9 +280,10 @@ namespace LastFleet.GenerationPreview
             }
             else if (keyboard.tKey.wasPressedThisFrame && _pursuit.Countdown != null)
             {
-                // Developer shortcut: the countdown takes minutes.
+                // Developer shortcut: countdown and jump drive cooldown take minutes.
                 _pursuit.SkipAhead(DeveloperPursuitSkipSeconds);
-                ShowNotice(GameText.Verbatim($"Pursuit countdown skipped ahead by {DeveloperPursuitSkipSeconds:0} s."));
+                _fleetJump.SkipAhead(DeveloperPursuitSkipSeconds);
+                ShowNotice(GameText.Verbatim($"Pursuit countdown and jump drive skipped ahead by {DeveloperPursuitSkipSeconds:0} s."));
             }
 
             switch (Mode)
@@ -285,20 +307,22 @@ namespace LastFleet.GenerationPreview
                 _galaxySeed++;
                 StartNewRun();
             }
+            else if (keyboard.escapeKey.wasPressedThisFrame)
+            {
+                ShowLastZone();
+            }
             else if (WasEnterPressed(keyboard))
             {
-                EnterStarSystem(SelectedSystemIndex);
+                RequestJump(SelectedSystemIndex);
             }
             else if (mouse.leftButton.wasPressedThisFrame &&
                      _galaxyMapView.TryPickSystem(_cameraRig.Camera, mouse.position.ReadValue(), _pickRadiusPixels, out int systemIndex))
             {
+                // A click only marks the target; range, lines and camera stay on the fleet's system.
+                _galaxyMapView.Select(systemIndex);
                 if (RegisterClick(systemIndex))
                 {
-                    EnterStarSystem(systemIndex);
-                }
-                else
-                {
-                    _galaxyMapView.Select(systemIndex);
+                    RequestJump(systemIndex);
                 }
             }
         }
@@ -308,7 +332,7 @@ namespace LastFleet.GenerationPreview
             Vector2 pointer = mouse.position.ReadValue();
             if (keyboard.escapeKey.wasPressedThisFrame)
             {
-                LeaveStarSystem();
+                ShowGalaxyMap();
             }
             else if (keyboard.cKey.wasPressedThisFrame)
             {
@@ -483,9 +507,10 @@ namespace LastFleet.GenerationPreview
             _runZones = new RunZoneRegistry();
             _zoneWorld.Clear();
             _starSystemView.Clear();
+            _jumpDialog.Close();
             GalaxyLayout galaxy = GalaxyGenerator.Generate((ulong)_galaxySeed, _galaxySettings);
             _galaxyMapView.Show(galaxy);
-            EnterStarSystem(galaxy.StartSystemIndex);
+            EnterStarSystem(galaxy.StartSystemIndex, null);
             ShowNotice(GameText.Verbatim($"New run with galaxy seed {_galaxySeed}; arrived at the jump point."));
         }
 
@@ -499,12 +524,53 @@ namespace LastFleet.GenerationPreview
             _environment.SetSun(null);
 
             _cameraRig.SetBounds(_galaxyMapView.transform.position, _galaxyMapView.ExtentUnits);
-            _cameraRig.SnapTo(_galaxyMapView.GetSystemWorldPosition(SelectedSystemIndex), _galaxyMapView.ExtentUnits * MapViewDistanceFactor);
+            _cameraRig.SnapTo(_galaxyMapView.GetSystemWorldPosition(_galaxyMapView.CurrentSystemIndex), _galaxyMapView.ExtentUnits * MapViewDistanceFactor);
         }
 
-        void EnterStarSystem(int systemIndex)
+        /// <summary>Back from the star map to the zone viewed last; the system map if that zone is gone.</summary>
+        void ShowLastZone()
         {
-            _galaxyMapView.Select(systemIndex);
+            // Unity's overloaded equality treats a zone view destroyed with its system as null.
+            if (_lastZone != null)
+            {
+                ShowZone(_lastZone);
+                return;
+            }
+            ShowStarSystemMap();
+        }
+
+        /// <summary>
+        /// Shows the jump warning for a system in range; the current system leads back to its map, and
+        /// a jump that cannot start says why.
+        /// </summary>
+        void RequestJump(int systemIndex)
+        {
+            if (CurrentSystem != null && systemIndex == CurrentSystem.SystemIndex)
+            {
+                ShowStarSystemMap();
+                return;
+            }
+            GameText blocked = _fleetJump.BlockedReason(systemIndex);
+            if (blocked != null)
+            {
+                ShowNotice(blocked);
+                return;
+            }
+            _jumpDialog.Open(systemIndex);
+        }
+
+        void OnFleetJumped(int systemIndex, IReadOnlyList<ShipAgent> jumpers)
+        {
+            EnterStarSystem(systemIndex, jumpers);
+        }
+
+        /// <summary>
+        /// Shows a system with the fleet at its jump point: the starting fleet at the start of a run
+        /// (arriving ships null), else the capital ships that jumped, which bring their hangars along.
+        /// </summary>
+        void EnterStarSystem(int systemIndex, IReadOnlyList<ShipAgent> arrivingShips)
+        {
+            _galaxyMapView.SetCurrentSystem(systemIndex);
             if (!_runZones.TryGetSystem(systemIndex, out SystemZones system))
             {
                 StarSystemNode node = Galaxy.Systems[systemIndex];
@@ -530,8 +596,29 @@ namespace LastFleet.GenerationPreview
             _starSystemView.SetMarkerStyle(arrivalIndex, PointOfInterestMarkerStyle.Explored);
             _starSystemView.SelectPointOfInterest(arrivalIndex);
 
-            // Stand-in until fleet jumps exist: every arrival brings a liner with a shuttle squad, a
-            // refinery with two harvester squads, a tanker and a cruiser with two fighter squads in their hangars.
+            if (arrivingShips == null)
+            {
+                SpawnStartingFleet(arrival);
+            }
+            else
+            {
+                PlaceArrivingShips(arrival, arrivingShips);
+            }
+
+            ShowZone(arrival);
+            ShowNotice(GenerationPreviewTexts.ArrivedInSystem.Format(("system", system.Layout.Name), ("known", system.RevealedCount)));
+
+            // Every arrival starts a new countdown and the jump drive's cooldown, also on a return to a visited system.
+            _pursuit.Begin();
+            _fleetJump.ArrivedIn(Galaxy, systemIndex);
+        }
+
+        /// <summary>
+        /// The run's starting fleet: a liner with a shuttle squad, a refinery with two harvester squads,
+        /// a tanker and a cruiser with two fighter squads in their hangars.
+        /// </summary>
+        void SpawnStartingFleet(ZoneView arrival)
+        {
             ShipAgent cruiser = _shipRegistry.Spawn(_cruiserPrefab, arrival, CruiserArrivalPosition, 0f);
             Hangar fighterHangar = cruiser.GetComponent<Hangar>();
             _shipRegistry.SpawnSquadDocked(_fighterPrefab, fighterHangar, FightersPerSquad);
@@ -544,23 +631,18 @@ namespace LastFleet.GenerationPreview
             _shipRegistry.SpawnSquadDocked(_harvesterPrefab, hangar, HarvestersPerSquad);
             _shipRegistry.Spawn(_tankerPrefab, arrival, TankerArrivalPosition, 0f);
             _shipInput.SelectSquad(firstSquad, false);
-
-            ShowZone(arrival);
-            ShowNotice(GenerationPreviewTexts.ArrivedInSystem.Format(("system", system.Layout.Name), ("known", system.RevealedCount)));
-
-            // Every arrival starts a new countdown, also on a return to a visited system.
-            _pursuit.Begin();
         }
 
-        void LeaveStarSystem()
+        /// <summary>Capital ships out of a fleet jump, side by side in rows around the arrival point.</summary>
+        static void PlaceArrivingShips(ZoneView arrival, IReadOnlyList<ShipAgent> ships)
         {
-            _pursuit.Stop();
-            _zoneWorld.Clear();
-            _starSystemView.Clear();
-            CurrentSystem = null;
-            CurrentZone = null;
-            ShowNotice(GameText.Verbatim("Left the system; zone state is kept, its ships are lost (no hangars yet)."));
-            ShowGalaxyMap();
+            for (int i = 0; i < ships.Count; i++)
+            {
+                int row = i / ArrivalShipsPerRow;
+                int column = i % ArrivalShipsPerRow;
+                Vector3 position = new Vector3((column - (ArrivalShipsPerRow - 1) * 0.5f) * ArrivalSpacingUnits, 0f, -row * ArrivalSpacingUnits);
+                ships[i].ArriveAfterFleetJump(arrival, position, 0f);
+            }
         }
 
         void ShowStarSystemMap()
@@ -611,6 +693,8 @@ namespace LastFleet.GenerationPreview
             _inspection.Clear();
             Mode = GenerationPreviewMode.Zone;
             CurrentZone = view;
+            _lastZone = view;
+            _galaxyMapView.SetVisible(false);
             _starSystemView.SetVisible(false);
             _zoneWorld.LightZone(view);
             _environment.SetSun(_zoneWorld.ZoneSun);

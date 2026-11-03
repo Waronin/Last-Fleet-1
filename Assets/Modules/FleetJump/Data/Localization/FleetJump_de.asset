@@ -1,0 +1,125 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: FleetJump_de
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: de
+  m_SharedData: {fileID: 11400000, guid: 9fbe85c7d55652a4a8faae6f217124a7, type: 2}
+  m_Metadata:
+    m_Items:
+    - rid: 5599358707687751756
+  m_TableData:
+  - m_Id: 821637120
+    m_Localized: "Sprungantrieb k\xFChlt ab: {remaining}"
+    m_Metadata:
+      m_Items:
+      - rid: 5599358707687751756
+  - m_Id: 850997248
+    m_Localized: Sprung bereit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 855191552
+    m_Localized: Sprung nach {system} in {remaining}
+    m_Metadata:
+      m_Items:
+      - rid: 5599358707687751756
+  - m_Id: 855191553
+    m_Localized: Abbrechen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 855191554
+    m_Localized: Springen (Enter)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 855191555
+    m_Localized: Sprung nach {system} ({distance} Lj)?
+    m_Metadata:
+      m_Items:
+      - rid: 5599358707687751756
+  - m_Id: 855191556
+    m_Localized: "{ship}: -{cost} Treibstoff, {left} \xFCbrig (noch {jumps:plural:1 weiter Sprung|{} weite Spr\xFCnge})"
+    m_Metadata:
+      m_Items:
+      - rid: 5599358707687751756
+  - m_Id: 855191557
+    m_Localized: "{ship} bleibt zur\xFCck: braucht {cost} Treibstoff, hat {left}."
+    m_Metadata:
+      m_Items:
+      - rid: 5599358707687751756
+  - m_Id: 855191558
+    m_Localized: '{count:plural:1 kleines Schiff ist|{} kleine Schiffe sind} nicht im Hangar und gehen verloren:'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358707687751756
+  - m_Id: 855191559
+    m_Localized: Alle kleinen Schiffe sind im Hangar.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 855191560
+    m_Localized: "Kein Kapitalschiff hat genug Treibstoff f\xFCr diesen Sprung."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 855191561
+    m_Localized: "Der Sprungantrieb k\xFChlt noch ab ({remaining})."
+    m_Metadata:
+      m_Items:
+      - rid: 5599358707687751756
+  - m_Id: 855191562
+    m_Localized: "{system} liegt au\xDFerhalb der Sprungreichweite."
+    m_Metadata:
+      m_Items:
+      - rid: 5599358707687751756
+  - m_Id: 855191563
+    m_Localized: "Sprungantrieb l\xE4dt: Sprung nach {system} in {remaining}. Kleine Schiffe zur\xFCckrufen!"
+    m_Metadata:
+      m_Items:
+      - rid: 5599358707687751756
+  - m_Id: 855191564
+    m_Localized: Sprung abgebrochen.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 855191565
+    m_Localized: "Der Sprungantrieb l\xE4dt bereits."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 855191566
+    m_Localized: Die Flotte ist mit {count:plural:1 Kapitalschiff|{} Kapitalschiffen} nach {system} gesprungen.
+    m_Metadata:
+      m_Items:
+      - rid: 5599358707687751756
+  - m_Id: 855191567
+    m_Localized: Kein Kapitalschiff hat genug Treibstoff; der Sprung findet nicht statt.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 855191568
+    m_Localized: "Zur\xFCcklassen beim Sprung"
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 5599358707687751756
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 
+        m_SharedEntries:
+        - id: 821637120
+        - id: 855191552
+        - id: 855191555
+        - id: 855191556
+        - id: 855191557
+        - id: 855191558
+        - id: 855191561
+        - id: 855191562
+        - id: 855191563
+        - id: 855191566

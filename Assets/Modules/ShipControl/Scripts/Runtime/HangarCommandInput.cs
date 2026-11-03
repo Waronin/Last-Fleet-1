@@ -84,15 +84,30 @@ namespace LastFleet.ShipControl
         public void LaunchShips(IReadOnlyList<ShipAgent> ships)
         {
             int launching = 0;
+            int held = 0;
             foreach (ShipAgent ship in ships)
             {
-                if (ship.IsDocked)
+                if (!ship.IsDocked)
                 {
-                    ship.DockedIn.RequestLaunch(ship);
-                    launching++;
+                    continue;
                 }
+                if (ship.DockedIn.LaunchesHeld)
+                {
+                    held++;
+                    continue;
+                }
+                ship.DockedIn.RequestLaunch(ship);
+                launching++;
             }
-            Notice?.Invoke(launching > 0 ? ShipControlTexts.Launching.Format(("count", launching)) : ShipControlTexts.NoDockedShipsSelected);
+
+            if (held > 0)
+            {
+                Notice?.Invoke(ShipControlTexts.LaunchesHeld.Format(("count", held)));
+            }
+            if (launching > 0 || held == 0)
+            {
+                Notice?.Invoke(launching > 0 ? ShipControlTexts.Launching.Format(("count", launching)) : ShipControlTexts.NoDockedShipsSelected);
+            }
         }
     }
 }

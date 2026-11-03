@@ -27,6 +27,9 @@ namespace LastFleet.ShipControl
 
         public static readonly GameTextKey NoDockedShipsSelected = new GameTextKey(Table, "notice.no-docked-ships-selected");
 
+        /// <summary>{count}</summary>
+        public static readonly GameTextKey LaunchesHeld = new GameTextKey(Table, "notice.launches-held");
+
         /// <summary>{count}, {withoutSlot}</summary>
         public static readonly GameTextKey HarvestersMining = new GameTextKey(Table, "notice.harvesters-mining");
     }
