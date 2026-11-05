@@ -44,7 +44,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 339292165
-    m_Localized: "Baut den markierten Asteroiden ab und gewinnt sein Mineral. Eine nahe Station verteidigt ihn mit J\xE4gern."
+    m_Localized: "Baue am gro\xDFen Felsen neben der Kethran Vigil Solarit ab und bringe den Harvester danach in Sicherheit: in einen Hangar oder aus der Zone. Die J\xE4ger der Station verteidigen den Felsen."
     m_Metadata:
       m_Items: []
   - m_Id: 339292166
@@ -52,7 +52,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 339292167
-    m_Localized: 'Bringt das Mineral zur Industriestation und haltet sie 5 Minuten. Die Station strahlt: zwischendurch abdocken.'
+    m_Localized: "Docke das Schiff mit dem Solarit an der verlassenen Tamsin Forge an. Dort lebt niemand: Der Ofen l\xE4uft nur, solange ein Schiff mit Crew angedockt ist, insgesamt etwa 5 Minuten. Die Station ist radioaktiv: Wechselt euch beim Andocken ab. Lande danach das raffinierte Solarit in einem Hangar."
     m_Metadata:
       m_Items: []
   - m_Id: 339292168
@@ -98,6 +98,71 @@ MonoBehaviour:
     m_Localized: "Danke. Jetzt die Wahrheit: In gro\xDFem Ma\xDFstab kann mein Generator eine Supernova ausl\xF6sen. Eine Waffe gegen die Pronin. Aber er braucht ein aufbereitetes Mineral \u2013 und ich wei\xDF, wo der Fels liegt."
     m_Metadata:
       m_Items: []
+  - m_Id: 106988297596928
+    m_Localized: Solarit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 106988305985536
+    m_Localized: Raffiniertes Solarit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 106988305985537
+    m_Localized: "H\xFCter der {station}"
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254924
+  - m_Id: 106988305985538
+    m_Localized: "Hier spricht die {station}. Der gro\xDFe Felsen an unserer Seite ist uns heilig. Wer Hand an ihn legt, bekommt es mit unseren W\xE4chtern zu tun."
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254924
+  - m_Id: 106988305985539
+    m_Localized: Verstanden.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 106988305985540
+    m_Localized: Wir brauchen, was in ihm steckt.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 106988305985541
+    m_Localized: Dann zieht in Frieden.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 106988305985542
+    m_Localized: "Dann m\xFCsst ihr es uns nehmen. Freiwillig geben wir es nicht her."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 106988305985543
+    m_Localized: "Ihr vergreift euch am heiligen Felsen! W\xE4chter \u2013 vertreibt sie!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 106988305985544
+    m_Localized: "Das ist es \u2013 Solarit. Roh n\xFCtzt es dem Generator nichts. Es muss raffiniert werden, und ich kenne eine Raffinerie, deren Ofen noch arbeitet. Ihre Crew ist l\xE4ngst fort \u2013 die Strahlung hat sie vertrieben."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 106988305985545
+    m_Localized: "Automatische Raffinerie {station}. Personal an Bord: keines. Reaktorabschirmung: ausgefallen \u2013 t\xF6dliche Strahlung bei l\xE4ngerem Aufenthalt. Ofen bereit f\xFCr Solarit, etwa {minutes} Minuten. Betrieb nur mit Crew vor Ort: Haltet ein Schiff angedockt."
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254924
+  - m_Id: 106988305985546
+    m_Localized: "Das Solarit ist im Ofen. Hier ist sonst niemand \u2013 wir halten die Anlage selbst am Laufen. Die Dosimeter ticken schon."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 106988305985547
+    m_Localized: "Der Ofen ist fertig. Das raffinierte Solarit ist an Bord \u2013 wir kommen heim."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 126382587326464
+    m_Localized: Steuersystem der {station}
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254924
+  - m_Id: 126382620880896
+    m_Localized: Crew von {ship}
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254924
   references:
     version: 2
     RefIds:
@@ -109,3 +174,8 @@ MonoBehaviour:
         - id: 339292170
         - id: 339292171
         - id: 339292172
+        - id: 106988305985537
+        - id: 106988305985538
+        - id: 106988305985545
+        - id: 126382587326464
+        - id: 126382620880896

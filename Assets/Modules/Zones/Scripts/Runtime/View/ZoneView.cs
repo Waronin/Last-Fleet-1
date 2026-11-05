@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using LastFleet.Shared.Blockout;
 using LastFleet.Shared.Randomness;
@@ -87,6 +88,33 @@ namespace LastFleet.Zones
         {
             Record.Contents.AddDeposit(deposit);
             CreateDepositView(deposit, Record.Contents.Deposits.Count - 1);
+        }
+
+        /// <summary>Shows a deposit of the zone's contents that has no model yet, e.g. one a quest added to an already revealed zone.</summary>
+        public void ShowDeposit(ResourceDeposit deposit)
+        {
+            if (_viewByDeposit.ContainsKey(deposit))
+            {
+                return;
+            }
+            int index = IndexOf(Record.Contents.Deposits, deposit);
+            if (index < 0)
+            {
+                throw new ArgumentException("The deposit is not part of this zone.", nameof(deposit));
+            }
+            CreateDepositView(deposit, index);
+        }
+
+        static int IndexOf(IReadOnlyList<ResourceDeposit> deposits, ResourceDeposit deposit)
+        {
+            for (int i = 0; i < deposits.Count; i++)
+            {
+                if (deposits[i] == deposit)
+                {
+                    return i;
+                }
+            }
+            return -1;
         }
 
         void CreateDepositView(ResourceDeposit deposit, int index)

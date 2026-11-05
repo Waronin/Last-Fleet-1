@@ -31,17 +31,23 @@ namespace LastFleet.Quests
         [SerializeField] DialogueService _dialogue;
         [SerializeField] ShipAgent _shuttlePrefab;
         [SerializeField] ShipAgent _proninFighterPrefab;
+        [Tooltip("Fighters of a station that guards something, on the enemy side but without hunting the fleet.")]
+        [SerializeField] ShipAgent _guardFighterPrefab;
         [SerializeField] ExplosionEffect _explosionPrefab;
 
         readonly List<QuestChain> _chains = new List<QuestChain>();
         readonly Dictionary<QuestChain, ActiveStep> _activeSteps = new Dictionary<QuestChain, ActiveStep>();
         readonly List<ActiveStep> _ticking = new List<ActiveStep>();
+        readonly QuestCargo _cargo = new QuestCargo();
         QuestServices _services;
         GalaxyLayout _galaxy;
         RunZoneRegistry _runZones;
         SystemZones _currentSystem;
 
         public IReadOnlyList<QuestChain> Chains => _chains;
+
+        /// <summary>Quest items aboard ships of the fleet.</summary>
+        public QuestCargo Cargo => _cargo;
 
         public event Action<GameText> Notice;
 
@@ -51,19 +57,25 @@ namespace LastFleet.Quests
         void Awake()
         {
             if (_fleet == null || _pronin == null || _zoneWorld == null || _search == null || _dialogue == null ||
-                _shuttlePrefab == null || _proninFighterPrefab == null || _explosionPrefab == null)
+                _shuttlePrefab == null || _proninFighterPrefab == null || _guardFighterPrefab == null || _explosionPrefab == null)
             {
                 Debug.LogError("QuestDirector needs both ship registries, the zone world, the search and dialogue services and the shuttle, " +
-                               "Pronin fighter and explosion prefabs.", this);
+                               "Pronin fighter, guard fighter and explosion prefabs.", this);
                 enabled = false;
                 return;
             }
             _services = new QuestServices(_fleet, _pronin, _zoneWorld, _search, _dialogue,
-                new QuestPrefabs(_shuttlePrefab, _proninFighterPrefab, _explosionPrefab));
+                new QuestPrefabs(_shuttlePrefab, _proninFighterPrefab, _guardFighterPrefab, _explosionPrefab));
+        }
+
+        void OnEnable()
+        {
+            _fleet.ShipRemoved += _cargo.ShipRemoved;
         }
 
         void OnDisable()
         {
+            _fleet.ShipRemoved -= _cargo.ShipRemoved;
             EndAllSteps();
         }
 
@@ -76,6 +88,7 @@ namespace LastFleet.Quests
             _chains.Clear();
             _currentSystem = null;
             _dialogue.Clear();
+            _cargo.Clear();
 
             foreach (QuestChainDefinition definition in openingChains)
             {
@@ -218,7 +231,7 @@ namespace LastFleet.Quests
             int chainIndex = _chains.IndexOf(chain);
             ulong seed = DeterministicRandom.DeriveSeed(_galaxy.Seed,
                 StepSeedSalt + (ulong)chainIndex * 1000UL + (ulong)chain.StepIndex * 10UL + (ulong)chain.Attempt);
-            QuestStepContext context = new QuestStepContext(chain, _services, seed, OnStepCompleted, OnStepFailed, RaiseNotice,
+            QuestStepContext context = new QuestStepContext(chain, _services, _cargo, seed, OnStepCompleted, OnStepFailed, RaiseNotice,
                 _ => MarkersChanged?.Invoke());
             ActiveStep active = new ActiveStep(definition.CreateStep(), context);
             _activeSteps[chain] = active;

@@ -140,6 +140,110 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - rid: 5599358745442254921
+  - m_Id: 106988700250112
+    m_Localized: '{item} ist an Bord von {ship}.'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254921
+  - m_Id: 106988712833024
+    m_Localized: '{item} ging mit {ship} verloren.'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254921
+  - m_Id: 106988712833025
+    m_Localized: '{item} ist auf keinem Schiff der Flotte mehr.'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254921
+  - m_Id: 106988712833026
+    m_Localized: "Baue den gro\xDFen Felsen neben {station} ab."
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254921
+  - m_Id: 106988712833027
+    m_Localized: 'Abbau von {item}: {percent} %'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254921
+  - m_Id: 106988712833028
+    m_Localized: '{item} ist an Bord von {ship}: in einem Hangar landen oder aus der Zone fliegen.'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254921
+  - m_Id: 106988712833029
+    m_Localized: "{station} startet {count} W\xE4chter!"
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254921
+  - m_Id: 106988712833030
+    m_Localized: '{item} ist an Bord von {ship} in Sicherheit.'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254921
+  - m_Id: 106988712833031
+    m_Localized: "{item} ging mit {ship} verloren. Der Felsen gibt noch mehr her \u2013 baue ihn erneut ab."
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254921
+  - m_Id: 106988712833032
+    m_Localized: Der Felsen ist abgebaut, und {item} ist verloren.
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254921
+  - m_Id: 106988712833033
+    m_Localized: "Docke {ship} an {station} an \u2013 an Bord: {item}."
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254921
+  - m_Id: 106988712833034
+    m_Localized: "Raffinierung: noch {remaining} \xB7 angedockt: {docked} \xB7 h\xF6chste Dosis {dose} %"
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254921
+  - m_Id: 106988712833035
+    m_Localized: "Lande {ship} in einem Hangar der Flotte \u2013 an Bord: {item}."
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254921
+  - m_Id: 106988712833036
+    m_Localized: "{ship} hat {item} an {station} \xFCbergeben."
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254921
+  - m_Id: 106988712833037
+    m_Localized: '{station} ist fertig: {item} ist bereit.'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254921
+  - m_Id: 106988712833038
+    m_Localized: '{ship} hat {item} heimgebracht.'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254921
+  - m_Id: 106988712833039
+    m_Localized: 'Strahlungsalarm auf {ship} an {station}: bald abdocken, sonst stirbt die Crew.'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254921
+  - m_Id: 106988712833040
+    m_Localized: Strahlung
+    m_Metadata:
+      m_Items: []
+  - m_Id: 110530097917952
+    m_Localized: "Die Crew von {ship} ist tot. {station} verwahrt {item} f\xFCr das n\xE4chste Schiff, das andockt."
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254921
+  - m_Id: 110530127278080
+    m_Localized: "An Bord von {ship} lebt niemand mehr, der {item} heimbringen k\xF6nnte."
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254921
+  - m_Id: 111581844811776
+    m_Localized: "{station} h\xE4lt {item} bereit: Docke ein Schiff mit Crew an, um es abzuholen."
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254921
   references:
     version: 2
     RefIds:
@@ -169,3 +273,23 @@ MonoBehaviour:
         - id: 418983957
         - id: 418983958
         - id: 5115704061952
+        - id: 106988700250112
+        - id: 106988712833024
+        - id: 106988712833025
+        - id: 106988712833026
+        - id: 106988712833027
+        - id: 106988712833028
+        - id: 106988712833029
+        - id: 106988712833030
+        - id: 106988712833031
+        - id: 106988712833032
+        - id: 106988712833033
+        - id: 106988712833034
+        - id: 106988712833035
+        - id: 106988712833036
+        - id: 106988712833037
+        - id: 106988712833038
+        - id: 106988712833039
+        - id: 110530097917952
+        - id: 110530127278080
+        - id: 111581844811776

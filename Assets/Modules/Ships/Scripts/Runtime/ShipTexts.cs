@@ -13,7 +13,7 @@ namespace LastFleet.Ships
 
         /// <summary>Display names of the ship classes; every prefab's class name must be listed here.</summary>
         public static readonly NamedTextKeys Classes = new NamedTextKeys(Table, "class",
-            "Harvester", "Refinery", "Tanker", "Liner", "Shuttle", "Cruiser", "Fighter", "ProninFighter", "ProninCarrier");
+            "Harvester", "Refinery", "Tanker", "Liner", "Shuttle", "Cruiser", "Fighter", "ProninFighter", "ProninCarrier", "StationGuard");
 
         /// <summary>{class}, {number}</summary>
         public static readonly GameTextKey ShipName = new GameTextKey(Table, "name.ship");

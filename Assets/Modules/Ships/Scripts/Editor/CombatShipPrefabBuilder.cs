@@ -19,6 +19,7 @@ namespace LastFleet.Ships.Editor
         const string FighterPrefabPath = ShipPrefabBuilder.PrefabFolder + "/Fighter.prefab";
         const string ProninFighterPrefabPath = ShipPrefabBuilder.PrefabFolder + "/ProninFighter.prefab";
         const string ProninCarrierPrefabPath = ShipPrefabBuilder.PrefabFolder + "/ProninCarrier.prefab";
+        const string StationGuardPrefabPath = ShipPrefabBuilder.PrefabFolder + "/StationGuard.prefab";
         const string LitShaderName = ShipPrefabBuilder.LitShaderName;
         const string UnlitShaderName = ShipPrefabBuilder.UnlitShaderName;
 
@@ -67,16 +68,21 @@ namespace LastFleet.Ships.Editor
         static readonly Color ProninGlowColor = new Color(0.6f, 2.2f, 3f);
         static readonly Color ProninBeamColor = new Color(0.8f, 2.5f, 4f);
 
+        // A station's own guards (quests): the Pronin fighter frame in bronze, so they read as a different foe.
+        static readonly Color StationGuardHullColor = new Color(0.85f, 0.6f, 0.25f);
+
         public static void RebuildAll()
         {
             AssetDatabase.DeleteAsset(CruiserPrefabPath);
             AssetDatabase.DeleteAsset(FighterPrefabPath);
             AssetDatabase.DeleteAsset(ProninFighterPrefabPath);
             AssetDatabase.DeleteAsset(ProninCarrierPrefabPath);
+            AssetDatabase.DeleteAsset(StationGuardPrefabPath);
             LoadOrCreateCruiser();
             LoadOrCreateFighter();
             LoadOrCreateProninFighter();
             LoadOrCreateProninCarrier();
+            LoadOrCreateStationGuard();
         }
 
         /// <summary>Military capital ship with a fighter hangar and defensive guns (GDD: Cruiser 1).</summary>
@@ -206,14 +212,28 @@ namespace LastFleet.Ships.Editor
         /// <summary>Pronin fighter (GDD: fast, hunts small ships): a white arrowhead with cyan glow.</summary>
         public static ShipAgent LoadOrCreateProninFighter()
         {
-            GameObject existing = AssetDatabase.LoadAssetAtPath<GameObject>(ProninFighterPrefabPath);
+            return LoadOrCreateProninFrameFighter(ProninFighterPrefabPath, "ProninFighter", "ProninHull", ProninHullColor, true);
+        }
+
+        /// <summary>
+        /// A station's guard fighter (quests): built like the Pronin fighter and on the enemy side, but it does not
+        /// hunt; the quest step tells it what to defend.
+        /// </summary>
+        public static ShipAgent LoadOrCreateStationGuard()
+        {
+            return LoadOrCreateProninFrameFighter(StationGuardPrefabPath, "StationGuard", "StationGuardHull", StationGuardHullColor, false);
+        }
+
+        static ShipAgent LoadOrCreateProninFrameFighter(string prefabPath, string className, string hullMaterialName, Color hullColor, bool hunts)
+        {
+            GameObject existing = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
             if (existing != null)
             {
                 return existing.GetComponent<ShipAgent>();
             }
 
-            GameObject root = new GameObject("ProninFighter");
-            Material hull = LitMaterial("ProninHull", ProninHullColor);
+            GameObject root = new GameObject(className);
+            Material hull = LitMaterial(hullMaterialName, hullColor);
             Material glow = ShipPrefabBuilder.LoadOrCreateMaterial("ProninGlow", UnlitShaderName, ProninGlowColor);
 
             ShipPrefabBuilder.CreatePart(root.transform, PrimitiveType.Capsule, "Body", hull, new Vector3(0f, 0f, 0.05f), new Vector3(0.22f, 0.5f, 0.16f))
@@ -232,7 +252,7 @@ namespace LastFleet.Ships.Editor
 
             ShipAgent agent = root.AddComponent<ShipAgent>();
             ShipMovementProfile profile = ShipPrefabBuilder.LoadOrCreateProfile("ProninFighterMovement", ConfigureProninFighterMovement);
-            ShipPrefabBuilder.ConfigureAgent(agent, "ProninFighter", ShipSize.Small, profile);
+            ShipPrefabBuilder.ConfigureAgent(agent, className, ShipSize.Small, profile);
 
             ShipPrefabBuilder.AddPresentation(root, engineGlow, trail, bracket, 18f, 1f);
             ShipPrefabBuilder.AddDurability(root, ProninFighterHull);
@@ -247,7 +267,10 @@ namespace LastFleet.Ships.Editor
             SerializedObject combatData = new SerializedObject(combat);
             EditorAssetUtility.FindProperty(combatData, "_defendWhenIdle").boolValue = false;
             combatData.ApplyModifiedPropertiesWithoutUndo();
-            root.AddComponent<AutonomousHunting>();
+            if (hunts)
+            {
+                root.AddComponent<AutonomousHunting>();
+            }
             CombatEffectsBuilder.AddHitFeedback(root, 0.8f, 0.12f);
             CombatEffectsBuilder.AddDestruction(root, 1.2f);
             // GDD: destroyed enemy fighters leave wreckage that yields metal.
@@ -255,7 +278,7 @@ namespace LastFleet.Ships.Editor
             SerializedObject wreckageData = new SerializedObject(wreckage);
             EditorAssetUtility.FindProperty(wreckageData, "_metalAmount").floatValue = ProninFighterWreckMetal;
             wreckageData.ApplyModifiedPropertiesWithoutUndo();
-            return ShipPrefabBuilder.SavePrefab(root, ProninFighterPrefabPath);
+            return ShipPrefabBuilder.SavePrefab(root, prefabPath);
         }
 
         /// <summary>

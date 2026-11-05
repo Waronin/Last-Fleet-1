@@ -91,6 +91,66 @@ MonoBehaviour:
     m_Key: scientist.arrived
     m_Metadata:
       m_Items: []
+  - m_Id: 106988297596928
+    m_Key: item.solarite
+    m_Metadata:
+      m_Items: []
+  - m_Id: 106988305985536
+    m_Key: item.refined-solarite
+    m_Metadata:
+      m_Items: []
+  - m_Id: 106988305985537
+    m_Key: speaker.keeper
+    m_Metadata:
+      m_Items: []
+  - m_Id: 106988305985538
+    m_Key: vigil.warning
+    m_Metadata:
+      m_Items: []
+  - m_Id: 106988305985539
+    m_Key: vigil.understood
+    m_Metadata:
+      m_Items: []
+  - m_Id: 106988305985540
+    m_Key: vigil.need-it
+    m_Metadata:
+      m_Items: []
+  - m_Id: 106988305985541
+    m_Key: vigil.peace
+    m_Metadata:
+      m_Items: []
+  - m_Id: 106988305985542
+    m_Key: vigil.refusal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 106988305985543
+    m_Key: vigil.outrage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 106988305985544
+    m_Key: scientist.solarite-secured
+    m_Metadata:
+      m_Items: []
+  - m_Id: 106988305985545
+    m_Key: forge.briefing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 106988305985546
+    m_Key: forge.received
+    m_Metadata:
+      m_Items: []
+  - m_Id: 106988305985547
+    m_Key: forge.finished
+    m_Metadata:
+      m_Items: []
+  - m_Id: 126382587326464
+    m_Key: speaker.forge-control
+    m_Metadata:
+      m_Items: []
+  - m_Id: 126382620880896
+    m_Key: speaker.docked-crew
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

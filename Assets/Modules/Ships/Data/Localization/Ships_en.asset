@@ -139,6 +139,10 @@ MonoBehaviour:
     m_Localized: Pronin Carrier
     m_Metadata:
       m_Items: []
+  - m_Id: 3024880060149760
+    m_Localized: Station guard
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

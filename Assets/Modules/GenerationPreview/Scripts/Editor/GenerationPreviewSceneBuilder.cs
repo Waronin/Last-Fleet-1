@@ -170,7 +170,8 @@ namespace LastFleet.GenerationPreview.Editor
                 ("_search", search), ("_dialogue", dialogue),
                 ("_shuttlePrefab", ShipPrefabBuilder.LoadOrCreateShuttle()),
                 ("_proninFighterPrefab", CombatShipPrefabBuilder.LoadOrCreateProninFighter()),
-                ("_explosionPrefab", CombatEffectsBuilder.LoadOrCreateExplosion()));
+                ("_guardFighterPrefab", CombatShipPrefabBuilder.LoadOrCreateStationGuard()),
+                ("_explosionPrefab",CombatEffectsBuilder.LoadOrCreateExplosion()));
             QuestLogPanel questLog = questObject.AddComponent<QuestLogPanel>();
             EditorAssetUtility.SetReferences(questLog, ("_quests", quests), ("_shipInput", shipInput));
             EditorAssetUtility.SetReferences(jumpDialog, ("_quests", quests));

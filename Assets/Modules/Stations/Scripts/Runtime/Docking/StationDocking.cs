@@ -77,6 +77,10 @@ namespace LastFleet.Stations
             _zone = zone;
             Station = station;
             DockingHazardRules.CollectHazards(station.Profile, _hazards);
+            if (station.HasScriptedRadiation)
+            {
+                _hazards.Remove(DockingHazard.Radiation);
+            }
             PlanApproach(zone.transform.InverseTransformPoint(portPosition), zone.transform.InverseTransformDirection(portOutward));
             IssueOrder(ShipOrder.MoveTo(zone.Record.PointOfInterestIndex, _approachPoint));
             State = DockingState.Approaching;

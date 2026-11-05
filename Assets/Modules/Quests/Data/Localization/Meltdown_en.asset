@@ -44,7 +44,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 339292165
-    m_Localized: Mine the marked asteroid for its mineral. A nearby station defends it with fighters.
+    m_Localized: 'Mine the large rock next to the Kethran Vigil for solarite, then get the miner to safety: into a hangar or out of the zone. The station''s fighters defend the rock.'
     m_Metadata:
       m_Items: []
   - m_Id: 339292166
@@ -52,7 +52,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 339292167
-    m_Localized: 'Bring the mineral to the industrial station and hold it for 5 minutes. The station is radioactive: undock now and then.'
+    m_Localized: 'Dock the ship carrying the solarite at the abandoned Tamsin Forge. Nobody lives there: the furnace only runs while a ship with a crew is docked, about 5 minutes in all. The station is radioactive: take turns docking. Then land the refined solarite in a hangar.'
     m_Metadata:
       m_Items: []
   - m_Id: 339292168
@@ -98,6 +98,71 @@ MonoBehaviour:
     m_Localized: "Thank you. Now the truth: built large, my generator can set off a supernova. A weapon against the Pronin. But it needs a refined mineral \u2013 and I know where to find the rock."
     m_Metadata:
       m_Items: []
+  - m_Id: 106988297596928
+    m_Localized: Solarite
+    m_Metadata:
+      m_Items: []
+  - m_Id: 106988305985536
+    m_Localized: Refined solarite
+    m_Metadata:
+      m_Items: []
+  - m_Id: 106988305985537
+    m_Localized: Keeper of the {station}
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254925
+  - m_Id: 106988305985538
+    m_Localized: This is the {station}. The great rock at our side is sacred to us. Whoever lays hands on it will meet our guardians.
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254925
+  - m_Id: 106988305985539
+    m_Localized: We understand.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 106988305985540
+    m_Localized: We need what is inside it.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 106988305985541
+    m_Localized: Then go in peace.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 106988305985542
+    m_Localized: Then you will have to take it from us. We will not give it up.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 106988305985543
+    m_Localized: "You lay hands on the sacred rock! Guardians \u2013 drive them off!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 106988305985544
+    m_Localized: "That is it \u2013 solarite. Raw, it is useless for the generator. It has to be refined, and I know a refinery whose furnace still works. Its crew left long ago \u2013 the radiation drove them out."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 106988305985545
+    m_Localized: "Automatic refinery {station}. Personnel aboard: none. Reactor shielding: failed \u2013 lethal radiation on prolonged stay. Furnace ready for solarite, about {minutes} minutes. Operation needs a crew on site: keep a ship docked."
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254925
+  - m_Id: 106988305985546
+    m_Localized: "The solarite is in the furnace. Nobody else is here \u2013 we keep the plant running ourselves. The dosimeters are already ticking."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 106988305985547
+    m_Localized: "The furnace is done. The refined solarite is aboard \u2013 we are heading home."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 126382587326464
+    m_Localized: Control system of the {station}
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254925
+  - m_Id: 126382620880896
+    m_Localized: Crew of {ship}
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254925
   references:
     version: 2
     RefIds:
@@ -109,3 +174,8 @@ MonoBehaviour:
         - id: 339292170
         - id: 339292171
         - id: 339292172
+        - id: 106988305985537
+        - id: 106988305985538
+        - id: 106988305985545
+        - id: 126382587326464
+        - id: 126382620880896

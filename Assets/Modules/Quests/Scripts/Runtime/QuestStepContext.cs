@@ -2,6 +2,7 @@ using System;
 using LastFleet.Dialogue;
 using LastFleet.Shared.Randomness;
 using LastFleet.Shared.Text;
+using LastFleet.Zones;
 
 namespace LastFleet.Quests
 {
@@ -16,12 +17,13 @@ namespace LastFleet.Quests
         readonly Action<GameText> _notice;
         readonly Action<QuestStepContext> _zoneMarked;
 
-        internal QuestStepContext(QuestChain chain, QuestServices services, ulong seed, Action<QuestStepContext> completed,
+        internal QuestStepContext(QuestChain chain, QuestServices services, QuestCargo cargo, ulong seed, Action<QuestStepContext> completed,
             Action<QuestStepContext, GameText> failed, Action<GameText> notice, Action<QuestStepContext> zoneMarked)
         {
             Chain = chain;
             SystemIndex = chain.StepSystemIndex;
             Services = services;
+            Cargo = cargo;
             Seed = seed;
             _completed = completed;
             _failed = failed;
@@ -36,6 +38,9 @@ namespace LastFleet.Quests
         public int SystemIndex { get; }
 
         public QuestServices Services { get; }
+
+        /// <summary>Quest items aboard ships of the fleet; they outlast steps, so one step can hand them to the next.</summary>
+        public QuestCargo Cargo { get; }
 
         /// <summary>Seed of this attempt, for the step's own random choices such as where its station lies.</summary>
         public ulong Seed { get; }
@@ -54,6 +59,18 @@ namespace LastFleet.Quests
             }
             MarkedZoneIndex = pointOfInterestIndex;
             _zoneMarked(this);
+        }
+
+        /// <summary>The view of a zone of the step's system: only while the fleet is there and the zone is shown.</summary>
+        public bool TryGetZoneView(int pointOfInterestIndex, out ZoneView view)
+        {
+            ZoneWorld world = Services.ZoneWorld;
+            if (world.CurrentSystem != null && world.CurrentSystem.SystemIndex == SystemIndex)
+            {
+                return world.TryGetView(pointOfInterestIndex, out view);
+            }
+            view = null;
+            return false;
         }
 
         public DeterministicRandom CreateRandom(ulong salt)

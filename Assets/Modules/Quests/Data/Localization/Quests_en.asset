@@ -140,6 +140,110 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - rid: 5599358745442254923
+  - m_Id: 106988700250112
+    m_Localized: '{item} is aboard {ship}.'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254923
+  - m_Id: 106988712833024
+    m_Localized: '{item} was lost with {ship}.'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254923
+  - m_Id: 106988712833025
+    m_Localized: '{item} is no longer aboard any ship of the fleet.'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254923
+  - m_Id: 106988712833026
+    m_Localized: Mine the large rock next to {station}.
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254923
+  - m_Id: 106988712833027
+    m_Localized: 'Mining for {item}: {percent} %'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254923
+  - m_Id: 106988712833028
+    m_Localized: '{item} is aboard {ship}: land it in a hangar or fly it out of the zone.'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254923
+  - m_Id: 106988712833029
+    m_Localized: '{station} launches {count} guards!'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254923
+  - m_Id: 106988712833030
+    m_Localized: '{item} is safe aboard {ship}.'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254923
+  - m_Id: 106988712833031
+    m_Localized: "{item} was lost with {ship}. The rock still holds more \u2013 mine it again."
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254923
+  - m_Id: 106988712833032
+    m_Localized: The rock is mined out, and {item} is lost.
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254923
+  - m_Id: 106988712833033
+    m_Localized: "Dock {ship} at {station} \u2013 aboard: {item}."
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254923
+  - m_Id: 106988712833034
+    m_Localized: "Refining: {remaining} left \xB7 docked: {docked} \xB7 highest dose {dose} %"
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254923
+  - m_Id: 106988712833035
+    m_Localized: "Land {ship} in a hangar of the fleet \u2013 aboard: {item}."
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254923
+  - m_Id: 106988712833036
+    m_Localized: '{ship} handed {item} over to {station}.'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254923
+  - m_Id: 106988712833037
+    m_Localized: '{station} has finished: {item} is ready.'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254923
+  - m_Id: 106988712833038
+    m_Localized: '{ship} has brought {item} home.'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254923
+  - m_Id: 106988712833039
+    m_Localized: 'Radiation alarm on {ship} at {station}: undock soon, or the crew starts to die.'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254923
+  - m_Id: 106988712833040
+    m_Localized: radiation
+    m_Metadata:
+      m_Items: []
+  - m_Id: 110530097917952
+    m_Localized: The crew of {ship} is dead. {station} keeps {item} for the next ship that docks.
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254923
+  - m_Id: 110530127278080
+    m_Localized: Nobody is left aboard {ship} to bring {item} home.
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254923
+  - m_Id: 111581844811776
+    m_Localized: '{station} has {item} ready: dock a ship with a crew to pick it up.'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254923
   references:
     version: 2
     RefIds:
@@ -169,3 +273,23 @@ MonoBehaviour:
         - id: 418983957
         - id: 418983958
         - id: 5115704061952
+        - id: 106988700250112
+        - id: 106988712833024
+        - id: 106988712833025
+        - id: 106988712833026
+        - id: 106988712833027
+        - id: 106988712833028
+        - id: 106988712833029
+        - id: 106988712833030
+        - id: 106988712833031
+        - id: 106988712833032
+        - id: 106988712833033
+        - id: 106988712833034
+        - id: 106988712833035
+        - id: 106988712833036
+        - id: 106988712833037
+        - id: 106988712833038
+        - id: 106988712833039
+        - id: 110530097917952
+        - id: 110530127278080
+        - id: 111581844811776

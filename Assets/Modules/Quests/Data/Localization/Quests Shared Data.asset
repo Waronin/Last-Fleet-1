@@ -115,6 +115,90 @@ MonoBehaviour:
     m_Key: log.zone
     m_Metadata:
       m_Items: []
+  - m_Id: 106988700250112
+    m_Key: notice.item-aboard
+    m_Metadata:
+      m_Items: []
+  - m_Id: 106988712833024
+    m_Key: reason.item-lost
+    m_Metadata:
+      m_Items: []
+  - m_Id: 106988712833025
+    m_Key: reason.item-missing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 106988712833026
+    m_Key: status.mine-rock
+    m_Metadata:
+      m_Items: []
+  - m_Id: 106988712833027
+    m_Key: status.mining-item
+    m_Metadata:
+      m_Items: []
+  - m_Id: 106988712833028
+    m_Key: status.item-escape
+    m_Metadata:
+      m_Items: []
+  - m_Id: 106988712833029
+    m_Key: notice.guards-launched
+    m_Metadata:
+      m_Items: []
+  - m_Id: 106988712833030
+    m_Key: notice.item-secured
+    m_Metadata:
+      m_Items: []
+  - m_Id: 106988712833031
+    m_Key: notice.item-lost-retry
+    m_Metadata:
+      m_Items: []
+  - m_Id: 106988712833032
+    m_Key: reason.rock-mined-out
+    m_Metadata:
+      m_Items: []
+  - m_Id: 106988712833033
+    m_Key: status.deliver-item
+    m_Metadata:
+      m_Items: []
+  - m_Id: 106988712833034
+    m_Key: status.processing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 106988712833035
+    m_Key: status.item-home
+    m_Metadata:
+      m_Items: []
+  - m_Id: 106988712833036
+    m_Key: notice.item-handed-over
+    m_Metadata:
+      m_Items: []
+  - m_Id: 106988712833037
+    m_Key: notice.processing-done
+    m_Metadata:
+      m_Items: []
+  - m_Id: 106988712833038
+    m_Key: notice.item-home
+    m_Metadata:
+      m_Items: []
+  - m_Id: 106988712833039
+    m_Key: notice.radiation-warning
+    m_Metadata:
+      m_Items: []
+  - m_Id: 106988712833040
+    m_Key: cause.radiation
+    m_Metadata:
+      m_Items: []
+  - m_Id: 110530097917952
+    m_Key: notice.item-returned
+    m_Metadata:
+      m_Items: []
+  - m_Id: 110530127278080
+    m_Key: reason.item-crew-lost
+    m_Metadata:
+      m_Items: []
+  - m_Id: 111581844811776
+    m_Key: status.collect-item
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

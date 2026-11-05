@@ -20,6 +20,10 @@ Agreed with the designer on 2026-11-05. Change them only on purpose.
 | Failure | **Each step decides** (`QuestFailure.EndsChain` or `RetryStep`). |
 | Dialogue time | Dialogues are radio calls: **the game keeps running**. The window only blocks clicks on itself. |
 | Dialogue shape | **Branching**: nodes with speaker, line and answers. An answer can carry a consequence (e.g. accept a quest). |
+| Quest items | A quest item (e.g. the mineral) rides **aboard one ship** (`QuestCargo`), through hangars and jumps, and is lost with it (destroyed, captured, left behind, or its crew dead). The quest log names the carrier. Not part of the fleet inventory. |
+| Station guards | Fighters of a station that defends something are on the **Pronin side with their own class** (`StationGuard`, bronze). They do not hunt; the step keeps them near what they guard. |
+| Holding a station | Work at a station (refining) only runs **while a fleet ship with a crew is docked**; it pauses and keeps its progress when none is. |
+| Station radiation | A quest station can take over radiation (`ZoneStation.UseScriptedRadiation`): a **dose builds up while docked and wears off away**; at the limit crew members die. The generic random radiation deaths are off for that station. |
 
 ## How it is built
 
@@ -40,6 +44,11 @@ Agreed with the designer on 2026-11-05. Change them only on purpose.
 | `QuestStationContact` | Quests/Sites | A quest giver: a hail opens their dialogue instead of the plain answer (`IStationContact`). |
 | `SearchTrapStep` | Quests/Steps | Reusable: searching a station sets off a fuse instead of the first find. When it runs out, every ship flying in the zone (both sides) takes the blast, the station is destroyed and leaves metal wrecks. |
 | `EscortStep` | Quests/Steps | Reusable: hail, accept, a shuttle with passengers launches and flies to a fleet hangar by itself; Pronin fighters go for it after a delay. Done on landing, failed if the shuttle is lost. |
+| `QuestItem`, `QuestCargo` | Quests/Model, Quests | A quest item and which ship carries it. The director clears it per run and reports removed fleet ships; steps read it through `context.Cargo` and listen to `Lost`. |
+| `RadiationDose` | Quests/Model | One crew's dose: `Expose` (returns deaths at the limit), `Recover`. |
+| `QuestDepositSite` | Quests/Sites | A quest rock right next to a quest station (amend after the station's site). `ZoneView.ShowDeposit` shows it in a zone that is already built. |
+| `GuardedDepositStep` + `DepositGuards` | Quests/Steps | Reusable: hail warns; mining the rock launches the station's guards, who defend the area around it. After enough mining the item is aboard the miner; done when it lands or leaves the zone. A lost item has to be mined again within the same attempt; only a mined-out rock fails the step. |
+| `StationProcessingStep` + `DockedRadiation` | Quests/Steps | Reusable: the carrier docks and hands the item over; work runs while a crewed ship is docked; docked crews take a dose. The result boards the docked crewed ship with the lowest dose; done when it lands in a hangar. A crewless carrier at the station gives the result back to the station; anywhere else it fails the step. |
 | `QuestLogPanel` | Quests/View | IMGUI quest log at the bottom middle. |
 | `MeltdownQuest`, `MeltdownTexts` | Quests/Content/Meltdown | The Meltdown chain: settings, story dialogues, numbers. |
 
@@ -47,9 +56,11 @@ Hooks added to other modules for quests, all generic:
 
 - `Zones`: `IStationContact` (`ZoneStation.SetContact`, `HasContactToTalkTo`), `ZoneStation.MarkDestroyed()`
   (no docking, search, picking, obstacle or model), `IZoneAmendment` + `ZoneRecord.Amend`,
-  `ZoneContents.AddStation`, `ZoneContentGenerator.TryFindFreeSpot`, `ZoneView.ShowStation` / `RemoveStationView`.
+  `ZoneContents.AddStation`, `ZoneContentGenerator.TryFindFreeSpot`, `ZoneView.ShowStation` / `RemoveStationView` / `ShowDeposit`,
+  `ZoneStation.UseScriptedRadiation()` (docking skips the random radiation hazard).
 - `Stations`: `IStationFindInterceptor` (`SearchService.AddInterceptor`): takes a find before it is handed out.
-- `Ships`: `ShipRegistry.DamageShipsInZone`.
+- `Ships`: `ShipRegistry.DamageShipsInZone`; ship class `StationGuard`, built by `CombatShipPrefabBuilder.LoadOrCreateStationGuard`
+  (the Pronin fighter frame in bronze, without `AutonomousHunting`).
 - `Galaxy`: `GalaxyMapView.SetHighlightedSystems`.
 - `StarSystem`: `StarSystemView.SetHighlightedPointsOfInterest`.
 - `Inspection`: a hail goes to the station's contact while it has something to say, and can be repeated.
@@ -84,22 +95,15 @@ Rules for step logic:
 | --- | --- | --- | --- |
 | 1 | The Ascalon platform (`SearchTrapStep`) | playable | Start system. Abandoned industrial station. The search sets off a 30 s fuse instead of the first find; the radio call names the maker (Halvorsen Kinetics) and points to the research station. The blast deals 150 hull damage to every ship flying in the zone (destroys small ships, dents capital ships); ships in hangars are safe. 6 wrecks of 80 metal. Cannot fail. |
 | 2 | The scientist (`EscortStep`) | playable | Research station Meridian (friendly, 24 aboard). Hailing it reaches Dr. Ilka Morrow; accepting launches a shuttle with 4 people that flies to a fleet hangar; 3 Pronin fighters jump in 8 s later and go for it. Landing gains the shuttle; then the supernova story call. Losing the shuttle ends the chain. |
-| 3 | The sacred rock | written | Mine a marked asteroid for a mineral item. Fighters of a nearby station defend it (they see it as sacred). |
-| 4 | Refining | written | Bring the mineral to an industrial station, hold it 5 min, bring the refined mineral back. The station is radioactive: the shuttle has to undock now and then. |
-| 5 | Ignition | written | Bring the refined mineral to a power station and hold it 10 min; then the fleet jumps. |
+| 3 | The sacred rock (`GuardedDepositStep`) | playable | Outpost Kethran Vigil (wary, 12 aboard) with a large ore rock (radius 8, 3000 units) right beside it. Hailing warns (two answers). The first harvester that mines the rock sets off 4 station guards (once per visit) who defend 6 km around it. After 12 harvester-seconds the solarite is aboard the miner (within the first load); done when it lands or leaves the zone, then Dr. Morrow's call. Lost solarite: mine again. Unescorted harvesters do not survive the guards. |
+| 4 | Refining (`StationProcessingStep`) | playable | Industrial station Tamsin Forge: **abandoned** (nobody aboard, no attitude, damaged, radiation elevated, scripted) – the radiation drove its crew out, so docked crews keep the furnace running themselves. A hail reaches its automatic control system; the docked crew reports handover and result. The carrier docks and hands over the solarite; 5 min of refining while a crewed ship is docked. Dose: limit after 40 s docked, then one death per 8 s; 60 s away clears it; warning at 75 %. The refined solarite boards the docked ship with the lowest dose; done when it lands in a hangar. No extra attack. Losing either item ends the chain. |
+| 5 | Ignition | written | Bring the refined solarite to a power station and hold it 10 min; then the fleet jumps. The refined solarite is aboard the ship that landed it in step 4 (`QuestCargo`). |
 
-Open questions for steps 3–5 (ask before building them):
+Open questions for step 5 (next session, together with winning the game):
 
-- **Hostile station fighters (3)**: a new side, or fighters in the Pronin registry with their own class?
-  Today `CombatService` only knows the fleet and the Pronin.
-- **Quest items (3–5)**: `Reward`/`ItemKind` only count items in the fleet inventory. The mineral has to be
-  carried in a ship's hold (lost with the ship) and handed over at a station: probably a new reward kind
-  "quest item" with an id.
-- **"Hold the station" (4, 5)**: does the time only run while a ship is docked, and is it lost when
-  everyone undocks? Is there an attack while holding?
-- **Radiation (4)**: reuse `DockingHazardRules.Radiation` (crew deaths) or a separate dose that builds up?
+- **Holding (5)**: reuse `StationProcessingStep` (work only while docked)? Radiation or another threat, or an attack?
 - **Ending (5)**: the story after the fleet jump is not written yet ("Nach dem Sprung der Flotte …").
-  Is the jump forced, and where does it go?
+  Is the jump forced, where does it go, and does it win the run?
 
 ## Playtest log
 
@@ -107,6 +111,7 @@ Newest first.
 
 | Date | Setup | Result | Notes |
 | --- | --- | --- | --- |
+| 2026-11-05 | Steps 3 and 4 moved into the start system by script (seed 1), 3–5× time | Step 3, unescorted harvester: the guards launched at mining start; the solarite came aboard and was lost with the harvester; the step reset as intended. With 8 escorting fighters: all 4 guards shot down, solarite aboard, secured when the harvester left the zone; step 4 placed. Step 4: handover on docking, radiation alarm about 30 s later; the harvester's crew died at the limit and refining paused (3:57 left). After fast-forwarding, the result boarded a shuttle; its crew died docked, the forge kept the result; a second shuttle took it and landed; step 5 placed | Bug found and fixed in the run: crewless docked ships kept refining going and could strand the result. A Pronin pursuit raid happened at the same time and was fought off. |
 | 2026-11-05 | Seed 1, driven through the Unity CLI: Ascalon zone revealed, a shuttle docked and searched; the shuttle stayed docked | The fuse started instead of the first find (0:27 shown), the alarm call opened; after 30 s the station vanished, 6 wrecks appeared, the docked shuttle was destroyed ("destroyed by a station explosion"); step 2 was placed in a system within one jump, shown in the jump warning | All notices in German as selected. |
 | 2026-11-05 | Fleet jumped there, Meridian zone revealed, hailed, offer accepted at 4× time | The shuttle launched and landed in the liner within about 25 s of game time; the story call followed; step 3 was placed and shows "not playable yet". The 3 Pronin fighters then went for the liner | The station lay close to the arrival zone, so the escort was short. |
 
@@ -114,6 +119,11 @@ Newest first.
 
 - **Escort difficulty** depends on how far the station lies from the fleet. A nearby station makes the
   escort trivial. The attackers stay after the shuttle lands and hunt the fleet.
+- **Guard difficulty**: 4 guards kill an unescorted harvester within seconds; an escort of fighters handles them.
+  Only tested with 8 fighters. The guards only relaunch on a later visit to the system.
+- **Refining with one shuttle** is not possible: 5 min of work against 40 s to the dose limit needs ships taking
+  turns. Intended, but tune the numbers once it is played by hand.
+- The **sacred rock** is only marked by size and its place beside the station; it has no own marker in the zone.
 - Steps of a chain are only **saved for the run**. There is no save game yet.
 - The quest log and dialogue window are blockout IMGUI with no sound or portraits. A long log can grow into
   the dialogue window.

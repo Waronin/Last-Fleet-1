@@ -83,6 +83,17 @@ namespace LastFleet.Zones
             Contact = contact;
         }
 
+        /// <summary>
+        /// The radiation aboard follows someone else's rule, e.g. a quest's dose that builds up while docked;
+        /// docked crews then suffer no random radiation deaths.
+        /// </summary>
+        public bool HasScriptedRadiation { get; private set; }
+
+        public void UseScriptedRadiation()
+        {
+            HasScriptedRadiation = true;
+        }
+
         /// <summary>Blown up, e.g. by a quest event; the station cannot be docked at, searched or hailed anymore.</summary>
         public bool IsDestroyed { get; private set; }
 

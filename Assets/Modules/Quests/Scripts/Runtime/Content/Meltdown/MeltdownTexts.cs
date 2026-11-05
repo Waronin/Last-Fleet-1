@@ -34,5 +34,33 @@ namespace LastFleet.Quests.Meltdown
         public static readonly GameTextKey ScientistLaunching = new GameTextKey(Table, "scientist.launching");
         public static readonly GameTextKey ScientistWaiting = new GameTextKey(Table, "scientist.waiting");
         public static readonly GameTextKey ScientistArrived = new GameTextKey(Table, "scientist.arrived");
+
+        public static readonly GameTextKey SolariteItem = new GameTextKey(Table, "item.solarite");
+        public static readonly GameTextKey RefinedSolariteItem = new GameTextKey(Table, "item.refined-solarite");
+
+        /// <summary>{station}</summary>
+        public static readonly GameTextKey KeeperSpeaker = new GameTextKey(Table, "speaker.keeper");
+
+        /// <summary>{station}</summary>
+        public static readonly GameTextKey VigilWarning = new GameTextKey(Table, "vigil.warning");
+
+        public static readonly GameTextKey VigilUnderstood = new GameTextKey(Table, "vigil.understood");
+        public static readonly GameTextKey VigilNeedIt = new GameTextKey(Table, "vigil.need-it");
+        public static readonly GameTextKey VigilPeace = new GameTextKey(Table, "vigil.peace");
+        public static readonly GameTextKey VigilRefusal = new GameTextKey(Table, "vigil.refusal");
+        public static readonly GameTextKey VigilOutrage = new GameTextKey(Table, "vigil.outrage");
+        public static readonly GameTextKey ScientistSolariteSecured = new GameTextKey(Table, "scientist.solarite-secured");
+
+        /// <summary>{station}</summary>
+        public static readonly GameTextKey ForgeControlSpeaker = new GameTextKey(Table, "speaker.forge-control");
+
+        /// <summary>{ship}</summary>
+        public static readonly GameTextKey DockedCrewSpeaker = new GameTextKey(Table, "speaker.docked-crew");
+
+        /// <summary>{station}, {minutes}</summary>
+        public static readonly GameTextKey ForgeBriefing = new GameTextKey(Table, "forge.briefing");
+
+        public static readonly GameTextKey ForgeReceived = new GameTextKey(Table, "forge.received");
+        public static readonly GameTextKey ForgeFinished = new GameTextKey(Table, "forge.finished");
     }
 }

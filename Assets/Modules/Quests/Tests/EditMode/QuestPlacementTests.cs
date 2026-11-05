@@ -107,6 +107,32 @@ namespace LastFleet.Quests.Tests
             CollectionAssert.Contains(system.Zones[site.PointOfInterestIndex].Contents.Stations, site.Station);
         }
 
+        [Test]
+        public void DepositSite_PutsTheRockNextToItsStation_ClearOfEverythingElse()
+        {
+            SystemZones system = CreateSystem(5UL);
+            QuestStationSite station = QuestStationSite.Place(system, new QuestStationSpec("Vigil", StationType.Outpost, Abandoned),
+                new DeterministicRandom(3UL), null, null);
+            QuestDepositSite rock = QuestDepositSite.PlaceNextTo(station, system, ResourceKind.Ore, 8f, 3000f, 40f, null, null);
+            Assert.IsNull(rock.Deposit, "Nothing is generated before the zone is revealed.");
+
+            ZoneContents contents = system.Zones[station.PointOfInterestIndex].Reveal();
+
+            CollectionAssert.Contains(contents.Deposits, rock.Deposit);
+            Assert.AreEqual(DepositSizeClass.Large, rock.Deposit.SizeClass);
+            float gap = PlanarDistance(rock.Deposit.LocalPosition, station.Station.LocalPosition) -
+                        station.Station.FootprintRadiusUnits - rock.Deposit.FootprintRadiusUnits;
+            Assert.That(gap, Is.InRange(0f, 10f), "The rock lies right next to the station.");
+            foreach (ResourceDeposit other in contents.Deposits)
+            {
+                if (other != rock.Deposit)
+                {
+                    Assert.Greater(PlanarDistance(other.LocalPosition, rock.Deposit.LocalPosition),
+                        other.FootprintRadiusUnits + rock.Deposit.FootprintRadiusUnits);
+                }
+            }
+        }
+
         static SystemZones CreateSystem(ulong seed)
         {
             return new SystemZones(0, StarSystemGenerator.Generate(seed, "Test"));

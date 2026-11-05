@@ -62,16 +62,16 @@ namespace LastFleet.Quests.Tests
         }
 
         [Test]
-        public void Meltdown_HasFiveStepsOfWhichTheFirstTwoArePlayable()
+        public void Meltdown_HasFiveStepsOfWhichTheFirstFourArePlayable()
         {
             QuestChainDefinition meltdown = MeltdownQuest.Create();
 
             Assert.AreEqual(5, meltdown.Steps.Count);
-            Assert.IsTrue(meltdown.Steps[0].IsPlayable);
-            Assert.IsTrue(meltdown.Steps[1].IsPlayable);
-            Assert.IsFalse(meltdown.Steps[2].IsPlayable);
             Assert.IsInstanceOf<SearchTrapStep>(meltdown.Steps[0].CreateStep());
             Assert.IsInstanceOf<EscortStep>(meltdown.Steps[1].CreateStep());
+            Assert.IsInstanceOf<GuardedDepositStep>(meltdown.Steps[2].CreateStep());
+            Assert.IsInstanceOf<StationProcessingStep>(meltdown.Steps[3].CreateStep());
+            Assert.IsFalse(meltdown.Steps[4].IsPlayable);
         }
 
         static QuestChainDefinition Chain(params QuestFailure[] failures)

@@ -10,6 +10,7 @@
         "LastFleet.Ships",
         "LastFleet.Stations",
         "LastFleet.Combat",
+        "LastFleet.Mining",
         "LastFleet.People",
         "LastFleet.Dialogue",
         "LastFleet.ShipControl",
