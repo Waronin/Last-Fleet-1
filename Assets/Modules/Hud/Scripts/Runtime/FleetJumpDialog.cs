@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using LastFleet.FleetJump;
 using LastFleet.Localization;
+using LastFleet.Quests;
+using LastFleet.Shared.Text;
 using LastFleet.ShipControl;
 using LastFleet.Ships;
 using UnityEngine;
@@ -20,6 +22,8 @@ namespace LastFleet.Hud
 
         [SerializeField] FleetJumpService _fleetJump;
         [SerializeField] ShipCommandInput _shipInput;
+        [Tooltip("Optional. Names the quest step that waits in the target system.")]
+        [SerializeField] QuestDirector _quests;
 
         readonly List<string> _lines = new List<string>();
         int _targetSystemIndex = -1;
@@ -132,6 +136,10 @@ namespace LastFleet.Hud
             _confirm = GameTextResolver.Resolve(FleetJumpTexts.ConfirmButton);
             _cancel = GameTextResolver.Resolve(FleetJumpTexts.CancelButton);
             _lines.Clear();
+            if (_quests != null && _quests.TryGetMarker(plan.TargetSystemIndex, out GameText questMarker))
+            {
+                _lines.Add(GameTextResolver.Resolve(questMarker));
+            }
             foreach (FleetJumpPassage passage in plan.Jumping)
             {
                 _lines.Add(GameTextResolver.Resolve(FleetJumpTexts.DialogJumpingLine.Format(("ship", passage.Ship.DisplayName),

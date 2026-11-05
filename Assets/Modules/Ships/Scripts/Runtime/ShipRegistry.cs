@@ -62,6 +62,24 @@ namespace LastFleet.Ships
             return _damageTargets.Count;
         }
 
+        /// <summary>Damages every ship flying in the zone, e.g. for a blast that fills it; ships in hangars are shielded.</summary>
+        public int DamageShipsInZone(ZoneView zone, float damage, GameText cause)
+        {
+            _damageTargets.Clear();
+            foreach (ShipAgent ship in _ships)
+            {
+                if (!ship.IsDocked && ship.Zone == zone && ship.TryGetComponent(out ShipDurability durability))
+                {
+                    _damageTargets.Add(durability);
+                }
+            }
+            foreach (ShipDurability target in _damageTargets)
+            {
+                target.ApplyDamage(damage, cause);
+            }
+            return _damageTargets.Count;
+        }
+
         void Awake()
         {
             if (_zoneWorld == null || _camera == null)

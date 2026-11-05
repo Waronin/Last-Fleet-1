@@ -65,6 +65,11 @@ namespace LastFleet.Stations
         /// <summary>Sends every given small ship that can dock to its own free port; returns how many go.</summary>
         public int RequestDocking(ZoneView zone, ZoneStation station, IReadOnlyList<ShipAgent> ships)
         {
+            if (station.IsDestroyed)
+            {
+                Notice?.Invoke(StationTexts.StationDestroyed.Format(("station", station.Name)));
+                return 0;
+            }
             int sent = 0;
             foreach (ShipAgent ship in ships)
             {

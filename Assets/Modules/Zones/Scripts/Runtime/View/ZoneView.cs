@@ -29,6 +29,7 @@ namespace LastFleet.Zones
         MaterialPropertyBlock _propertyBlock;
         Material _bodyMaterial;
         Material _glowMaterial;
+        StationViewSource _stationViews;
 
         public ZoneRecord Record { get; private set; }
         public SpaceZone Zone { get; private set; }
@@ -51,9 +52,33 @@ namespace LastFleet.Zones
             {
                 CreateDepositView(contents.Deposits[i], i);
             }
+            _stationViews = stationViews;
             foreach (ZoneStation station in contents.Stations)
             {
-                _viewByStation.Add(station, stationViews.CreateView(station, transform));
+                ShowStation(station);
+            }
+        }
+
+        /// <summary>
+        /// Shows a station of the zone's contents that has no model yet, e.g. one a quest added to an
+        /// already revealed zone. Destroyed stations show no model.
+        /// </summary>
+        public void ShowStation(ZoneStation station)
+        {
+            if (station.IsDestroyed || _viewByStation.ContainsKey(station))
+            {
+                return;
+            }
+            _viewByStation.Add(station, _stationViews.CreateView(station, transform));
+        }
+
+        /// <summary>Removes the model of a station that was destroyed.</summary>
+        public void RemoveStationView(ZoneStation station)
+        {
+            if (_viewByStation.TryGetValue(station, out Transform view))
+            {
+                _viewByStation.Remove(station);
+                Destroy(view.gameObject);
             }
         }
 
@@ -139,6 +164,10 @@ namespace LastFleet.Zones
             float bestDistance = float.MaxValue;
             foreach (ZoneStation candidate in Record.Contents.Stations)
             {
+                if (candidate.IsDestroyed)
+                {
+                    continue;
+                }
                 float distance = new Vector2(localPoint.x - candidate.LocalPosition.x, localPoint.z - candidate.LocalPosition.z).magnitude;
                 if (distance <= candidate.FootprintRadiusUnits && distance < bestDistance)
                 {

@@ -1,0 +1,111 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Meltdown_de
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: de
+  m_SharedData: {fileID: 11400000, guid: 6566d6d7410996c46a34f719ba3d9f33, type: 2}
+  m_Metadata:
+    m_Items:
+    - rid: 5599358745442254924
+  m_TableData:
+  - m_Id: 326709248
+    m_Localized: Meltdown
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339292160
+    m_Localized: Die Ascalon-Plattform
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339292161
+    m_Localized: Durchsucht die verlassene Ascalon-Plattform.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339292162
+    m_Localized: Die Wissenschaftlerin
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339292163
+    m_Localized: Funkt die Forschungsstation Meridian an und eskortiert ihr Shuttle sicher in einen Hangar der Flotte.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339292164
+    m_Localized: Der heilige Fels
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339292165
+    m_Localized: "Baut den markierten Asteroiden ab und gewinnt sein Mineral. Eine nahe Station verteidigt ihn mit J\xE4gern."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339292166
+    m_Localized: Aufbereitung
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339292167
+    m_Localized: 'Bringt das Mineral zur Industriestation und haltet sie 5 Minuten. Die Station strahlt: zwischendurch abdocken.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339292168
+    m_Localized: "Z\xFCndung"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339292169
+    m_Localized: Bringt das aufbereitete Mineral zum Kraftwerk und haltet es 10 Minuten. Danach springt die Flotte.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339292170
+    m_Localized: Suchtrupp auf {station}
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254924
+  - m_Id: 339292171
+    m_Localized: "Alarm! Beim \xD6ffnen des Reaktorraums ist eine experimentelle Energiequelle angesprungen \u2013 sie geht durch! Noch etwa {seconds} Sekunden. Die Logs nennen den Hersteller: {manufacturer}. Ihr Prototyp stammt aus einer Forschungsstation ganz in der N\xE4he. Wir verschwinden \u2013 zieht alle Schiffe aus der Zone ab!"
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254924
+  - m_Id: 339292172
+    m_Localized: "Hier {scientist} auf {station}. Die Explosion auf Ascalon war mein Reaktor \u2013 ein kleiner. Ich habe die Pl\xE4ne f\xFCr eine weit gr\xF6\xDFere Version, und die Pronin wissen das. Nehmt mich mit. Mein Shuttle startet, sobald ihr es deckt."
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254924
+  - m_Id: 339292173
+    m_Localized: Wir decken euch. Startet.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339292174
+    m_Localized: Noch nicht.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339292175
+    m_Localized: Wir starten. Bringt mich heil zu eurer Flotte.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339292176
+    m_Localized: "Wartet nicht zu lange. Die Pronin h\xF6ren mit."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339292177
+    m_Localized: "Danke. Jetzt die Wahrheit: In gro\xDFem Ma\xDFstab kann mein Generator eine Supernova ausl\xF6sen. Eine Waffe gegen die Pronin. Aber er braucht ein aufbereitetes Mineral \u2013 und ich wei\xDF, wo der Fels liegt."
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 5599358745442254924
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 
+        m_SharedEntries:
+        - id: 339292170
+        - id: 339292171
+        - id: 339292172

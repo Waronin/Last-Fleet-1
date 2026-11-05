@@ -50,8 +50,18 @@ MonoBehaviour:
     m_ReadOnly: 1
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6566d6d7410996c46a34f719ba3d9f33
+    m_Address: Assets/Modules/Quests/Data/Localization/Meltdown Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6f20eedf340f2c249a9379227fcc697b
     m_Address: Assets/Modules/Zones/Data/Localization/Zones Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7c98fb837b084e64fa4015e5a9f29e79
+    m_Address: Assets/Modules/Dialogue/Data/Localization/Dialogue Shared Data.asset
     m_ReadOnly: 1
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -82,6 +92,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d5d3f97aef0e2bd44a4df7c437821525
     m_Address: Assets/Modules/Mining/Data/Localization/Mining Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dcda467e76071514097a75bce01b8cc3
+    m_Address: Assets/Modules/Quests/Data/Localization/Quests Shared Data.asset
     m_ReadOnly: 1
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

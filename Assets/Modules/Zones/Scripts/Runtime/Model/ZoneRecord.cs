@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using LastFleet.StarSystem;
 
 namespace LastFleet.Zones
@@ -5,10 +7,12 @@ namespace LastFleet.Zones
     /// <summary>
     /// A zone of a star system. Until it is revealed it only has its point of interest; revealing it
     /// generates the contents once, from the zone's own seed, so the reveal order does not matter.
+    /// Amendments from outside the generator (e.g. quest stations) are applied right after generation.
     /// </summary>
     public sealed class ZoneRecord
     {
         readonly Star _star;
+        readonly List<IZoneAmendment> _pendingAmendments = new List<IZoneAmendment>();
 
         public ZoneRecord(int pointOfInterestIndex, PointOfInterest pointOfInterest, Star star, ulong seed)
         {
@@ -33,8 +37,28 @@ namespace LastFleet.Zones
             if (Contents == null)
             {
                 Contents = ZoneContentGenerator.Generate(Seed, PointOfInterest, _star);
+                foreach (IZoneAmendment amendment in _pendingAmendments)
+                {
+                    amendment.Apply(this, Contents);
+                }
+                _pendingAmendments.Clear();
             }
             return Contents;
+        }
+
+        /// <summary>Changes the contents once they exist: at once for a revealed zone, else on reveal.</summary>
+        public void Amend(IZoneAmendment amendment)
+        {
+            if (amendment == null)
+            {
+                throw new ArgumentNullException(nameof(amendment));
+            }
+            if (IsRevealed)
+            {
+                amendment.Apply(this, Contents);
+                return;
+            }
+            _pendingAmendments.Add(amendment);
         }
     }
 }

@@ -170,6 +170,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - rid: 6743102069811707981
+  - m_Id: 2432028015931392
+    m_Localized: "{station} ist zerst\xF6rt."
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707981
   references:
     version: 2
     RefIds:
@@ -197,3 +202,4 @@ MonoBehaviour:
         - id: 15760730173452
         - id: 15760730173453
         - id: 19561356800000
+        - id: 2432028015931392

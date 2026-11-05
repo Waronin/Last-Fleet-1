@@ -1,0 +1,27 @@
+{
+    "name": "LastFleet.Quests",
+    "rootNamespace": "LastFleet.Quests",
+    "references": [
+        "LastFleet.Shared",
+        "LastFleet.Localization",
+        "LastFleet.Galaxy",
+        "LastFleet.StarSystem",
+        "LastFleet.Zones",
+        "LastFleet.Ships",
+        "LastFleet.Stations",
+        "LastFleet.Combat",
+        "LastFleet.People",
+        "LastFleet.Dialogue",
+        "LastFleet.ShipControl",
+        "LastFleet.Space"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

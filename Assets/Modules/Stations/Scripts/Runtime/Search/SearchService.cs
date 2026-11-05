@@ -23,9 +23,28 @@ namespace LastFleet.Stations
 
         readonly Dictionary<ZoneStation, StationLoot> _lootByStation = new Dictionary<ZoneStation, StationLoot>();
         readonly List<ShipAgent> _assigned = new List<ShipAgent>();
+        readonly List<IStationFindInterceptor> _interceptors = new List<IStationFindInterceptor>();
 
         /// <summary>Short feedback for the player about the search and its finds.</summary>
         public event Action<GameText> Notice;
+
+        /// <summary>Lets something take over finds before they are handed out, e.g. a quest trap.</summary>
+        public void AddInterceptor(IStationFindInterceptor interceptor)
+        {
+            if (interceptor == null)
+            {
+                throw new ArgumentNullException(nameof(interceptor));
+            }
+            if (!_interceptors.Contains(interceptor))
+            {
+                _interceptors.Add(interceptor);
+            }
+        }
+
+        public void RemoveInterceptor(IStationFindInterceptor interceptor)
+        {
+            _interceptors.Remove(interceptor);
+        }
 
         void Awake()
         {
@@ -66,6 +85,10 @@ namespace LastFleet.Stations
         /// <summary>Sends the crews of every ship docked at the station to search it; returns feedback.</summary>
         public GameText RequestSearch(ZoneView zone, ZoneStation station)
         {
+            if (station.IsDestroyed)
+            {
+                return StationTexts.StationDestroyed.Format(("station", station.Name));
+            }
             switch (StationSearchRules.Blocker(station.Profile))
             {
                 case SearchBlocker.Inhabited:
@@ -101,6 +124,17 @@ namespace LastFleet.Stations
         /// <summary>Called by a searching ship each time its crew turns something up.</summary>
         internal void TakeFind(StationSearching searching)
         {
+            // A copy: an interceptor may remove itself while it takes the find.
+            foreach (IStationFindInterceptor interceptor in _interceptors.ToArray())
+            {
+                if (interceptor.TryIntercept(searching.Station, searching.Ship))
+                {
+                    StopAllSearchesAt(searching.Station);
+                    searching.Stop();
+                    return;
+                }
+            }
+
             if (!_lootByStation.TryGetValue(searching.Station, out StationLoot loot) || !loot.TryPeek(out Reward next))
             {
                 Finish(searching);
@@ -155,6 +189,12 @@ namespace LastFleet.Stations
         {
             ZoneStation station = searching.Station;
             Notice?.Invoke(StationTexts.SearchedCompletely.Format(("station", station.Name)));
+            StopAllSearchesAt(station);
+            searching.Stop();
+        }
+
+        void StopAllSearchesAt(ZoneStation station)
+        {
             CollectDockedShips(station, _assigned);
             foreach (ShipAgent ship in _assigned)
             {
@@ -163,7 +203,6 @@ namespace LastFleet.Stations
                     other.Stop();
                 }
             }
-            searching.Stop();
         }
 
         static int IndexOf(IReadOnlyList<ZoneStation> stations, ZoneStation station)

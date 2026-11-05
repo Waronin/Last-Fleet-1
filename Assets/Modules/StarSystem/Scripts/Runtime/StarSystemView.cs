@@ -24,6 +24,7 @@ namespace LastFleet.StarSystem
         const ulong AsteroidPlacementSalt = 1000UL;
         const float BeltMarkerRadiusUnits = 6f;
         const float MarkerMarginUnits = 1.5f;
+        const float HighlightRingGapUnits = 1.5f;
 
         [SerializeField] Material _bodyMaterial;
         [SerializeField] Material _glowMaterial;
@@ -50,10 +51,12 @@ namespace LastFleet.StarSystem
         [SerializeField] Color _unexploredMarkerColor = new Color(0.45f, 0.45f, 0.5f);
         [SerializeField] Color _exploredMarkerColor = new Color(0.3f, 0.9f, 1f);
         [SerializeField] Color _selectedMarkerColor = new Color(1f, 0.85f, 0.2f);
+        [SerializeField] Color _highlightColor = new Color(1f, 0.35f, 0.85f);
         [SerializeField, Min(1f)] float _starGlowIntensity = 4f;
 
         readonly List<LineRenderer> _markers = new List<LineRenderer>();
         readonly List<PointOfInterestMarkerStyle> _markerStyles = new List<PointOfInterestMarkerStyle>();
+        readonly List<LineRenderer> _highlightRings = new List<LineRenderer>();
         MaterialPropertyBlock _propertyBlock;
 
         public StarSystemLayout Layout { get; private set; }
@@ -107,6 +110,7 @@ namespace LastFleet.StarSystem
             BlockoutPrimitives.DestroyChildren(transform);
             _markers.Clear();
             _markerStyles.Clear();
+            _highlightRings.Clear();
             Layout = null;
             ExtentUnits = 0f;
             SelectedPointOfInterestIndex = -1;
@@ -122,6 +126,36 @@ namespace LastFleet.StarSystem
                 RefreshMarker(previous);
             }
             RefreshMarker(index);
+        }
+
+        /// <summary>
+        /// Draws a second, wider ring around points of interest that hold something for the player, e.g.
+        /// a quest station; replaces the earlier set. The map does not know why a point is highlighted.
+        /// </summary>
+        public void SetHighlightedPointsOfInterest(IReadOnlyList<int> indices)
+        {
+            if (Layout == null)
+            {
+                return;
+            }
+            while (_highlightRings.Count < indices.Count)
+            {
+                LineRenderer ring = BlockoutPrimitives.CreateLine(transform, _glowMaterial, "Highlight Ring", _lineWidthUnits);
+                BlockoutPrimitives.SetColor(ring, _highlightColor, _propertyBlock);
+                _highlightRings.Add(ring);
+            }
+            for (int i = 0; i < _highlightRings.Count; i++)
+            {
+                bool used = i < indices.Count;
+                _highlightRings[i].gameObject.SetActive(used);
+                if (used)
+                {
+                    ValidatePointOfInterestIndex(indices[i]);
+                    PointOfInterest point = Layout.PointsOfInterest[indices[i]];
+                    BlockoutPrimitives.SetCircle(_highlightRings[i], GetPointOfInterestLocalPosition(point),
+                        MarkerRadiusUnits(point) + HighlightRingGapUnits, MarkerSegmentCount);
+                }
+            }
         }
 
         public void SetMarkerStyle(int index, PointOfInterestMarkerStyle style)

@@ -69,5 +69,27 @@ namespace LastFleet.Zones
             HailResponse ??= new StationHailResponse(Profile.Attitude);
             return HailResponse;
         }
+
+        /// <summary>
+        /// Someone aboard with something to say, e.g. a quest giver; null for an ordinary station.
+        /// While it has something to say, a hail goes to it instead of the plain answer.
+        /// </summary>
+        public IStationContact Contact { get; private set; }
+
+        public bool HasContactToTalkTo => Contact != null && Contact.HasSomethingToSay && !IsDestroyed;
+
+        public void SetContact(IStationContact contact)
+        {
+            Contact = contact;
+        }
+
+        /// <summary>Blown up, e.g. by a quest event; the station cannot be docked at, searched or hailed anymore.</summary>
+        public bool IsDestroyed { get; private set; }
+
+        public void MarkDestroyed()
+        {
+            IsDestroyed = true;
+            Contact = null;
+        }
     }
 }

@@ -80,5 +80,8 @@ namespace LastFleet.Stations
 
         /// <summary>{station}</summary>
         public static readonly GameTextKey SearchingTask = new GameTextKey(Table, "task.searching");
+
+        /// <summary>{station}</summary>
+        public static readonly GameTextKey StationDestroyed = new GameTextKey(Table, "notice.station-destroyed");
     }
 }

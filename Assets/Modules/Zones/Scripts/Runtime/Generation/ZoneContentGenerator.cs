@@ -96,6 +96,35 @@ namespace LastFleet.Zones
             return new ZoneContents(ZoneRadiusKlicks, CreateBackdrop(pointOfInterest, star), deposits, stations);
         }
 
+        /// <summary>
+        /// A free spot on the zone plane for an object added to generated contents, e.g. a quest
+        /// station: inside the usable radius, clear of the arrival area and of every deposit and station.
+        /// </summary>
+        public static bool TryFindFreeSpot(ZoneContents contents, float radiusUnits, ulong seed, out Vector3 localPosition)
+        {
+            if (contents == null)
+            {
+                throw new ArgumentNullException(nameof(contents));
+            }
+
+            float usableRadiusUnits = SpaceUnits.KlicksToUnits(contents.RadiusKlicks) * PlacementRadiusFraction;
+            // More attempts than during generation: the zone is already full of objects.
+            ZonePlacement placement = new ZonePlacement(new DeterministicRandom(seed), usableRadiusUnits, ArrivalClearanceUnits,
+                MinimumGapUnits, 0f, PlacementAttemptsPerObject * 10);
+            foreach (ResourceDeposit deposit in contents.Deposits)
+            {
+                placement.Occupy(deposit.LocalPosition, deposit.FootprintRadiusUnits);
+            }
+            foreach (ZoneStation station in contents.Stations)
+            {
+                placement.Occupy(station.LocalPosition, station.FootprintRadiusUnits);
+            }
+
+            bool found = placement.TryPlace(radiusUnits, out localPosition);
+            localPosition.y = 0f;
+            return found;
+        }
+
         static void AddPlanetDeposits(DeterministicRandom random, ZonePlacement placement, List<ResourceDeposit> deposits, PlanetKind kind)
         {
             switch (kind)

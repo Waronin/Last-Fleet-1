@@ -29,6 +29,12 @@ namespace LastFleet.Zones
             _attemptsPerObject = attemptsPerObject;
         }
 
+        /// <summary>Marks space taken by an object that is already there, e.g. when adding to a generated zone.</summary>
+        public void Occupy(Vector3 position, float radiusUnits)
+        {
+            _occupied.Add((position, radiusUnits));
+        }
+
         public bool TryPlace(float radiusUnits, out Vector3 position)
         {
             float innerRadius = _arrivalClearanceUnits + radiusUnits;

@@ -1,0 +1,104 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: Meltdown Shared Data
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.SharedTableData
+  m_TableCollectionName: Meltdown
+  m_TableCollectionNameGuidString: 6566d6d7410996c46a34f719ba3d9f33
+  m_Entries:
+  - m_Id: 326709248
+    m_Key: chain.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339292160
+    m_Key: step.platform.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339292161
+    m_Key: step.platform.objective
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339292162
+    m_Key: step.scientist.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339292163
+    m_Key: step.scientist.objective
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339292164
+    m_Key: step.sacred-rock.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339292165
+    m_Key: step.sacred-rock.objective
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339292166
+    m_Key: step.refining.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339292167
+    m_Key: step.refining.objective
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339292168
+    m_Key: step.ignition.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339292169
+    m_Key: step.ignition.objective
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339292170
+    m_Key: speaker.search-party
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339292171
+    m_Key: platform.alarm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339292172
+    m_Key: scientist.offer
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339292173
+    m_Key: scientist.accept
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339292174
+    m_Key: scientist.decline
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339292175
+    m_Key: scientist.launching
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339292176
+    m_Key: scientist.waiting
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339292177
+    m_Key: scientist.arrived
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 5599358745442254920
+  references:
+    version: 2
+    RefIds:
+    - rid: 5599358745442254920
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1793876023082

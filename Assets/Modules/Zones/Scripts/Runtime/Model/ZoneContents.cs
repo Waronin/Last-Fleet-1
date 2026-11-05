@@ -4,24 +4,20 @@ using System.Collections.Generic;
 namespace LastFleet.Zones
 {
     /// <summary>
-    /// Everything inside a revealed zone. Deposits are mutable run state and can be added during the
-    /// run, e.g. wrecks after a fight; the rest is fixed.
+    /// Everything inside a revealed zone. Deposits and stations are run state and can be added during
+    /// the run, e.g. wrecks after a fight or a quest station; the rest is fixed.
     /// </summary>
     public sealed class ZoneContents
     {
         readonly List<ResourceDeposit> _deposits;
-        readonly ZoneStation[] _stations;
+        readonly List<ZoneStation> _stations;
 
         public ZoneContents(float radiusKlicks, ZoneBackdrop backdrop, IReadOnlyList<ResourceDeposit> deposits, IReadOnlyList<ZoneStation> stations)
         {
             RadiusKlicks = radiusKlicks;
             Backdrop = backdrop;
             _deposits = new List<ResourceDeposit>(deposits);
-            _stations = new ZoneStation[stations.Count];
-            for (int i = 0; i < stations.Count; i++)
-            {
-                _stations[i] = stations[i];
-            }
+            _stations = new List<ZoneStation>(stations);
         }
 
         public float RadiusKlicks { get; }
@@ -37,6 +33,20 @@ namespace LastFleet.Zones
                 throw new ArgumentNullException(nameof(deposit));
             }
             _deposits.Add(deposit);
+        }
+
+        /// <summary>Adds a station placed during the run, e.g. by a quest; find its spot with <see cref="ZoneContentGenerator.TryFindFreeSpot"/>.</summary>
+        public void AddStation(ZoneStation station)
+        {
+            if (station == null)
+            {
+                throw new ArgumentNullException(nameof(station));
+            }
+            if (_stations.Contains(station))
+            {
+                throw new InvalidOperationException($"{station.Name} is already in this zone.");
+            }
+            _stations.Add(station);
         }
     }
 }

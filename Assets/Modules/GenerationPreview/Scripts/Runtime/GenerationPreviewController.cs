@@ -10,6 +10,8 @@ using LastFleet.Localization;
 using LastFleet.Mining;
 using LastFleet.People;
 using LastFleet.Pursuit;
+using LastFleet.Quests;
+using LastFleet.Quests.Meltdown;
 using LastFleet.Rewards;
 using LastFleet.Shared.Text;
 using LastFleet.ShipControl;
@@ -93,6 +95,7 @@ namespace LastFleet.GenerationPreview
         [SerializeField] JumpStatusIndicator _jumpStatus;
         [SerializeField] InspectionPanel _inspection;
         [SerializeField] InspectionPanel _shipPanel;
+        [SerializeField] QuestDirector _quests;
         [Tooltip("Spawned on arrival in a system until fleet jumps carry the fleet along.")]
         [SerializeField] ShipAgent _refineryPrefab;
         [SerializeField] ShipAgent _tankerPrefab;
@@ -104,6 +107,8 @@ namespace LastFleet.GenerationPreview
         [SerializeField, Min(1f)] float _pickRadiusPixels = 14f;
 
         readonly List<ShipAgent> _singleShip = new List<ShipAgent>(1);
+        readonly List<int> _questSystems = new List<int>();
+        readonly List<int> _questZones = new List<int>();
         readonly List<GameText> _recentNotices = new List<GameText>(MaximumRecentNotices);
         ShipSelectionInspection _shipInspection;
         RunZoneRegistry _runZones;
@@ -133,7 +138,7 @@ namespace LastFleet.GenerationPreview
         {
             if (_galaxyMapView == null || _starSystemView == null || _zoneWorld == null || _environment == null ||
                 _cameraRig == null || _shipRegistry == null || _shipInput == null || _groupInput == null ||
-                _hangarInput == null || _mining == null || _scouting == null || _population == null || _docking == null || _search == null || _rewards == null || _combat == null || _pursuit == null || _proninAttack == null || _fleetJump == null || _jumpDialog == null || _jumpStatus == null || _inspection == null || _shipPanel == null ||
+                _hangarInput == null || _mining == null || _scouting == null || _population == null || _docking == null || _search == null || _rewards == null || _combat == null || _pursuit == null || _proninAttack == null || _fleetJump == null || _jumpDialog == null || _jumpStatus == null || _inspection == null || _shipPanel == null || _quests == null ||
                 _refineryPrefab == null || _tankerPrefab == null || _linerPrefab == null || _harvesterPrefab == null || _shuttlePrefab == null ||
                 _cruiserPrefab == null || _fighterPrefab == null)
             {
@@ -160,6 +165,8 @@ namespace LastFleet.GenerationPreview
             _proninAttack.Notice += ShowNotice;
             _fleetJump.Notice += ShowNotice;
             _fleetJump.Jumped += OnFleetJumped;
+            _quests.Notice += ShowNotice;
+            _quests.MarkersChanged += RefreshQuestMarkers;
             _jumpStatus.JumpMapRequested += ShowGalaxyMap;
             _inspection.Notice += ShowNotice;
             _shipInput.DepositClicked += InspectDeposit;
@@ -200,6 +207,8 @@ namespace LastFleet.GenerationPreview
             _proninAttack.Notice -= ShowNotice;
             _fleetJump.Notice -= ShowNotice;
             _fleetJump.Jumped -= OnFleetJumped;
+            _quests.Notice -= ShowNotice;
+            _quests.MarkersChanged -= RefreshQuestMarkers;
             _jumpStatus.JumpMapRequested -= ShowGalaxyMap;
             _inspection.Notice -= ShowNotice;
             _shipInput.DepositClicked -= InspectDeposit;
@@ -510,6 +519,8 @@ namespace LastFleet.GenerationPreview
             _jumpDialog.Close();
             GalaxyLayout galaxy = GalaxyGenerator.Generate((ulong)_galaxySeed, _galaxySettings);
             _galaxyMapView.Show(galaxy);
+            // Before the arrival, so the first quest step is in place when the start system is entered.
+            _quests.BeginRun(galaxy, _runZones, new[] { MeltdownQuest.Create() });
             EnterStarSystem(galaxy.StartSystemIndex, null);
             ShowNotice(GameText.Verbatim($"New run with galaxy seed {_galaxySeed}; arrived at the jump point."));
         }
@@ -559,6 +570,24 @@ namespace LastFleet.GenerationPreview
             _jumpDialog.Open(systemIndex);
         }
 
+        /// <summary>The galaxy map rings every system with a quest step waiting, the system map the zones to go to.</summary>
+        void RefreshQuestMarkers()
+        {
+            _quests.CollectMarkedSystems(_questSystems);
+            _galaxyMapView.SetHighlightedSystems(_questSystems);
+            if (CurrentSystem != null)
+            {
+                _quests.CollectMarkedZones(CurrentSystem.SystemIndex, _questZones);
+                _starSystemView.SetHighlightedPointsOfInterest(_questZones);
+            }
+        }
+
+        /// <summary>The quest step waiting in a system, for the overlay; null if there is none.</summary>
+        public GameText QuestMarkerOf(int systemIndex)
+        {
+            return _quests.TryGetMarker(systemIndex, out GameText marker) ? marker : null;
+        }
+
         void OnFleetJumped(int systemIndex, IReadOnlyList<ShipAgent> jumpers)
         {
             EnterStarSystem(systemIndex, jumpers);
@@ -591,6 +620,8 @@ namespace LastFleet.GenerationPreview
             // Revealed zones of an earlier visit are rebuilt from the stored run state; the fleet
             // always arrives at the jump point, which is revealed on arrival.
             _zoneWorld.Show(system);
+            _quests.SystemEntered(system);
+            RefreshQuestMarkers();
             int arrivalIndex = system.Layout.ArrivalPointOfInterestIndex;
             ZoneView arrival = _zoneWorld.Reveal(arrivalIndex);
             _starSystemView.SetMarkerStyle(arrivalIndex, PointOfInterestMarkerStyle.Explored);

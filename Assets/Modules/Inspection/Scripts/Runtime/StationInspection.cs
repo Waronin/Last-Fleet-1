@@ -42,7 +42,7 @@ namespace LastFleet.Inspection
 
         public ZoneStation Station => _station;
         public GameText Title => GameText.Verbatim(_station.Name);
-        public bool IsValid => _zone != null;
+        public bool IsValid => _zone != null && !_station.IsDestroyed;
 
         public void Describe(List<GameText> lines)
         {
@@ -70,7 +70,7 @@ namespace LastFleet.Inspection
             actions.Add(new InspectionAction(InspectionTexts.ScanAction, InspectionTexts.RightClickHint, scanBlocked == null, scanBlocked,
                 () => _scouting.RequestScan(_zone, _station) ? InspectionTexts.ScanRequested : ExplorationTexts.NoShipToScan));
 
-            GameText hailBlocked = _station.IsHailed ? InspectionTexts.AlreadyHailed : !HasShipInZone() ? InspectionTexts.NoShipInRadioRange : null;
+            GameText hailBlocked = _station.IsHailed && !_station.HasContactToTalkTo ? InspectionTexts.AlreadyHailed : !HasShipInZone() ? InspectionTexts.NoShipInRadioRange : null;
             actions.Add(new InspectionAction(InspectionTexts.HailAction, null, hailBlocked == null, hailBlocked, Hail));
 
             GameText dockBlocked = _docking.FreePortCount(_station) == 0 ? StationTexts.AllPortsTaken : null;
@@ -176,9 +176,14 @@ namespace LastFleet.Inspection
             return null;
         }
 
+        /// <summary>The station answers with its attitude; someone aboard with something to say takes over the call.</summary>
         GameText Hail()
         {
             StationHailResponse response = _station.Hail();
+            if (_station.HasContactToTalkTo)
+            {
+                return _station.Contact.Answer(_station);
+            }
             return response.Answered
                 ? InspectionTexts.HailAnswered.Format(("station", _station.Name), ("reply", InspectionTexts.HailReplies.For(response.ClaimedAttitude)))
                 : InspectionTexts.HailNoAnswer.Format(("station", _station.Name));

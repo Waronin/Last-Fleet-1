@@ -1,0 +1,111 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Meltdown_en
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: 6566d6d7410996c46a34f719ba3d9f33, type: 2}
+  m_Metadata:
+    m_Items:
+    - rid: 5599358745442254925
+  m_TableData:
+  - m_Id: 326709248
+    m_Localized: Meltdown
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339292160
+    m_Localized: The Ascalon platform
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339292161
+    m_Localized: Search the abandoned Ascalon platform.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339292162
+    m_Localized: The scientist
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339292163
+    m_Localized: Hail the research station Meridian and escort its shuttle safely into a hangar of the fleet.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339292164
+    m_Localized: The sacred rock
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339292165
+    m_Localized: Mine the marked asteroid for its mineral. A nearby station defends it with fighters.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339292166
+    m_Localized: Refining
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339292167
+    m_Localized: 'Bring the mineral to the industrial station and hold it for 5 minutes. The station is radioactive: undock now and then.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339292168
+    m_Localized: Ignition
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339292169
+    m_Localized: Bring the refined mineral to the power station and hold it for 10 minutes. Then the fleet jumps.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339292170
+    m_Localized: Search party on {station}
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254925
+  - m_Id: 339292171
+    m_Localized: "Alarm! Opening the reactor room woke up an experimental power source \u2013 it is going critical! About {seconds} seconds left. The logs name the maker: {manufacturer}. Their prototype came from a research station nearby. We are getting out \u2013 pull every ship out of the zone!"
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254925
+  - m_Id: 339292172
+    m_Localized: "This is {scientist} on {station}. The blast at Ascalon was my reactor \u2013 a small one. I have the plans for a far bigger version, and the Pronin know it. Take me with you. My shuttle launches the moment you cover it."
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254925
+  - m_Id: 339292173
+    m_Localized: We will cover you. Launch.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339292174
+    m_Localized: Not yet.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339292175
+    m_Localized: Launching now. Get me to your fleet in one piece.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339292176
+    m_Localized: Do not wait too long. The Pronin are listening.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339292177
+    m_Localized: "Thank you. Now the truth: built large, my generator can set off a supernova. A weapon against the Pronin. But it needs a refined mineral \u2013 and I know where to find the rock."
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 5599358745442254925
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 
+        m_SharedEntries:
+        - id: 339292170
+        - id: 339292171
+        - id: 339292172

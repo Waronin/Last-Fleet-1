@@ -91,6 +91,11 @@ namespace LastFleet.GenerationPreview
             GUILayout.Label($"Fleet in: {galaxy.Systems[currentIndex].Name}  |  reachable with one jump: {galaxy.GetNeighbours(currentIndex).Count}");
             GUILayout.Label($"Selected: {selected.Name}{(selected.Index == galaxy.StartSystemIndex ? " (start)" : string.Empty)}, " +
                             $"{galaxy.DistanceLightYears(currentIndex, selected.Index):0} ly");
+            GameText questMarker = _controller.QuestMarkerOf(selected.Index);
+            if (questMarker != null)
+            {
+                GUILayout.Label(GameTextResolver.Resolve(questMarker));
+            }
             GUILayout.Space(6f);
             GUILayout.Label("Click: select   Enter / double click: jump there (in range)   Esc: last zone   R: new run   F9: switch language");
             GUILayout.Label("WASD: pan   Q/E or middle mouse: rotate   Wheel: zoom");

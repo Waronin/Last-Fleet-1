@@ -75,6 +75,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Locale-de
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7ab095b0bce116b43a047f1af3393d51
+    m_Address: Dialogue_de
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-de
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 801ec867ce92ee242bd4023173eac50f
     m_Address: Rewards_de
     m_ReadOnly: 1
@@ -87,8 +93,20 @@ MonoBehaviour:
     m_SerializedLabels:
     - Locale-de
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b25082af40abdee4b85ca5f5c41260e0
+    m_Address: Quests_de
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-de
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b2b596cb765b1d34ca21ab165445cb70
     m_Address: StarSystem_de
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-de
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: deaeed7ffa834f84f8506e874690275d
+    m_Address: Meltdown_de
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-de

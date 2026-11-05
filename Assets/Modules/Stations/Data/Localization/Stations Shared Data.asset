@@ -147,6 +147,10 @@ MonoBehaviour:
     m_Key: notice.search-blocked-radiation
     m_Metadata:
       m_Items: []
+  - m_Id: 2432028015931392
+    m_Key: notice.station-destroyed
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

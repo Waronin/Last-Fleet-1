@@ -63,6 +63,18 @@ MonoBehaviour:
     m_SerializedLabels:
     - Locale-en
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 83ea9a1254e4a8649b2100ac8d40ba6a
+    m_Address: Meltdown_en
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 891ac8a1f6ca9dd40a4fd9f2c88ef75e
+    m_Address: Dialogue_en
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9270edc2ae9a40140b8b57a2a8f785a2
     m_Address: FleetJump_en
     m_ReadOnly: 1
@@ -95,6 +107,12 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e4f6edd0965071f4a8d85b7313285abd
     m_Address: Exploration_en
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f5e5b31ddc6250443bd7b74e9fe335d1
+    m_Address: Quests_en
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-en

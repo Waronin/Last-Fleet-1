@@ -1,0 +1,171 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Quests_en
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: dcda467e76071514097a75bce01b8cc3, type: 2}
+  m_Metadata:
+    m_Items:
+    - rid: 5599358745442254923
+  m_TableData:
+  - m_Id: 406401024
+    m_Localized: "Quest: {chain} \u2013 step {step}/{count}"
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254923
+  - m_Id: 418983936
+    m_Localized: Quests
+    m_Metadata:
+      m_Items: []
+  - m_Id: 418983937
+    m_Localized: "{chain} \u2013 step {step}/{count}: {title}"
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254923
+  - m_Id: 418983938
+    m_Localized: In system {system}
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254923
+  - m_Id: 418983939
+    m_Localized: In this system
+    m_Metadata:
+      m_Items: []
+  - m_Id: 418983940
+    m_Localized: (not playable yet)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 418983941
+    m_Localized: '{chain}: completed'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254923
+  - m_Id: 418983942
+    m_Localized: '{chain}: failed'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254923
+  - m_Id: 418983943
+    m_Localized: "{chain}: step {step} \u201C{title}\u201D awaits in {system}."
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254923
+  - m_Id: 418983944
+    m_Localized: "{chain}: \u201C{title}\u201D done."
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254923
+  - m_Id: 418983945
+    m_Localized: '{chain} completed.'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254923
+  - m_Id: 418983946
+    m_Localized: '{chain} failed: {reason}'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254923
+  - m_Id: 418983947
+    m_Localized: "{chain}: \u201C{title}\u201D starts over. {reason}"
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254923
+  - m_Id: 418983948
+    m_Localized: '{station} answers.'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254923
+  - m_Id: 418983949
+    m_Localized: Explosion in {remaining}!
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254923
+  - m_Id: 418983950
+    m_Localized: '{station}: power source overloading! Get every ship out of the zone!'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254923
+  - m_Id: 418983951
+    m_Localized: '{station} exploded. Ships caught in the blast: {count}.'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254923
+  - m_Id: 418983952
+    m_Localized: a station explosion
+    m_Metadata:
+      m_Items: []
+  - m_Id: 418983953
+    m_Localized: Hail {station}
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254923
+  - m_Id: 418983954
+    m_Localized: "{ship} is flying to the fleet \u2013 protect it!"
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254923
+  - m_Id: 418983955
+    m_Localized: '{ship} launches from {station}.'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254923
+  - m_Id: 418983956
+    m_Localized: 'Pronin fighters are going for {ship}: {count}!'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254923
+  - m_Id: 418983957
+    m_Localized: '{ship} has landed aboard {carrier}.'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254923
+  - m_Id: 418983958
+    m_Localized: '{ship} was lost.'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254923
+  - m_Id: 5115704061952
+    m_Localized: 'Zone: {zone}'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254923
+  references:
+    version: 2
+    RefIds:
+    - rid: 5599358745442254923
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 
+        m_SharedEntries:
+        - id: 406401024
+        - id: 418983937
+        - id: 418983938
+        - id: 418983941
+        - id: 418983942
+        - id: 418983943
+        - id: 418983944
+        - id: 418983945
+        - id: 418983946
+        - id: 418983947
+        - id: 418983948
+        - id: 418983949
+        - id: 418983950
+        - id: 418983951
+        - id: 418983953
+        - id: 418983954
+        - id: 418983955
+        - id: 418983956
+        - id: 418983957
+        - id: 418983958
+        - id: 5115704061952

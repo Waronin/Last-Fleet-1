@@ -15,6 +15,7 @@ namespace LastFleet.Galaxy
     {
         const int RingSegmentCount = 96;
         const float CurrentMarkerScale = 1.6f;
+        const float HighlightRingDiameterFactor = 2.6f;
 
         [SerializeField] Material _markerMaterial;
         [SerializeField] Material _lineMaterial;
@@ -29,9 +30,11 @@ namespace LastFleet.Galaxy
         [SerializeField] Color _selectedSystemColor = new Color(1f, 0.85f, 0.2f);
         [SerializeField] Color _reachableSystemColor = new Color(0.4f, 0.75f, 1f);
         [SerializeField] Color _jumpLineColor = new Color(0.3f, 0.6f, 1f);
+        [SerializeField] Color _highlightColor = new Color(1f, 0.35f, 0.85f);
 
         readonly List<Renderer> _markers = new List<Renderer>();
         readonly List<LineRenderer> _jumpLines = new List<LineRenderer>();
+        readonly List<LineRenderer> _highlightRings = new List<LineRenderer>();
         LineRenderer _jumpRangeRing;
         MaterialPropertyBlock _propertyBlock;
         GalaxyLayout _galaxy;
@@ -145,11 +148,41 @@ namespace LastFleet.Galaxy
             gameObject.SetActive(visible);
         }
 
+        /// <summary>
+        /// Rings systems that hold something for the player, e.g. a quest step; replaces the earlier set.
+        /// The map does not know why a system is highlighted.
+        /// </summary>
+        public void SetHighlightedSystems(IReadOnlyList<int> systemIndices)
+        {
+            if (_galaxy == null)
+            {
+                return;
+            }
+            while (_highlightRings.Count < systemIndices.Count)
+            {
+                LineRenderer ring = BlockoutPrimitives.CreateLine(transform, _lineMaterial, "Highlight Ring", _lineWidthUnits);
+                BlockoutPrimitives.SetColor(ring, _highlightColor, _propertyBlock);
+                _highlightRings.Add(ring);
+            }
+            for (int i = 0; i < _highlightRings.Count; i++)
+            {
+                bool used = i < systemIndices.Count;
+                _highlightRings[i].gameObject.SetActive(used);
+                if (used)
+                {
+                    ValidateIndex(systemIndices[i]);
+                    BlockoutPrimitives.SetCircle(_highlightRings[i], _markers[systemIndices[i]].transform.localPosition,
+                        _markerDiameterUnits * HighlightRingDiameterFactor * 0.5f, RingSegmentCount);
+                }
+            }
+        }
+
         public void Clear()
         {
             BlockoutPrimitives.DestroyChildren(transform);
             _markers.Clear();
             _jumpLines.Clear();
+            _highlightRings.Clear();
             _jumpRangeRing = null;
             _galaxy = null;
             CurrentSystemIndex = -1;

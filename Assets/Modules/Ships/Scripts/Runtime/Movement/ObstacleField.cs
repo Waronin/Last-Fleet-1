@@ -73,6 +73,10 @@ namespace LastFleet.Ships
             }
             foreach (ZoneStation station in contents.Stations)
             {
+                if (station.IsDestroyed)
+                {
+                    continue;
+                }
                 obstacles.Add(new Obstacle(new Vector2(station.LocalPosition.x, station.LocalPosition.z), station.FootprintRadiusUnits, station));
             }
             foreach (ShipRegistry registry in _registries)
