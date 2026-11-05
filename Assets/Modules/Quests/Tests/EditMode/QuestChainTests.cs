@@ -1,6 +1,7 @@
 using System;
 using LastFleet.Quests.Meltdown;
 using LastFleet.Shared.Text;
+using LastFleet.Zones;
 using NUnit.Framework;
 
 namespace LastFleet.Quests.Tests
@@ -62,7 +63,7 @@ namespace LastFleet.Quests.Tests
         }
 
         [Test]
-        public void Meltdown_HasFiveStepsOfWhichTheFirstFourArePlayable()
+        public void Meltdown_HasFivePlayableSteps_AndWinsTheRun()
         {
             QuestChainDefinition meltdown = MeltdownQuest.Create();
 
@@ -71,7 +72,23 @@ namespace LastFleet.Quests.Tests
             Assert.IsInstanceOf<EscortStep>(meltdown.Steps[1].CreateStep());
             Assert.IsInstanceOf<GuardedDepositStep>(meltdown.Steps[2].CreateStep());
             Assert.IsInstanceOf<StationProcessingStep>(meltdown.Steps[3].CreateStep());
-            Assert.IsFalse(meltdown.Steps[4].IsPlayable);
+            Assert.IsInstanceOf<SupernovaStep>(meltdown.Steps[4].CreateStep());
+            Assert.IsTrue(meltdown.WinsRun);
+        }
+
+        [Test]
+        public void Supernova_NeedsAHoldThatConsumesItsItem()
+        {
+            QuestItem fuel = new QuestItem("test.fuel", new GameTextKey("Quests", "test.fuel"));
+            QuestItem product = new QuestItem("test.product", new GameTextKey("Quests", "test.product"));
+            QuestStationSpec station = new QuestStationSpec("Array", StationType.Industrial,
+                new StationProfile(StationAtmosphere.Breathable, 0, StationAttitude.None, StationCondition.Damaged, StationRadiation.None));
+            GameTextKey work = new GameTextKey("Quests", "test.work");
+
+            Assert.DoesNotThrow(() => new SupernovaSettings(
+                new StationProcessingSettings(station, fuel, null, work, 60f, null, _ => null, null, null), 30f, null, null));
+            Assert.Throws<ArgumentException>(() => new SupernovaSettings(
+                new StationProcessingSettings(station, fuel, product, work, 60f, null, _ => null, null, null), 30f, null, null));
         }
 
         static QuestChainDefinition Chain(params QuestFailure[] failures)

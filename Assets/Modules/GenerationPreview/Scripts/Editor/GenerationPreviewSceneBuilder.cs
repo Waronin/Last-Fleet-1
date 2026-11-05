@@ -12,6 +12,7 @@ using LastFleet.People;
 using LastFleet.Pursuit;
 using LastFleet.Quests;
 using LastFleet.Rewards;
+using LastFleet.RunEnd;
 using LastFleet.Stations;
 using LastFleet.Stations.Editor;
 using LastFleet.Shared.Editor;
@@ -176,6 +177,9 @@ namespace LastFleet.GenerationPreview.Editor
             EditorAssetUtility.SetReferences(questLog, ("_quests", quests), ("_shipInput", shipInput));
             EditorAssetUtility.SetReferences(jumpDialog, ("_quests", quests));
 
+            RunEndWindow runEndWindow = questObject.AddComponent<RunEndWindow>();
+            EditorAssetUtility.SetReferences(runEndWindow, ("_shipInput", shipInput));
+
             GameObject previewObject = new GameObject("Generation Preview");
             GenerationPreviewController preview = previewObject.AddComponent<GenerationPreviewController>();
             EditorAssetUtility.SetReferences(preview,
@@ -183,6 +187,7 @@ namespace LastFleet.GenerationPreview.Editor
                 ("_environment", environment), ("_cameraRig", cameraRig), ("_shipRegistry", shipRegistry),
                 ("_shipInput", shipInput), ("_groupInput", groupInput), ("_hangarInput", hangarInput), ("_mining", mining),
                 ("_scouting", scouting), ("_population", population), ("_docking", docking), ("_search", search), ("_rewards", rewards), ("_combat", combat), ("_pursuit", pursuit), ("_proninAttack", proninAttack), ("_fleetJump", fleetJump), ("_jumpDialog", jumpDialog), ("_jumpStatus", jumpStatus), ("_inspection", inspection), ("_shipPanel", shipPanel), ("_quests", quests),
+                ("_runEndWindow", runEndWindow),
                 ("_cruiserPrefab", CombatShipPrefabBuilder.LoadOrCreateCruiser()),
                 ("_fighterPrefab", CombatShipPrefabBuilder.LoadOrCreateFighter()),
                 ("_refineryPrefab", ShipPrefabBuilder.LoadOrCreateRefinery()),
@@ -190,6 +195,9 @@ namespace LastFleet.GenerationPreview.Editor
                 ("_linerPrefab", ShipPrefabBuilder.LoadOrCreateLiner()),
                 ("_shuttlePrefab", ShipPrefabBuilder.LoadOrCreateShuttle()),
                 ("_harvesterPrefab", ShipPrefabBuilder.LoadOrCreateHarvester()));
+            RunEndFlow runEnd = previewObject.AddComponent<RunEndFlow>();
+            EditorAssetUtility.SetReferences(runEnd, ("_controller", preview), ("_quests", quests), ("_dialogue", dialogue),
+                ("_fleet", shipRegistry), ("_population", population), ("_window", runEndWindow));
             GenerationPreviewOverlay overlay = previewObject.AddComponent<GenerationPreviewOverlay>();
             EditorAssetUtility.SetReferences(overlay, ("_controller", preview));
             DeveloperRaidInput raid = previewObject.AddComponent<DeveloperRaidInput>();

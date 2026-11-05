@@ -111,7 +111,7 @@ namespace LastFleet.Quests
         /// <summary>{item}, {ship}, {station}</summary>
         public static readonly GameTextKey DeliverItemStatus = new GameTextKey(Table, "status.deliver-item");
 
-        /// <summary>{remaining}, {docked}, {dose}</summary>
+        /// <summary>{work}, {remaining}, {docked}, {dose}</summary>
         public static readonly GameTextKey ProcessingStatus = new GameTextKey(Table, "status.processing");
 
         /// <summary>{item}, {ship}</summary>
@@ -139,5 +139,20 @@ namespace LastFleet.Quests
 
         /// <summary>{ship}, {item}</summary>
         public static readonly GameTextKey ItemCrewLost = new GameTextKey(Table, "reason.item-crew-lost");
+
+        /// <summary>{work}, {remaining}, {docked}</summary>
+        public static readonly GameTextKey ProcessingPlainStatus = new GameTextKey(Table, "status.processing-plain");
+
+        /// <summary>{system}, {remaining}</summary>
+        public static readonly GameTextKey SupernovaIgnited = new GameTextKey(Table, "notice.supernova-ignited");
+
+        /// <summary>{remaining}, {system}</summary>
+        public static readonly GameTextKey SupernovaStatus = new GameTextKey(Table, "status.supernova");
+
+        /// <summary>{system}</summary>
+        public static readonly GameTextKey SupernovaEscaped = new GameTextKey(Table, "notice.supernova-escaped");
+
+        /// <summary>{system}</summary>
+        public static readonly GameTextKey SupernovaCaught = new GameTextKey(Table, "reason.supernova-caught");
     }
 }

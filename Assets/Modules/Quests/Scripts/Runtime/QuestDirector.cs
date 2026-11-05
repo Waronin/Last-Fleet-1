@@ -54,6 +54,12 @@ namespace LastFleet.Quests
         /// <summary>A step was placed, finished or failed: the systems with a quest marker changed.</summary>
         public event Action MarkersChanged;
 
+        /// <summary>A chain that wins the run is complete (see <see cref="QuestChainDefinition.WinsRun"/>).</summary>
+        public event Action<QuestChain> RunWon;
+
+        /// <summary>A step ended the run in defeat; the reason is for the end screen. All steps are over.</summary>
+        public event Action<GameText> RunLost;
+
         void Awake()
         {
             if (_fleet == null || _pronin == null || _zoneWorld == null || _search == null || _dialogue == null ||
@@ -207,7 +213,8 @@ namespace LastFleet.Quests
             float deltaSeconds = Time.deltaTime;
             foreach (ActiveStep active in SnapshotOfSteps())
             {
-                if (!active.Context.IsOver)
+                // A step may end others while it is driven, e.g. when it loses the run.
+                if (!active.Context.IsOver && _ticking.Contains(active))
                 {
                     active.Step.Tick(deltaSeconds);
                 }
@@ -232,7 +239,7 @@ namespace LastFleet.Quests
             ulong seed = DeterministicRandom.DeriveSeed(_galaxy.Seed,
                 StepSeedSalt + (ulong)chainIndex * 1000UL + (ulong)chain.StepIndex * 10UL + (ulong)chain.Attempt);
             QuestStepContext context = new QuestStepContext(chain, _services, _cargo, seed, OnStepCompleted, OnStepFailed, RaiseNotice,
-                _ => MarkersChanged?.Invoke());
+                _ => MarkersChanged?.Invoke(), OnRunLost);
             ActiveStep active = new ActiveStep(definition.CreateStep(), context);
             _activeSteps[chain] = active;
             _ticking.Add(active);
@@ -253,6 +260,10 @@ namespace LastFleet.Quests
             {
                 RaiseNotice(QuestTexts.ChainCompleted.Format(("chain", chain.Definition.Title)));
                 MarkersChanged?.Invoke();
+                if (chain.Definition.WinsRun)
+                {
+                    RunWon?.Invoke(chain);
+                }
                 return;
             }
 
@@ -263,6 +274,13 @@ namespace LastFleet.Quests
             RaiseNotice(QuestTexts.StepPlaced.Format(("chain", chain.Definition.Title), ("step", chain.StepNumber),
                 ("title", chain.CurrentStep.Title), ("system", GameText.Verbatim(SystemName(next)))));
             MarkersChanged?.Invoke();
+        }
+
+        void OnRunLost(GameText reason)
+        {
+            EndAllSteps();
+            MarkersChanged?.Invoke();
+            RunLost?.Invoke(reason);
         }
 
         void OnStepFailed(QuestStepContext context, GameText reason)

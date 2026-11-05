@@ -6,6 +6,7 @@
         "LastFleet.Pursuit",
         "LastFleet.Quests",
         "LastFleet.Dialogue",
+        "LastFleet.RunEnd",
         "LastFleet.FleetJump",
         "LastFleet.Hud",
         "LastFleet.Rewards",

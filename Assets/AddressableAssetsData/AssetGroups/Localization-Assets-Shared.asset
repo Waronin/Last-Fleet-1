@@ -50,6 +50,11 @@ MonoBehaviour:
     m_ReadOnly: 1
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 64b7039a8315eab40aa959fe5f622c5a
+    m_Address: Assets/Modules/RunEnd/Data/Localization/RunEnd Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6566d6d7410996c46a34f719ba3d9f33
     m_Address: Assets/Modules/Quests/Data/Localization/Meltdown Shared Data.asset
     m_ReadOnly: 1

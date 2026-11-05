@@ -16,9 +16,10 @@ namespace LastFleet.Quests
         readonly Action<QuestStepContext, GameText> _failed;
         readonly Action<GameText> _notice;
         readonly Action<QuestStepContext> _zoneMarked;
+        readonly Action<GameText> _runLost;
 
         internal QuestStepContext(QuestChain chain, QuestServices services, QuestCargo cargo, ulong seed, Action<QuestStepContext> completed,
-            Action<QuestStepContext, GameText> failed, Action<GameText> notice, Action<QuestStepContext> zoneMarked)
+            Action<QuestStepContext, GameText> failed, Action<GameText> notice, Action<QuestStepContext> zoneMarked, Action<GameText> runLost)
         {
             Chain = chain;
             SystemIndex = chain.StepSystemIndex;
@@ -29,6 +30,7 @@ namespace LastFleet.Quests
             _failed = failed;
             _notice = notice;
             _zoneMarked = zoneMarked;
+            _runLost = runLost;
             MarkedZoneIndex = -1;
         }
 
@@ -97,6 +99,17 @@ namespace LastFleet.Quests
             }
             IsOver = true;
             _failed(this, reason);
+        }
+
+        /// <summary>The step ends the whole run in defeat, e.g. the fleet was caught by a supernova. The attempt is over.</summary>
+        public void LoseRun(GameText reason)
+        {
+            if (IsOver)
+            {
+                return;
+            }
+            IsOver = true;
+            _runLost(reason);
         }
 
         public void Notify(GameText message)

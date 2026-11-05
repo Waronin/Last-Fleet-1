@@ -52,7 +52,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 339292167
-    m_Localized: "Docke das Schiff mit dem Solarit an der verlassenen Tamsin Forge an. Dort lebt niemand: Der Ofen l\xE4uft nur, solange ein Schiff mit Crew angedockt ist, insgesamt etwa 5 Minuten. Die Station ist radioaktiv: Wechselt euch beim Andocken ab. Lande danach das raffinierte Solarit in einem Hangar."
+    m_Localized: "Docke das Schiff mit dem Solarit an der verlassenen Tamsin Forge an. Dort lebt niemand: Der Ofen l\xE4uft nur, solange ein Schiff mit Crew angedockt ist, insgesamt etwa 4 Minuten. Die Station ist radioaktiv: Wechselt euch beim Andocken ab. Lande danach das raffinierte Solarit in einem Hangar."
     m_Metadata:
       m_Items: []
   - m_Id: 339292168
@@ -60,7 +60,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 339292169
-    m_Localized: Bringt das aufbereitete Mineral zum Kraftwerk und haltet es 10 Minuten. Danach springt die Flotte.
+    m_Localized: "Docke das Schiff mit dem raffinierten Solarit am verlassenen Calder Array an. Der Generator l\xE4uft nur, solange ein Schiff mit Crew angedockt ist: 7 Minuten bis zur Z\xFCndung. Danach springt die Flotte aus dem System, bevor der Stern kollabiert."
     m_Metadata:
       m_Items: []
   - m_Id: 339292170
@@ -153,13 +153,40 @@ MonoBehaviour:
     m_Localized: "Der Ofen ist fertig. Das raffinierte Solarit ist an Bord \u2013 wir kommen heim."
     m_Metadata:
       m_Items: []
-  - m_Id: 126382587326464
+  - m_Id: 139465003184128
     m_Localized: Steuersystem der {station}
     m_Metadata:
       m_Items:
       - rid: 5599358745442254924
   - m_Id: 126382620880896
     m_Localized: Crew von {ship}
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254924
+  - m_Id: 139465015767040
+    m_Localized: Raffinierung
+    m_Metadata:
+      m_Items: []
+  - m_Id: 139465015767041
+    m_Localized: "Z\xFCndsequenz"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 139465015767042
+    m_Localized: "Kraftwerk {station}, Halvorsen Kinetics. Personal an Bord: keines. Supernova-Generator: intakt. Brennstoff: fehlt \u2013 raffiniertes Solarit einsetzen. Z\xFCndsequenz etwa {minutes} Minuten; sie braucht eine Crew am Steuer."
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254924
+  - m_Id: 139465015767043
+    m_Localized: "Das Solarit ist im Kern. Dr. Morrow f\xFChrt uns durch die Z\xFCndsequenz \u2013 haltet uns angedockt, egal was passiert."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 139465015767044
+    m_Localized: "Es brennt! In {minutes} Minuten kollabiert dieser Stern \u2013 und rei\xDFt jedes Pronin-Schiff im System mit sich. Alle in die Hangars und springen. Sofort!"
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254924
+  - m_Id: 139465015767045
+    m_Localized: "Hinter uns ist {system} gerade zu einer neuen Sonne geworden. Die Pronin-Flotte, die uns gejagt hat, ist fort, bis zum letzten Schiff. Den Krieg haben wir nicht gewonnen. Aber zum ersten Mal haben wir Zeit \u2013 Zeit, eine neue Heimat zu finden."
     m_Metadata:
       m_Items:
       - rid: 5599358745442254924
@@ -177,5 +204,8 @@ MonoBehaviour:
         - id: 106988305985537
         - id: 106988305985538
         - id: 106988305985545
-        - id: 126382587326464
+        - id: 139465003184128
         - id: 126382620880896
+        - id: 139465015767042
+        - id: 139465015767044
+        - id: 139465015767045

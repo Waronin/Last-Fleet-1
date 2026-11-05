@@ -143,12 +143,36 @@ MonoBehaviour:
     m_Key: forge.finished
     m_Metadata:
       m_Items: []
-  - m_Id: 126382587326464
-    m_Key: speaker.forge-control
-    m_Metadata:
-      m_Items: []
   - m_Id: 126382620880896
     m_Key: speaker.docked-crew
+    m_Metadata:
+      m_Items: []
+  - m_Id: 139465003184128
+    m_Key: speaker.control-system
+    m_Metadata:
+      m_Items: []
+  - m_Id: 139465015767040
+    m_Key: work.refining
+    m_Metadata:
+      m_Items: []
+  - m_Id: 139465015767041
+    m_Key: work.ignition
+    m_Metadata:
+      m_Items: []
+  - m_Id: 139465015767042
+    m_Key: power.briefing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 139465015767043
+    m_Key: power.received
+    m_Metadata:
+      m_Items: []
+  - m_Id: 139465015767044
+    m_Key: scientist.ignition
+    m_Metadata:
+      m_Items: []
+  - m_Id: 139465015767045
+    m_Key: scientist.epilogue
     m_Metadata:
       m_Items: []
   m_Metadata:

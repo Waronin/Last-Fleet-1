@@ -12,7 +12,7 @@ namespace LastFleet.Quests
     {
         readonly QuestStepDefinition[] _steps;
 
-        public QuestChainDefinition(string id, GameTextKey title, IReadOnlyList<QuestStepDefinition> steps)
+        public QuestChainDefinition(string id, GameTextKey title, IReadOnlyList<QuestStepDefinition> steps, bool winsRun = false)
         {
             if (string.IsNullOrWhiteSpace(id))
             {
@@ -25,11 +25,15 @@ namespace LastFleet.Quests
 
             Id = id;
             Title = title;
+            WinsRun = winsRun;
             _steps = new List<QuestStepDefinition>(steps).ToArray();
         }
 
         public string Id { get; }
         public GameText Title { get; }
         public IReadOnlyList<QuestStepDefinition> Steps => _steps;
+
+        /// <summary>Completing this chain wins the run (GDD: an end scenario).</summary>
+        public bool WinsRun { get; }
     }
 }

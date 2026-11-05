@@ -199,6 +199,26 @@ MonoBehaviour:
     m_Key: status.collect-item
     m_Metadata:
       m_Items: []
+  - m_Id: 139465410031616
+    m_Key: status.processing-plain
+    m_Metadata:
+      m_Items: []
+  - m_Id: 139465422614528
+    m_Key: notice.supernova-ignited
+    m_Metadata:
+      m_Items: []
+  - m_Id: 139465422614529
+    m_Key: status.supernova
+    m_Metadata:
+      m_Items: []
+  - m_Id: 139465422614530
+    m_Key: notice.supernova-escaped
+    m_Metadata:
+      m_Items: []
+  - m_Id: 139465422614531
+    m_Key: reason.supernova-caught
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

@@ -13,6 +13,7 @@ using LastFleet.Pursuit;
 using LastFleet.Quests;
 using LastFleet.Quests.Meltdown;
 using LastFleet.Rewards;
+using LastFleet.RunEnd;
 using LastFleet.Shared.Text;
 using LastFleet.ShipControl;
 using LastFleet.Ships;
@@ -96,6 +97,8 @@ namespace LastFleet.GenerationPreview
         [SerializeField] InspectionPanel _inspection;
         [SerializeField] InspectionPanel _shipPanel;
         [SerializeField] QuestDirector _quests;
+        [Tooltip("Optional. While the end screen is open, the preview takes no input.")]
+        [SerializeField] RunEndWindow _runEndWindow;
         [Tooltip("Spawned on arrival in a system until fleet jumps carry the fleet along.")]
         [SerializeField] ShipAgent _refineryPrefab;
         [SerializeField] ShipAgent _tankerPrefab;
@@ -133,6 +136,9 @@ namespace LastFleet.GenerationPreview
         public int VisitedSystemCount => _runZones != null ? _runZones.VisitedSystemCount : 0;
         /// <summary>The latest notices, oldest first; several can arrive at once, e.g. a loss and its casualties.</summary>
         public IReadOnlyList<GameText> RecentNotices => _recentNotices;
+
+        /// <summary>A run began: at the start, after R, or from the end screen.</summary>
+        public event System.Action RunStarted;
 
         void Awake()
         {
@@ -278,8 +284,8 @@ namespace LastFleet.GenerationPreview
         {
             Keyboard keyboard = Keyboard.current;
             Mouse mouse = Mouse.current;
-            // The jump warning takes the keyboard while it is open.
-            if (keyboard == null || mouse == null || _jumpDialog.IsOpen)
+            // The jump warning takes the keyboard while it is open; the end screen ends all input but its button.
+            if (keyboard == null || mouse == null || _jumpDialog.IsOpen || (_runEndWindow != null && _runEndWindow.IsOpen))
             {
                 return;
             }
@@ -511,6 +517,13 @@ namespace LastFleet.GenerationPreview
                    $"{deposit.MiningSlotCount} mining slot(s), {hazard}";
         }
 
+        /// <summary>A new run in a new galaxy, e.g. from the end screen.</summary>
+        public void StartNextRun()
+        {
+            _galaxySeed++;
+            StartNewRun();
+        }
+
         void StartNewRun()
         {
             _runZones = new RunZoneRegistry();
@@ -523,6 +536,7 @@ namespace LastFleet.GenerationPreview
             _quests.BeginRun(galaxy, _runZones, new[] { MeltdownQuest.Create() });
             EnterStarSystem(galaxy.StartSystemIndex, null);
             ShowNotice(GameText.Verbatim($"New run with galaxy seed {_galaxySeed}; arrived at the jump point."));
+            RunStarted?.Invoke();
         }
 
         void ShowGalaxyMap()

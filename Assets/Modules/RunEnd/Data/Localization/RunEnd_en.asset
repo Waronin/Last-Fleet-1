@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: RunEnd_en
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: 64b7039a8315eab40aa959fe5f622c5a, type: 2}
+  m_Metadata:
+    m_Items:
+    - rid: 5599358745442254938
+  m_TableData:
+  - m_Id: 1022963712
+    m_Localized: The fleet survived
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1060712448
+    m_Localized: The fleet is lost
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1064906752
+    m_Localized: 'People saved: {people}'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254938
+  - m_Id: 1064906753
+    m_Localized: 'Ships: {ships}'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254938
+  - m_Id: 1073295360
+    m_Localized: 'Time: {time}'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254938
+  - m_Id: 1073295361
+    m_Localized: New run
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 5599358745442254938
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 
+        m_SharedEntries:
+        - id: 1064906752
+        - id: 1064906753
+        - id: 1073295360

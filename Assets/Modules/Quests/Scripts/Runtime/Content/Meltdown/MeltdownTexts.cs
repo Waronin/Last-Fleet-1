@@ -52,7 +52,7 @@ namespace LastFleet.Quests.Meltdown
         public static readonly GameTextKey ScientistSolariteSecured = new GameTextKey(Table, "scientist.solarite-secured");
 
         /// <summary>{station}</summary>
-        public static readonly GameTextKey ForgeControlSpeaker = new GameTextKey(Table, "speaker.forge-control");
+        public static readonly GameTextKey ControlSystemSpeaker = new GameTextKey(Table, "speaker.control-system");
 
         /// <summary>{ship}</summary>
         public static readonly GameTextKey DockedCrewSpeaker = new GameTextKey(Table, "speaker.docked-crew");
@@ -62,5 +62,19 @@ namespace LastFleet.Quests.Meltdown
 
         public static readonly GameTextKey ForgeReceived = new GameTextKey(Table, "forge.received");
         public static readonly GameTextKey ForgeFinished = new GameTextKey(Table, "forge.finished");
+
+        public static readonly GameTextKey RefiningWork = new GameTextKey(Table, "work.refining");
+        public static readonly GameTextKey IgnitionWork = new GameTextKey(Table, "work.ignition");
+
+        /// <summary>{station}, {minutes}</summary>
+        public static readonly GameTextKey PowerStationBriefing = new GameTextKey(Table, "power.briefing");
+
+        public static readonly GameTextKey PowerStationReceived = new GameTextKey(Table, "power.received");
+
+        /// <summary>{minutes}</summary>
+        public static readonly GameTextKey ScientistIgnition = new GameTextKey(Table, "scientist.ignition");
+
+        /// <summary>{system}</summary>
+        public static readonly GameTextKey ScientistEpilogue = new GameTextKey(Table, "scientist.epilogue");
     }
 }

@@ -8,8 +8,8 @@ namespace LastFleet.Quests.Meltdown
 {
     /// <summary>
     /// The Meltdown chain: an exploding station points to the scientist behind its experimental power
-    /// source, who has plans for a generator that can set off a supernova. Steps 1 to 4 are playable;
-    /// step 5 is written down and waits for its mechanics (see the Quests README).
+    /// source, who has plans for a generator that can set off a supernova. Completing it wins the run:
+    /// the supernova wipes out the Pronin pursuers (see the Quests README).
     /// </summary>
     public static class MeltdownQuest
     {
@@ -44,11 +44,17 @@ namespace LastFleet.Quests.Meltdown
 
         // Step 4: a shuttle crew reaches the limit after 40 s docked and dies one by one after that; 60 s away clears the dose.
         const string ForgeName = "Tamsin Forge";
-        const float RefiningSeconds = 300f;
+        const float RefiningSeconds = 240f;
         const float RadiationSecondsToLimit = 40f;
         const float RadiationSecondsToRecover = 60f;
         const float RadiationDeathIntervalSeconds = 8f;
         const float RadiationWarningLevel = 0.75f;
+
+        // Step 5: the generator needs 7 minutes of a crew at the controls; then 3 minutes to gather the ships in the
+        // hangars and jump (the jump drive charges for 30 s, and has long cooled down by then).
+        const string PowerStationName = "Calder Array";
+        const float IgnitionSeconds = 420f;
+        const float SupernovaCountdownSeconds = 180f;
 
         static readonly QuestItem Solarite = new QuestItem("meltdown.solarite", MeltdownTexts.SolariteItem);
         static readonly QuestItem RefinedSolarite = new QuestItem("meltdown.refined-solarite", MeltdownTexts.RefinedSolariteItem);
@@ -65,8 +71,9 @@ namespace LastFleet.Quests.Meltdown
                     () => new GuardedDepositStep(SacredRockSettings())),
                 new QuestStepDefinition(MeltdownTexts.RefiningTitle, MeltdownTexts.RefiningObjective, QuestFailure.EndsChain,
                     () => new StationProcessingStep(RefiningSettings())),
-                new QuestStepDefinition(MeltdownTexts.IgnitionTitle, MeltdownTexts.IgnitionObjective, QuestFailure.EndsChain, null)
-            });
+                new QuestStepDefinition(MeltdownTexts.IgnitionTitle, MeltdownTexts.IgnitionObjective, QuestFailure.EndsChain,
+                    () => new SupernovaStep(IgnitionSettings()))
+            }, winsRun: true);
         }
 
         /// <summary>An abandoned, walkable platform, so the search can start and set off the trap.</summary>
@@ -153,14 +160,15 @@ namespace LastFleet.Quests.Meltdown
             StationProfile profile = new StationProfile(StationAtmosphere.Breathable, 0, StationAttitude.None, StationCondition.Damaged,
                 StationRadiation.Elevated);
             return new StationProcessingSettings(new QuestStationSpec(ForgeName, StationType.Industrial, profile), Solarite, RefinedSolarite,
-                RefiningSeconds, RadiationSecondsToLimit, RadiationSecondsToRecover, RadiationDeathIntervalSeconds, RadiationWarningLevel,
+                MeltdownTexts.RefiningWork, RefiningSeconds,
+                new DockedRadiationSettings(RadiationSecondsToLimit, RadiationSecondsToRecover, RadiationDeathIntervalSeconds, RadiationWarningLevel),
                 ForgeBriefing, ForgeReceived, ForgeFinished);
         }
 
         static DialogueScript ForgeBriefing(ZoneStation station)
         {
             GameText stationName = GameText.Verbatim(station.Name);
-            return DialogueBuilder.Message(MeltdownTexts.ForgeControlSpeaker.Format(("station", stationName)),
+            return DialogueBuilder.Message(MeltdownTexts.ControlSystemSpeaker.Format(("station", stationName)),
                 MeltdownTexts.ForgeBriefing.Format(("station", stationName), ("minutes", (int)(RefiningSeconds / 60f))));
         }
 
@@ -172,6 +180,42 @@ namespace LastFleet.Quests.Meltdown
         static DialogueScript ForgeFinished(ZoneStation station, ShipAgent ship)
         {
             return DialogueBuilder.Message(MeltdownTexts.DockedCrewSpeaker.Format(("ship", ship.DisplayName)), MeltdownTexts.ForgeFinished);
+        }
+
+        /// <summary>
+        /// The power station where Halvorsen Kinetics built the generator, long abandoned. The refined solarite fuels it;
+        /// a docked crew runs the ignition sequence, then the star collapses.
+        /// </summary>
+        static SupernovaSettings IgnitionSettings()
+        {
+            StationProfile profile = new StationProfile(StationAtmosphere.Breathable, 0, StationAttitude.None, StationCondition.Damaged,
+                StationRadiation.None);
+            StationProcessingSettings hold = new StationProcessingSettings(new QuestStationSpec(PowerStationName, StationType.Industrial, profile),
+                RefinedSolarite, null, MeltdownTexts.IgnitionWork, IgnitionSeconds, null, PowerStationBriefing, PowerStationReceived, null);
+            return new SupernovaSettings(hold, SupernovaCountdownSeconds, ScientistIgnition, ScientistEpilogue);
+        }
+
+        static DialogueScript PowerStationBriefing(ZoneStation station)
+        {
+            GameText stationName = GameText.Verbatim(station.Name);
+            return DialogueBuilder.Message(MeltdownTexts.ControlSystemSpeaker.Format(("station", stationName)),
+                MeltdownTexts.PowerStationBriefing.Format(("station", stationName), ("minutes", (int)(IgnitionSeconds / 60f))));
+        }
+
+        static DialogueScript PowerStationReceived(ZoneStation station, ShipAgent ship)
+        {
+            return DialogueBuilder.Message(MeltdownTexts.DockedCrewSpeaker.Format(("ship", ship.DisplayName)), MeltdownTexts.PowerStationReceived);
+        }
+
+        static DialogueScript ScientistIgnition()
+        {
+            return DialogueBuilder.Message(GameText.Verbatim(ScientistName),
+                MeltdownTexts.ScientistIgnition.Format(("minutes", (int)(SupernovaCountdownSeconds / 60f))));
+        }
+
+        static DialogueScript ScientistEpilogue(string systemName)
+        {
+            return DialogueBuilder.Message(GameText.Verbatim(ScientistName), MeltdownTexts.ScientistEpilogue.Format(("system", GameText.Verbatim(systemName))));
         }
     }
 }

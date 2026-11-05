@@ -52,7 +52,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 339292167
-    m_Localized: 'Dock the ship carrying the solarite at the abandoned Tamsin Forge. Nobody lives there: the furnace only runs while a ship with a crew is docked, about 5 minutes in all. The station is radioactive: take turns docking. Then land the refined solarite in a hangar.'
+    m_Localized: 'Dock the ship carrying the solarite at the abandoned Tamsin Forge. Nobody lives there: the furnace only runs while a ship with a crew is docked, about 4 minutes in all. The station is radioactive: take turns docking. Then land the refined solarite in a hangar.'
     m_Metadata:
       m_Items: []
   - m_Id: 339292168
@@ -60,7 +60,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 339292169
-    m_Localized: Bring the refined mineral to the power station and hold it for 10 minutes. Then the fleet jumps.
+    m_Localized: 'Dock the ship carrying the refined solarite at the abandoned Calder Array. Its generator only runs while a ship with a crew is docked: 7 minutes until ignition. Then jump the fleet out of the system before the star collapses.'
     m_Metadata:
       m_Items: []
   - m_Id: 339292170
@@ -153,13 +153,40 @@ MonoBehaviour:
     m_Localized: "The furnace is done. The refined solarite is aboard \u2013 we are heading home."
     m_Metadata:
       m_Items: []
-  - m_Id: 126382587326464
+  - m_Id: 139465003184128
     m_Localized: Control system of the {station}
     m_Metadata:
       m_Items:
       - rid: 5599358745442254925
   - m_Id: 126382620880896
     m_Localized: Crew of {ship}
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254925
+  - m_Id: 139465015767040
+    m_Localized: Refining
+    m_Metadata:
+      m_Items: []
+  - m_Id: 139465015767041
+    m_Localized: Ignition sequence
+    m_Metadata:
+      m_Items: []
+  - m_Id: 139465015767042
+    m_Localized: "Power station {station}, Halvorsen Kinetics. Personnel aboard: none. Supernova generator: intact. Fuel: missing \u2013 insert refined solarite. Ignition sequence about {minutes} minutes; it needs a crew at the controls."
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254925
+  - m_Id: 139465015767043
+    m_Localized: "The solarite is in the core. Dr. Morrow is talking us through the ignition sequence \u2013 keep us docked, whatever happens."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 139465015767044
+    m_Localized: "It is burning! In {minutes} minutes this star collapses \u2013 and takes every Pronin ship in the system with it. Get everyone into the hangars and jump. Now!"
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254925
+  - m_Id: 139465015767045
+    m_Localized: "Behind us, {system} has just become a new sun. The Pronin fleet that hunted us is gone, down to the last ship. We have not won the war. But for the first time, we have time \u2013 time to find a new home."
     m_Metadata:
       m_Items:
       - rid: 5599358745442254925
@@ -177,5 +204,8 @@ MonoBehaviour:
         - id: 106988305985537
         - id: 106988305985538
         - id: 106988305985545
-        - id: 126382587326464
+        - id: 139465003184128
         - id: 126382620880896
+        - id: 139465015767042
+        - id: 139465015767044
+        - id: 139465015767045

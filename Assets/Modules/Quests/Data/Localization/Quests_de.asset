@@ -196,7 +196,7 @@ MonoBehaviour:
       m_Items:
       - rid: 5599358745442254921
   - m_Id: 106988712833034
-    m_Localized: "Raffinierung: noch {remaining} \xB7 angedockt: {docked} \xB7 h\xF6chste Dosis {dose} %"
+    m_Localized: "{work}: noch {remaining} \xB7 angedockt: {docked} \xB7 h\xF6chste Dosis {dose} %"
     m_Metadata:
       m_Items:
       - rid: 5599358745442254921
@@ -241,6 +241,31 @@ MonoBehaviour:
       - rid: 5599358745442254921
   - m_Id: 111581844811776
     m_Localized: "{station} h\xE4lt {item} bereit: Docke ein Schiff mit Crew an, um es abzuholen."
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254921
+  - m_Id: 139465410031616
+    m_Localized: "{work}: noch {remaining} \xB7 angedockt: {docked}"
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254921
+  - m_Id: 139465422614528
+    m_Localized: "Der Generator ist gez\xFCndet \u2013 der Stern von {system} kollabiert in {remaining}!"
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254921
+  - m_Id: 139465422614529
+    m_Localized: 'Supernova in {remaining}: Schiffe in die Hangars und raus aus {system}!'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254921
+  - m_Id: 139465422614530
+    m_Localized: "Die Flotte ist entkommen \u2013 {system} vergeht in einer Supernova."
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254921
+  - m_Id: 139465422614531
+    m_Localized: "Der Stern von {system} wurde zur Supernova, w\xE4hrend die Flotte noch dort war."
     m_Metadata:
       m_Items:
       - rid: 5599358745442254921
@@ -293,3 +318,8 @@ MonoBehaviour:
         - id: 110530097917952
         - id: 110530127278080
         - id: 111581844811776
+        - id: 139465410031616
+        - id: 139465422614528
+        - id: 139465422614529
+        - id: 139465422614530
+        - id: 139465422614531

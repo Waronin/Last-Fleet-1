@@ -11,10 +11,11 @@ namespace LastFleet.Quests
 {
     /// <summary>
     /// Have a station work on a quest item: the ship carrying the item docks at the station and hands it
-    /// over; the work only goes on while at least one fleet ship is docked (it pauses, keeping its progress,
-    /// when all have left). The station is radioactive: docked crews build up a dose and must undock now
-    /// and then (<see cref="DockedRadiation"/>). When the work is done, the result boards a docked ship,
-    /// and the step is done once that ship lands in a hangar. Losing either item fails the step.
+    /// over; the work only goes on while at least one fleet ship with a crew is docked (it pauses, keeping
+    /// its progress, when none is). A radioactive station makes docked crews build up a dose, so they must
+    /// undock now and then (<see cref="DockedRadiation"/>). When the work is done, the result boards a docked
+    /// ship, and the step is done once that ship lands in a hangar; without a result, the step is done with
+    /// the work. Losing either item fails the step.
     /// </summary>
     public sealed class StationProcessingStep : IQuestStep
     {
@@ -46,10 +47,15 @@ namespace LastFleet.Quests
                 {
                     return QuestTexts.CollectItemStatus.Format(("station", _settings.Station.Name), ("item", _settings.Output.Name));
                 }
+                if (_work != null && _radiation != null)
+                {
+                    return QuestTexts.ProcessingStatus.Format(("work", _settings.WorkName), ("remaining", ClockFormat.MinutesSeconds(_work.RemainingSeconds)),
+                        ("docked", CountCrewedDocked()), ("dose", Mathf.RoundToInt(100f * _radiation.HighestDockedLevel)));
+                }
                 if (_work != null)
                 {
-                    return QuestTexts.ProcessingStatus.Format(("remaining", ClockFormat.MinutesSeconds(_work.RemainingSeconds)),
-                        ("docked", CountCrewedDocked()), ("dose", Mathf.RoundToInt(100f * _radiation.HighestDockedLevel)));
+                    return QuestTexts.ProcessingPlainStatus.Format(("work", _settings.WorkName),
+                        ("remaining", ClockFormat.MinutesSeconds(_work.RemainingSeconds)), ("docked", CountCrewedDocked()));
                 }
                 if (_context != null && _context.Cargo.TryGetCarrier(_settings.Input, out ShipAgent carrier))
                 {
@@ -64,7 +70,10 @@ namespace LastFleet.Quests
         {
             _context = context;
             _contact = new QuestStationContact(context.Services.Dialogue, () => _settings.Briefing(_site.Station));
-            _radiation = new DockedRadiation(_settings.CreateDose, _settings.RadiationWarningLevel, QuestTexts.RadiationCause);
+            if (_settings.Radiation != null)
+            {
+                _radiation = new DockedRadiation(_settings.Radiation.CreateDose, _settings.Radiation.WarningLevel, QuestTexts.RadiationCause);
+            }
             context.Cargo.Lost += OnItemLost;
             if (!context.Cargo.TryGetCarrier(_settings.Input, out ShipAgent _))
             {
@@ -77,7 +86,10 @@ namespace LastFleet.Quests
             _site ??= QuestStationSite.Place(system, _settings.Station, _context.CreateRandom(SiteSalt), _context.Services.ZoneWorld, station =>
             {
                 station.SetContact(_contact);
-                station.UseScriptedRadiation();
+                if (_settings.Radiation != null)
+                {
+                    station.UseScriptedRadiation();
+                }
             });
             _context.MarkZone(_site.PointOfInterestIndex);
         }
@@ -90,7 +102,7 @@ namespace LastFleet.Quests
         public void Tick(float deltaSeconds)
         {
             CollectDocked();
-            _radiation.Tick(deltaSeconds, _docked, WarnRadiation);
+            _radiation?.Tick(deltaSeconds, _docked, WarnRadiation);
 
             if (CheckCrewlessCarriers())
             {
@@ -103,6 +115,11 @@ namespace LastFleet.Quests
             }
             else if (!_work.HasRunOut && CountCrewedDocked() > 0 && _work.Advance(deltaSeconds))
             {
+                if (_settings.Output == null)
+                {
+                    _context.Complete();
+                    return;
+                }
                 _context.Notify(QuestTexts.ProcessingDone.Format(("item", _settings.Output.Name), ("station", _site.Station.Name)));
             }
 

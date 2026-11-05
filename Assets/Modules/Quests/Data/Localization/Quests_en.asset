@@ -196,7 +196,7 @@ MonoBehaviour:
       m_Items:
       - rid: 5599358745442254923
   - m_Id: 106988712833034
-    m_Localized: "Refining: {remaining} left \xB7 docked: {docked} \xB7 highest dose {dose} %"
+    m_Localized: "{work}: {remaining} left \xB7 docked: {docked} \xB7 highest dose {dose} %"
     m_Metadata:
       m_Items:
       - rid: 5599358745442254923
@@ -241,6 +241,31 @@ MonoBehaviour:
       - rid: 5599358745442254923
   - m_Id: 111581844811776
     m_Localized: '{station} has {item} ready: dock a ship with a crew to pick it up.'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254923
+  - m_Id: 139465410031616
+    m_Localized: "{work}: {remaining} left \xB7 docked: {docked}"
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254923
+  - m_Id: 139465422614528
+    m_Localized: "The generator has ignited \u2013 the star of {system} collapses in {remaining}!"
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254923
+  - m_Id: 139465422614529
+    m_Localized: 'Supernova in {remaining}: get the ships into the hangars and jump out of {system}!'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254923
+  - m_Id: 139465422614530
+    m_Localized: "The fleet got away \u2013 {system} is gone in a supernova."
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254923
+  - m_Id: 139465422614531
+    m_Localized: The star of {system} went supernova with the fleet still there.
     m_Metadata:
       m_Items:
       - rid: 5599358745442254923
@@ -293,3 +318,8 @@ MonoBehaviour:
         - id: 110530097917952
         - id: 110530127278080
         - id: 111581844811776
+        - id: 139465410031616
+        - id: 139465422614528
+        - id: 139465422614529
+        - id: 139465422614530
+        - id: 139465422614531
