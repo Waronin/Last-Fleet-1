@@ -58,11 +58,13 @@ namespace LastFleet.Inspection
             actions.Clear();
             int flyingSmall = 0;
             int docked = 0;
+            int loaded = 0;
             bool sameClass = true;
             foreach (ShipAgent ship in _selection.Ships)
             {
                 flyingSmall += !ship.IsCapital && !ship.IsDocked ? 1 : 0;
                 docked += ship.IsDocked ? 1 : 0;
+                loaded += ship.TryGetComponent(out HarvesterMining mining) && !mining.Cargo.IsEmpty ? 1 : 0;
                 sameClass &= ship.ClassName == _selection.Ships[0].ClassName;
             }
 
@@ -76,9 +78,27 @@ namespace LastFleet.Inspection
                 _hangarCommands.LaunchShips(_selection.Ships);
                 return null;
             }));
+            // Shown only for harvesters: the way out when the fleet has no room for what they carry.
+            if (loaded > 0)
+            {
+                actions.Add(new InspectionAction(InspectionTexts.JettisonCargoAction, null, true, null, JettisonCargo));
+            }
             bool canForm = _selection.Count > 1 && sameClass;
             actions.Add(new InspectionAction(InspectionTexts.FormSquadAction, FormSquadHint, canForm, InspectionTexts.FormSquadNeedsOneClass, () =>
                 InspectionTexts.SquadFormed.Format(("squad", _registry.Squads.Form(_selection.Ships).DisplayName))));
+        }
+
+        GameText JettisonCargo()
+        {
+            int ships = 0;
+            foreach (ShipAgent ship in _selection.Ships)
+            {
+                if (ship.TryGetComponent(out HarvesterMining mining) && mining.JettisonCargo() > 0f)
+                {
+                    ships++;
+                }
+            }
+            return InspectionTexts.CargoJettisoned.Format(("count", ships));
         }
 
         void DescribeShip(ShipAgent ship, List<GameText> lines)

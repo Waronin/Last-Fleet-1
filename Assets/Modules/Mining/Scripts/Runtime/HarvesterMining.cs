@@ -88,6 +88,26 @@ namespace LastFleet.Mining
             return true;
         }
 
+        /// <summary>
+        /// Throws the cargo overboard and returns how much it was, e.g. when the fleet has no room for
+        /// it. The material is lost. A harvester on its way to deliver goes back to mining instead.
+        /// </summary>
+        public float JettisonCargo()
+        {
+            float amount = Cargo.Amount;
+            if (amount <= 0f)
+            {
+                return 0f;
+            }
+
+            Cargo.Unload(amount);
+            if (State == MiningState.Delivering)
+            {
+                ReturnToDeposit();
+            }
+            return amount;
+        }
+
         public void StopMining()
         {
             if (_coordinator != null)
@@ -230,8 +250,18 @@ namespace LastFleet.Mining
                 StopMining();
                 return;
             }
+            ReturnToDeposit();
+        }
 
-            if (Deposit != null && _coordinator.TryFindDeposit(_zone, Deposit, Deposit.Resource, _ship, out ResourceDeposit found, out int slot))
+        /// <summary>Back to the last deposit with an empty hold, or on to the next one in the zone.</summary>
+        void ReturnToDeposit()
+        {
+            if (Deposit == null)
+            {
+                StopMining();
+                return;
+            }
+            if (_coordinator.TryFindDeposit(_zone, Deposit, Deposit.Resource, _ship, out ResourceDeposit found, out int slot))
             {
                 Deposit = found;
                 _slot = slot;

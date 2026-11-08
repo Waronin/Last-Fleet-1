@@ -59,12 +59,12 @@ MonoBehaviour:
       m_Items:
       - rid: 6743102046643421290
   - m_Id: 318320648
-    m_Localized: '{ship}: no storage with room for {resource}.'
+    m_Localized: '{ship}: no store has room for {resource}. Jettison the cargo to mine on.'
     m_Metadata:
       m_Items:
       - rid: 6743102046643421290
   - m_Id: 326709248
-    m_Localized: '{storage}: no room left in the fleet for {resource}.'
+    m_Localized: '{storage}: no room left in the fleet for {resource}. Jettison the cargo to mine on.'
     m_Metadata:
       m_Items:
       - rid: 6743102046643421290

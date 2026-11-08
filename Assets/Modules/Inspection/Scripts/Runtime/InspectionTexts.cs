@@ -180,5 +180,10 @@ namespace LastFleet.Inspection
 
         /// <summary>{squad}</summary>
         public static readonly GameTextKey SquadFormed = new GameTextKey(Table, "action.form-squad.formed");
+
+        public static readonly GameTextKey JettisonCargoAction = new GameTextKey(Table, "action.jettison-cargo");
+
+        /// <summary>{count}</summary>
+        public static readonly GameTextKey CargoJettisoned = new GameTextKey(Table, "action.jettison-cargo.done");
     }
 }

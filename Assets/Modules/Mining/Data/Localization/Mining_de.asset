@@ -59,12 +59,12 @@ MonoBehaviour:
       m_Items:
       - rid: 6743102046643421294
   - m_Id: 318320648
-    m_Localized: "{ship}: Kein Lager mit Platz f\xFCr {resource}."
+    m_Localized: "{ship}: Kein Lager mit Platz f\xFCr {resource}. Fracht auswerfen, um weiter abzubauen."
     m_Metadata:
       m_Items:
       - rid: 6743102046643421294
   - m_Id: 326709248
-    m_Localized: "{storage}: In der Flotte ist kein Platz mehr f\xFCr {resource}."
+    m_Localized: "{storage}: In der Flotte ist kein Platz mehr f\xFCr {resource}. Fracht auswerfen, um weiter abzubauen."
     m_Metadata:
       m_Items:
       - rid: 6743102046643421294

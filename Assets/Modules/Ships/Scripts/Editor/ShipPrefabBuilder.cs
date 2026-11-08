@@ -67,6 +67,8 @@ namespace LastFleet.Ships.Editor
         const float TankerStartingFuel = 8000f;
         // Half the refinery's water store: about 17 minutes for the starting population (see FleetWaterSupply).
         const float RefineryStartingWater = 2500f;
+        // Six times the first value: two harvester squads took only about 5 minutes to fill 5000.
+        const float RefineryMetalCapacity = 30000f;
 
         // GDD: capital ships start below capacity, so rescued people have room.
         const int RefineryPassengerCapacity = 1200;
@@ -204,6 +206,7 @@ namespace LastFleet.Ships.Editor
             EditorAssetUtility.SetReferences(hangar, ("_bay", bayTransform));
             SupplyStorage storage = root.AddComponent<SupplyStorage>();
             SerializedObject storageData = new SerializedObject(storage);
+            EditorAssetUtility.FindProperty(storageData, "_metalCapacity").floatValue = RefineryMetalCapacity;
             EditorAssetUtility.FindProperty(storageData, "_startingWater").floatValue = RefineryStartingWater;
             storageData.ApplyModifiedPropertiesWithoutUndo();
             AddDurability(root, RefineryHull);

@@ -370,6 +370,15 @@ MonoBehaviour:
     m_Localized: 'Not scanned: the number of people aboard is unknown.'
     m_Metadata:
       m_Items: []
+  - m_Id: 4153054412222464
+    m_Localized: Jettison cargo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4153054445776896
+    m_Localized: '{count:plural:{} ship jettisoned its cargo.|{} ships jettisoned their cargo.}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421291
   references:
     version: 2
     RefIds:
@@ -417,3 +426,4 @@ MonoBehaviour:
         - id: 402245417512960
         - id: 402245434290184
         - id: 402245434290185
+        - id: 4153054445776896

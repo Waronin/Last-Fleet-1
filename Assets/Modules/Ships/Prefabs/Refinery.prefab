@@ -1325,7 +1325,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: LastFleet.Mining::LastFleet.Mining.RawMaterialStorage
   _fuelCapacity: 0
-  _metalCapacity: 5000
+  _metalCapacity: 30000
   _waterCapacity: 5000
   _startingFuel: 0
   _startingWater: 2500

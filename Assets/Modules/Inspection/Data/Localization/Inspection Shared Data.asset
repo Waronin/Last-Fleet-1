@@ -327,6 +327,14 @@ MonoBehaviour:
     m_Key: station.life-signs-unscanned
     m_Metadata:
       m_Items: []
+  - m_Id: 4153054412222464
+    m_Key: action.jettison-cargo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4153054445776896
+    m_Key: action.jettison-cargo.done
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
