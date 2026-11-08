@@ -151,6 +151,54 @@ MonoBehaviour:
     m_Key: notice.station-destroyed
     m_Metadata:
       m_Items: []
+  - m_Id: 3585086544490496
+    m_Key: action.evacuate
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3585086578044928
+    m_Key: line.residents
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3585086582239232
+    m_Key: line.evacuation
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3585086582239233
+    m_Key: notice.no-ferry
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3585086586433536
+    m_Key: notice.evacuation-needs-hail
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3585086586433537
+    m_Key: notice.fleet-full
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3585086586433538
+    m_Key: notice.nobody-wants-to-come
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3585086586433539
+    m_Key: notice.evacuation-started
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3585086586433540
+    m_Key: notice.evacuation-finished
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3585086586433541
+    m_Key: notice.evacuation-fleet-full
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3585086586433542
+    m_Key: notice.no-survivors-left
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3600419862949888
+    m_Key: notice.met-residents
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

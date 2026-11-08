@@ -175,6 +175,62 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - rid: 6743102069811707982
+  - m_Id: 3585086544490496
+    m_Localized: Evacuate
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3585086578044928
+    m_Localized: 'Want to join the fleet: {willing}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707982
+  - m_Id: 3585086582239232
+    m_Localized: "Taken aboard: {rescued} \xB7 ferries: {ferries}"
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707982
+  - m_Id: 3585086582239233
+    m_Localized: No ship with passenger seats is free to ferry people.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3585086586433536
+    m_Localized: Hail the station first to learn who wants to come along.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3585086586433537
+    m_Localized: 'The fleet is full: no room for more people.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3585086586433538
+    m_Localized: Nobody on {station} wants to leave.
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707982
+  - m_Id: 3585086586433539
+    m_Localized: "{count} ships ferry people from {station} \u2013 {willing} want to come along."
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707982
+  - m_Id: 3585086586433540
+    m_Localized: 'Evacuation of {station} done: {rescued} people taken aboard.'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707982
+  - m_Id: 3585086586433541
+    m_Localized: The fleet is full. {rescued} people came from {station}; {left} more wanted to come.
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707982
+  - m_Id: 3585086586433542
+    m_Localized: Nobody on {station} survived.
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707982
+  - m_Id: 3600419862949888
+    m_Localized: "{ship} met the people of {station} \u2013 attitude: {attitude}; {willing} want to join the fleet."
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707982
   references:
     version: 2
     RefIds:
@@ -203,3 +259,11 @@ MonoBehaviour:
         - id: 15760730173453
         - id: 19561356800000
         - id: 2432028015931392
+        - id: 3585086578044928
+        - id: 3585086582239232
+        - id: 3585086586433538
+        - id: 3585086586433539
+        - id: 3585086586433540
+        - id: 3585086586433541
+        - id: 3585086586433542
+        - id: 3600419862949888

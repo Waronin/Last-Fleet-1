@@ -23,14 +23,15 @@ namespace LastFleet.Inspection
         readonly ShipRegistry _registry;
         readonly DockingService _docking;
         readonly SearchService _search;
+        readonly EvacuationService _evacuation;
         readonly Func<IReadOnlyList<ShipAgent>> _selectedShips;
         readonly List<ShipAgent> _docked = new List<ShipAgent>();
         readonly List<ShipAgent> _assigned = new List<ShipAgent>();
-        readonly List<ShipAgent> _selectedSmallShips = new List<ShipAgent>();
 
         public StationInspection(ZoneView zone, ZoneStation station, ScoutingService scouting, ShipRegistry registry,
-            DockingService docking, SearchService search, Func<IReadOnlyList<ShipAgent>> selectedShips)
+            DockingService docking, SearchService search, EvacuationService evacuation, Func<IReadOnlyList<ShipAgent>> selectedShips)
         {
+            _evacuation = evacuation;
             _zone = zone;
             _station = station ?? throw new ArgumentNullException(nameof(station));
             _scouting = scouting;
@@ -52,6 +53,7 @@ namespace LastFleet.Inspection
             lines.Add(InspectionTexts.StationPorts.Format(("count", _station.DockingPortCount)));
             DescribeKnowledge(_station, lines);
             DescribeHail(_station, lines);
+            DescribeResidents(lines);
             DescribeDocking(lines);
 
             if (_scouting.TryGetActiveScan(_station, out ShipScanner scanner))
@@ -81,6 +83,32 @@ namespace LastFleet.Inspection
                 : _search.LootOf(_zone, _station).IsEmpty ? StationTexts.SearchAlreadyEmpty : null;
             actions.Add(new InspectionAction(StationTexts.SearchAction, null, searchBlocked == null, searchBlocked,
                 () => _search.RequestSearch(_zone, _station)));
+
+            if (_evacuation != null && _station.Profile.IsInhabited)
+            {
+                GameText evacuationBlocked = _evacuation.BlockedReason(_station);
+                actions.Add(new InspectionAction(StationTexts.EvacuateAction, null, evacuationBlocked == null, evacuationBlocked,
+                    () => _evacuation.RequestEvacuation(_zone, _station, _selectedShips())));
+            }
+        }
+
+        /// <summary>
+        /// After a hail the people aboard say how many of them want to join the fleet; while ferries are at
+        /// work, how many came over so far.
+        /// </summary>
+        void DescribeResidents(List<GameText> lines)
+        {
+            if (!_station.IsHailed || !_station.HailResponse.Answered)
+            {
+                return;
+            }
+            StationResidents residents = _station.Residents;
+            lines.Add(StationTexts.ResidentsLine.Format(("willing", residents.Willing)));
+            int ferries = _evacuation != null ? _evacuation.CountFerries(_station) : 0;
+            if (residents.Rescued > 0 || ferries > 0)
+            {
+                lines.Add(StationTexts.EvacuationLine.Format(("rescued", residents.Rescued), ("ferries", ferries)));
+            }
         }
 
         /// <summary>Type and rough size, which are visible from afar.</summary>
@@ -154,25 +182,14 @@ namespace LastFleet.Inspection
             }
         }
 
-        /// <summary>Selected small ships dock if there are any; otherwise a free ship is picked, scouts first.</summary>
+        /// <summary>
+        /// Picks a free ship itself, like the scan button: one already in the station's zone first. The
+        /// selection is not used, since it may be ships far away that were selected long ago; to dock
+        /// chosen ships, select them and right-click the station.
+        /// </summary>
         GameText Dock()
         {
-            _selectedSmallShips.Clear();
-            foreach (ShipAgent ship in _selectedShips())
-            {
-                if (!ship.IsCapital)
-                {
-                    _selectedSmallShips.Add(ship);
-                }
-            }
-            if (_selectedSmallShips.Count > 0)
-            {
-                _docking.RequestDocking(_zone, _station, _selectedSmallShips);
-            }
-            else
-            {
-                _docking.RequestDocking(_zone, _station);
-            }
+            _docking.RequestDocking(_zone, _station);
             return null;
         }
 

@@ -12,7 +12,8 @@ namespace LastFleet.Stations
     /// <summary>
     /// Sends small ships to station docking ports and applies what happens to them there: crew losses in a
     /// toxic atmosphere, under radiation or from a hostile crew, and capture by a hostile crew. When
-    /// it picks a ship itself, scouts such as shuttles go first, so harvesters keep mining.
+    /// it picks a ship itself, a free ship already flying in the station's zone goes first; from other
+    /// zones scouts such as shuttles go before others, so harvesters keep mining.
     /// </summary>
     public sealed class DockingService : MonoBehaviour
     {
@@ -87,13 +88,18 @@ namespace LastFleet.Stations
             return sent;
         }
 
-        /// <summary>Picks one ship, free scouts first, then the nearest, and sends it to a free port.</summary>
+        /// <summary>
+        /// Picks one free ship and sends it to a free port: one already flying in the station's zone first,
+        /// from other zones scouts first (<see cref="ScoutingService.ScoutCost"/>). Ships already at this
+        /// station are not sent again.
+        /// </summary>
         public bool RequestDocking(ZoneView zone, ZoneStation station)
         {
             _candidates.Clear();
             foreach (ShipAgent ship in _registry.Ships)
             {
-                if (CanDock(ship))
+                bool atThisStation = ship.TryGetComponent(out StationDocking docking) && docking.Station == station;
+                if (CanDock(ship) && !atThisStation)
                 {
                     _candidates.Add(ship);
                 }
@@ -102,7 +108,8 @@ namespace LastFleet.Stations
             int zoneIndex = zone.Record.PointOfInterestIndex;
             Vector2 zonePositionAU = zone.Record.PointOfInterest.PositionAU;
             ShipAvailability.PickFreeThenNearest(_candidates, ShipAvailability.IsFree,
-                ship => ScoutingService.ScoutCost(ship, ShipAvailability.TravelCost(ship, zoneIndex, zonePositionAU, station.LocalPosition)), 1, _picked);
+                ship => ScoutingService.ScoutCost(ship, ShipAvailability.TravelCost(ship, zoneIndex, zonePositionAU, station.LocalPosition), zoneIndex),
+                1, _picked);
             return RequestDocking(zone, station, _picked) > 0;
         }
 
@@ -116,9 +123,36 @@ namespace LastFleet.Stations
         {
             ZoneStation station = docking.Station;
             station.MarkVisited();
+            if (!docking.ReportsArrival)
+            {
+                return;
+            }
             Notice?.Invoke(StationTexts.Docked.Format(("ship", docking.Ship.DisplayName), ("station", station.Name),
                 ("atmosphere", ZoneTexts.Atmospheres.For(station.Profile.Atmosphere)), ("radiation", ZoneTexts.Radiation.For(station.Profile.Radiation)),
                 ("condition", ZoneTexts.Conditions.For(station.Profile.Condition))));
+            TalkToResidents(docking.Ship, station);
+        }
+
+        /// <summary>
+        /// The docked crew meets the people aboard face to face, which tells as much as a hail: their attitude
+        /// and how many want to join the fleet. Someone aboard with something to say, such as a quest giver,
+        /// takes over the conversation.
+        /// </summary>
+        void TalkToResidents(ShipAgent ship, ZoneStation station)
+        {
+            if (station.HasContactToTalkTo)
+            {
+                station.Hail();
+                Notice?.Invoke(station.Contact.Answer(station));
+                return;
+            }
+            if (!station.Profile.IsInhabited)
+            {
+                return;
+            }
+            StationHailResponse response = station.Hail();
+            Notice?.Invoke(StationTexts.MetResidents.Format(("ship", ship.DisplayName), ("station", station.Name),
+                ("attitude", ZoneTexts.Attitudes.For(response.ClaimedAttitude)), ("willing", station.Residents.Willing)));
         }
 
         /// <summary>Applies a hazard to a docked ship; returns true if the ship was captured and is gone.</summary>
@@ -157,7 +191,16 @@ namespace LastFleet.Stations
             };
         }
 
-        bool TrySend(ZoneView zone, ZoneStation station, ShipAgent ship)
+        /// <summary>
+        /// Sends one ship to a free port without a notice, for automated trips such as evacuation runs that
+        /// report on their own; false if it cannot dock or no port is free.
+        /// </summary>
+        internal bool TryDockQuietly(ZoneView zone, ZoneStation station, ShipAgent ship)
+        {
+            return !station.IsDestroyed && CanDock(ship) && TrySend(zone, station, ship, false);
+        }
+
+        bool TrySend(ZoneView zone, ZoneStation station, ShipAgent ship, bool announce = true)
         {
             if (!zone.TryGetStationView(station, out Transform view) || !view.TryGetComponent(out StationView stationView))
             {
@@ -170,8 +213,11 @@ namespace LastFleet.Stations
             }
 
             Transform portTransform = stationView.DockingPorts[port];
-            ship.GetComponent<StationDocking>().BeginDocking(zone, station, portTransform.position, portTransform.forward);
-            Notice?.Invoke(StationTexts.DockingDispatched.Format(("ship", ship.DisplayName), ("station", station.Name)));
+            ship.GetComponent<StationDocking>().BeginDocking(zone, station, portTransform.position, portTransform.forward, announce);
+            if (announce)
+            {
+                Notice?.Invoke(StationTexts.DockingDispatched.Format(("ship", ship.DisplayName), ("station", station.Name)));
+            }
             return true;
         }
 

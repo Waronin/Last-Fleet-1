@@ -175,6 +175,62 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - rid: 6743102069811707981
+  - m_Id: 3585086544490496
+    m_Localized: Evakuieren
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3585086578044928
+    m_Localized: 'Wollen mitkommen: {willing}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707981
+  - m_Id: 3585086582239232
+    m_Localized: "An Bord geholt: {rescued} \xB7 F\xE4hren: {ferries}"
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707981
+  - m_Id: 3585086582239233
+    m_Localized: "Kein Schiff mit Passagierpl\xE4tzen ist frei, um Menschen zu holen."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3585086586433536
+    m_Localized: Funke die Station zuerst an, um zu erfahren, wer mitkommen will.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3585086586433537
+    m_Localized: "Die Flotte ist voll: kein Platz f\xFCr weitere Menschen."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3585086586433538
+    m_Localized: Niemand auf {station} will mitkommen.
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707981
+  - m_Id: 3585086586433539
+    m_Localized: "{count} Schiffe holen Menschen von {station} \u2013 {willing} wollen mitkommen."
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707981
+  - m_Id: 3585086586433540
+    m_Localized: 'Evakuierung von {station} beendet: {rescued} Menschen an Bord geholt.'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707981
+  - m_Id: 3585086586433541
+    m_Localized: Die Flotte ist voll. {rescued} Menschen kamen von {station}; {left} weitere wollten mit.
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707981
+  - m_Id: 3585086586433542
+    m_Localized: "Auf {station} hat niemand \xFCberlebt."
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707981
+  - m_Id: 3600419862949888
+    m_Localized: "{ship} hat die Bewohner von {station} getroffen \u2013 Haltung: {attitude}; {willing} wollen mitkommen."
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707981
   references:
     version: 2
     RefIds:
@@ -203,3 +259,11 @@ MonoBehaviour:
         - id: 15760730173453
         - id: 19561356800000
         - id: 2432028015931392
+        - id: 3585086578044928
+        - id: 3585086582239232
+        - id: 3585086586433538
+        - id: 3585086586433539
+        - id: 3585086586433540
+        - id: 3585086586433541
+        - id: 3585086586433542
+        - id: 3600419862949888

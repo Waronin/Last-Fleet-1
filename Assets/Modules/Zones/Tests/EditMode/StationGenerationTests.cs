@@ -48,7 +48,7 @@ namespace LastFleet.Zones.Tests
         }
 
         [Test]
-        public void HabitatsHoldFarMorePeopleThanOutposts()
+        public void SafeHabitatsHoldFarMorePeopleThanSafeOutposts()
         {
             DeterministicRandom random = new DeterministicRandom(3UL);
             int smallestHabitat = int.MaxValue;
@@ -57,11 +57,15 @@ namespace LastFleet.Zones.Tests
             {
                 StationProfile habitat = StationGeneration.RollProfile(random, StationType.Habitat);
                 StationProfile outpost = StationGeneration.RollProfile(random, StationType.Outpost);
-                if (habitat.IsInhabited)
+                // Toxic or radioactive stations keep only a few survivors (HazardousOccupantDivisor).
+                if (habitat.IsInhabited && !habitat.IsHazardous)
                 {
                     smallestHabitat = Math.Min(smallestHabitat, habitat.Occupants);
                 }
-                largestOutpost = Math.Max(largestOutpost, outpost.Occupants);
+                if (!outpost.IsHazardous)
+                {
+                    largestOutpost = Math.Max(largestOutpost, outpost.Occupants);
+                }
             }
 
             Assert.Greater(smallestHabitat, largestOutpost);

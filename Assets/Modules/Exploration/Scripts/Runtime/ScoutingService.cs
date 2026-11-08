@@ -12,7 +12,8 @@ namespace LastFleet.Exploration
     /// Sends ships to find things out: a ship to scan a deposit or a station, or a ship to explore an
     /// unknown zone.
     /// It picks a free small ship first, otherwise the nearest one, and never sends a second ship for
-    /// the same target. Scouts such as shuttles go before other ships, so harvesters keep mining.
+    /// the same target. A free ship already in the target zone goes first; from other zones scouts such as
+    /// shuttles go before other ships, so harvesters keep mining.
     /// </summary>
     public sealed class ScoutingService : MonoBehaviour
     {
@@ -75,7 +76,7 @@ namespace LastFleet.Exploration
             int zoneIndex = zone.Record.PointOfInterestIndex;
             Vector2 zonePositionAU = zone.Record.PointOfInterest.PositionAU;
             ShipAvailability.PickFreeThenNearest(_candidates, ShipAvailability.IsFree,
-                ship => ScoutCost(ship, ShipAvailability.TravelCost(ship, zoneIndex, zonePositionAU, target.LocalPosition)), 1, _picked);
+                ship => ScoutCost(ship, ShipAvailability.TravelCost(ship, zoneIndex, zonePositionAU, target.LocalPosition), zoneIndex), 1, _picked);
             if (_picked.Count == 0)
             {
                 Notice?.Invoke(ExplorationTexts.NoShipToScan);
@@ -103,7 +104,7 @@ namespace LastFleet.Exploration
             }
 
             ShipAvailability.PickFreeThenNearest(_candidates, ShipAvailability.IsFree,
-                ship => ScoutCost(ship, ShipAvailability.TravelCost(ship, zoneIndex, pointOfInterest.PositionAU, Vector3.zero)), 1, _picked);
+                ship => ScoutCost(ship, ShipAvailability.TravelCost(ship, zoneIndex, pointOfInterest.PositionAU, Vector3.zero), zoneIndex), 1, _picked);
             if (_picked.Count == 0)
             {
                 Notice?.Invoke(ExplorationTexts.NoShipToExplore);
@@ -115,9 +116,18 @@ namespace LastFleet.Exploration
             return true;
         }
 
-        /// <summary>Travel cost with scouts first: any non-scout costs more than every scout in the system.</summary>
-        public static float ScoutCost(ShipAgent ship, float travelCost)
+        /// <summary>
+        /// Travel cost for a task in a zone: a ship already flying in the target zone is nearest, whatever it
+        /// is; from other zones scouts come first, since any non-scout costs more than every scout in the
+        /// system, so harvesters elsewhere keep mining.
+        /// </summary>
+        public static float ScoutCost(ShipAgent ship, float travelCost, int targetZoneIndex)
         {
+            bool inTargetZone = !ship.IsDocked && ship.Zone != null && ship.Zone.Record.PointOfInterestIndex == targetZoneIndex;
+            if (inTargetZone)
+            {
+                return travelCost;
+            }
             return ship.TryGetComponent(out ShipScanner scanner) && scanner.IsScout ? travelCost : travelCost + NonScoutPenaltyUnits;
         }
 

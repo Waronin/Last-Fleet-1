@@ -29,6 +29,11 @@ namespace LastFleet.Zones
         public Vector3 LocalPosition { get; }
         public float HeadingDegrees { get; }
         public StationProfile Profile { get; }
+
+        /// <summary>The people aboard during the run, who may join the fleet; starts from the profile's occupants.</summary>
+        public StationResidents Residents => _residents ??= new StationResidents(Profile);
+
+        StationResidents _residents;
         public float FootprintRadiusUnits => StationTypes.FootprintRadiusUnits(Type);
         public int DockingPortCount => StationTypes.DockingPortCount(Type);
 

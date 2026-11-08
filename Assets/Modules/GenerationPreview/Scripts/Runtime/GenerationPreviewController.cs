@@ -102,6 +102,8 @@ namespace LastFleet.GenerationPreview
         [SerializeField] RunEndWindow _runEndWindow;
         [Tooltip("Optional. Its warnings go into the notice feed.")]
         [SerializeField] FleetWaterSupply _water;
+        [Tooltip("Optional. Lets stations be evacuated from the station panel.")]
+        [SerializeField] EvacuationService _evacuation;
         [Tooltip("Spawned on arrival in a system until fleet jumps carry the fleet along.")]
         [SerializeField] ShipAgent _refineryPrefab;
         [SerializeField] ShipAgent _tankerPrefab;
@@ -170,6 +172,10 @@ namespace LastFleet.GenerationPreview
             {
                 _water.Notice += ShowNotice;
             }
+            if (_evacuation != null)
+            {
+                _evacuation.Notice += ShowNotice;
+            }
             _docking.Notice += ShowNotice;
             _search.Notice += ShowNotice;
             _rewards.Notice += ShowNotice;
@@ -216,6 +222,10 @@ namespace LastFleet.GenerationPreview
             {
                 _water.Notice -= ShowNotice;
             }
+            if (_evacuation != null)
+            {
+                _evacuation.Notice -= ShowNotice;
+            }
             _docking.Notice -= ShowNotice;
             _search.Notice -= ShowNotice;
             _rewards.Notice -= ShowNotice;
@@ -243,7 +253,7 @@ namespace LastFleet.GenerationPreview
 
         void InspectStation(ZoneView zone, ZoneStation station)
         {
-            _inspection.Show(new StationInspection(zone, station, _scouting, _shipRegistry, _docking, _search, () => Selection.Ships));
+            _inspection.Show(new StationInspection(zone, station, _scouting, _shipRegistry, _docking, _search, _evacuation, () => Selection.Ships));
         }
 
         void InspectPointOfInterest(int index)
@@ -538,6 +548,10 @@ namespace LastFleet.GenerationPreview
         void StartNewRun()
         {
             _runZones = new RunZoneRegistry();
+            if (_evacuation != null)
+            {
+                _evacuation.Clear();
+            }
             _zoneWorld.Clear();
             _starSystemView.Clear();
             _jumpDialog.Close();

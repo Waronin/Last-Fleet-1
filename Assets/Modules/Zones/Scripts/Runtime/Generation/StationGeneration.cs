@@ -1,3 +1,4 @@
+using System;
 using LastFleet.Shared.Randomness;
 
 namespace LastFleet.Zones
@@ -30,6 +31,9 @@ namespace LastFleet.Zones
             return random.PickWeighted(isOrbital ? OrbitalTypes : DeepSpaceTypes);
         }
 
+        /// <summary>A toxic or radioactive station keeps only this fraction of the usual occupants alive.</summary>
+        public const int HazardousOccupantDivisor = 10;
+
         public static StationProfile RollProfile(DeterministicRandom random, StationType type)
         {
             TypeOdds odds = OddsFor(type);
@@ -42,6 +46,11 @@ namespace LastFleet.Zones
                 return new StationProfile(atmosphere, 0, StationAttitude.None, condition, radiation);
             }
             int occupants = random.Range(odds.MinimumOccupants, odds.MaximumOccupants + 1);
+            if (atmosphere == StationAtmosphere.Toxic || radiation == StationRadiation.Elevated)
+            {
+                // Few hold out in poison or radiation; the roll stays, so the stations after it do not change.
+                occupants = Math.Max(1, occupants / HazardousOccupantDivisor);
+            }
             return new StationProfile(atmosphere, occupants, random.PickWeighted(Attitudes), condition, radiation);
         }
 

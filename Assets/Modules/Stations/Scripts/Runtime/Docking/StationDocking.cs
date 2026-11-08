@@ -51,8 +51,15 @@ namespace LastFleet.Stations
 
         public DockingState State { get; private set; }
         public ZoneStation Station { get; private set; }
+
+        /// <summary>Whether the crew reports what it finds on arrival; automated trips such as evacuation runs stay quiet.</summary>
+        public bool ReportsArrival { get; private set; }
         public ShipAgent Ship => _ship;
-        public bool IsAutomationActive => State != DockingState.Inactive;
+        /// <summary>
+        /// Busy while flying in and connecting. Docked and waiting counts as free: a new task makes the ship
+        /// back out first. Work at the station, such as a search, keeps it busy through its own automation.
+        /// </summary>
+        public bool IsAutomationActive => State == DockingState.Approaching || State == DockingState.Connecting;
 
         // Subscribed for the object's whole life: docked ships are inactive but can be tasked.
         void Awake()
@@ -72,8 +79,9 @@ namespace LastFleet.Stations
         }
 
         /// <summary>Called by the docking service after it reserved a port; position and axis are in world space.</summary>
-        internal void BeginDocking(ZoneView zone, ZoneStation station, Vector3 portPosition, Vector3 portOutward)
+        internal void BeginDocking(ZoneView zone, ZoneStation station, Vector3 portPosition, Vector3 portOutward, bool reportArrival)
         {
+            ReportsArrival = reportArrival;
             _zone = zone;
             Station = station;
             DockingHazardRules.CollectHazards(station.Profile, _hazards);

@@ -62,6 +62,9 @@ namespace LastFleet.Zones
         public StationAtmosphere Atmosphere { get; }
         public int Occupants { get; }
         public bool IsInhabited => Occupants > 0;
+
+        /// <summary>Poisonous air or radiation: hard to live on, so the few aboard want out (see <see cref="StationResidents"/>).</summary>
+        public bool IsHazardous => Atmosphere == StationAtmosphere.Toxic || Radiation == StationRadiation.Elevated;
         public StationAttitude Attitude { get; }
         public StationCondition Condition { get; }
         public StationRadiation Radiation { get; }

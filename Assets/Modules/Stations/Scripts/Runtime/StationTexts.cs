@@ -83,5 +83,35 @@ namespace LastFleet.Stations
 
         /// <summary>{station}</summary>
         public static readonly GameTextKey StationDestroyed = new GameTextKey(Table, "notice.station-destroyed");
+
+        public static readonly GameTextKey EvacuateAction = new GameTextKey(Table, "action.evacuate");
+
+        /// <summary>{willing}</summary>
+        public static readonly GameTextKey ResidentsLine = new GameTextKey(Table, "line.residents");
+
+        /// <summary>{rescued}, {ferries}</summary>
+        public static readonly GameTextKey EvacuationLine = new GameTextKey(Table, "line.evacuation");
+
+        public static readonly GameTextKey NoFerry = new GameTextKey(Table, "notice.no-ferry");
+        public static readonly GameTextKey EvacuationNeedsHail = new GameTextKey(Table, "notice.evacuation-needs-hail");
+        public static readonly GameTextKey FleetFull = new GameTextKey(Table, "notice.fleet-full");
+
+        /// <summary>{station}</summary>
+        public static readonly GameTextKey NobodyWantsToCome = new GameTextKey(Table, "notice.nobody-wants-to-come");
+
+        /// <summary>{count}, {station}, {willing}</summary>
+        public static readonly GameTextKey EvacuationStarted = new GameTextKey(Table, "notice.evacuation-started");
+
+        /// <summary>{station}, {rescued}</summary>
+        public static readonly GameTextKey EvacuationFinished = new GameTextKey(Table, "notice.evacuation-finished");
+
+        /// <summary>{station}, {rescued}, {left}</summary>
+        public static readonly GameTextKey EvacuationFleetFull = new GameTextKey(Table, "notice.evacuation-fleet-full");
+
+        /// <summary>{station}</summary>
+        public static readonly GameTextKey NoSurvivorsLeft = new GameTextKey(Table, "notice.no-survivors-left");
+
+        /// <summary>{ship}, {station}, {attitude}, {willing}</summary>
+        public static readonly GameTextKey MetResidents = new GameTextKey(Table, "notice.met-residents");
     }
 }
