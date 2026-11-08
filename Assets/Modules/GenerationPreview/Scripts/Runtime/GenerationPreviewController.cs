@@ -9,6 +9,7 @@ using LastFleet.Inspection;
 using LastFleet.Localization;
 using LastFleet.Mining;
 using LastFleet.People;
+using LastFleet.Provisions;
 using LastFleet.Pursuit;
 using LastFleet.Quests;
 using LastFleet.Quests.Meltdown;
@@ -99,6 +100,8 @@ namespace LastFleet.GenerationPreview
         [SerializeField] QuestDirector _quests;
         [Tooltip("Optional. While the end screen is open, the preview takes no input.")]
         [SerializeField] RunEndWindow _runEndWindow;
+        [Tooltip("Optional. Its warnings go into the notice feed.")]
+        [SerializeField] FleetWaterSupply _water;
         [Tooltip("Spawned on arrival in a system until fleet jumps carry the fleet along.")]
         [SerializeField] ShipAgent _refineryPrefab;
         [SerializeField] ShipAgent _tankerPrefab;
@@ -163,6 +166,10 @@ namespace LastFleet.GenerationPreview
             _mining.Notice += ShowNotice;
             _scouting.Notice += ShowNotice;
             _population.Notice += ShowNotice;
+            if (_water != null)
+            {
+                _water.Notice += ShowNotice;
+            }
             _docking.Notice += ShowNotice;
             _search.Notice += ShowNotice;
             _rewards.Notice += ShowNotice;
@@ -205,6 +212,10 @@ namespace LastFleet.GenerationPreview
             _mining.Notice -= ShowNotice;
             _scouting.Notice -= ShowNotice;
             _population.Notice -= ShowNotice;
+            if (_water != null)
+            {
+                _water.Notice -= ShowNotice;
+            }
             _docking.Notice -= ShowNotice;
             _search.Notice -= ShowNotice;
             _rewards.Notice -= ShowNotice;

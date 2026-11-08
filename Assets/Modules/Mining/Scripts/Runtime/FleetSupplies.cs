@@ -34,6 +34,29 @@ namespace LastFleet.Mining
             return amount - left;
         }
 
+        /// <summary>Takes up to the amount out of the industrial ships' stores, e.g. water the people drink; returns how much there was.</summary>
+        public float Take(Supply supply, float amount)
+        {
+            if (amount < 0f)
+            {
+                throw new ArgumentOutOfRangeException(nameof(amount), "Cannot take a negative amount.");
+            }
+
+            float left = amount;
+            foreach (ShipAgent ship in _registry.Ships)
+            {
+                if (left <= 0f)
+                {
+                    break;
+                }
+                if (TryGetStorage(ship, out SupplyStorage storage))
+                {
+                    left -= storage.Stock.Take(supply, left);
+                }
+            }
+            return amount - left;
+        }
+
         public float AmountOf(Supply supply)
         {
             float amount = 0f;

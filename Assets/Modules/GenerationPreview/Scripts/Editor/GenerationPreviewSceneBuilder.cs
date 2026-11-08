@@ -9,6 +9,7 @@ using LastFleet.Hud;
 using LastFleet.Inspection;
 using LastFleet.Mining;
 using LastFleet.People;
+using LastFleet.Provisions;
 using LastFleet.Pursuit;
 using LastFleet.Quests;
 using LastFleet.Rewards;
@@ -127,6 +128,8 @@ namespace LastFleet.GenerationPreview.Editor
             EditorAssetUtility.SetReferences(rewards, ("_registry", shipRegistry));
             FleetPopulation population = shipsObject.AddComponent<FleetPopulation>();
             EditorAssetUtility.SetReferences(population, ("_registry", shipRegistry));
+            FleetWaterSupply water = shipsObject.AddComponent<FleetWaterSupply>();
+            EditorAssetUtility.SetReferences(water, ("_registry", shipRegistry), ("_population", population));
             CrewRecruitment recruitment = shipsObject.AddComponent<CrewRecruitment>();
             EditorAssetUtility.SetReferences(recruitment, ("_registry", shipRegistry));
 
@@ -143,7 +146,7 @@ namespace LastFleet.GenerationPreview.Editor
 
             GameObject supplyBarObject = new GameObject("Supply Bar");
             SupplyBar supplyBar = supplyBarObject.AddComponent<SupplyBar>();
-            EditorAssetUtility.SetReferences(supplyBar, ("_mining", mining), ("_shipInput", shipInput));
+            EditorAssetUtility.SetReferences(supplyBar, ("_mining", mining), ("_shipInput", shipInput), ("_water", water));
 
             GameObject pursuitObject = new GameObject("Pursuit Clock");
             PursuitClock pursuit = pursuitObject.AddComponent<PursuitClock>();
@@ -187,7 +190,7 @@ namespace LastFleet.GenerationPreview.Editor
                 ("_environment", environment), ("_cameraRig", cameraRig), ("_shipRegistry", shipRegistry),
                 ("_shipInput", shipInput), ("_groupInput", groupInput), ("_hangarInput", hangarInput), ("_mining", mining),
                 ("_scouting", scouting), ("_population", population), ("_docking", docking), ("_search", search), ("_rewards", rewards), ("_combat", combat), ("_pursuit", pursuit), ("_proninAttack", proninAttack), ("_fleetJump", fleetJump), ("_jumpDialog", jumpDialog), ("_jumpStatus", jumpStatus), ("_inspection", inspection), ("_shipPanel", shipPanel), ("_quests", quests),
-                ("_runEndWindow", runEndWindow),
+                ("_runEndWindow", runEndWindow), ("_water", water),
                 ("_cruiserPrefab", CombatShipPrefabBuilder.LoadOrCreateCruiser()),
                 ("_fighterPrefab", CombatShipPrefabBuilder.LoadOrCreateFighter()),
                 ("_refineryPrefab", ShipPrefabBuilder.LoadOrCreateRefinery()),

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using LastFleet.Localization;
 using LastFleet.Mining;
+using LastFleet.Provisions;
 using LastFleet.ShipControl;
 using UnityEngine;
 
@@ -21,6 +22,8 @@ namespace LastFleet.Hud
 
         [SerializeField] MiningCoordinator _mining;
         [SerializeField] ShipCommandInput _shipInput;
+        [Tooltip("Optional. Adds how long the water lasts at the current population.")]
+        [SerializeField] FleetWaterSupply _water;
 
         readonly List<string> _resolvedEntries = new List<string>();
 
@@ -81,8 +84,13 @@ namespace LastFleet.Hud
             _resolvedEntries.Clear();
             foreach (Supply supply in ShownSupplies)
             {
-                _resolvedEntries.Add(GameTextResolver.Resolve(MiningTexts.SupplyAmount.Format(("supply", MiningTexts.Supplies.For(supply)),
-                    ("amount", supplies.AmountOf(supply)), ("capacity", supplies.CapacityOf(supply)))));
+                string entry = GameTextResolver.Resolve(MiningTexts.SupplyAmount.Format(("supply", MiningTexts.Supplies.For(supply)),
+                    ("amount", supplies.AmountOf(supply)), ("capacity", supplies.CapacityOf(supply))));
+                if (supply == Supply.Water && _water != null && !float.IsInfinity(_water.MinutesLeft))
+                {
+                    entry += " " + GameTextResolver.Resolve(ProvisionsTexts.WaterMinutesLeft.Format(("minutes", Mathf.FloorToInt(_water.MinutesLeft))));
+                }
+                _resolvedEntries.Add(entry);
             }
         }
 

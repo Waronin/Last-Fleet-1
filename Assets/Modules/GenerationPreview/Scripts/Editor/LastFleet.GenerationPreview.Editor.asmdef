@@ -10,6 +10,7 @@
         "LastFleet.FleetJump",
         "LastFleet.Rewards",
         "LastFleet.People",
+        "LastFleet.Provisions",
         "LastFleet.Stations",
         "LastFleet.Stations.Editor",
         "LastFleet.GenerationPreview",

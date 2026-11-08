@@ -17,6 +17,8 @@ namespace LastFleet.Mining
         [SerializeField, Min(0f)] float _waterCapacity = 5000f;
         [Tooltip("Fuel aboard when the ship arrives; capped by the fuel capacity.")]
         [SerializeField, Min(0f)] float _startingFuel;
+        [Tooltip("Water aboard when the ship arrives; capped by the water capacity. The people drink it.")]
+        [SerializeField, Min(0f)] float _startingWater;
 
         SupplyStock _stock;
 
@@ -26,6 +28,7 @@ namespace LastFleet.Mining
         {
             SupplyStock stock = new SupplyStock(_fuelCapacity, _metalCapacity, _waterCapacity);
             stock.Store(Supply.Fuel, _startingFuel);
+            stock.Store(Supply.Water, _startingWater);
             return stock;
         }
     }

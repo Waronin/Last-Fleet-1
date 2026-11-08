@@ -1324,10 +1324,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d330aca55d74af848874a5318349350a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: LastFleet.Mining::LastFleet.Mining.RawMaterialStorage
-  _oreCapacity: 5000
-  _iceCapacity: 5000
-  _gasCapacity: 5000
+  _fuelCapacity: 0
   _metalCapacity: 5000
+  _waterCapacity: 5000
+  _startingFuel: 0
+  _startingWater: 2500
 --- !u!114 &6664837717211786756
 MonoBehaviour:
   m_ObjectHideFlags: 0
