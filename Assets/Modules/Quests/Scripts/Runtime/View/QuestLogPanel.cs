@@ -17,8 +17,11 @@ namespace LastFleet.Quests
 
         [SerializeField] QuestDirector _quests;
         [SerializeField] ShipCommandInput _shipInput;
+        [Tooltip("Optional. Lists the accepted delivery requests of stations.")]
+        [SerializeField] StationRequestBoard _requests;
 
-        GUIStyle _wrapStyle;
+        // Not serialized: Unity would otherwise restore an empty default style after a reload.
+        [System.NonSerialized] GUIStyle _wrapStyle;
 
         void Awake()
         {
@@ -55,6 +58,7 @@ namespace LastFleet.Quests
             {
                 DrawChain(chain);
             }
+            DrawRequests();
             GUILayout.EndVertical();
 
             if (Event.current.type == EventType.Repaint)
@@ -63,6 +67,23 @@ namespace LastFleet.Quests
                 _shipInput.SetBlockedScreenArea(this, new Rect(area.x + box.x, Screen.height - area.y - box.yMax, box.width, box.height));
             }
             GUILayout.EndArea();
+        }
+
+        /// <summary>Accepted deliveries: which station, what it wants against what the fleet has, and what it pays.</summary>
+        void DrawRequests()
+        {
+            if (_requests == null || _requests.Accepted.Count == 0)
+            {
+                return;
+            }
+            GUILayout.Label(GameTextResolver.Resolve(QuestTexts.LogRequestsHeader));
+            foreach (StationRequestEntry entry in _requests.Accepted)
+            {
+                SupplyRequest request = entry.Request;
+                GUILayout.Label(GameTextResolver.Resolve(QuestTexts.LogRequest.Format(("station", entry.Station.Name),
+                    ("wanted", SupplyRequestContact.WantedText(request)), ("reward", SupplyRequestContact.RewardText(request)),
+                    ("stock", Mathf.FloorToInt(_requests.StockOf(request.Wanted))))), _wrapStyle);
+            }
         }
 
         void DrawChain(QuestChain chain)

@@ -143,7 +143,11 @@ namespace LastFleet.Stations
             if (station.HasContactToTalkTo)
             {
                 station.Hail();
-                Notice?.Invoke(station.Contact.Answer(station));
+                GameText answer = station.Contact.Answer(station);
+                if (answer != null)
+                {
+                    Notice?.Invoke(answer);
+                }
                 return;
             }
             if (!station.Profile.IsInhabited)

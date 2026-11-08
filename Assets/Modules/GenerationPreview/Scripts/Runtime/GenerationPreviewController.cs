@@ -104,6 +104,8 @@ namespace LastFleet.GenerationPreview
         [SerializeField] FleetWaterSupply _water;
         [Tooltip("Optional. Lets stations be evacuated from the station panel.")]
         [SerializeField] EvacuationService _evacuation;
+        [Tooltip("Optional. Its notices about station requests go into the notice feed.")]
+        [SerializeField] StationRequestBoard _requests;
         [Tooltip("Spawned on arrival in a system until fleet jumps carry the fleet along.")]
         [SerializeField] ShipAgent _refineryPrefab;
         [SerializeField] ShipAgent _tankerPrefab;
@@ -176,6 +178,10 @@ namespace LastFleet.GenerationPreview
             {
                 _evacuation.Notice += ShowNotice;
             }
+            if (_requests != null)
+            {
+                _requests.Notice += ShowNotice;
+            }
             _docking.Notice += ShowNotice;
             _search.Notice += ShowNotice;
             _rewards.Notice += ShowNotice;
@@ -225,6 +231,10 @@ namespace LastFleet.GenerationPreview
             if (_evacuation != null)
             {
                 _evacuation.Notice -= ShowNotice;
+            }
+            if (_requests != null)
+            {
+                _requests.Notice -= ShowNotice;
             }
             _docking.Notice -= ShowNotice;
             _search.Notice -= ShowNotice;

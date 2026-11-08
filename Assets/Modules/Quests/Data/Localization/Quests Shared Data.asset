@@ -219,6 +219,66 @@ MonoBehaviour:
     m_Key: reason.supernova-caught
     m_Metadata:
       m_Items: []
+  - m_Id: 1224789993271296
+    m_Key: speaker.residents
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1224790031020032
+    m_Key: request.amount
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1224790031020033
+    m_Key: request.reward-module
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1224790031020034
+    m_Key: request.offer
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1224790031020035
+    m_Key: request.accept
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1224790031020036
+    m_Key: request.decline
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1224790031020037
+    m_Key: request.accepted-reply
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1224790031020038
+    m_Key: request.declined-reply
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1224790031020039
+    m_Key: request.waiting
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1224790031020040
+    m_Key: request.thanks
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1224790031020041
+    m_Key: notice.request-fulfilled
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1224790031020042
+    m_Key: notice.request-expired
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1224790031020043
+    m_Key: notice.request-reward-overflow
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1224790031020044
+    m_Key: log.requests
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1224790031020045
+    m_Key: log.request
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

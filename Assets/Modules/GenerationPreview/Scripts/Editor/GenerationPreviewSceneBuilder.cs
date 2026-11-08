@@ -178,8 +178,11 @@ namespace LastFleet.GenerationPreview.Editor
                 ("_proninFighterPrefab", CombatShipPrefabBuilder.LoadOrCreateProninFighter()),
                 ("_guardFighterPrefab", CombatShipPrefabBuilder.LoadOrCreateStationGuard()),
                 ("_explosionPrefab",CombatEffectsBuilder.LoadOrCreateExplosion()));
+            StationRequestBoard requests = questObject.AddComponent<StationRequestBoard>();
+            EditorAssetUtility.SetReferences(requests, ("_zoneWorld", zoneWorld), ("_fleet", shipRegistry), ("_dialogue", dialogue),
+                ("_rewards", rewards));
             QuestLogPanel questLog = questObject.AddComponent<QuestLogPanel>();
-            EditorAssetUtility.SetReferences(questLog, ("_quests", quests), ("_shipInput", shipInput));
+            EditorAssetUtility.SetReferences(questLog, ("_quests", quests), ("_shipInput", shipInput), ("_requests", requests));
             EditorAssetUtility.SetReferences(jumpDialog, ("_quests", quests));
 
             RunEndWindow runEndWindow = questObject.AddComponent<RunEndWindow>();
@@ -192,7 +195,7 @@ namespace LastFleet.GenerationPreview.Editor
                 ("_environment", environment), ("_cameraRig", cameraRig), ("_shipRegistry", shipRegistry),
                 ("_shipInput", shipInput), ("_groupInput", groupInput), ("_hangarInput", hangarInput), ("_mining", mining),
                 ("_scouting", scouting), ("_population", population), ("_docking", docking), ("_search", search), ("_rewards", rewards), ("_combat", combat), ("_pursuit", pursuit), ("_proninAttack", proninAttack), ("_fleetJump", fleetJump), ("_jumpDialog", jumpDialog), ("_jumpStatus", jumpStatus), ("_inspection", inspection), ("_shipPanel", shipPanel), ("_quests", quests),
-                ("_runEndWindow", runEndWindow), ("_water", water), ("_evacuation", evacuation),
+                ("_runEndWindow", runEndWindow), ("_water", water), ("_evacuation", evacuation), ("_requests", requests),
                 ("_cruiserPrefab", CombatShipPrefabBuilder.LoadOrCreateCruiser()),
                 ("_fighterPrefab", CombatShipPrefabBuilder.LoadOrCreateFighter()),
                 ("_refineryPrefab", ShipPrefabBuilder.LoadOrCreateRefinery()),

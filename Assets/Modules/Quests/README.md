@@ -55,7 +55,9 @@ Agreed with the designer on 2026-11-05. Change them only on purpose.
 | `QuestChainDefinition.WinsRun`, `QuestDirector.RunWon` / `RunLost` | Quests | A winning chain's completion raises `RunWon`; `context.LoseRun(reason)` ends every step and raises `RunLost`. The run owner shows the end. |
 | `RunEndWindow`, `RunSummary`, `RunOutcome` | RunEnd (own module) | IMGUI end screen over a dark veil: won/lost, reason, people, ships, game time, "New run". Knows nothing about quests. |
 | `RunEndFlow` | GenerationPreview | Glue: on `RunWon` waits until no radio call is open, then shows the end screen and stops time (`Time.timeScale = 0`); on `RunLost` at once, with 0 people and ships. "New run" starts the next galaxy seed (`GenerationPreviewController.StartNextRun`). |
-| `QuestLogPanel` | Quests/View | IMGUI quest log at the bottom middle. |
+| `QuestLogPanel` | Quests/View | IMGUI quest log at the bottom middle; also lists accepted station requests. |
+| `SupplyRequest`, `SupplyRequestRules` | Quests/Requests | Small quests: a station wants an amount of fuel, metal or water and pays another supply at 1.5× or (20 %) an upgrade module. About every third inhabited, not hostile station asks; the amount grows with its people (100–600). |
+| `StationRequestBoard`, `SupplyRequestContact`, `StationRequestEntry` | Quests/Requests | Rolls requests when a zone is revealed (seeded by zone and station) and makes the station's people its contact: a hail or a docked crew hears the offer and can accept. Once accepted, the next crewed ship docked there hands the goods over from the industrial ships' stores as soon as there is enough, and the station pays. Jumping away lets open requests expire. Stations with a quest contact are skipped. |
 | `MeltdownQuest`, `MeltdownTexts` | Quests/Content/Meltdown | The Meltdown chain: settings, story dialogues, numbers. |
 
 Hooks added to other modules for quests, all generic:
@@ -73,6 +75,13 @@ Hooks added to other modules for quests, all generic:
 - `Hud`: `FleetJumpDialog` names the quest step in the target system (optional reference).
 - `GenerationPreview`: the controller starts Meltdown in `StartNewRun` and calls `SystemEntered` after
   `ZoneWorld.Show`. The scene builder adds a *Quests* object (dialogue service and window, director, log).
+
+## Small quests (station requests)
+
+Agreed on 2026-11-08: delivery requests only, paid from the fleet's stores when a ship docks, about one in
+three stations, told on hail or docking, expiring with the jump. Rewards: another supply or an upgrade
+module (which has no effect yet); more people joining was not chosen as a reward. Later ideas: other request
+kinds (scan a rock, drive off raiders, fetch a sick person) and conditions for rescue ("bring ice, then we come").
 
 ## Adding a quest chain
 

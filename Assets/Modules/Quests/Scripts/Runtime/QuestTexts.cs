@@ -154,5 +154,41 @@ namespace LastFleet.Quests
 
         /// <summary>{system}</summary>
         public static readonly GameTextKey SupernovaCaught = new GameTextKey(Table, "reason.supernova-caught");
+
+        /// <summary>{station}</summary>
+        public static readonly GameTextKey ResidentsSpeaker = new GameTextKey(Table, "speaker.residents");
+
+        /// <summary>{amount}, {supply} - e.g. "300 water".</summary>
+        public static readonly GameTextKey RequestAmount = new GameTextKey(Table, "request.amount");
+
+        public static readonly GameTextKey RequestRewardModule = new GameTextKey(Table, "request.reward-module");
+
+        /// <summary>{wanted}, {reward}</summary>
+        public static readonly GameTextKey RequestOffer = new GameTextKey(Table, "request.offer");
+
+        public static readonly GameTextKey RequestAccept = new GameTextKey(Table, "request.accept");
+        public static readonly GameTextKey RequestDecline = new GameTextKey(Table, "request.decline");
+        public static readonly GameTextKey RequestAcceptedReply = new GameTextKey(Table, "request.accepted-reply");
+        public static readonly GameTextKey RequestDeclinedReply = new GameTextKey(Table, "request.declined-reply");
+
+        /// <summary>{wanted}</summary>
+        public static readonly GameTextKey RequestWaiting = new GameTextKey(Table, "request.waiting");
+
+        /// <summary>{reward}</summary>
+        public static readonly GameTextKey RequestThanks = new GameTextKey(Table, "request.thanks");
+
+        /// <summary>{station}, {reward}</summary>
+        public static readonly GameTextKey RequestFulfilled = new GameTextKey(Table, "notice.request-fulfilled");
+
+        /// <summary>{station}</summary>
+        public static readonly GameTextKey RequestExpired = new GameTextKey(Table, "notice.request-expired");
+
+        /// <summary>{station}, {lost}, {supply}</summary>
+        public static readonly GameTextKey RequestRewardOverflow = new GameTextKey(Table, "notice.request-reward-overflow");
+
+        public static readonly GameTextKey LogRequestsHeader = new GameTextKey(Table, "log.requests");
+
+        /// <summary>{station}, {wanted}, {reward}, {stock}</summary>
+        public static readonly GameTextKey LogRequest = new GameTextKey(Table, "log.request");
     }
 }

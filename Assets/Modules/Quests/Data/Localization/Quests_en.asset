@@ -269,6 +269,75 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - rid: 5599358745442254923
+  - m_Id: 1224789993271296
+    m_Localized: People of {station}
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254923
+  - m_Id: 1224790031020032
+    m_Localized: '{amount} {supply}'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254923
+  - m_Id: 1224790031020033
+    m_Localized: an upgrade module
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1224790031020034
+    m_Localized: We are running short. Bring us {wanted}, and you get {reward} in return.
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254923
+  - m_Id: 1224790031020035
+    m_Localized: "Deal \u2013 we will bring it."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1224790031020036
+    m_Localized: Not now.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1224790031020037
+    m_Localized: Thank you. Dock with us once you have it, and we will trade.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1224790031020038
+    m_Localized: Then good luck out there. The offer stands while you are in the system.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1224790031020039
+    m_Localized: We are still waiting for {wanted}. Dock with us once you have it.
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254923
+  - m_Id: 1224790031020040
+    m_Localized: 'Exactly what we needed. As promised: {reward}.'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254923
+  - m_Id: 1224790031020041
+    m_Localized: Delivered to {station}; it paid {reward}.
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254923
+  - m_Id: 1224790031020042
+    m_Localized: The deal with {station} lapsed with the jump.
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254923
+  - m_Id: 1224790031020043
+    m_Localized: 'No room for everything {station} paid: {lost} {supply} lost.'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254923
+  - m_Id: 1224790031020044
+    m_Localized: Requests
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1224790031020045
+    m_Localized: '{station}: bring {wanted} (in stock: {stock}) for {reward}'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254923
   references:
     version: 2
     RefIds:
@@ -323,3 +392,12 @@ MonoBehaviour:
         - id: 139465422614529
         - id: 139465422614530
         - id: 139465422614531
+        - id: 1224789993271296
+        - id: 1224790031020032
+        - id: 1224790031020034
+        - id: 1224790031020039
+        - id: 1224790031020040
+        - id: 1224790031020041
+        - id: 1224790031020042
+        - id: 1224790031020043
+        - id: 1224790031020045

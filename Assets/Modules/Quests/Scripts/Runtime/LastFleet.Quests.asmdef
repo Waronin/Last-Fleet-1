@@ -11,6 +11,7 @@
         "LastFleet.Stations",
         "LastFleet.Combat",
         "LastFleet.Mining",
+        "LastFleet.Rewards",
         "LastFleet.People",
         "LastFleet.Dialogue",
         "LastFleet.ShipControl",

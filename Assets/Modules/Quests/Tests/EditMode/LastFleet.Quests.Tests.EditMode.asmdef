@@ -8,6 +8,7 @@
         "LastFleet.StarSystem",
         "LastFleet.Zones",
         "LastFleet.Ships",
+        "LastFleet.Mining",
         "LastFleet.Shared",
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner"

@@ -269,6 +269,75 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - rid: 5599358745442254921
+  - m_Id: 1224789993271296
+    m_Localized: Bewohner von {station}
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254921
+  - m_Id: 1224790031020032
+    m_Localized: '{amount} {supply}'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254921
+  - m_Id: 1224790031020033
+    m_Localized: ein Upgrade-Modul
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1224790031020034
+    m_Localized: "Uns geht etwas aus. Bringt uns {wanted}, und ihr bekommt {reward} daf\xFCr."
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254921
+  - m_Id: 1224790031020035
+    m_Localized: "Abgemacht \u2013 wir bringen es."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1224790031020036
+    m_Localized: Jetzt nicht.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1224790031020037
+    m_Localized: Danke. Dockt bei uns an, sobald ihr es habt, dann tauschen wir.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1224790031020038
+    m_Localized: "Dann viel Gl\xFCck da drau\xDFen. Das Angebot gilt, solange ihr im System seid."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1224790031020039
+    m_Localized: Wir warten noch auf {wanted}. Dockt bei uns an, sobald ihr es habt.
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254921
+  - m_Id: 1224790031020040
+    m_Localized: 'Genau das haben wir gebraucht. Wie versprochen: {reward}.'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254921
+  - m_Id: 1224790031020041
+    m_Localized: An {station} geliefert; als Lohn gab es {reward}.
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254921
+  - m_Id: 1224790031020042
+    m_Localized: Der Auftrag von {station} ist mit dem Sprung verfallen.
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254921
+  - m_Id: 1224790031020043
+    m_Localized: "Kein Platz f\xFCr alles, was {station} gezahlt hat: {lost} {supply} gingen verloren."
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254921
+  - m_Id: 1224790031020044
+    m_Localized: "Auftr\xE4ge"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1224790031020045
+    m_Localized: "{station}: {wanted} bringen (vorr\xE4tig: {stock}) f\xFCr {reward}"
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254921
   references:
     version: 2
     RefIds:
@@ -323,3 +392,12 @@ MonoBehaviour:
         - id: 139465422614529
         - id: 139465422614530
         - id: 139465422614531
+        - id: 1224789993271296
+        - id: 1224790031020032
+        - id: 1224790031020034
+        - id: 1224790031020039
+        - id: 1224790031020040
+        - id: 1224790031020041
+        - id: 1224790031020042
+        - id: 1224790031020043
+        - id: 1224790031020045
