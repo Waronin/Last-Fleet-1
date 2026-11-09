@@ -9,6 +9,7 @@
         "LastFleet.RunEnd",
         "LastFleet.FleetJump",
         "LastFleet.Rewards",
+        "LastFleet.Repairs",
         "LastFleet.People",
         "LastFleet.Provisions",
         "LastFleet.Stations",

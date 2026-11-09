@@ -10,6 +10,7 @@
         "LastFleet.FleetJump",
         "LastFleet.Hud",
         "LastFleet.Rewards",
+        "LastFleet.Repairs",
         "LastFleet.Stations",
         "LastFleet.People",
         "LastFleet.Provisions",

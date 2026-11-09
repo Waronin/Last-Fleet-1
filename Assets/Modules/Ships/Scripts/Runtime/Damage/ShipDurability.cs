@@ -7,7 +7,7 @@ namespace LastFleet.Ships
     /// <summary>
     /// Takes damage for a ship and destroys it at zero hull. Losses are permanent (GDD); the
     /// registry, squads, selection and mining slots drop the ship when its GameObject is destroyed.
-    /// Repairs come later with metal, engineers and the hangar UI.
+    /// The player orders repairs of the hull; the Repairs module restores it with metal over time.
     /// </summary>
     [RequireComponent(typeof(ShipAgent))]
     public sealed class ShipDurability : MonoBehaviour

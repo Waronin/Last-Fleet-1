@@ -1,0 +1,109 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Repairs_de
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: de
+  m_SharedData: {fileID: 11400000, guid: 693daf08445e1d840aa96bb06bbe4410, type: 2}
+  m_Metadata:
+    m_Items:
+    - rid: 5599358846693802058
+  m_TableData:
+  - m_Id: 1387868160
+    m_Localized: Reparieren
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1421422592
+    m_Localized: Zuerst reparieren
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1425616896
+    m_Localized: Reparatur abbrechen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1425616897
+    m_Localized: "Kein ausgew\xE4hltes Schiff braucht eine Reparatur."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1429811200
+    m_Localized: Kleine Schiffe werden nur im Hangar repariert.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1429811201
+    m_Localized: "Ist schon als N\xE4chstes dran."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1429811202
+    m_Localized: '{count:plural:{} Schiff|{} Schiffe} zur Reparatur eingereiht.'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358846693802058
+  - m_Id: 1429811203
+    m_Localized: "{count:plural:{} Schiff wird|{} Schiffe werden} als N\xE4chstes repariert."
+    m_Metadata:
+      m_Items:
+      - rid: 5599358846693802058
+  - m_Id: 1429811204
+    m_Localized: '{count:plural:{} Reparatur|{} Reparaturen} abgebrochen.'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358846693802058
+  - m_Id: 1429811205
+    m_Localized: "Reparatur: l\xE4uft, +{rate:0} H\xFClle/s"
+    m_Metadata:
+      m_Items:
+      - rid: 5599358846693802058
+  - m_Id: 1429811206
+    m_Localized: 'Reparatur: wartet, Platz {position} in der Werft von {yard}'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358846693802058
+  - m_Id: 1434005504
+    m_Localized: 'Reparatur: wartet auf Metall'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1434005505
+    m_Localized: 'Werft: repariert {ship}{waiting:cond:>0?, {} wartend|}'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358846693802058
+  - m_Id: 1434005506
+    m_Localized: '{ship} ist repariert.'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358846693802058
+  - m_Id: 1434005507
+    m_Localized: 'Reparatur von {ship} abgebrochen: Das Schiff hat den Hangar verlassen.'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358846693802058
+  - m_Id: 1434005508
+    m_Localized: 'Kein Metall mehr: Die Reparaturen pausieren.'
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 5599358846693802058
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 
+        m_SharedEntries:
+        - id: 1429811202
+        - id: 1429811203
+        - id: 1429811204
+        - id: 1429811205
+        - id: 1429811206
+        - id: 1434005505
+        - id: 1434005506
+        - id: 1434005507

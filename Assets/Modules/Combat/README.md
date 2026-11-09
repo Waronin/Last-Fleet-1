@@ -102,17 +102,20 @@ Newest first. Note the date, the setup, what happened and the version of the val
 - **Focus fire**: all ships take the nearest enemy, so squads gang up on one target. Spreading
   targets could reuse the claims pattern (`MiningSlotClaims`, `DockingPortClaims`).
 - **Wrecks**: only Pronin fighters leave wrecks; human ships do not yet. Wrecks stay for the whole run
-  and nothing announces them, the player has to spot them. Metal has no use yet (repairs, ammunition
-  and upgrades come later).
+  and nothing announces them, the player has to spot them. Metal pays for hull repairs (see the
+  Repairs module); upgrades come later.
 - **Effects** are blockout: no sound, no camera shake, the shock ring is a flat circle.
-- **Stances**: escort exists; aggressive, defensive and retreat and **target priorities** for capital
-  ships are not built. `FighterCombat._defendWhenIdle` is the switch for idle self-defense.
+- **Stances** (decided 2026-11-09): escort *is* the fighters' stance. No defensive or retreat stances
+  and no target priorities for capital ships; fighters that hold back would leave the fleet unprotected.
+  `FighterCombat._defendWhenIdle` is the switch for idle self-defense.
 - **Avoidance limits**: only while the main drive carries the ship; braking, flipping and thruster
   maneuvers fly straight. Capital ships are circles, so long hulls block more than they look. Pronin
   hunters chase into cover but do not seek it themselves; nobody looks for cover on purpose yet.
 - **Escort**: an escort counts its distance from the lead only; it can lose a squad member that
   strays far from the leader.
-- **Ammunition** is not consumed yet (GDD: projectile weapons need ammunition from the cruiser).
+- **Ammunition and tactical weapons** (decided 2026-11-09): standard guns of fighters and capital ships
+  never use ammunition, so no fighter has to be resupplied. Instead, warships get extra **tactical
+  weapons** (for example **EMP missiles**), and only those use ammunition. Not built yet.
 - **Hazards** (shards, gas, radiation) only hit the player's registry; the GDD wants them for both
   sides. Shields do not block hazards.
 - **Capture**: `TransferTo` exists, but what happens to ships docked in a captured carrier and to its

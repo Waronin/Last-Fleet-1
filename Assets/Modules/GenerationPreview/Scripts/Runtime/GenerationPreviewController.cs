@@ -13,6 +13,7 @@ using LastFleet.Provisions;
 using LastFleet.Pursuit;
 using LastFleet.Quests;
 using LastFleet.Quests.Meltdown;
+using LastFleet.Repairs;
 using LastFleet.Rewards;
 using LastFleet.RunEnd;
 using LastFleet.Shared.Text;
@@ -106,6 +107,8 @@ namespace LastFleet.GenerationPreview
         [SerializeField] EvacuationService _evacuation;
         [Tooltip("Optional. Its notices about station requests go into the notice feed.")]
         [SerializeField] StationRequestBoard _requests;
+        [Tooltip("Optional. Lets the player order hull repairs from the ship window.")]
+        [SerializeField] RepairService _repairs;
         [Tooltip("Spawned on arrival in a system until fleet jumps carry the fleet along.")]
         [SerializeField] ShipAgent _refineryPrefab;
         [SerializeField] ShipAgent _tankerPrefab;
@@ -182,6 +185,10 @@ namespace LastFleet.GenerationPreview
             {
                 _requests.Notice += ShowNotice;
             }
+            if (_repairs != null)
+            {
+                _repairs.Notice += ShowNotice;
+            }
             _docking.Notice += ShowNotice;
             _search.Notice += ShowNotice;
             _rewards.Notice += ShowNotice;
@@ -210,7 +217,7 @@ namespace LastFleet.GenerationPreview
                 _shipPanel.Clear();
                 return;
             }
-            _shipInspection ??= new ShipSelectionInspection(Selection, _shipRegistry, _hangarInput);
+            _shipInspection ??= new ShipSelectionInspection(Selection, _shipRegistry, _hangarInput, _repairs);
             _shipPanel.Show(_shipInspection);
         }
 
@@ -235,6 +242,10 @@ namespace LastFleet.GenerationPreview
             if (_requests != null)
             {
                 _requests.Notice -= ShowNotice;
+            }
+            if (_repairs != null)
+            {
+                _repairs.Notice -= ShowNotice;
             }
             _docking.Notice -= ShowNotice;
             _search.Notice -= ShowNotice;

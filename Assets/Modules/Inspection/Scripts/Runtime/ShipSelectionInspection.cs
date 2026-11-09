@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using LastFleet.Combat;
 using LastFleet.Mining;
 using LastFleet.People;
+using LastFleet.Repairs;
 using LastFleet.Rewards;
 using LastFleet.Shared.Text;
 using LastFleet.ShipControl;
@@ -25,12 +26,15 @@ namespace LastFleet.Inspection
         readonly ShipSelection _selection;
         readonly ShipRegistry _registry;
         readonly HangarCommandInput _hangarCommands;
+        readonly ShipRepairInspection _repairs;
 
-        public ShipSelectionInspection(ShipSelection selection, ShipRegistry registry, HangarCommandInput hangarCommands)
+        /// <param name="repairs">Optional; without it the window offers no repairs.</param>
+        public ShipSelectionInspection(ShipSelection selection, ShipRegistry registry, HangarCommandInput hangarCommands, RepairService repairs)
         {
             _selection = selection;
             _registry = registry;
             _hangarCommands = hangarCommands;
+            _repairs = repairs != null ? new ShipRepairInspection(repairs) : null;
         }
 
         public GameText Title => _selection.Count == 1
@@ -83,6 +87,7 @@ namespace LastFleet.Inspection
             {
                 actions.Add(new InspectionAction(InspectionTexts.JettisonCargoAction, null, true, null, JettisonCargo));
             }
+            _repairs?.CollectActions(_selection.Ships, actions);
             bool canForm = _selection.Count > 1 && sameClass;
             actions.Add(new InspectionAction(InspectionTexts.FormSquadAction, FormSquadHint, canForm, InspectionTexts.FormSquadNeedsOneClass, () =>
                 InspectionTexts.SquadFormed.Format(("squad", _registry.Squads.Form(_selection.Ships).DisplayName))));
@@ -105,6 +110,7 @@ namespace LastFleet.Inspection
         {
             lines.Add(InspectionTexts.ShipClass.Format(("class", ship.ClassDisplayName), ("size", ShipTexts.Sizes.For(ship.Size))));
             lines.Add(Hull(ship));
+            _repairs?.Describe(ship, lines);
             if (ship.TryGetComponent(out ShipShield shield))
             {
                 lines.Add(CombatTexts.ShieldLine.Format(("current", shield.Charge.Current), ("maximum", shield.Charge.Maximum)));
