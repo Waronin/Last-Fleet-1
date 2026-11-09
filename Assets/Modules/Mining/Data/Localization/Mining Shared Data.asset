@@ -83,6 +83,46 @@ MonoBehaviour:
     m_Key: supply-amount
     m_Metadata:
       m_Items: []
+  - m_Id: 4547081972297728
+    m_Key: task.refueling
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4547081984880640
+    m_Key: notice.refueling-started
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4547081984880641
+    m_Key: notice.refueling-queued
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4547081984880642
+    m_Key: notice.refueled
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4547081984880643
+    m_Key: notice.already-full
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4547081984880644
+    m_Key: notice.tanker-empty
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4547081984880645
+    m_Key: action.refuel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4547081984880646
+    m_Key: action.refuel.needs-target
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4547081984880647
+    m_Key: action.refuel-self
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4547081984880648
+    m_Key: action.stop-refueling
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

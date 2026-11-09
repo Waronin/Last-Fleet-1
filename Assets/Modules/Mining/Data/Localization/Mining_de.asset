@@ -94,6 +94,52 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - rid: 6743102046643421294
+  - m_Id: 4547081972297728
+    m_Localized: Betankt {target}
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421294
+  - m_Id: 4547081984880640
+    m_Localized: '{tanker} betankt {target}.'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421294
+  - m_Id: 4547081984880641
+    m_Localized: '{tanker} betankt danach {target}.'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421294
+  - m_Id: 4547081984880642
+    m_Localized: '{target} ist vollgetankt.'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421294
+  - m_Id: 4547081984880643
+    m_Localized: '{target} ist bereits vollgetankt.'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421294
+  - m_Id: 4547081984880644
+    m_Localized: '{tanker}: Kein Treibstoff mehr im Lager. Betankung beendet.'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421294
+  - m_Id: 4547081984880645
+    m_Localized: Betanken
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4547081984880646
+    m_Localized: "W\xE4hle zus\xE4tzlich die Gro\xDFkampfschiffe aus, die betankt werden sollen, oder klicke eines mit Rechts an."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4547081984880647
+    m_Localized: "Eigenen Tank f\xFCllen"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4547081984880648
+    m_Localized: Betanken beenden
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:
@@ -109,3 +155,9 @@ MonoBehaviour:
         - id: 326709248
         - id: 326709249
         - id: 1653949513412610
+        - id: 4547081972297728
+        - id: 4547081984880640
+        - id: 4547081984880641
+        - id: 4547081984880642
+        - id: 4547081984880643
+        - id: 4547081984880644

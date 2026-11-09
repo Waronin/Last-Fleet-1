@@ -36,5 +36,28 @@ namespace LastFleet.Mining
 
         /// <summary>{ship}, {needed}, {left}</summary>
         public static readonly GameTextKey StoppedForFuel = new GameTextKey(Table, "notice.stopped-for-fuel");
+
+        /// <summary>{target}</summary>
+        public static readonly GameTextKey RefuelingTask = new GameTextKey(Table, "task.refueling");
+
+        /// <summary>{tanker}, {target}</summary>
+        public static readonly GameTextKey RefuelingStarted = new GameTextKey(Table, "notice.refueling-started");
+
+        /// <summary>{tanker}, {target}</summary>
+        public static readonly GameTextKey RefuelingQueued = new GameTextKey(Table, "notice.refueling-queued");
+
+        /// <summary>{target}</summary>
+        public static readonly GameTextKey Refueled = new GameTextKey(Table, "notice.refueled");
+
+        /// <summary>{target}</summary>
+        public static readonly GameTextKey AlreadyFull = new GameTextKey(Table, "notice.already-full");
+
+        /// <summary>{tanker}</summary>
+        public static readonly GameTextKey TankerEmpty = new GameTextKey(Table, "notice.tanker-empty");
+
+        public static readonly GameTextKey RefuelAction = new GameTextKey(Table, "action.refuel");
+        public static readonly GameTextKey RefuelNeedsTarget = new GameTextKey(Table, "action.refuel.needs-target");
+        public static readonly GameTextKey RefuelSelfAction = new GameTextKey(Table, "action.refuel-self");
+        public static readonly GameTextKey StopRefuelingAction = new GameTextKey(Table, "action.stop-refueling");
     }
 }

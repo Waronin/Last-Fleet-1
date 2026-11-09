@@ -87,6 +87,7 @@ namespace LastFleet.Inspection
             {
                 actions.Add(new InspectionAction(InspectionTexts.JettisonCargoAction, null, true, null, JettisonCargo));
             }
+            TankerRefuelingInspection.CollectActions(_selection.Ships, actions);
             _repairs?.CollectActions(_selection.Ships, actions);
             bool canForm = _selection.Count > 1 && sameClass;
             actions.Add(new InspectionAction(InspectionTexts.FormSquadAction, FormSquadHint, canForm, InspectionTexts.FormSquadNeedsOneClass, () =>
@@ -221,6 +222,10 @@ namespace LastFleet.Inspection
             if (ship.TryGetComponent(out HarvesterMining mining) && mining.State != MiningState.Inactive)
             {
                 return InspectionTexts.MiningTask.Format(("state", MiningTexts.States.For(mining.State)));
+            }
+            if (ship.TryGetComponent(out FuelTanker tanker) && tanker.IsRefueling)
+            {
+                return MiningTexts.RefuelingTask.Format(("target", tanker.Target.DisplayName));
             }
             return ShipTexts.Activities.For(ship.Activity);
         }

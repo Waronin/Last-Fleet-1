@@ -143,23 +143,19 @@ namespace LastFleet.Mining
 
         /// <summary>
         /// Where a harvester unloads: the hangar of a store ship, its home carrier first. The fleet
-        /// spreads what that ship cannot keep, e.g. fuel to the tanker, so there is none if the fleet
-        /// has no room left.
+        /// spreads what that ship cannot keep, e.g. fuel to the tanker; fuel that finds no store fills
+        /// the receiving ship's own tank. There is none if the fleet has no room left.
         /// </summary>
         public Hangar FindDeliveryHangar(ShipAgent ship, Supply supply)
         {
-            if (!Supplies.HasRoomFor(supply))
-            {
-                return null;
-            }
-            if (IsDeliveryPoint(ship.HomeHangar))
+            if (CanDeliverTo(ship.HomeHangar, supply))
             {
                 return ship.HomeHangar;
             }
 
             foreach (Hangar hangar in _registry.Hangars)
             {
-                if (IsDeliveryPoint(hangar))
+                if (CanDeliverTo(hangar, supply))
                 {
                     return hangar;
                 }
@@ -167,9 +163,10 @@ namespace LastFleet.Mining
             return null;
         }
 
-        static bool IsDeliveryPoint(Hangar hangar)
+        bool CanDeliverTo(Hangar hangar, Supply supply)
         {
-            return hangar != null && !hangar.Carrier.IsDerelict && hangar.TryGetComponent(out SupplyStorage _);
+            return hangar != null && !hangar.Carrier.IsDerelict && hangar.TryGetComponent(out SupplyStorage _) &&
+                Supplies.HasRoomFor(supply, hangar.Carrier);
         }
 
         /// <summary>Rolls the deposit's hazard for one ship's mining time and applies what goes off.</summary>
@@ -222,7 +219,7 @@ namespace LastFleet.Mining
             }
             if (ship.TryGetComponent(out FuelTanker tanker))
             {
-                tanker.Initialize(_registry);
+                tanker.Initialize(_registry, this);
             }
         }
     }

@@ -6,7 +6,8 @@ namespace LastFleet.Mining
     /// <summary>
     /// The supplies of the whole fleet. Amounts and capacities count the stores of industrial ships
     /// only; fuel already in a ship's tank is in use, not in stock. Fuel goes into the tanker's store
-    /// first; without a tanker, or once it is full, only the capital ships' tanks remain (GDD:
+    /// first; without a tanker, or once it is full, only into the tank of the capital ship it was
+    /// delivered to. Other capital ships get fuel only when the player has a tanker refuel them (GDD:
     /// Industrial ships).
     /// </summary>
     public sealed class FleetSupplies
@@ -18,7 +19,10 @@ namespace LastFleet.Mining
             _registry = registry != null ? registry : throw new ArgumentNullException(nameof(registry));
         }
 
-        /// <summary>Stores into the given ship first, then into any other ship with room; returns how much was stored.</summary>
+        /// <summary>
+        /// Stores into the given ship first, then into any other ship's store with room. Fuel that finds
+        /// no store goes into the given ship's own tank if it is a capital ship. Returns how much was stored.
+        /// </summary>
         public float Store(Supply supply, float amount, ShipAgent firstShip)
         {
             if (amount < 0f)
@@ -27,9 +31,9 @@ namespace LastFleet.Mining
             }
 
             float left = amount - StoreEverywhere(supply, amount, firstShip, StoreInStorage);
-            if (supply == Supply.Fuel)
+            if (supply == Supply.Fuel && firstShip != null)
             {
-                left -= StoreEverywhere(supply, left, firstShip, StoreInTank);
+                left -= StoreInTank(firstShip, supply, left);
             }
             return amount - left;
         }
@@ -83,25 +87,17 @@ namespace LastFleet.Mining
             return capacity;
         }
 
-        /// <summary>Whether a delivery fits somewhere: in a store, or for fuel also in a capital ship's tank.</summary>
-        public bool HasRoomFor(Supply supply)
+        /// <summary>
+        /// Whether a delivery to the receiver fits somewhere: in a store, or for fuel also in the
+        /// receiver's own tank if it is a capital ship.
+        /// </summary>
+        public bool HasRoomFor(Supply supply, ShipAgent receiver)
         {
             if (CapacityOf(supply) - AmountOf(supply) > 0f)
             {
                 return true;
             }
-            if (supply != Supply.Fuel)
-            {
-                return false;
-            }
-            foreach (ShipAgent ship in _registry.Ships)
-            {
-                if (HoldsFuelStock(ship) && ship.Fuel.Tank.FreeSpace > 0f)
-                {
-                    return true;
-                }
-            }
-            return false;
+            return supply == Supply.Fuel && receiver != null && HoldsFuelStock(receiver) && receiver.Fuel.Tank.FreeSpace > 0f;
         }
 
         float StoreEverywhere(Supply supply, float amount, ShipAgent firstShip, Func<ShipAgent, Supply, float, float> storeOn)
