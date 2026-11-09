@@ -219,7 +219,7 @@ namespace LastFleet.Mining
             }
             if (ship.TryGetComponent(out FuelTanker tanker))
             {
-                tanker.Initialize(_registry, this);
+                tanker.Initialize(this);
             }
         }
     }

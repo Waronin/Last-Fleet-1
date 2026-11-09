@@ -99,13 +99,12 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - rid: 6743102046643421294
-  - m_Id: 4547081984880640
-    m_Localized: '{tanker} betankt {target}.'
+  - m_Id: 4551304503963652
+    m_Localized: Zuerst betanken
     m_Metadata:
-      m_Items:
-      - rid: 6743102046643421294
-  - m_Id: 4547081984880641
-    m_Localized: '{tanker} betankt danach {target}.'
+      m_Items: []
+  - m_Id: 4551304503963651
+    m_Localized: '{ship}: Betankung abgebrochen, {tanker} ist nicht mehr in derselben Zone.'
     m_Metadata:
       m_Items:
       - rid: 6743102046643421294
@@ -114,13 +113,13 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - rid: 6743102046643421294
-  - m_Id: 4547081984880643
-    m_Localized: '{target} ist bereits vollgetankt.'
+  - m_Id: 4551304503963650
+    m_Localized: 'Betankung wartet: {tanker} hat keinen Treibstoff im Lager'
     m_Metadata:
       m_Items:
       - rid: 6743102046643421294
   - m_Id: 4547081984880644
-    m_Localized: '{tanker}: Kein Treibstoff mehr im Lager. Betankung beendet.'
+    m_Localized: '{tanker}: Kein Treibstoff mehr im Lager. Die Betankung wartet, bis wieder Treibstoff da ist.'
     m_Metadata:
       m_Items:
       - rid: 6743102046643421294
@@ -128,18 +127,56 @@ MonoBehaviour:
     m_Localized: Betanken
     m_Metadata:
       m_Items: []
-  - m_Id: 4547081984880646
-    m_Localized: "W\xE4hle zus\xE4tzlich die Gro\xDFkampfschiffe aus, die betankt werden sollen, oder klicke eines mit Rechts an."
+  - m_Id: 4551304503963649
+    m_Localized: 'Wartet auf Betankung: Platz {position} bei {tanker}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421294
+  - m_Id: 4551304503963648
+    m_Localized: Wird von {tanker} betankt
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421294
+  - m_Id: 4551304478797824
+    m_Localized: Betankt {ship}, {waiting} wartend
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421294
+  - m_Id: 4551304503963653
+    m_Localized: Betankung abbrechen
     m_Metadata:
       m_Items: []
-  - m_Id: 4547081984880647
-    m_Localized: "Eigenen Tank f\xFCllen"
+  - m_Id: 4551304503963654
+    m_Localized: Kein Tanker in dieser Zone. Bring zuerst einen Tanker hierher.
     m_Metadata:
       m_Items: []
-  - m_Id: 4547081984880648
-    m_Localized: Betanken beenden
+  - m_Id: 4551304503963655
+    m_Localized: Der Tank ist voll.
     m_Metadata:
       m_Items: []
+  - m_Id: 4551304503963656
+    m_Localized: Wartet bereits auf Betankung.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4551304503963657
+    m_Localized: "Wird bereits als N\xE4chstes betankt."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4551304503963658
+    m_Localized: '{count:plural:{} Schiff wartet auf Betankung.|{} Schiffe warten auf Betankung.}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421294
+  - m_Id: 4551304503963659
+    m_Localized: "{count:plural:{} Schiff wird als N\xE4chstes betankt.|{} Schiffe werden als N\xE4chstes betankt.}"
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421294
+  - m_Id: 4551304503963660
+    m_Localized: "{count:plural:Betankung f\xFCr {} Schiff abgebrochen.|Betankung f\xFCr {} Schiffe abgebrochen.}"
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421294
   references:
     version: 2
     RefIds:
@@ -156,8 +193,13 @@ MonoBehaviour:
         - id: 326709249
         - id: 1653949513412610
         - id: 4547081972297728
-        - id: 4547081984880640
-        - id: 4547081984880641
+        - id: 4551304503963649
+        - id: 4551304503963648
         - id: 4547081984880642
-        - id: 4547081984880643
+        - id: 4551304478797824
         - id: 4547081984880644
+        - id: 4551304503963650
+        - id: 4551304503963651
+        - id: 4551304503963658
+        - id: 4551304503963659
+        - id: 4551304503963660

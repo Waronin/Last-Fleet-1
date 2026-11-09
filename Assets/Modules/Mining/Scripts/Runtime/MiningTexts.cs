@@ -40,24 +40,42 @@ namespace LastFleet.Mining
         /// <summary>{target}</summary>
         public static readonly GameTextKey RefuelingTask = new GameTextKey(Table, "task.refueling");
 
-        /// <summary>{tanker}, {target}</summary>
-        public static readonly GameTextKey RefuelingStarted = new GameTextKey(Table, "notice.refueling-started");
+        /// <summary>{ship}, {waiting}</summary>
+        public static readonly GameTextKey TankerLine = new GameTextKey(Table, "refuel.tanker-line");
 
-        /// <summary>{tanker}, {target}</summary>
-        public static readonly GameTextKey RefuelingQueued = new GameTextKey(Table, "notice.refueling-queued");
+        /// <summary>{tanker}</summary>
+        public static readonly GameTextKey RefuelJobActive = new GameTextKey(Table, "refuel.job-active");
+
+        /// <summary>{position}, {tanker}</summary>
+        public static readonly GameTextKey RefuelJobWaiting = new GameTextKey(Table, "refuel.job-waiting");
+
+        /// <summary>{tanker}</summary>
+        public static readonly GameTextKey RefuelJobShortOfFuel = new GameTextKey(Table, "refuel.job-short");
 
         /// <summary>{target}</summary>
         public static readonly GameTextKey Refueled = new GameTextKey(Table, "notice.refueled");
 
-        /// <summary>{target}</summary>
-        public static readonly GameTextKey AlreadyFull = new GameTextKey(Table, "notice.already-full");
-
         /// <summary>{tanker}</summary>
         public static readonly GameTextKey TankerEmpty = new GameTextKey(Table, "notice.tanker-empty");
 
+        /// <summary>{ship}, {tanker}</summary>
+        public static readonly GameTextKey RefuelCancelledLeftZone = new GameTextKey(Table, "notice.refuel-left-zone");
+
         public static readonly GameTextKey RefuelAction = new GameTextKey(Table, "action.refuel");
-        public static readonly GameTextKey RefuelNeedsTarget = new GameTextKey(Table, "action.refuel.needs-target");
-        public static readonly GameTextKey RefuelSelfAction = new GameTextKey(Table, "action.refuel-self");
-        public static readonly GameTextKey StopRefuelingAction = new GameTextKey(Table, "action.stop-refueling");
+        public static readonly GameTextKey RefuelFirstAction = new GameTextKey(Table, "action.refuel-first");
+        public static readonly GameTextKey CancelRefuelAction = new GameTextKey(Table, "action.cancel-refuel");
+        public static readonly GameTextKey NoTankerInZone = new GameTextKey(Table, "action.refuel.no-tanker");
+        public static readonly GameTextKey TankFull = new GameTextKey(Table, "action.refuel.tank-full");
+        public static readonly GameTextKey AlreadyWaitingForFuel = new GameTextKey(Table, "action.refuel.already-queued");
+        public static readonly GameTextKey AlreadyRefueledFirst = new GameTextKey(Table, "action.refuel.already-first");
+
+        /// <summary>{count}</summary>
+        public static readonly GameTextKey RefuelOrdered = new GameTextKey(Table, "action.refuel.done");
+
+        /// <summary>{count}</summary>
+        public static readonly GameTextKey RefuelMovedToFront = new GameTextKey(Table, "action.refuel-first.done");
+
+        /// <summary>{count}</summary>
+        public static readonly GameTextKey RefuelCancelled = new GameTextKey(Table, "action.cancel-refuel.done");
     }
 }

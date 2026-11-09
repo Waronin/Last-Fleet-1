@@ -99,13 +99,12 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - rid: 6743102046643421290
-  - m_Id: 4547081984880640
-    m_Localized: '{tanker} is refueling {target}.'
+  - m_Id: 4551304503963652
+    m_Localized: Refuel first
     m_Metadata:
-      m_Items:
-      - rid: 6743102046643421290
-  - m_Id: 4547081984880641
-    m_Localized: '{tanker} will refuel {target} afterwards.'
+      m_Items: []
+  - m_Id: 4551304503963651
+    m_Localized: '{ship}: refueling cancelled, {tanker} is no longer in the same zone.'
     m_Metadata:
       m_Items:
       - rid: 6743102046643421290
@@ -114,13 +113,13 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - rid: 6743102046643421290
-  - m_Id: 4547081984880643
-    m_Localized: '{target} is already fully refueled.'
+  - m_Id: 4551304503963650
+    m_Localized: 'Refueling waits: {tanker} has no fuel in store'
     m_Metadata:
       m_Items:
       - rid: 6743102046643421290
   - m_Id: 4547081984880644
-    m_Localized: '{tanker}: no fuel left in store. Refueling stopped.'
+    m_Localized: '{tanker}: no fuel left in store. Refueling waits until there is fuel again.'
     m_Metadata:
       m_Items:
       - rid: 6743102046643421290
@@ -128,18 +127,56 @@ MonoBehaviour:
     m_Localized: Refuel
     m_Metadata:
       m_Items: []
-  - m_Id: 4547081984880646
-    m_Localized: Also select the capital ships to refuel, or right-click one.
+  - m_Id: 4551304503963649
+    m_Localized: 'Waiting for fuel: place {position} at {tanker}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421290
+  - m_Id: 4551304503963648
+    m_Localized: Being refueled by {tanker}
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421290
+  - m_Id: 4551304478797824
+    m_Localized: Refueling {ship}, {waiting} waiting
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421290
+  - m_Id: 4551304503963653
+    m_Localized: Cancel refueling
     m_Metadata:
       m_Items: []
-  - m_Id: 4547081984880647
-    m_Localized: Fill own tank
+  - m_Id: 4551304503963654
+    m_Localized: No tanker in this zone. Bring a tanker here first.
     m_Metadata:
       m_Items: []
-  - m_Id: 4547081984880648
-    m_Localized: Stop refueling
+  - m_Id: 4551304503963655
+    m_Localized: The tank is full.
     m_Metadata:
       m_Items: []
+  - m_Id: 4551304503963656
+    m_Localized: Already waiting for fuel.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4551304503963657
+    m_Localized: Already refueled next.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4551304503963658
+    m_Localized: '{count:plural:{} ship waits for fuel.|{} ships wait for fuel.}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421290
+  - m_Id: 4551304503963659
+    m_Localized: '{count:plural:{} ship is refueled next.|{} ships are refueled next.}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421290
+  - m_Id: 4551304503963660
+    m_Localized: '{count:plural:Refueling cancelled for {} ship.|Refueling cancelled for {} ships.}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421290
   references:
     version: 2
     RefIds:
@@ -156,8 +193,13 @@ MonoBehaviour:
         - id: 326709249
         - id: 1653949513412610
         - id: 4547081972297728
-        - id: 4547081984880640
-        - id: 4547081984880641
+        - id: 4551304503963649
+        - id: 4551304503963648
         - id: 4547081984880642
-        - id: 4547081984880643
+        - id: 4551304478797824
         - id: 4547081984880644
+        - id: 4551304503963650
+        - id: 4551304503963651
+        - id: 4551304503963658
+        - id: 4551304503963659
+        - id: 4551304503963660

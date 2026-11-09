@@ -87,20 +87,8 @@ MonoBehaviour:
     m_Key: task.refueling
     m_Metadata:
       m_Items: []
-  - m_Id: 4547081984880640
-    m_Key: notice.refueling-started
-    m_Metadata:
-      m_Items: []
-  - m_Id: 4547081984880641
-    m_Key: notice.refueling-queued
-    m_Metadata:
-      m_Items: []
   - m_Id: 4547081984880642
     m_Key: notice.refueled
-    m_Metadata:
-      m_Items: []
-  - m_Id: 4547081984880643
-    m_Key: notice.already-full
     m_Metadata:
       m_Items: []
   - m_Id: 4547081984880644
@@ -111,16 +99,60 @@ MonoBehaviour:
     m_Key: action.refuel
     m_Metadata:
       m_Items: []
-  - m_Id: 4547081984880646
-    m_Key: action.refuel.needs-target
+  - m_Id: 4551304478797824
+    m_Key: refuel.tanker-line
     m_Metadata:
       m_Items: []
-  - m_Id: 4547081984880647
-    m_Key: action.refuel-self
+  - m_Id: 4551304503963648
+    m_Key: refuel.job-active
     m_Metadata:
       m_Items: []
-  - m_Id: 4547081984880648
-    m_Key: action.stop-refueling
+  - m_Id: 4551304503963649
+    m_Key: refuel.job-waiting
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4551304503963650
+    m_Key: refuel.job-short
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4551304503963651
+    m_Key: notice.refuel-left-zone
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4551304503963652
+    m_Key: action.refuel-first
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4551304503963653
+    m_Key: action.cancel-refuel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4551304503963654
+    m_Key: action.refuel.no-tanker
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4551304503963655
+    m_Key: action.refuel.tank-full
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4551304503963656
+    m_Key: action.refuel.already-queued
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4551304503963657
+    m_Key: action.refuel.already-first
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4551304503963658
+    m_Key: action.refuel.done
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4551304503963659
+    m_Key: action.refuel-first.done
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4551304503963660
+    m_Key: action.cancel-refuel.done
     m_Metadata:
       m_Items: []
   m_Metadata:

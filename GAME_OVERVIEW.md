@@ -193,14 +193,19 @@ Schiffe tragen lesbare, übersetzbare Namen wie „Sammelschiff 3“ oder „Har
 - **Betankung kleiner Schiffe:** Nach dem Landen tanken sie aus dem Tank des Schiffs, auf dem sie gelandet
   sind (25 pro Sekunde). Harvester tanken zusätzlich beim Abladen an der Landebucht auf, aus dem Tank des
   Schiffs, bei dem sie abladen.
-- **Betankung von Großkampfschiffen:** Sie tanken nicht automatisch, der Spieler entscheidet:
-  - Tanker auswählen und mit **Rechtsklick** auf ein Großkampfschiff klicken, auch auf den Tanker selbst.
-    Mit **Shift** wird das Schiff hinten angestellt.
-  - Oder im Schiffsfenster: **„Betanken“** versorgt die mit ausgewählten Großkampfschiffe nacheinander,
-    **„Eigenen Tank füllen“** füllt den Tank des Tankers, **„Betanken beenden“** bricht ab.
-  - Der Tanker pumpt 40 pro Sekunde aus seinem Lager in ein Schiff nach dem anderen, bis es voll ist. Es
-    reicht, dass beide in derselben Zone sind. Ist das Ziel in einer anderen Zone, fliegt der Tanker hin.
-  - Jeder andere Befehl an den Tanker beendet die Betankung, ebenso ein leeres Lager.
+- **Betankung von Großkampfschiffen:** Sie tanken nicht automatisch. Der Spieler gibt den Auftrag wie bei
+  der Reparatur im Schiffsfenster des Schiffs, das Treibstoff braucht:
+  - **„Betanken“** stellt das Schiff in die Warteschlange eines Tankers in derselben Zone (bei mehreren
+    Tankern beim mit der kürzesten Warteschlange). Der Tanker kann auch sich selbst betanken.
+  - Ist kein Tanker in der Zone, ist der Button gesperrt und sagt „Kein Tanker in dieser Zone“. Ebenso
+    bei vollem Tank oder wenn das Schiff schon wartet.
+  - Solange ein Schiff wartet, gibt es **„Zuerst betanken“** und **„Betankung abbrechen“**. Das Fenster
+    zeigt „Wird von … betankt“ oder „Wartet auf Betankung: Platz N bei …“, beim Tanker selbst, wen er
+    gerade betankt und wie viele warten.
+  - Der Tanker pumpt 40 pro Sekunde aus seinem Lager in ein Schiff nach dem anderen, bis es voll ist.
+    Verlässt eines von beiden die Zone, fällt das Schiff mit einer Meldung aus der Warteschlange.
+  - Ist das Lager leer, wartet die Betankung (eine Meldung) und geht von selbst weiter, sobald wieder
+    Treibstoff geliefert wird.
 
 ### Besatzung
 - Kleine Schiffe brauchen Besatzung, die zur Bevölkerung der Flotte gehört.

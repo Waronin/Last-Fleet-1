@@ -1,98 +1,120 @@
 using System.Collections.Generic;
 using LastFleet.Mining;
+using LastFleet.Shared.Text;
 using LastFleet.Ships;
 
 namespace LastFleet.Inspection
 {
     /// <summary>
-    /// The tanker part of the ship window. With a tanker selected it offers to refuel the other
-    /// selected capital ships one after another, to fill the tanker's own tank, and to stop refueling.
-    /// Right click on a capital ship does the same for a single target.
+    /// The refueling part of the ship window, built like the repair part: the refueling state of a
+    /// capital ship and the queue of a tanker, and the buttons to refuel, refuel first or cancel
+    /// refueling of the selected capital ships. Refusals say why, e.g. that no tanker is in the zone.
     /// </summary>
-    public static class TankerRefuelingInspection
+    public sealed class TankerRefuelingInspection
     {
-        public static void CollectActions(IReadOnlyList<ShipAgent> ships, List<InspectionAction> actions)
+        readonly FleetRefueling _refueling;
+
+        public TankerRefuelingInspection(ShipRegistry registry)
         {
-            int tankers = 0;
-            int targets = 0;
-            int refueling = 0;
+            _refueling = new FleetRefueling(registry);
+        }
+
+        public void Describe(ShipAgent ship, List<GameText> lines)
+        {
+            if (_refueling.TryGetJob(ship, out FuelTanker jobTanker, out int position))
+            {
+                lines.Add(JobLine(jobTanker, position));
+            }
+            if (ship.TryGetComponent(out FuelTanker ownTanker) && ownTanker.Current != null)
+            {
+                lines.Add(MiningTexts.TankerLine.Format(("ship", ownTanker.Current.DisplayName), ("waiting", ownTanker.WaitingCount)));
+            }
+        }
+
+        public void CollectActions(IReadOnlyList<ShipAgent> ships, List<InspectionAction> actions)
+        {
+            int capitals = 0;
+            int orderable = 0;
+            int noTanker = 0;
+            int full = 0;
+            int queued = 0;
+            int behindOthers = 0;
             foreach (ShipAgent ship in ships)
             {
-                if (ship.TryGetComponent(out FuelTanker tanker))
+                if (!ship.IsCapital)
                 {
-                    tankers++;
-                    refueling += tanker.IsRefueling ? 1 : 0;
+                    continue;
                 }
-                else if (ship.IsCapital)
+                capitals++;
+                RefuelEligibility eligibility = _refueling.Check(ship);
+                orderable += eligibility == RefuelEligibility.Eligible ? 1 : 0;
+                noTanker += eligibility == RefuelEligibility.NoTankerInZone ? 1 : 0;
+                full += eligibility == RefuelEligibility.TankFull ? 1 : 0;
+                if (_refueling.TryGetJob(ship, out FuelTanker _, out int position))
                 {
-                    targets++;
+                    queued++;
+                    behindOthers += position > 0 ? 1 : 0;
                 }
             }
-            if (tankers == 0)
+            // Small ships refuel in their hangar, so the buttons only show for capital ships.
+            if (capitals == 0)
             {
                 return;
             }
 
-            actions.Add(new InspectionAction(MiningTexts.RefuelAction, null, targets > 0, MiningTexts.RefuelNeedsTarget, () =>
+            GameText orderReason = noTanker > 0 ? MiningTexts.NoTankerInZone
+                : full > 0 ? MiningTexts.TankFull
+                : MiningTexts.AlreadyWaitingForFuel;
+            actions.Add(new InspectionAction(MiningTexts.RefuelAction, null, orderable > 0, orderReason, () => Order(ships)));
+            // Only offered once a selected ship waits at a tanker, to keep the window short.
+            if (queued == 0)
             {
-                RefuelOthers(ships);
-                return null;
-            }));
-            actions.Add(new InspectionAction(MiningTexts.RefuelSelfAction, null, true, null, () =>
-            {
-                RefuelSelf(ships);
-                return null;
-            }));
-            if (refueling > 0)
-            {
-                actions.Add(new InspectionAction(MiningTexts.StopRefuelingAction, null, true, null, () =>
-                {
-                    StopRefueling(ships);
-                    return null;
-                }));
+                return;
             }
+            actions.Add(new InspectionAction(MiningTexts.RefuelFirstAction, null, behindOthers > 0, MiningTexts.AlreadyRefueledFirst, () => RefuelFirst(ships)));
+            actions.Add(new InspectionAction(MiningTexts.CancelRefuelAction, null, true, null, () => Cancel(ships)));
         }
 
-        /// <summary>Every selected tanker refuels the other selected capital ships in selection order.</summary>
-        static void RefuelOthers(IReadOnlyList<ShipAgent> ships)
+        static GameText JobLine(FuelTanker tanker, int position)
         {
-            foreach (ShipAgent ship in ships)
+            if (position > 0)
             {
-                if (!ship.TryGetComponent(out FuelTanker tanker))
-                {
-                    continue;
-                }
-                bool append = false;
-                foreach (ShipAgent target in ships)
-                {
-                    if (target.IsCapital && !target.TryGetComponent(out FuelTanker _) && tanker.Refuel(target, append))
-                    {
-                        append = true;
-                    }
-                }
+                return MiningTexts.RefuelJobWaiting.Format(("position", position + 1), ("tanker", tanker.Ship.DisplayName));
             }
+            return tanker.IsShortOfFuel
+                ? MiningTexts.RefuelJobShortOfFuel.Format(("tanker", tanker.Ship.DisplayName))
+                : MiningTexts.RefuelJobActive.Format(("tanker", tanker.Ship.DisplayName));
         }
 
-        static void RefuelSelf(IReadOnlyList<ShipAgent> ships)
+        GameText Order(IReadOnlyList<ShipAgent> ships)
         {
+            int count = 0;
             foreach (ShipAgent ship in ships)
             {
-                if (ship.TryGetComponent(out FuelTanker tanker))
-                {
-                    tanker.Refuel(ship, false);
-                }
+                count += ship.IsCapital && _refueling.Order(ship) == RefuelEligibility.Eligible ? 1 : 0;
             }
+            return MiningTexts.RefuelOrdered.Format(("count", count));
         }
 
-        static void StopRefueling(IReadOnlyList<ShipAgent> ships)
+        GameText RefuelFirst(IReadOnlyList<ShipAgent> ships)
         {
+            // Walk backwards so the first selected ship ends up at the very front.
+            int count = 0;
+            for (int index = ships.Count - 1; index >= 0; index--)
+            {
+                count += _refueling.RefuelFirst(ships[index]) ? 1 : 0;
+            }
+            return MiningTexts.RefuelMovedToFront.Format(("count", count));
+        }
+
+        GameText Cancel(IReadOnlyList<ShipAgent> ships)
+        {
+            int count = 0;
             foreach (ShipAgent ship in ships)
             {
-                if (ship.TryGetComponent(out FuelTanker tanker))
-                {
-                    tanker.StopRefueling();
-                }
+                count += _refueling.Cancel(ship) ? 1 : 0;
             }
+            return MiningTexts.RefuelCancelled.Format(("count", count));
         }
     }
 }

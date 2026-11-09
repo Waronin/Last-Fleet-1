@@ -27,6 +27,7 @@ namespace LastFleet.Inspection
         readonly ShipRegistry _registry;
         readonly HangarCommandInput _hangarCommands;
         readonly ShipRepairInspection _repairs;
+        readonly TankerRefuelingInspection _refueling;
 
         /// <param name="repairs">Optional; without it the window offers no repairs.</param>
         public ShipSelectionInspection(ShipSelection selection, ShipRegistry registry, HangarCommandInput hangarCommands, RepairService repairs)
@@ -35,6 +36,7 @@ namespace LastFleet.Inspection
             _registry = registry;
             _hangarCommands = hangarCommands;
             _repairs = repairs != null ? new ShipRepairInspection(repairs) : null;
+            _refueling = new TankerRefuelingInspection(registry);
         }
 
         public GameText Title => _selection.Count == 1
@@ -87,7 +89,7 @@ namespace LastFleet.Inspection
             {
                 actions.Add(new InspectionAction(InspectionTexts.JettisonCargoAction, null, true, null, JettisonCargo));
             }
-            TankerRefuelingInspection.CollectActions(_selection.Ships, actions);
+            _refueling.CollectActions(_selection.Ships, actions);
             _repairs?.CollectActions(_selection.Ships, actions);
             bool canForm = _selection.Count > 1 && sameClass;
             actions.Add(new InspectionAction(InspectionTexts.FormSquadAction, FormSquadHint, canForm, InspectionTexts.FormSquadNeedsOneClass, () =>
@@ -121,6 +123,7 @@ namespace LastFleet.Inspection
             {
                 lines.Add(InspectionTexts.OutOfFuel);
             }
+            _refueling.Describe(ship, lines);
             if (ship.TryGetComponent(out ShipPassengers passengers))
             {
                 PassengerQuarters quarters = passengers.Quarters;
@@ -223,9 +226,9 @@ namespace LastFleet.Inspection
             {
                 return InspectionTexts.MiningTask.Format(("state", MiningTexts.States.For(mining.State)));
             }
-            if (ship.TryGetComponent(out FuelTanker tanker) && tanker.IsRefueling)
+            if (ship.TryGetComponent(out FuelTanker tanker) && tanker.Current != null)
             {
-                return MiningTexts.RefuelingTask.Format(("target", tanker.Target.DisplayName));
+                return MiningTexts.RefuelingTask.Format(("target", tanker.Current.DisplayName));
             }
             return ShipTexts.Activities.For(ship.Activity);
         }

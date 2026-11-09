@@ -15,8 +15,7 @@ namespace LastFleet.ShipControl
     /// Mouse control of small ships in the viewed zone (GDD: Controls). Click selects the ship's
     /// squad, double click all ships of that class in the zone, drag selects the ships inside the
     /// rectangle; Shift adds. Right click orders a move in formation; Shift appends to the queue. On an
-    /// enemy it attacks, on another of our ships selected fighters escort it, on a capital ship a
-    /// selected tanker refuels it.
+    /// enemy it attacks, on another of our ships selected fighters escort it.
     /// Picking works in screen space around each ship, so tiny ships stay easy to hit.
     /// </summary>
     public sealed class ShipCommandInput : MonoBehaviour
@@ -196,19 +195,14 @@ namespace LastFleet.ShipControl
             }
 
             // Context command (GDD): right click on an enemy attacks it, selected fighters on another of our
-            // ships escort it (or its squad), a selected tanker on one of our capital ships (itself included)
-            // refuels it, on a deposit sends harvesters mining or scouts scanning, on an unscanned station
-            // scouts scan it, otherwise small ships dock at it; elsewhere it is a move.
+            // ships escort it (or its squad), on a deposit sends harvesters mining or scouts scanning, on an
+            // unscanned station scouts scan it, otherwise small ships dock at it; elsewhere it is a move.
             if (_combat.TryPickHostile(_activeZone, _camera, pointer, _pickRadiusPixels, out ShipAgent hostile))
             {
                 _combat.OrderAttack(_selection.Ships, hostile);
                 return;
             }
             ShipAgent friendly = PickShip(pointer);
-            if (friendly != null && TryOrderRefueling(friendly, shift))
-            {
-                return;
-            }
             if (friendly != null && !_selection.Contains(friendly) && CombatService.CanEscort(_selection.Ships, friendly))
             {
                 _combat.OrderEscort(_selection.Ships, friendly);
@@ -262,26 +256,6 @@ namespace LastFleet.ShipControl
             }
             Notice?.Invoke(ShipControlTexts.HarvestersMining.Format(("count", started), ("withoutSlot", harvesters - started)));
             return true;
-        }
-
-        /// <summary>Selected tankers refuel the capital ship; Shift queues it behind their current targets.</summary>
-        bool TryOrderRefueling(ShipAgent target, bool append)
-        {
-            if (!target.IsCapital)
-            {
-                return false;
-            }
-
-            bool anyTanker = false;
-            foreach (ShipAgent ship in _selection.Ships)
-            {
-                if (ship.TryGetComponent(out FuelTanker tanker))
-                {
-                    anyTanker = true;
-                    tanker.Refuel(target, append);
-                }
-            }
-            return anyTanker;
         }
 
         /// <summary>Selected small ships dock at the station, one per free bay.</summary>

@@ -4,46 +4,77 @@ using System.Collections.Generic;
 namespace LastFleet.Mining
 {
     /// <summary>
-    /// The ships a tanker was ordered to refuel, in order. The tanker works on the first one; Shift
-    /// appends further ships behind it, a plain order replaces the list. A ship is listed once.
+    /// The order in which one tanker refuels: only the first entry gets fuel, the player decides the
+    /// rest. Entries are compared by reference, so two destroyed Unity objects never count as the same ship.
     /// </summary>
-    public sealed class RefuelingQueue<T> where T : class
+    public sealed class RefuelingQueue<TShip> where TShip : class
     {
-        readonly List<T> _targets = new List<T>();
+        readonly List<TShip> _ships = new List<TShip>();
 
-        public IReadOnlyList<T> Targets => _targets;
-        public T Current => _targets.Count > 0 ? _targets[0] : null;
-        public bool IsEmpty => _targets.Count == 0;
+        public IReadOnlyList<TShip> Ships => _ships;
+        public int Count => _ships.Count;
 
-        /// <summary>Lists the target; returns false if it was listed already (with append) and nothing changed.</summary>
-        public bool Add(T target, bool append)
+        /// <summary>The ship being refueled, or null when the queue is empty.</summary>
+        public TShip Current => _ships.Count > 0 ? _ships[0] : null;
+
+        /// <summary>Zero-based place in the queue, or -1.</summary>
+        public int PositionOf(TShip ship)
         {
-            if (target == null)
+            for (int index = 0; index < _ships.Count; index++)
             {
-                throw new ArgumentNullException(nameof(target));
+                if (ReferenceEquals(_ships[index], ship))
+                {
+                    return index;
+                }
             }
+            return -1;
+        }
 
-            if (!append)
+        public bool Contains(TShip ship) => PositionOf(ship) >= 0;
+
+        /// <summary>Adds the ship at the end; false when it is already waiting.</summary>
+        public bool Enqueue(TShip ship)
+        {
+            if (ship == null)
             {
-                _targets.Clear();
+                throw new ArgumentNullException(nameof(ship));
             }
-            else if (_targets.Contains(target))
+            if (Contains(ship))
             {
                 return false;
             }
-            _targets.Add(target);
+            _ships.Add(ship);
             return true;
         }
 
-        /// <summary>Drops the target wherever it stands, e.g. when it is full or was destroyed.</summary>
-        public bool Remove(T target)
+        /// <summary>Moves a waiting ship to the front, so it gets fuel next; false when it is not queued or already first.</summary>
+        public bool MoveToFront(TShip ship)
         {
-            return _targets.Remove(target);
+            int position = PositionOf(ship);
+            if (position <= 0)
+            {
+                return false;
+            }
+            _ships.RemoveAt(position);
+            _ships.Insert(0, ship);
+            return true;
         }
 
-        public void Clear()
+        public bool Remove(TShip ship)
         {
-            _targets.Clear();
+            int position = PositionOf(ship);
+            if (position < 0)
+            {
+                return false;
+            }
+            _ships.RemoveAt(position);
+            return true;
+        }
+
+        /// <summary>Removes every ship the predicate matches, keeping the order of the rest; returns how many left.</summary>
+        public int RemoveAll(Predicate<TShip> match)
+        {
+            return _ships.RemoveAll(match);
         }
     }
 }
