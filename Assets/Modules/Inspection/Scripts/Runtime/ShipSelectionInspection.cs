@@ -28,15 +28,19 @@ namespace LastFleet.Inspection
         readonly HangarCommandInput _hangarCommands;
         readonly ShipRepairInspection _repairs;
         readonly TankerRefuelingInspection _refueling;
+        readonly EmpInspection _emp;
 
         /// <param name="repairs">Optional; without it the window offers no repairs.</param>
-        public ShipSelectionInspection(ShipSelection selection, ShipRegistry registry, HangarCommandInput hangarCommands, RepairService repairs)
+        /// <param name="emp">Optional; without it the window offers no tactical weapons.</param>
+        public ShipSelectionInspection(ShipSelection selection, ShipRegistry registry, HangarCommandInput hangarCommands, RepairService repairs,
+            EmpInspection emp)
         {
             _selection = selection;
             _registry = registry;
             _hangarCommands = hangarCommands;
             _repairs = repairs != null ? new ShipRepairInspection(repairs) : null;
             _refueling = new TankerRefuelingInspection(registry);
+            _emp = emp;
         }
 
         public GameText Title => _selection.Count == 1
@@ -91,6 +95,7 @@ namespace LastFleet.Inspection
             }
             _refueling.CollectActions(_selection.Ships, actions);
             _repairs?.CollectActions(_selection.Ships, actions);
+            _emp?.CollectActions(_selection.Ships, actions);
             bool canForm = _selection.Count > 1 && sameClass;
             actions.Add(new InspectionAction(InspectionTexts.FormSquadAction, FormSquadHint, canForm, InspectionTexts.FormSquadNeedsOneClass, () =>
                 InspectionTexts.SquadFormed.Format(("squad", _registry.Squads.Form(_selection.Ships).DisplayName))));
@@ -114,6 +119,7 @@ namespace LastFleet.Inspection
             lines.Add(InspectionTexts.ShipClass.Format(("class", ship.ClassDisplayName), ("size", ShipTexts.Sizes.For(ship.Size))));
             lines.Add(Hull(ship));
             _repairs?.Describe(ship, lines);
+            _emp?.Describe(ship, lines);
             if (ship.TryGetComponent(out ShipShield shield))
             {
                 lines.Add(CombatTexts.ShieldLine.Format(("current", shield.Charge.Current), ("maximum", shield.Charge.Maximum)));

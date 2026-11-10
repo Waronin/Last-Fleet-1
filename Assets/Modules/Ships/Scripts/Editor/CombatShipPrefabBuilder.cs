@@ -157,6 +157,8 @@ namespace LastFleet.Ships.Editor
             ShipPrefabBuilder.AddPresentation(root, engineGlow, trail, bracket, 36f, 1f);
             CombatEffectsBuilder.AddHitFeedback(root, 0f, 0.6f);
             CombatEffectsBuilder.AddDestruction(root, 14f);
+            // GDD: tactical weapons for warships; only they use ammunition.
+            TacticalWeaponPrefabBuilder.AddEmpLauncher(root);
             return ShipPrefabBuilder.SavePrefab(root, CruiserPrefabPath);
         }
 

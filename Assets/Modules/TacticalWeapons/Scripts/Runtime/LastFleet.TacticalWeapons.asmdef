@@ -1,0 +1,22 @@
+{
+    "name": "LastFleet.TacticalWeapons",
+    "rootNamespace": "LastFleet.TacticalWeapons",
+    "references": [
+        "LastFleet.Shared",
+        "LastFleet.Ships",
+        "LastFleet.Zones",
+        "LastFleet.Space",
+        "LastFleet.Mining",
+        "LastFleet.ShipControl",
+        "Unity.InputSystem"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

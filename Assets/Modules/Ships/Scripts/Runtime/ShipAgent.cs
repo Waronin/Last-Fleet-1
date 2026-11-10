@@ -106,6 +106,13 @@ namespace LastFleet.Ships
         /// <summary>No crew left: the ship cannot fly or take orders until it is recovered.</summary>
         public bool IsDerelict => Crew != null && Crew.IsDerelict;
 
+        /// <summary>
+        /// Seconds the ship stays stunned, e.g. by an EMP. While stunned all drives are off and the ship
+        /// drifts on its momentum; orders, jump charging and weapons wait and carry on afterwards.
+        /// </summary>
+        public float StunSecondsLeft { get; private set; }
+        public bool IsStunned => StunSecondsLeft > 0f;
+
         /// <summary>Share of full working speed for tasks such as mining and scanning; 1 without a crew system.</summary>
         public float WorkEfficiency => Crew != null ? Crew.Efficiency : 1f;
 
@@ -302,10 +309,28 @@ namespace LastFleet.Ships
             gameObject.SetActive(true);
         }
 
+        /// <summary>Stuns the ship for the given time; a longer stun already running is kept. Docked ships are shielded by their carrier.</summary>
+        public void Stun(float seconds)
+        {
+            if (seconds <= 0f || IsDocked)
+            {
+                return;
+            }
+            StunSecondsLeft = Mathf.Max(StunSecondsLeft, seconds);
+        }
+
         void Update()
         {
             if (_motion == null || IsDocked)
             {
+                return;
+            }
+
+            if (IsStunned)
+            {
+                StunSecondsLeft = Mathf.Max(0f, StunSecondsLeft - Time.deltaTime);
+                _motion.Drift(Time.deltaTime);
+                ApplyTransform();
                 return;
             }
 

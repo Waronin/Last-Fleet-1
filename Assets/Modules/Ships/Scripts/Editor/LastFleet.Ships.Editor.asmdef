@@ -10,6 +10,7 @@
         "LastFleet.Mining",
         "LastFleet.Exploration",
         "LastFleet.Shared",
+        "LastFleet.TacticalWeapons",
         "LastFleet.Shared.Editor"
     ],
     "includePlatforms": [

@@ -1,0 +1,113 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: TacticalWeapons_de
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: de
+  m_SharedData: {fileID: 11400000, guid: 661ad6e0899c9d94ab507507520ba5f9, type: 2}
+  m_Metadata:
+    m_Items:
+    - rid: 5599358864159670346
+  m_TableData:
+  - m_Id: 1060712448
+    m_Localized: EMP-Rakete abfeuern
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1085878272
+    m_Localized: EMP-Rakete bauen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1090072576
+    m_Localized: Keine EMP-Rakete an Bord.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1090072577
+    m_Localized: "Das Schiff ist bet\xE4ubt."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1090072578
+    m_Localized: Das Kriegsschiff ist nicht in der angezeigten Zone.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1090072579
+    m_Localized: Das Magazin ist voll.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1090072580
+    m_Localized: Es wird schon eine Rakete gebaut.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1090072581
+    m_Localized: Braucht {metal:0} Metall und {fuel:0} Treibstoff im Lager.
+    m_Metadata:
+      m_Items:
+      - rid: 5599358864159670346
+  - m_Id: 1090072582
+    m_Localized: 'EMP-Raketen: {count}/{capacity}'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358864159670346
+  - m_Id: 1090072583
+    m_Localized: 'Baut EMP-Rakete: noch {seconds:0} s'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358864159670346
+  - m_Id: 1098461184
+    m_Localized: "Bet\xE4ubt: noch {seconds:0.0} s"
+    m_Metadata:
+      m_Items:
+      - rid: 5599358864159670346
+  - m_Id: 1098461185
+    m_Localized: 'EMP zielen: Linksklick feuert, Rechtsklick oder M bricht ab.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1098461186
+    m_Localized: EMP-Start abgebrochen.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1098461187
+    m_Localized: '{ship} startet eine EMP-Rakete.'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358864159670346
+  - m_Id: 1098461188
+    m_Localized: "EMP-Rakete in Bau f\xFCr {metal:0} Metall und {fuel:0} Treibstoff."
+    m_Metadata:
+      m_Items:
+      - rid: 5599358864159670346
+  - m_Id: 1098461189
+    m_Localized: '{ship}: EMP-Rakete fertig ({count}/{capacity}).'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358864159670346
+  - m_Id: 1098461190
+    m_Localized: "EMP: {enemies:plural:{} feindliches Schiff|{} feindliche Schiffe} und {own:plural:{} eigenes Schiff|{} eigene Schiffe} bet\xE4ubt."
+    m_Metadata:
+      m_Items:
+      - rid: 5599358864159670346
+  references:
+    version: 2
+    RefIds:
+    - rid: 5599358864159670346
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 
+        m_SharedEntries:
+        - id: 1090072581
+        - id: 1090072582
+        - id: 1090072583
+        - id: 1098461184
+        - id: 1098461187
+        - id: 1098461188
+        - id: 1098461189
+        - id: 1098461190

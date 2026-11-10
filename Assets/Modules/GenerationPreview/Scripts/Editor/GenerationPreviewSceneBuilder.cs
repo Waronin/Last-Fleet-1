@@ -13,6 +13,7 @@ using LastFleet.Provisions;
 using LastFleet.Pursuit;
 using LastFleet.Quests;
 using LastFleet.Repairs;
+using LastFleet.TacticalWeapons;
 using LastFleet.Rewards;
 using LastFleet.RunEnd;
 using LastFleet.Stations;
@@ -135,6 +136,21 @@ namespace LastFleet.GenerationPreview.Editor
             EditorAssetUtility.SetReferences(water, ("_registry", shipRegistry), ("_population", population));
             RepairService repairs = shipsObject.AddComponent<RepairService>();
             EditorAssetUtility.SetReferences(repairs, ("_registry", shipRegistry));
+            EmpService emp = shipsObject.AddComponent<EmpService>();
+            EditorAssetUtility.SetReferences(emp, ("_fleet", shipRegistry), ("_pronin", proninRegistry),
+                ("_missilePrefab", TacticalWeaponPrefabBuilder.LoadOrCreateMissile()), ("_blastPrefab", TacticalWeaponPrefabBuilder.LoadOrCreateBlast()));
+            EmpTargetingInput empTargeting = shipsObject.AddComponent<EmpTargetingInput>();
+            EditorAssetUtility.SetReferences(empTargeting, ("_camera", cameraRig.Camera), ("_commandInput", shipInput), ("_emp", emp),
+                ("_previewMaterial", TacticalWeaponPrefabBuilder.LoadOrCreateTargetingMaterial()));
+            // Stunned ships of both sides get a ring, so the player sees whom the EMP holds.
+            StunMarkerView stunMarkers = shipsObject.AddComponent<StunMarkerView>();
+            SerializedObject stunMarkerData = new SerializedObject(stunMarkers);
+            SerializedProperty markedRegistries = EditorAssetUtility.FindProperty(stunMarkerData, "_registries");
+            markedRegistries.arraySize = 2;
+            markedRegistries.GetArrayElementAtIndex(0).objectReferenceValue = shipRegistry;
+            markedRegistries.GetArrayElementAtIndex(1).objectReferenceValue = proninRegistry;
+            EditorAssetUtility.FindProperty(stunMarkerData, "_ringMaterial").objectReferenceValue = TacticalWeaponPrefabBuilder.LoadOrCreateStunMarkerMaterial();
+            stunMarkerData.ApplyModifiedPropertiesWithoutUndo();
             CrewRecruitment recruitment = shipsObject.AddComponent<CrewRecruitment>();
             EditorAssetUtility.SetReferences(recruitment, ("_registry", shipRegistry));
 
@@ -198,7 +214,7 @@ namespace LastFleet.GenerationPreview.Editor
                 ("_environment", environment), ("_cameraRig", cameraRig), ("_shipRegistry", shipRegistry),
                 ("_shipInput", shipInput), ("_groupInput", groupInput), ("_hangarInput", hangarInput), ("_mining", mining),
                 ("_scouting", scouting), ("_population", population), ("_docking", docking), ("_search", search), ("_rewards", rewards), ("_combat", combat), ("_pursuit", pursuit), ("_proninAttack", proninAttack), ("_fleetJump", fleetJump), ("_jumpDialog", jumpDialog), ("_jumpStatus", jumpStatus), ("_inspection", inspection), ("_shipPanel", shipPanel), ("_quests", quests),
-                ("_runEndWindow", runEndWindow), ("_water", water), ("_evacuation", evacuation), ("_requests", requests), ("_repairs", repairs),
+                ("_runEndWindow", runEndWindow), ("_water", water), ("_evacuation", evacuation), ("_requests", requests), ("_repairs", repairs), ("_emp", emp), ("_empTargeting", empTargeting),
                 ("_cruiserPrefab", CombatShipPrefabBuilder.LoadOrCreateCruiser()),
                 ("_fighterPrefab", CombatShipPrefabBuilder.LoadOrCreateFighter()),
                 ("_refineryPrefab", ShipPrefabBuilder.LoadOrCreateRefinery()),

@@ -43,10 +43,14 @@ namespace LastFleet.ShipControl
         bool _isDragging;
         Vector2 _dragStart;
         readonly Dictionary<object, Rect> _blockedScreenAreas = new Dictionary<object, Rect>();
+        readonly HashSet<object> _mouseSuspendedBy = new HashSet<object>();
         ShipAgent _lastClickedShip;
         float _lastClickTime = float.NegativeInfinity;
 
         public ShipSelection Selection => _selection;
+
+        /// <summary>The zone the player is looking at, or null on the maps.</summary>
+        public ZoneView ActiveZone => _activeZone;
 
         /// <summary>Short feedback for the player about what a command did.</summary>
         public event System.Action<GameText> Notice;
@@ -102,7 +106,23 @@ namespace LastFleet.ShipControl
             _blockedScreenAreas.Remove(owner);
         }
 
-        bool IsOverUi(Vector2 pointer)
+        /// <summary>
+        /// Hands the mouse to another input for a while, e.g. while the player aims a missile: no
+        /// selection, no orders. Each owner resumes its own suspension.
+        /// </summary>
+        public void SuspendMouseCommands(object owner)
+        {
+            _mouseSuspendedBy.Add(owner);
+            _isDragging = false;
+        }
+
+        public void ResumeMouseCommands(object owner)
+        {
+            _mouseSuspendedBy.Remove(owner);
+        }
+
+        /// <summary>Whether the pointer is over a UI panel that registered its screen area.</summary>
+        public bool IsOverUi(Vector2 pointer)
         {
             foreach (Rect area in _blockedScreenAreas.Values)
             {
@@ -162,7 +182,7 @@ namespace LastFleet.ShipControl
         {
             Mouse mouse = Mouse.current;
             Keyboard keyboard = Keyboard.current;
-            if (_activeZone == null || mouse == null || keyboard == null)
+            if (_activeZone == null || mouse == null || keyboard == null || _mouseSuspendedBy.Count > 0)
             {
                 return;
             }

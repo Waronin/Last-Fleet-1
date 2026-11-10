@@ -69,6 +69,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Locale-en
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5f9a1949f1e70bd45be122024f02f6af
+    m_Address: TacticalWeapons_en
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 690a3758c92523646bb27a07b01d9cbd
     m_Address: RunEnd_en
     m_ReadOnly: 1

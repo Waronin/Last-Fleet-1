@@ -11,6 +11,35 @@ namespace LastFleet.Ships.Tests
         static readonly ShipMotionSettings Settings = new ShipMotionSettings();
 
         [Test]
+        public void Drift_CoastsWithoutDrivesAndKeepsTheCourse()
+        {
+            ShipMotion motion = new ShipMotion(Settings, Vector2.zero, 0f);
+            Vector2 destination = new Vector2(0f, 300f);
+            motion.SetDestination(destination);
+            for (int i = 0; i < 600; i++)
+            {
+                motion.Step(StepSeconds);
+            }
+            Vector2 velocity = motion.Velocity;
+            Vector2 position = motion.Position;
+            float heading = motion.HeadingDegrees;
+            ShipMotionPhase phase = motion.Phase;
+            Assert.Greater(velocity.magnitude, 0f, "The ship is under way before the drift.");
+
+            motion.Drift(2f);
+
+            Assert.AreEqual(position + velocity * 2f, motion.Position);
+            Assert.AreEqual(velocity, motion.Velocity, "Momentum is kept.");
+            Assert.AreEqual(heading, motion.HeadingDegrees);
+            Assert.AreEqual(phase, motion.Phase, "The course goes on after the drift.");
+            Assert.IsFalse(motion.MainDriveActive);
+            Assert.IsFalse(motion.ThrustersActive);
+
+            Simulate(motion);
+            Assert.IsTrue(motion.HasArrived, "The ship still reaches its destination afterwards.");
+        }
+
+        [Test]
         public void ShortMove_UsesThrustersOnly()
         {
             ShipMotion motion = new ShipMotion(Settings, Vector2.zero, 0f);

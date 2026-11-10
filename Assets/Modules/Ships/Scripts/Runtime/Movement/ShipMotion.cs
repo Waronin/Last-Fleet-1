@@ -188,6 +188,20 @@ namespace LastFleet.Ships
             SetDestination(Position + ahead);
         }
 
+        /// <summary>
+        /// Coasts on the current velocity with every drive off, e.g. while the ship is stunned. Course,
+        /// destination and phase stay as they were, so the next <see cref="Step"/> carries on from there.
+        /// </summary>
+        public void Drift(float deltaTime)
+        {
+            MainDriveActive = false;
+            ThrustersActive = false;
+            if (deltaTime > 0f)
+            {
+                Position += Velocity * deltaTime;
+            }
+        }
+
         /// <summary>Moves the ship without changing velocity or heading, e.g. when it exits a jump.</summary>
         public void Teleport(Vector2 position)
         {

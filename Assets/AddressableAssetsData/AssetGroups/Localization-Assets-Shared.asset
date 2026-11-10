@@ -65,6 +65,11 @@ MonoBehaviour:
     m_ReadOnly: 1
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 661ad6e0899c9d94ab507507520ba5f9
+    m_Address: Assets/Modules/TacticalWeapons/Data/Localization/TacticalWeapons Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 693daf08445e1d840aa96bb06bbe4410
     m_Address: Assets/Modules/Repairs/Data/Localization/Repairs Shared Data.asset
     m_ReadOnly: 1

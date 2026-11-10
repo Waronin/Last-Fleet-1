@@ -431,6 +431,23 @@ Im Nahduell braucht ein Jäger etwa 7,5 s für einen Pronin-Jäger, umgekehrt si
 - Die Eskorte ist zugleich die **Haltung der Jäger**. Eigene Haltungen für Defensive oder Rückzug sind nicht
   vorgesehen, weil Jäger damit die Flotte schutzlos zurücklassen würden.
 
+### Taktische Waffen: EMP-Raketen
+- Nur taktische Waffen brauchen Munition. Die Standardwaffen von Jägern und Großkampfschiffen brauchen keine.
+- Der **Kreuzer** trägt höchstens **2 EMP-Raketen** und startet mit **einer**.
+- **Abfeuern:** Kreuzer auswählen, **M** drücken oder „EMP-Rakete abfeuern“, dann mit **Linksklick** einen Punkt
+  in der Zone des Kreuzers wählen. Ein Ring zeigt den Wirkungsradius. **Rechtsklick** oder erneut **M** bricht ab.
+  Während des Zielens wählt die Maus keine Schiffe aus und gibt keine Befehle.
+- Die Rakete fliegt sichtbar mit 80 Einheiten/s zum Punkt und kann nicht abgeschossen werden.
+- Der **EMP betäubt alle Schiffe beider Seiten** im Umkreis von **20 km**, auch eigene und den Kreuzer selbst.
+  Die Dauer fällt linear von der Mitte zum Rand: **Pronin 10 s**, **menschliche Schiffe 7 s** (sie erholen
+  sich schneller). Angedockte Schiffe sind geschützt.
+- **Betäubt** heißt: Triebwerke und Manövrierdüsen aus, das Schiff treibt mit seiner Trägheit weiter. Die
+  Waffen schweigen, Befehle, KI und das Aufladen von Zonensprüngen warten und laufen danach weiter.
+  Schilde und Hangar bleiben unberührt. Ein flackernder blauweißer **Ring** markiert betäubte Schiffe beider
+  Seiten und zieht sich zum Rumpf zusammen, während die Betäubung abklingt. Das Schiffsfenster zeigt die Restdauer.
+- **Bau:** „EMP-Rakete bauen“ im Schiffsfenster des Kreuzers, **200 Metall und 100 Treibstoff** aus den Lagern,
+  bezahlt beim Baustart. Eine Rakete gleichzeitig, **60 s**, nur solange das Magazin nicht voll ist.
+
 ### Effekte und Wracks
 - Schildtreffer lassen einen Ring aufleuchten, Rumpftreffer (auch durch Gefahren) werfen Funken.
 - Zerstörte Schiffe explodieren mit Feuerball, Schockring und Trümmern.
@@ -551,9 +568,9 @@ Im Nahduell braucht ein Jäger etwa 7,5 s für einen Pronin-Jäger, umgekehrt si
   Quest-Platzierung.
 - **Laufzeitzustand pro Run**: Scans, Abbaumengen, Wracks, Stationsbewohner, Anfunk-Ergebnisse und
   Questfortschritt bleiben erhalten, solange der Run läuft.
-- **Modulare Struktur** unter `Assets/Modules/` mit 24 Feature-Modulen (Galaxy, StarSystem, Zones, Ships,
+- **Modulare Struktur** unter `Assets/Modules/` mit 25 Feature-Modulen (Galaxy, StarSystem, Zones, Ships,
   ShipControl, Mining, Exploration, Inspection, People, Provisions, Stations, Combat, Pursuit, FleetJump,
-  Quests, Dialogue, Rewards, Repairs, RunEnd, Hud, Localization, CameraControl, Space, GenerationPreview) und
+  Quests, Dialogue, Rewards, Repairs, TacticalWeapons, RunEnd, Hud, Localization, CameraControl, Space, GenerationPreview) und
   einem Shared-Modul.
 - **EditMode-Tests** für Spielregeln (Abbau, Gefahren, Treibstoff, Kampfgeometrie, Countdown, Quests,
   Texte und mehr).
@@ -582,9 +599,7 @@ Im Nahduell braucht ein Jäger etwa 7,5 s für einen Pronin-Jäger, umgekehrt si
 - **Subsysteme** (Triebwerk, Sprungantrieb, Hangar, Waffen, Lebenserhaltung) und ihre Reparatur,
   **benannte Ingenieure** und eine Hangar-Übersicht mit dem Zustand der angedockten Schiffe.
 - **Wirkung von Upgrade-Modulen, Hinweisen und Archivdaten.** Sie werden nur gezählt.
-- **Taktische Waffen für Kriegsschiffe**, zum Beispiel **EMP-Raketen**. Munition soll es nur für diese
-  taktischen Waffen der Kriegsschiffe geben. Die Standardwaffen der Jäger und Großkampfschiffe brauchen
-  keine Munition, damit nicht jeder kleine Jäger versorgt werden muss.
+- **Weitere taktische Waffen** neben der EMP-Rakete und EMP-Waffen der Pronin.
 - **Lügende Stationscrews** beim Anfunken.
 - **Allgemeine Niederlage**, z. B. wenn die Flotte vernichtet ist. Die einzige Niederlage ist bisher das
   Bleiben in der Supernova.

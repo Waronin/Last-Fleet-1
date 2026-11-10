@@ -9,6 +9,7 @@
         "LastFleet.People",
         "LastFleet.Localization",
         "LastFleet.Shared",
+        "LastFleet.TacticalWeapons",
         "LastFleet.Ships",
         "LastFleet.ShipControl",
         "LastFleet.Mining",

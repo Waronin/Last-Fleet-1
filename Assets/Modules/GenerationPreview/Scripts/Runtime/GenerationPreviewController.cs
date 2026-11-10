@@ -14,6 +14,7 @@ using LastFleet.Pursuit;
 using LastFleet.Quests;
 using LastFleet.Quests.Meltdown;
 using LastFleet.Repairs;
+using LastFleet.TacticalWeapons;
 using LastFleet.Rewards;
 using LastFleet.RunEnd;
 using LastFleet.Shared.Text;
@@ -109,6 +110,9 @@ namespace LastFleet.GenerationPreview
         [SerializeField] StationRequestBoard _requests;
         [Tooltip("Optional. Lets the player order hull repairs from the ship window.")]
         [SerializeField] RepairService _repairs;
+        [Tooltip("Optional. EMP missiles of the warships: firing, building and their notices.")]
+        [SerializeField] EmpService _emp;
+        [SerializeField] EmpTargetingInput _empTargeting;
         [Tooltip("Spawned on arrival in a system until fleet jumps carry the fleet along.")]
         [SerializeField] ShipAgent _refineryPrefab;
         [SerializeField] ShipAgent _tankerPrefab;
@@ -189,6 +193,11 @@ namespace LastFleet.GenerationPreview
             {
                 _repairs.Notice += ShowNotice;
             }
+            if (_emp != null && _empTargeting != null)
+            {
+                _emp.Notice += ShowNotice;
+                _empTargeting.Notice += ShowNotice;
+            }
             _docking.Notice += ShowNotice;
             _search.Notice += ShowNotice;
             _rewards.Notice += ShowNotice;
@@ -217,7 +226,8 @@ namespace LastFleet.GenerationPreview
                 _shipPanel.Clear();
                 return;
             }
-            _shipInspection ??= new ShipSelectionInspection(Selection, _shipRegistry, _hangarInput, _repairs);
+            _shipInspection ??= new ShipSelectionInspection(Selection, _shipRegistry, _hangarInput, _repairs,
+                _emp != null && _empTargeting != null ? new EmpInspection(_emp, _empTargeting) : null);
             _shipPanel.Show(_shipInspection);
         }
 
@@ -246,6 +256,11 @@ namespace LastFleet.GenerationPreview
             if (_repairs != null)
             {
                 _repairs.Notice -= ShowNotice;
+            }
+            if (_emp != null && _empTargeting != null)
+            {
+                _emp.Notice -= ShowNotice;
+                _empTargeting.Notice -= ShowNotice;
             }
             _docking.Notice -= ShowNotice;
             _search.Notice -= ShowNotice;

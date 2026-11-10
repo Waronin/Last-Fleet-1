@@ -12,7 +12,7 @@ namespace LastFleet.Combat
     /// only fire while the ship points at an enemy, and nobody fires at a target in cover behind a
     /// rock, a station or a capital ship. A hit is rolled when the shot is fired and lands
     /// when its round arrives; how a shot looks is up to a view such as <see cref="ProjectileShotView"/>.
-    /// Rounds still in flight are lost when the ship lands or is destroyed.
+    /// Rounds still in flight are lost when the ship lands or is destroyed. A stunned ship does not fire.
     /// </summary>
     [RequireComponent(typeof(ShipAgent))]
     public sealed class ShipWeapons : MonoBehaviour
@@ -63,7 +63,8 @@ namespace LastFleet.Combat
             float deltaTime = Time.deltaTime;
             Cycle.Tick(deltaTime);
             LandHits(deltaTime);
-            if (_combat == null || _ship.IsDocked || _ship.IsDerelict || !Cycle.IsReady)
+            // A stunned ship holds its fire; rounds already flying still land.
+            if (_combat == null || _ship.IsDocked || _ship.IsDerelict || _ship.IsStunned || !Cycle.IsReady)
             {
                 return;
             }

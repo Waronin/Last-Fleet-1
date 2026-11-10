@@ -115,7 +115,8 @@ Newest first. Note the date, the setup, what happened and the version of the val
   strays far from the leader.
 - **Ammunition and tactical weapons** (decided 2026-11-09): standard guns of fighters and capital ships
   never use ammunition, so no fighter has to be resupplied. Instead, warships get extra **tactical
-  weapons** (for example **EMP missiles**), and only those use ammunition. Not built yet.
+  weapons** (for example **EMP missiles**), and only those use ammunition. The cruiser's EMP missile is
+  built (see the TacticalWeapons module); stunned ships drift and hold their fire (`ShipAgent.Stun`).
 - **Hazards** (shards, gas, radiation) only hit the player's registry; the GDD wants them for both
   sides. Shields do not block hazards.
 - **Capture**: `TransferTo` exists, but what happens to ships docked in a captured carrier and to its

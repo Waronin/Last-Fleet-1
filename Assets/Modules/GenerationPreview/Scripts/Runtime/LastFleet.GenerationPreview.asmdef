@@ -16,6 +16,7 @@
         "LastFleet.Provisions",
         "LastFleet.Localization",
         "LastFleet.Shared",
+        "LastFleet.TacticalWeapons",
         "LastFleet.Galaxy",
         "LastFleet.StarSystem",
         "LastFleet.Zones",

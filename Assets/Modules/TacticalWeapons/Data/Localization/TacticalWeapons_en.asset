@@ -1,0 +1,113 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: TacticalWeapons_en
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: 661ad6e0899c9d94ab507507520ba5f9, type: 2}
+  m_Metadata:
+    m_Items:
+    - rid: 5599358864159670345
+  m_TableData:
+  - m_Id: 1060712448
+    m_Localized: Fire EMP missile
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1085878272
+    m_Localized: Build EMP missile
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1090072576
+    m_Localized: No EMP missile on board.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1090072577
+    m_Localized: The ship is stunned.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1090072578
+    m_Localized: The warship is not in the zone you are viewing.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1090072579
+    m_Localized: The magazine is full.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1090072580
+    m_Localized: A missile is already being built.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1090072581
+    m_Localized: Needs {metal:0} metal and {fuel:0} fuel in the stores.
+    m_Metadata:
+      m_Items:
+      - rid: 5599358864159670345
+  - m_Id: 1090072582
+    m_Localized: 'EMP missiles: {count}/{capacity}'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358864159670345
+  - m_Id: 1090072583
+    m_Localized: 'Building an EMP missile: {seconds:0} s left'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358864159670345
+  - m_Id: 1098461184
+    m_Localized: 'Stunned: {seconds:0.0} s left'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358864159670345
+  - m_Id: 1098461185
+    m_Localized: 'Aim the EMP: left click fires, right click or M cancels.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1098461186
+    m_Localized: EMP launch cancelled.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1098461187
+    m_Localized: '{ship} launches an EMP missile.'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358864159670345
+  - m_Id: 1098461188
+    m_Localized: Building an EMP missile for {metal:0} metal and {fuel:0} fuel.
+    m_Metadata:
+      m_Items:
+      - rid: 5599358864159670345
+  - m_Id: 1098461189
+    m_Localized: '{ship}: EMP missile ready ({count}/{capacity}).'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358864159670345
+  - m_Id: 1098461190
+    m_Localized: 'EMP: {enemies:plural:{} enemy ship|{} enemy ships} and {own:plural:{} own ship|{} own ships} stunned.'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358864159670345
+  references:
+    version: 2
+    RefIds:
+    - rid: 5599358864159670345
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 
+        m_SharedEntries:
+        - id: 1090072581
+        - id: 1090072582
+        - id: 1090072583
+        - id: 1098461184
+        - id: 1098461187
+        - id: 1098461188
+        - id: 1098461189
+        - id: 1098461190
