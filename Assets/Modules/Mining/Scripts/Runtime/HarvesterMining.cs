@@ -1,3 +1,4 @@
+using System;
 using LastFleet.Ships;
 using LastFleet.Zones;
 using UnityEngine;
@@ -19,7 +20,7 @@ namespace LastFleet.Mining
     /// order. Attaching to a deposit scans it, since the ship is now on site.
     /// </summary>
     [RequireComponent(typeof(ShipAgent))]
-    public sealed class HarvesterMining : MonoBehaviour, IShipAutomation
+    public sealed class HarvesterMining : MonoBehaviour, IShipAutomation, IResumableAutomation
     {
         const float SlotArrivalToleranceUnits = 2f;
 
@@ -86,6 +87,25 @@ namespace LastFleet.Mining
             _slot = slot;
             ContinueWithDeposit();
             return true;
+        }
+
+        /// <summary>Stops mining; it starts over at the same deposit, or at the nearest free one if that is gone or full meanwhile.</summary>
+        public Action Suspend()
+        {
+            if (State == MiningState.Inactive || Deposit == null || _zone == null)
+            {
+                return null;
+            }
+            ZoneView zone = _zone;
+            ResourceDeposit deposit = Deposit;
+            StopMining();
+            return () =>
+            {
+                if (zone != null)
+                {
+                    StartMining(zone, deposit);
+                }
+            };
         }
 
         /// <summary>

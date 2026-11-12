@@ -113,6 +113,8 @@ namespace LastFleet.GenerationPreview
         [Tooltip("Optional. EMP missiles of the warships: firing, building and their notices.")]
         [SerializeField] EmpService _emp;
         [SerializeField] EmpTargetingInput _empTargeting;
+        [Tooltip("Optional. Small ships fly home to refuel below their threshold; set in the ship window.")]
+        [SerializeField] FuelReturnService _fuelReturn;
         [Tooltip("Spawned on arrival in a system until fleet jumps carry the fleet along.")]
         [SerializeField] ShipAgent _refineryPrefab;
         [SerializeField] ShipAgent _tankerPrefab;
@@ -198,6 +200,10 @@ namespace LastFleet.GenerationPreview
                 _emp.Notice += ShowNotice;
                 _empTargeting.Notice += ShowNotice;
             }
+            if (_fuelReturn != null)
+            {
+                _fuelReturn.Notice += ShowNotice;
+            }
             _docking.Notice += ShowNotice;
             _search.Notice += ShowNotice;
             _rewards.Notice += ShowNotice;
@@ -227,7 +233,8 @@ namespace LastFleet.GenerationPreview
                 return;
             }
             _shipInspection ??= new ShipSelectionInspection(Selection, _shipRegistry, _hangarInput, _repairs,
-                _emp != null && _empTargeting != null ? new EmpInspection(_emp, _empTargeting) : null);
+                _emp != null && _empTargeting != null ? new EmpInspection(_emp, _empTargeting) : null,
+                _fuelReturn != null ? new FuelReturnInspection(_fuelReturn) : null);
             _shipPanel.Show(_shipInspection);
         }
 
@@ -261,6 +268,10 @@ namespace LastFleet.GenerationPreview
             {
                 _emp.Notice -= ShowNotice;
                 _empTargeting.Notice -= ShowNotice;
+            }
+            if (_fuelReturn != null)
+            {
+                _fuelReturn.Notice -= ShowNotice;
             }
             _docking.Notice -= ShowNotice;
             _search.Notice -= ShowNotice;

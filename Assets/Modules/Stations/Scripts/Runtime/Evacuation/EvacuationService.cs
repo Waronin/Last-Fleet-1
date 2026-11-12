@@ -92,6 +92,29 @@ namespace LastFleet.Stations
                    ship.TryGetComponent(out ShipPassengers seats) && !seats.IsHousing && seats.Quarters.Capacity > 0;
         }
 
+        /// <summary>
+        /// Ends the ship's evacuation quietly, e.g. while it refuels, and returns an action that starts it
+        /// over for the same station; null when the ship ferries for none.
+        /// </summary>
+        public Action Suspend(ShipAgent ship)
+        {
+            EvacuationRun run = FindRun(ship);
+            if (run == null)
+            {
+                return null;
+            }
+            ZoneView zone = run.Zone;
+            ZoneStation station = run.Station;
+            EndRun(run, EndReason.Silent);
+            return () =>
+            {
+                if (ship != null && zone != null && BlockedReason(station) == null)
+                {
+                    RequestEvacuation(zone, station, new ShipAgent[] { ship });
+                }
+            };
+        }
+
         public bool IsFerrying(ShipAgent ship)
         {
             return FindRun(ship) != null;

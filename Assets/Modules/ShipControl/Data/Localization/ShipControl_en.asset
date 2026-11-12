@@ -71,6 +71,43 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - rid: 6743102046643421288
+  - m_Id: 5481333559734272
+    m_Localized: 'Auto refuel: {percent:cond:>0?below {} %|off}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421288
+  - m_Id: 5481333584900096
+    m_Localized: 'Auto refuel: mixed'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5481333589094400
+    m_Localized: Auto refuel {percent:cond:>0?below {} %|off} for {count:plural:{} ship|{} ships}.
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421288
+  - m_Id: 5481333589094401
+    m_Localized: Returning to a hangar to refuel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5481333589094402
+    m_Localized: Refueling, then back to its task
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5481333589094403
+    m_Localized: '{ship} is below {percent} % fuel and returns to refuel.'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421288
+  - m_Id: 5481333589094404
+    m_Localized: '{ship} needs fuel, but no hangar has room.'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421288
+  - m_Id: 5481333589094405
+    m_Localized: '{ship} cannot fill up: the carrier''s tank is empty.'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421288
   references:
     version: 2
     RefIds:
@@ -87,3 +124,8 @@ MonoBehaviour:
         - id: 343486469
         - id: 2346400846786560
         - id: 2346506719408128
+        - id: 5481333559734272
+        - id: 5481333589094400
+        - id: 5481333589094403
+        - id: 5481333589094404
+        - id: 5481333589094405

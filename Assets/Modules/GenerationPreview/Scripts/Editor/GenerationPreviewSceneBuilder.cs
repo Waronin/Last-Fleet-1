@@ -117,6 +117,8 @@ namespace LastFleet.GenerationPreview.Editor
             EditorAssetUtility.SetReferences(groupInput, ("_commandInput", shipInput), ("_registry", shipRegistry));
             HangarCommandInput hangarInput = shipsObject.AddComponent<HangarCommandInput>();
             EditorAssetUtility.SetReferences(hangarInput, ("_commandInput", shipInput), ("_registry", shipRegistry));
+            FuelReturnService fuelReturn = shipsObject.AddComponent<FuelReturnService>();
+            EditorAssetUtility.SetReferences(fuelReturn, ("_registry", shipRegistry));
             MiningCoordinator mining = shipsObject.AddComponent<MiningCoordinator>();
             EditorAssetUtility.SetReferences(mining, ("_registry", shipRegistry));
             ScoutingService scouting = shipsObject.AddComponent<ScoutingService>();
@@ -214,7 +216,7 @@ namespace LastFleet.GenerationPreview.Editor
                 ("_environment", environment), ("_cameraRig", cameraRig), ("_shipRegistry", shipRegistry),
                 ("_shipInput", shipInput), ("_groupInput", groupInput), ("_hangarInput", hangarInput), ("_mining", mining),
                 ("_scouting", scouting), ("_population", population), ("_docking", docking), ("_search", search), ("_rewards", rewards), ("_combat", combat), ("_pursuit", pursuit), ("_proninAttack", proninAttack), ("_fleetJump", fleetJump), ("_jumpDialog", jumpDialog), ("_jumpStatus", jumpStatus), ("_inspection", inspection), ("_shipPanel", shipPanel), ("_quests", quests),
-                ("_runEndWindow", runEndWindow), ("_water", water), ("_evacuation", evacuation), ("_requests", requests), ("_repairs", repairs), ("_emp", emp), ("_empTargeting", empTargeting),
+                ("_runEndWindow", runEndWindow), ("_water", water), ("_evacuation", evacuation), ("_requests", requests), ("_repairs", repairs), ("_emp", emp), ("_empTargeting", empTargeting), ("_fuelReturn", fuelReturn),
                 ("_cruiserPrefab", CombatShipPrefabBuilder.LoadOrCreateCruiser()),
                 ("_fighterPrefab", CombatShipPrefabBuilder.LoadOrCreateFighter()),
                 ("_refineryPrefab", ShipPrefabBuilder.LoadOrCreateRefinery()),

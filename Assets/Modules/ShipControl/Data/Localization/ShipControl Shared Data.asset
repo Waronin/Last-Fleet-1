@@ -55,6 +55,38 @@ MonoBehaviour:
     m_Key: notice.launches-held
     m_Metadata:
       m_Items: []
+  - m_Id: 5481333559734272
+    m_Key: action.auto-refuel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5481333584900096
+    m_Key: action.auto-refuel-mixed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5481333589094400
+    m_Key: feedback.auto-refuel-set
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5481333589094401
+    m_Key: line.returning-to-refuel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5481333589094402
+    m_Key: line.refueling
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5481333589094403
+    m_Key: notice.returning-to-refuel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5481333589094404
+    m_Key: notice.no-hangar-to-refuel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5481333589094405
+    m_Key: notice.carrier-out-of-fuel
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

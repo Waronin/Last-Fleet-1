@@ -32,5 +32,26 @@ namespace LastFleet.ShipControl
 
         /// <summary>{count}, {withoutSlot}</summary>
         public static readonly GameTextKey HarvestersMining = new GameTextKey(Table, "notice.harvesters-mining");
+
+        // Automatic refueling
+        /// <summary>{percent} - button label; 0 means off.</summary>
+        public static readonly GameTextKey AutoRefuelAction = new GameTextKey(Table, "action.auto-refuel");
+
+        public static readonly GameTextKey AutoRefuelMixedAction = new GameTextKey(Table, "action.auto-refuel-mixed");
+
+        /// <summary>{percent}, {count} - feedback after the button.</summary>
+        public static readonly GameTextKey AutoRefuelSet = new GameTextKey(Table, "feedback.auto-refuel-set");
+
+        public static readonly GameTextKey ReturningToRefuelLine = new GameTextKey(Table, "line.returning-to-refuel");
+        public static readonly GameTextKey RefuelingLine = new GameTextKey(Table, "line.refueling");
+
+        /// <summary>{ship}, {percent}</summary>
+        public static readonly GameTextKey ReturningToRefuel = new GameTextKey(Table, "notice.returning-to-refuel");
+
+        /// <summary>{ship}</summary>
+        public static readonly GameTextKey NoHangarToRefuel = new GameTextKey(Table, "notice.no-hangar-to-refuel");
+
+        /// <summary>{ship}</summary>
+        public static readonly GameTextKey CarrierOutOfFuel = new GameTextKey(Table, "notice.carrier-out-of-fuel");
     }
 }

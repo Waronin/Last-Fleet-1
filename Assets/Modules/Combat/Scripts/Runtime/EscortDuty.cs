@@ -22,6 +22,12 @@ namespace LastFleet.Combat
             SlotAngleDegrees = slotAngleDegrees;
         }
 
+        /// <summary>The ship the escort was given; with a squad, the squad's leader may have changed since.</summary>
+        public ShipAgent ProtectedShip => _ship != null ? _ship : null;
+
+        /// <summary>The protected squad, or null when the escort protects one ship.</summary>
+        public Squad Squad => _squad;
+
         /// <summary>Where around the followed ship this escort keeps station, 0 being straight ahead.</summary>
         public float SlotAngleDegrees { get; }
 

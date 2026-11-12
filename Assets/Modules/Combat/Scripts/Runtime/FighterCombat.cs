@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using LastFleet.Ships;
 using UnityEngine;
@@ -25,7 +26,7 @@ namespace LastFleet.Combat
     /// another order or the ship lands. Without orders the ship defends itself against enemies in range.
     /// </summary>
     [RequireComponent(typeof(ShipAgent), typeof(ShipWeapons))]
-    public sealed class FighterCombat : MonoBehaviour, IShipAutomation
+    public sealed class FighterCombat : MonoBehaviour, IShipAutomation, IResumableAutomation
     {
         const float CheckIntervalSeconds = 0.5f;
 
@@ -107,6 +108,40 @@ namespace LastFleet.Combat
             _escort = new EscortDuty(protectedShip, squad, slotAngleDegrees);
             ResumeEscort();
             return true;
+        }
+
+        /// <summary>Stops attack and escort; the escort is taken up again later, or the attack on the same enemy if it still lives.</summary>
+        public Action Suspend()
+        {
+            if (_escort != null && _escort.Lead != null)
+            {
+                Squad squad = _escort.Squad;
+                ShipAgent protectedShip = _escort.ProtectedShip;
+                float slotAngle = _escort.SlotAngleDegrees;
+                Stop();
+                return () =>
+                {
+                    // The squad may have lost its first leader meanwhile; protect whoever leads it now.
+                    ShipAgent lead = squad != null ? squad.Leader : protectedShip;
+                    if (lead != null)
+                    {
+                        StartEscort(lead, squad, slotAngle);
+                    }
+                };
+            }
+            if (State == CombatState.Engaging && Target != null)
+            {
+                ShipAgent target = Target;
+                Stop();
+                return () =>
+                {
+                    if (target != null)
+                    {
+                        Attack(target);
+                    }
+                };
+            }
+            return null;
         }
 
         /// <summary>Ends attack and escort; the ship stays where it is.</summary>

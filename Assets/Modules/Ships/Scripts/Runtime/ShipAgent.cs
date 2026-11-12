@@ -207,6 +207,26 @@ namespace LastFleet.Ships
         }
 
         /// <summary>
+        /// Copies the order being carried out (if any) and the queued ones, in order, e.g. to give them
+        /// again after an interruption. Maneuvers such as backing away from a port are left out.
+        /// </summary>
+        public void CopyOrders(List<ShipOrder> result)
+        {
+            result.Clear();
+            if (!IsDocked && Activity != ShipActivity.Idle && _currentOrder.Kind != ShipOrderKind.Maneuver)
+            {
+                result.Add(_currentOrder);
+            }
+            foreach (ShipOrder order in _orders)
+            {
+                if (order.Kind != ShipOrderKind.Maneuver)
+                {
+                    result.Add(order);
+                }
+            }
+        }
+
+        /// <summary>
         /// A maneuver the ship flies before its next order, e.g. backing away from a docking port on
         /// thrusters before it turns and burns. The next order uses it up.
         /// </summary>

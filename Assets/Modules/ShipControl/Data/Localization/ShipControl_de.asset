@@ -71,6 +71,43 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - rid: 6743102046643421297
+  - m_Id: 5481333559734272
+    m_Localized: 'Auto-Tanken: {percent:cond:>0?unter {} %|aus}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421297
+  - m_Id: 5481333584900096
+    m_Localized: 'Auto-Tanken: gemischt'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5481333589094400
+    m_Localized: "Auto-Tanken {percent:cond:>0?unter {} %|aus} f\xFCr {count:plural:{} Schiff|{} Schiffe}."
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421297
+  - m_Id: 5481333589094401
+    m_Localized: Fliegt zum Tanken in einen Hangar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5481333589094402
+    m_Localized: Tankt auf, macht danach weiter
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5481333589094403
+    m_Localized: "{ship} hat unter {percent} % Treibstoff und fliegt zum Tanken zur\xFCck."
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421297
+  - m_Id: 5481333589094404
+    m_Localized: '{ship} braucht Treibstoff, aber kein Hangar hat Platz.'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421297
+  - m_Id: 5481333589094405
+    m_Localized: "{ship} kann nicht volltanken: Der Tank des Tr\xE4gers ist leer."
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421297
   references:
     version: 2
     RefIds:
@@ -87,3 +124,8 @@ MonoBehaviour:
         - id: 343486469
         - id: 2346400846786560
         - id: 2346506719408128
+        - id: 5481333559734272
+        - id: 5481333589094400
+        - id: 5481333589094403
+        - id: 5481333589094404
+        - id: 5481333589094405

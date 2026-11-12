@@ -193,6 +193,17 @@ Schiffe tragen lesbare, übersetzbare Namen wie „Sammelschiff 3“ oder „Har
 - **Betankung kleiner Schiffe:** Nach dem Landen tanken sie aus dem Tank des Schiffs, auf dem sie gelandet
   sind (25 pro Sekunde). Harvester tanken zusätzlich beim Abladen an der Landebucht auf, aus dem Tank des
   Schiffs, bei dem sie abladen.
+- **Automatisch zum Tanken:** Fällt ein kleines Schiff unter seine Schwelle, unterbricht es seine Aufgabe, auch
+  im Kampf, und landet im nächsten Hangar mit Platz (bevorzugt in der eigenen Zone). Vollgetankt macht es weiter:
+  Harvester bauen am selben Vorkommen weiter, Jäger eskortieren oder greifen wieder an, Shuttles setzen ihre
+  Evakuierung fort, offene Flugbefehle werden erneut gegeben. Ohne Aufgabe bleibt es im Hangar.
+  - Die Schwelle stellt der Button **„Auto-Tanken“** im Schiffsfenster ein: Aus → 15 % → 30 % → 50 %. Alle
+    kleinen Schiffe starten mit **30 %**. Bei Mehrfachauswahl gilt der Klick für alle ausgewählten Schiffe (die
+    nächste Stufe nach dem ersten Schiff), unterschiedliche Werte zeigt der Button als „gemischt“.
+  - Ein Befehl des Spielers unterwegs beendet die Rückkehr. Das Schiff fliegt dann mit wenig Treibstoff weiter,
+    bis es landet oder wieder über der Schwelle ist.
+  - Hat der Träger keinen Treibstoff mehr, gibt es eine Meldung, und das Schiff macht weiter, sobald es über
+    seiner Schwelle ist.
 - **Betankung von Großkampfschiffen:** Sie tanken nicht automatisch. Der Spieler gibt den Auftrag wie bei
   der Reparatur im Schiffsfenster des Schiffs, das Treibstoff braucht:
   - **„Betanken“** stellt das Schiff in die Warteschlange eines Tankers in derselben Zone (bei mehreren
