@@ -1158,6 +1158,7 @@ GameObject:
   - component: {fileID: 721609330756991417}
   - component: {fileID: 1446943118349294126}
   - component: {fileID: 301141758450274968}
+  - component: {fileID: 3495340074948327859}
   m_Layer: 0
   m_Name: Fighter
   m_TagString: Untagged
@@ -1208,6 +1209,7 @@ MonoBehaviour:
   _className: Fighter
   _size: 0
   _movementProfile: {fileID: 11400000, guid: 028d04b3fdec61b419702c0c062cba0d, type: 2}
+  _obstacleRadiusUnits: 0
 --- !u!114 &5810271916069378368
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1347,6 +1349,9 @@ MonoBehaviour:
   _breakOffUnits: 25
   _followUpRadiusUnits: 300
   _defendWhenIdle: 1
+  _escortDistanceUnits: 8
+  _guardRadiusUnits: 150
+  _leashUnits: 250
 --- !u!114 &1446943118349294126
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1377,6 +1382,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: LastFleet.Combat::LastFleet.Combat.DestructionView
   _explosionPrefab: {fileID: 2967978022378356793, guid: a30e2280a78291a48abf3411f291b8a5, type: 3}
   _explosionSize: 1.2
+--- !u!114 &3495340074948327859
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7682079292656124529}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3f349718d922624d8ef7a66889ef0b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.Ships::LastFleet.Ships.ShipWreckage
+  _metalAmount: 25
+  _pieceCount: 1
+  _scatterRadiusUnits: 0
 --- !u!1 &7776987003497837737
 GameObject:
   m_ObjectHideFlags: 0

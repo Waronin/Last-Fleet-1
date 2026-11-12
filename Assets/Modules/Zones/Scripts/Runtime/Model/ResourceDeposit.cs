@@ -62,7 +62,7 @@ namespace LastFleet.Zones
         const int MaximumGasCloudSlots = 4;
 
         /// <summary>Wreckage of a fighter is a small, tumbling cluster of plates.</summary>
-        const float WreckRadiusUnits = 0.8f;
+        public const float WreckRadiusUnits = 0.8f;
 
         public ResourceDeposit(DepositShape shape, ResourceKind resource, Vector3 localPosition, float radiusUnits, float amount,
             DepositHazard hazard, float slotAngleOffsetDegrees)
@@ -96,7 +96,13 @@ namespace LastFleet.Zones
         /// </summary>
         public static ResourceDeposit Wreck(Vector3 localPosition, float metalAmount, float slotAngleOffsetDegrees)
         {
-            ResourceDeposit wreck = new ResourceDeposit(DepositShape.Wreck, ResourceKind.Metal, localPosition, WreckRadiusUnits, metalAmount,
+            return Wreck(localPosition, metalAmount, slotAngleOffsetDegrees, WreckRadiusUnits);
+        }
+
+        /// <summary>Wreckage of the given size, e.g. a large hull section of a capital ship.</summary>
+        public static ResourceDeposit Wreck(Vector3 localPosition, float metalAmount, float slotAngleOffsetDegrees, float radiusUnits)
+        {
+            ResourceDeposit wreck = new ResourceDeposit(DepositShape.Wreck, ResourceKind.Metal, localPosition, radiusUnits, metalAmount,
                 DepositHazard.None, slotAngleOffsetDegrees);
             wreck.Scan();
             return wreck;

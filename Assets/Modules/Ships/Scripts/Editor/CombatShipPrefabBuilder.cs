@@ -149,6 +149,7 @@ namespace LastFleet.Ships.Editor
             EditorAssetUtility.FindProperty(hangarData, "_launchIntervalSeconds").floatValue = 1f;
             hangarData.ApplyModifiedPropertiesWithoutUndo();
             ShipPrefabBuilder.AddDurability(root, CruiserHull);
+            ShipPrefabBuilder.AddCapitalWreckage(root, CruiserObstacleRadius);
             ShipPrefabBuilder.AddFuel(root, CruiserTank, CruiserFuelPerKlick, CruiserFuelPerAU);
             // Many light guns: they hold fighters off rather than chase them (GDD: capital ships fire automatically).
             AddWeapons(root, new WeaponSettings(HalfZoneRangeUnits, 3f, 0.15f, 0.6f, 0.05f,
@@ -198,6 +199,7 @@ namespace LastFleet.Ships.Editor
 
             ShipPrefabBuilder.AddPresentation(root, engineGlow, trail, bracket, 18f, 1f);
             ShipPrefabBuilder.AddDurability(root, FighterHull);
+            ShipPrefabBuilder.AddWreckage(root, ShipPrefabBuilder.SmallShipWreckMetal);
             ShipPrefabBuilder.AddFuel(root, FighterTank, FighterFuelPerKlick, FighterFuelPerAU);
             ShipPrefabBuilder.AddCrew(root, FighterCrew);
             AddShield(root, 60f, 6f, 4f);
@@ -276,10 +278,7 @@ namespace LastFleet.Ships.Editor
             CombatEffectsBuilder.AddHitFeedback(root, 0.8f, 0.12f);
             CombatEffectsBuilder.AddDestruction(root, 1.2f);
             // GDD: destroyed enemy fighters leave wreckage that yields metal.
-            ShipWreckage wreckage = root.AddComponent<ShipWreckage>();
-            SerializedObject wreckageData = new SerializedObject(wreckage);
-            EditorAssetUtility.FindProperty(wreckageData, "_metalAmount").floatValue = ProninFighterWreckMetal;
-            wreckageData.ApplyModifiedPropertiesWithoutUndo();
+            ShipPrefabBuilder.AddWreckage(root, ProninFighterWreckMetal);
             return ShipPrefabBuilder.SavePrefab(root, prefabPath);
         }
 
@@ -331,6 +330,7 @@ namespace LastFleet.Ships.Editor
             EditorAssetUtility.FindProperty(hangarData, "_launchIntervalSeconds").floatValue = 0.6f;
             hangarData.ApplyModifiedPropertiesWithoutUndo();
             ShipPrefabBuilder.AddDurability(root, ProninCarrierHull);
+            ShipPrefabBuilder.AddCapitalWreckage(root, ProninCarrierObstacleRadius);
             ShipPrefabBuilder.AddFuel(root, ProninCarrierTank, CruiserFuelPerKlick, CruiserFuelPerAU);
             // Heavy beams in every direction: slower than the cruiser's guns, but each hit hurts.
             AddWeapons(root, new WeaponSettings(HalfZoneRangeUnits, 9f, 1.2f, 0.7f, 0.05f, firingArcDegrees: 360f));

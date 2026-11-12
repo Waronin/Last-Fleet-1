@@ -3221,6 +3221,7 @@ GameObject:
   - component: {fileID: 8810744572632464141}
   - component: {fileID: 9003183127337414488}
   - component: {fileID: 7815358884433896250}
+  - component: {fileID: 3505687595180204961}
   m_Layer: 0
   m_Name: Cruiser
   m_TagString: Untagged
@@ -3449,6 +3450,22 @@ MonoBehaviour:
   _buildSeconds: 60
   _metalPerMissile: 200
   _fuelPerMissile: 100
+--- !u!114 &3505687595180204961
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2613583552370195300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3f349718d922624d8ef7a66889ef0b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.Ships::LastFleet.Ships.ShipWreckage
+  _metalAmount: 150
+  _pieceCount: 6
+  _scatterRadiusUnits: 10.5
+  _pieceRadiusUnits: 2.5
 --- !u!1 &2702620002898940971
 GameObject:
   m_ObjectHideFlags: 0

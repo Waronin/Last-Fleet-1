@@ -54,7 +54,7 @@ Scale: 1 unit = 100 m, a zone is 50 km (500 units) in radius.
 | Attack run speed / break-off | 30 / 25 | 30 / 25 | – |
 | Self-defense when idle | on | off (hunts instead) | always fires (turrets) |
 | Hangar | – | – | 8 slots, 1 launch per second |
-| Wreck on destruction | – | 25 metal (1 salvage slot) | – |
+| Wreck on destruction | 25 metal (1 salvage slot) | 25 metal (1 salvage slot) | 6 pieces × 150 metal |
 | Explosion size | 1.2 | 1.2 | 14 |
 | Obstacle / cover radius | – | – | 6 (liner 6.5, refinery 4.5) |
 | Escort: distance / guard radius / leash | 8 / 150 / 250 | – (does not escort) | – |
@@ -101,7 +101,12 @@ Newest first. Note the date, the setup, what happened and the version of the val
   burst pause, cruiser range.
 - **Focus fire**: all ships take the nearest enemy, so squads gang up on one target. Spreading
   targets could reuse the claims pattern (`MiningSlotClaims`, `DockingPortClaims`).
-- **Wrecks**: only Pronin fighters leave wrecks; human ships do not yet. Wrecks stay for the whole run
+- **Wrecks** (decided 2026-11-10): ships of both sides leave metal wrecks. Small ships leave one piece
+  of 25 metal (radius 0.8); capital ships, the Pronin carrier included, break up into 6 hull sections
+  of 150 metal with a radius of 2.5, spread over their hull radius plus 4.5 (`WreckScatter`), so the
+  sections and their salvage slots keep apart. Each section still has one salvage slot. Only metal:
+  cargo, finds and people are lost; docked, captured or abandoned ships leave nothing. The larger
+  sections are obstacles and give cover like rocks. Wrecks stay for the whole run
   and nothing announces them, the player has to spot them. Metal pays for hull repairs (see the
   Repairs module); upgrades come later.
 - **Effects** are blockout: no sound, no camera shake, the shock ring is a flat circle.

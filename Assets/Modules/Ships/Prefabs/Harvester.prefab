@@ -2408,6 +2408,7 @@ GameObject:
   - component: {fileID: 1660799898412071653}
   - component: {fileID: 926869506666792858}
   - component: {fileID: 331731271333735577}
+  - component: {fileID: 8819186775376368881}
   m_Layer: 0
   m_Name: Harvester
   m_TagString: Untagged
@@ -2447,6 +2448,7 @@ MonoBehaviour:
   _className: Harvester
   _size: 0
   _movementProfile: {fileID: 11400000, guid: f2f30d3b6b1e6d94eba07f4260be6dae, type: 2}
+  _obstacleRadiusUnits: 0
 --- !u!114 &7456677825482636335
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2469,6 +2471,7 @@ MonoBehaviour:
   _thrusterGlowFraction: 0.35
   _bracketColor: {r: 0.4, g: 0.8, b: 1, a: 1}
   _selectedBracketColor: {r: 1, g: 0.85, b: 0.2, a: 1}
+  _hostileBracketColor: {r: 1, g: 0.25, b: 0.2, a: 1}
 --- !u!114 &2491352030146910302
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2591,6 +2594,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89c774c5d8d6c3340a39ac3310a0a52d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: LastFleet.Rewards::LastFleet.Rewards.ShipRewardHold
+--- !u!114 &8819186775376368881
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4785350210512641969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3f349718d922624d8ef7a66889ef0b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.Ships::LastFleet.Ships.ShipWreckage
+  _metalAmount: 25
+  _pieceCount: 1
+  _scatterRadiusUnits: 0
 --- !u!1 &5358699967121527773
 GameObject:
   m_ObjectHideFlags: 0

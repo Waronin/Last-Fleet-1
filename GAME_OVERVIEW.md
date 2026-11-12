@@ -304,8 +304,14 @@ Jedes abbauende Schiff erhöht das Risiko. Die Wartezeit ist zufällig und unabh
   kehrt direkt zum Abbau zurück.
 
 ### Wracks bergen
-- Zerstörte Pronin-Jäger hinterlassen **Wracks mit 25 Metall**. Sie sind sofort bekannt, haben keine Gefahr
-  und bleiben für den Rest des Runs liegen.
+- Zerstörte Schiffe **beider Seiten** hinterlassen Wracks aus Metall. Sie sind sofort bekannt, haben keine
+  Gefahr und bleiben für den Rest des Runs liegen.
+  - **Kleine Schiffe** (Jäger, Shuttles, Harvester, Pronin-Jäger): ein Wrack mit **25 Metall**.
+  - **Großkampfschiffe** (auch der Pronin-Träger): Sie zerbrechen in **6 große Rumpfteile zu je 150 Metall**
+    (900 gesamt), etwa dreimal so groß wie ein Jägerwrack und verstreut um die Stelle des Untergangs.
+    Die Teile geben wie Felsen Deckung, jedes hat einen Bergungsplatz.
+  - Ein Wrack ist nur Metall. Ladung, Funde und Menschen an Bord gehen verloren. Angedockte, gekaperte oder
+    zurückgelassene Schiffe hinterlassen kein Wrack.
 - Harvester bergen sie mit dem normalen Abbau-Kreislauf. Wer bleibt, um Wracks zu bergen, riskiert den
   Angriff des Trägers.
 
@@ -451,7 +457,7 @@ Im Nahduell braucht ein Jäger etwa 7,5 s für einen Pronin-Jäger, umgekehrt si
 ### Effekte und Wracks
 - Schildtreffer lassen einen Ring aufleuchten, Rumpftreffer (auch durch Gefahren) werfen Funken.
 - Zerstörte Schiffe explodieren mit Feuerball, Schockring und Trümmern.
-- Pronin-Jäger hinterlassen bergbare Wracks (siehe Abschnitt 6).
+- Zerstörte Schiffe beider Seiten hinterlassen bergbare Wracks (siehe Abschnitt 6).
 
 ---
 
@@ -605,7 +611,6 @@ Im Nahduell braucht ein Jäger etwa 7,5 s für einen Pronin-Jäger, umgekehrt si
   Bleiben in der Supernova.
 - **Kampf-Balancing:** Die eigenen Jäger sind deutlich stärker, und alle Schiffe konzentrieren das Feuer auf
   dasselbe Ziel.
-- **Menschliche Schiffe** hinterlassen noch keine Wracks.
 - **Gefahren** treffen bisher nur die eigene Flotte, nicht die Pronin.
 - Was mit angedockten Schiffen und Passagieren eines **gekaperten Trägers** passiert, ist offen.
 - Weitere **Auftragsarten** (Felsen scannen, Angreifer vertreiben, Kranke holen) und Bedingungen für

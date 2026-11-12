@@ -4,6 +4,7 @@ using LastFleet.People;
 using LastFleet.Rewards;
 using LastFleet.Shared.Editor;
 using LastFleet.Stations;
+using LastFleet.Zones;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -42,6 +43,12 @@ namespace LastFleet.Ships.Editor
         const float LinerObstacleRadius = 6.5f;
         const float TankerObstacleRadius = 6f;
         const float ShuttleHull = 80f;
+        // Wrecks: small ships yield as much as a Pronin fighter; capital ships break into 6 pieces (900 metal).
+        internal const float SmallShipWreckMetal = 25f;
+        const int CapitalWreckPieces = 6;
+        const float CapitalWreckPieceMetal = 150f;
+        const float CapitalWreckPieceRadius = 2.5f;
+        const float CapitalWreckSpreadUnits = 4.5f;
         const float ShuttleScanSeconds = 2f;
 
         // Blockout balance: a harvester tank lasts about 1000 km or 50 AU; the refinery carries enough
@@ -153,6 +160,7 @@ namespace LastFleet.Ships.Editor
             AddPresentation(root, engineGlow, trail, bracket, 22f, 1f);
             EditorAssetUtility.SetReferences(root.GetComponent<ShipPresentation>(), ("_model", model));
             AddDurability(root, HarvesterHull);
+            AddWreckage(root, SmallShipWreckMetal);
             AddFuel(root, HarvesterTank, HarvesterFuelPerKlick, HarvesterFuelPerAU);
             AddCrew(root, HarvesterCrew);
             StationDocking harvesterDocking = root.AddComponent<StationDocking>();
@@ -210,6 +218,7 @@ namespace LastFleet.Ships.Editor
             EditorAssetUtility.FindProperty(storageData, "_startingWater").floatValue = RefineryStartingWater;
             storageData.ApplyModifiedPropertiesWithoutUndo();
             AddDurability(root, RefineryHull);
+            AddCapitalWreckage(root, RefineryObstacleRadius);
             AddFuel(root, RefineryTank, RefineryFuelPerKlick, RefineryFuelPerAU);
             AddPassengers(root, RefineryPassengerCapacity, RefineryStartingPassengers);
             AddPresentation(root, engineGlow, trail, bracket, 34f, 1f);
@@ -264,6 +273,7 @@ namespace LastFleet.Ships.Editor
             storageData.ApplyModifiedPropertiesWithoutUndo();
             root.AddComponent<FuelTanker>();
             AddDurability(root, TankerHull);
+            AddCapitalWreckage(root, TankerObstacleRadius);
             AddFuel(root, TankerTank, TankerFuelPerKlick, TankerFuelPerAU);
             AddPassengers(root, TankerPassengerCapacity, TankerStartingPassengers);
             AddPresentation(root, engineGlow, trail, bracket, 34f, 1f);
@@ -329,6 +339,7 @@ namespace LastFleet.Ships.Editor
             EditorAssetUtility.FindProperty(hangarData, "_capacity").intValue = LinerHangarCapacity;
             hangarData.ApplyModifiedPropertiesWithoutUndo();
             AddDurability(root, LinerHull);
+            AddCapitalWreckage(root, LinerObstacleRadius);
             AddFuel(root, LinerTank, LinerFuelPerKlick, LinerFuelPerAU);
             AddPassengers(root, LinerPassengerCapacity, LinerStartingPassengers);
             AddPresentation(root, engineGlow, trail, bracket, 38f, 1f);
@@ -369,6 +380,7 @@ namespace LastFleet.Ships.Editor
 
             AddPresentation(root, engineGlow, trail, bracket, 20f, 1f);
             AddDurability(root, ShuttleHull);
+            AddWreckage(root, SmallShipWreckMetal);
             AddFuel(root, ShuttleTank, ShuttleFuelPerKlick, ShuttleFuelPerAU);
             AddCrew(root, ShuttleCrew);
             StationDocking shuttleDocking = root.AddComponent<StationDocking>();
@@ -487,6 +499,28 @@ namespace LastFleet.Ships.Editor
             EditorAssetUtility.FindProperty(serialized, "_bracketSizePixels").floatValue = bracketSizePixels;
             EditorAssetUtility.FindProperty(serialized, "_engineGlowMaximumScale").floatValue = engineGlowScale;
             serialized.ApplyModifiedPropertiesWithoutUndo();
+        }
+
+        /// <summary>
+        /// Wreckage left on destruction (GDD: destroyed ships yield metal). Small ships leave one piece;
+        /// capital ships break up into several pieces spread over about their hull radius.
+        /// </summary>
+        internal static void AddWreckage(GameObject root, float metalPerPiece, int pieceCount = 1, float scatterRadiusUnits = 0f,
+            float pieceRadiusUnits = ResourceDeposit.WreckRadiusUnits)
+        {
+            ShipWreckage wreckage = root.AddComponent<ShipWreckage>();
+            SerializedObject serialized = new SerializedObject(wreckage);
+            EditorAssetUtility.FindProperty(serialized, "_metalAmount").floatValue = metalPerPiece;
+            EditorAssetUtility.FindProperty(serialized, "_pieceCount").intValue = pieceCount;
+            EditorAssetUtility.FindProperty(serialized, "_scatterRadiusUnits").floatValue = scatterRadiusUnits;
+            EditorAssetUtility.FindProperty(serialized, "_pieceRadiusUnits").floatValue = pieceRadiusUnits;
+            serialized.ApplyModifiedPropertiesWithoutUndo();
+        }
+
+        internal static void AddCapitalWreckage(GameObject root, float obstacleRadiusUnits)
+        {
+            // Large hull sections, spread beyond the hull so they and their salvage slots keep apart.
+            AddWreckage(root, CapitalWreckPieceMetal, CapitalWreckPieces, obstacleRadiusUnits + CapitalWreckSpreadUnits, CapitalWreckPieceRadius);
         }
 
         internal static void AddDurability(GameObject root, float maximumHull)

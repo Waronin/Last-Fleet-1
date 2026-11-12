@@ -371,6 +371,7 @@ GameObject:
   - component: {fileID: 1017240330994668803}
   - component: {fileID: 8650355423304152830}
   - component: {fileID: 7720050935958268486}
+  - component: {fileID: 4119920919514925899}
   m_Layer: 0
   m_Name: ProninCarrier
   m_TagString: Untagged
@@ -556,6 +557,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: LastFleet.Combat::LastFleet.Combat.DestructionView
   _explosionPrefab: {fileID: 2967978022378356793, guid: a30e2280a78291a48abf3411f291b8a5, type: 3}
   _explosionSize: 16
+--- !u!114 &4119920919514925899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2098519248334137239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3f349718d922624d8ef7a66889ef0b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.Ships::LastFleet.Ships.ShipWreckage
+  _metalAmount: 150
+  _pieceCount: 6
+  _scatterRadiusUnits: 11.5
+  _pieceRadiusUnits: 2.5
 --- !u!1 &2710014880677965152
 GameObject:
   m_ObjectHideFlags: 0
