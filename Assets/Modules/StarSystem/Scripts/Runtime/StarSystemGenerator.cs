@@ -31,6 +31,13 @@ namespace LastFleet.StarSystem
         // About one system in five; stations come 1–4 per system.
         const float StrandedShipChance = 0.2f;
         const ulong StrandedShipSalt = 0x5742A1DUL;
+        const ulong LateSignalSalt = 0x1A7E516UL;
+        // Late signals come in the second part of the countdown, some shortly before the attack.
+        const float EarliestLateSignalFraction = 0.4f;
+        const float LatestLateSignalFraction = 0.9f;
+        const float LateStrandedShipShare = 0.5f;
+
+        static readonly (int Value, float Weight)[] LateSignalCounts = { (0, 0.2f), (1, 0.55f), (2, 0.25f) };
 
         static readonly StarProfile[] StarProfiles =
         {
@@ -88,6 +95,10 @@ namespace LastFleet.StarSystem
                 pointsOfInterest.Add(strandedShip);
             }
 
+            // Also from their own stream; they lie in the layout from the start but stay hidden until their signal comes in.
+            AddLateSignals(new DeterministicRandom(DeterministicRandom.DeriveSeed(seed, LateSignalSalt)), systemName, planets, stations.Count,
+                strandedShip != null, pointsOfInterest);
+
             // The jump point is appended last so adding it does not change any earlier point of interest.
             pointsOfInterest.Add(CreateJumpPoint(random, systemName, planets, belts));
             int arrivalIndex = pointsOfInterest.Count - 1;
@@ -107,19 +118,50 @@ namespace LastFleet.StarSystem
                 return false;
             }
 
-            string name = $"{systemName} Stranded Ship";
+            strandedShip = CreateInOrbitOrAdrift(random, $"{systemName} Stranded Ship", PointOfInterestKind.StrandedShip, planets, 0f);
+            return true;
+        }
+
+        /// <summary>
+        /// Places that show up during the countdown (GDD: late signals): 0–2 per system, each a distress call
+        /// from a stranded ship or a station breaking radio silence. What they hold is rolled better on reveal.
+        /// </summary>
+        static void AddLateSignals(DeterministicRandom random, string systemName, List<Planet> planets, int stationCount,
+            bool hasStrandedShip, List<PointOfInterest> pointsOfInterest)
+        {
+            int count = random.PickWeighted(LateSignalCounts);
+            int strandedShipCount = hasStrandedShip ? 1 : 0;
+            for (int i = 0; i < count; i++)
+            {
+                float fraction = random.Range(EarliestLateSignalFraction, LatestLateSignalFraction);
+                if (random.Chance(LateStrandedShipShare))
+                {
+                    strandedShipCount++;
+                    string name = strandedShipCount == 1 ? $"{systemName} Stranded Ship" : $"{systemName} Stranded Ship {strandedShipCount}";
+                    pointsOfInterest.Add(CreateInOrbitOrAdrift(random, name, PointOfInterestKind.StrandedShip, planets, fraction));
+                }
+                else
+                {
+                    stationCount++;
+                    pointsOfInterest.Add(CreateInOrbitOrAdrift(random, $"{systemName} Station {stationCount}", PointOfInterestKind.Station, planets,
+                        fraction));
+                }
+            }
+        }
+
+        /// <summary>In orbit around a random planet like most stations, or adrift between the innermost and outermost orbit.</summary>
+        static PointOfInterest CreateInOrbitOrAdrift(DeterministicRandom random, string name, PointOfInterestKind kind, List<Planet> planets,
+            float lateSignalFraction)
+        {
             if (random.Chance(OrbitalStationChance))
             {
                 Planet planet = planets[random.Range(0, planets.Count)];
                 Vector2 orbitalPositionAU = planet.PositionAU + OrbitMath.PositionOnOrbit(OrbitalStationDistanceAU, random.AngleDegrees());
-                strandedShip = new PointOfInterest(name, PointOfInterestKind.StrandedShip, orbitalPositionAU, false, planet, null);
-                return true;
+                return new PointOfInterest(name, kind, orbitalPositionAU, false, planet, null, lateSignalFraction);
             }
 
             float radiusAU = random.Range(planets[0].OrbitRadiusAU, planets[planets.Count - 1].OrbitRadiusAU);
-            strandedShip = new PointOfInterest(name, PointOfInterestKind.StrandedShip, OrbitMath.PositionOnOrbit(radiusAU, random.AngleDegrees()),
-                false, null, null);
-            return true;
+            return new PointOfInterest(name, kind, OrbitMath.PositionOnOrbit(radiusAU, random.AngleDegrees()), false, null, null, lateSignalFraction);
         }
 
         /// <summary>Empty arrival zone beyond the outermost orbit, where the fleet jumps in.</summary>

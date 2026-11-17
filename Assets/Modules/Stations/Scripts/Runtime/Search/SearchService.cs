@@ -62,7 +62,8 @@ namespace LastFleet.Stations
             {
                 int index = IndexOf(zone.Record.Contents.Stations, station);
                 ulong seed = DeterministicRandom.DeriveSeed(zone.Record.Seed, LootSalt + (ulong)index);
-                loot = new StationLoot(StationSearchRules.RollFinds(seed, station.Type, station.Profile.Condition));
+                loot = new StationLoot(StationSearchRules.RollFinds(seed, station.Type, station.Profile.Condition,
+                    zone.Record.PointOfInterest.IsLateSignal));
                 _lootByStation.Add(station, loot);
             }
             return loot;

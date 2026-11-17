@@ -25,6 +25,11 @@ MonoBehaviour:
     m_ReadOnly: 1
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 23902c5327a4042419f0b759bfc0a50f
+    m_Address: Assets/Modules/LateSignals/Data/Localization/LateSignals Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2571e10ba9141c04599020e45ce627aa
     m_Address: Assets/Modules/Combat/Data/Localization/Combat Shared Data.asset
     m_ReadOnly: 1

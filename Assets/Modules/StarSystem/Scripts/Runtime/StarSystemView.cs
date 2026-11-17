@@ -57,6 +57,9 @@ namespace LastFleet.StarSystem
 
         readonly List<LineRenderer> _markers = new List<LineRenderer>();
         readonly List<PointOfInterestMarkerStyle> _markerStyles = new List<PointOfInterestMarkerStyle>();
+        // Per point of interest: the body drawn for it alone (stations, stranded ships), else null.
+        readonly List<Renderer> _bodies = new List<Renderer>();
+        readonly HashSet<int> _hiddenPoints = new HashSet<int>();
         readonly List<LineRenderer> _highlightRings = new List<LineRenderer>();
         MaterialPropertyBlock _propertyBlock;
 
@@ -93,16 +96,14 @@ namespace LastFleet.StarSystem
             {
                 CreateBelt(layout.AsteroidBelts[i], DeterministicRandom.DeriveSeed(layout.Seed, AsteroidPlacementSalt + (ulong)i));
             }
-            foreach (Station station in layout.Stations)
-            {
-                CreateStation(station);
-            }
             foreach (PointOfInterest point in layout.PointsOfInterest)
             {
-                if (point.Kind == PointOfInterestKind.StrandedShip)
+                _bodies.Add(point.Kind switch
                 {
-                    CreateStrandedShip(point);
-                }
+                    PointOfInterestKind.Station => CreateStation(point),
+                    PointOfInterestKind.StrandedShip => CreateStrandedShip(point),
+                    _ => null
+                });
             }
             CreateJumpPointBeacon(layout.PointsOfInterest[layout.ArrivalPointOfInterestIndex]);
             CreateMarkers(layout);
@@ -118,6 +119,8 @@ namespace LastFleet.StarSystem
             BlockoutPrimitives.DestroyChildren(transform);
             _markers.Clear();
             _markerStyles.Clear();
+            _bodies.Clear();
+            _hiddenPoints.Clear();
             _highlightRings.Clear();
             Layout = null;
             ExtentUnits = 0f;
@@ -173,6 +176,28 @@ namespace LastFleet.StarSystem
             RefreshMarker(index);
         }
 
+        /// <summary>
+        /// Hides a point of interest the fleet does not know of yet, e.g. a late signal: no body, no marker,
+        /// and it cannot be picked. Showing the system again shows every point.
+        /// </summary>
+        public void SetPointOfInterestHidden(int index, bool hidden)
+        {
+            ValidatePointOfInterestIndex(index);
+            if (hidden)
+            {
+                _hiddenPoints.Add(index);
+            }
+            else
+            {
+                _hiddenPoints.Remove(index);
+            }
+            _markers[index].gameObject.SetActive(!hidden);
+            if (_bodies[index] != null)
+            {
+                _bodies[index].gameObject.SetActive(!hidden);
+            }
+        }
+
         public Vector3 GetPointOfInterestWorldPosition(int index)
         {
             ValidatePointOfInterestIndex(index);
@@ -191,6 +216,10 @@ namespace LastFleet.StarSystem
             float bestDistanceSquared = maximumDistancePixels * maximumDistancePixels;
             for (int i = 0; i < Layout.PointsOfInterest.Count; i++)
             {
+                if (_hiddenPoints.Contains(i))
+                {
+                    continue;
+                }
                 Vector3 screenPoint = camera.WorldToScreenPoint(GetPointOfInterestWorldPosition(i));
                 if (screenPoint.z <= 0f)
                 {
@@ -342,27 +371,25 @@ namespace LastFleet.StarSystem
             }
         }
 
-        void CreateStation(Station station)
+        Renderer CreateStation(PointOfInterest point)
         {
-            Vector3 position = station.OrbitedPlanet != null
-                ? SatelliteLocalPosition(station.OrbitedPlanet, station.PositionAU)
-                : ToLocalPosition(station.PositionAU);
-
-            Renderer body = BlockoutPrimitives.CreatePrimitive(PrimitiveType.Cube, transform, _glowMaterial, station.Name);
-            body.transform.localPosition = position;
+            Renderer body = BlockoutPrimitives.CreatePrimitive(PrimitiveType.Cube, transform, _glowMaterial, point.Name);
+            body.transform.localPosition = GetPointOfInterestLocalPosition(point);
             body.transform.localScale = Vector3.one * _stationSizeUnits;
             body.transform.localRotation = Quaternion.Euler(0f, 45f, 0f);
             BlockoutPrimitives.SetColor(body, _stationColor, _propertyBlock);
+            return body;
         }
 
         /// <summary>A long, tilted sliver in rust red: a hull, not a station.</summary>
-        void CreateStrandedShip(PointOfInterest point)
+        Renderer CreateStrandedShip(PointOfInterest point)
         {
             Renderer body = BlockoutPrimitives.CreatePrimitive(PrimitiveType.Cube, transform, _glowMaterial, point.Name);
             body.transform.localPosition = GetPointOfInterestLocalPosition(point);
             body.transform.localScale = new Vector3(0.4f, 0.4f, 1.4f) * _stationSizeUnits;
             body.transform.localRotation = Quaternion.Euler(15f, 30f, 20f);
             BlockoutPrimitives.SetColor(body, _strandedShipColor, _propertyBlock);
+            return body;
         }
 
         void CreateJumpPointBeacon(PointOfInterest jumpPoint)

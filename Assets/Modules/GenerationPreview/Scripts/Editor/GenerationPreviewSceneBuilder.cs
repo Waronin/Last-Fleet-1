@@ -7,6 +7,7 @@ using LastFleet.FleetJump;
 using LastFleet.Galaxy;
 using LastFleet.Hud;
 using LastFleet.Inspection;
+using LastFleet.LateSignals;
 using LastFleet.Mining;
 using LastFleet.People;
 using LastFleet.Provisions;
@@ -205,6 +206,8 @@ namespace LastFleet.GenerationPreview.Editor
 
             GameObject pursuitObject = new GameObject("Pursuit Clock");
             PursuitClock pursuit = pursuitObject.AddComponent<PursuitClock>();
+            LateSignalReceiver lateSignals = pursuitObject.AddComponent<LateSignalReceiver>();
+            EditorAssetUtility.SetReferences(lateSignals, ("_pursuit", pursuit));
             ProninAttack proninAttack = pursuitObject.AddComponent<ProninAttack>();
             EditorAssetUtility.SetReferences(proninAttack, ("_pursuit", pursuit), ("_zoneWorld", zoneWorld),
                 ("_fleet", shipRegistry), ("_pronin", proninRegistry),
@@ -247,7 +250,7 @@ namespace LastFleet.GenerationPreview.Editor
                 ("_galaxyMapView", mapView), ("_starSystemView", systemView), ("_zoneWorld", zoneWorld),
                 ("_environment", environment), ("_cameraRig", cameraRig), ("_shipRegistry", shipRegistry),
                 ("_shipInput", shipInput), ("_groupInput", groupInput), ("_hangarInput", hangarInput), ("_mining", mining),
-                ("_scouting", scouting), ("_population", population), ("_docking", docking), ("_search", search), ("_rewards", rewards), ("_combat", combat), ("_pursuit", pursuit), ("_proninAttack", proninAttack), ("_fleetJump", fleetJump), ("_jumpDialog", jumpDialog), ("_jumpStatus", jumpStatus), ("_inspection", inspection), ("_shipPanel", shipPanel), ("_quests", quests),
+                ("_scouting", scouting), ("_population", population), ("_docking", docking), ("_search", search), ("_rewards", rewards), ("_combat", combat), ("_pursuit", pursuit), ("_lateSignals", lateSignals), ("_proninAttack", proninAttack), ("_fleetJump", fleetJump), ("_jumpDialog", jumpDialog), ("_jumpStatus", jumpStatus), ("_inspection", inspection), ("_shipPanel", shipPanel), ("_quests", quests),
                 ("_runEndWindow", runEndWindow), ("_water", water), ("_evacuation", evacuation), ("_requests", requests), ("_repairs", repairs), ("_strandedShips", strandedShips), ("_hulkBodies", hulkBodies), ("_emp", emp), ("_empTargeting", empTargeting), ("_fuelReturn", fuelReturn),
                 ("_cruiserPrefab", CombatShipPrefabBuilder.LoadOrCreateCruiser()),
                 ("_fighterPrefab", CombatShipPrefabBuilder.LoadOrCreateFighter()),

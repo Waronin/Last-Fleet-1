@@ -92,12 +92,12 @@ namespace LastFleet.Zones
                     break;
                 case PointOfInterestKind.Station:
                     // The station is placed first, so its large footprint always fits; debris drifts around it.
-                    AddStation(random, placement, stations, pointOfInterest.Name, pointOfInterest.AssociatedPlanet != null);
+                    AddStation(random, placement, stations, pointOfInterest);
                     AddDeposits(random, placement, deposits, random.Range(3, 9), StationDebris);
                     break;
                 case PointOfInterestKind.StrandedShip:
                     // Placed first like a station; pieces of its broken hull drift nearby as metal wrecks.
-                    AddStrandedShip(random, placement, stations, deposits, pointOfInterest.Name);
+                    AddStrandedShip(random, placement, stations, deposits, pointOfInterest);
                     break;
                 case PointOfInterestKind.Star:
                     break;
@@ -174,24 +174,25 @@ namespace LastFleet.Zones
             }
         }
 
-        static void AddStation(DeterministicRandom random, ZonePlacement placement, List<ZoneStation> stations, string name, bool isOrbital)
+        static void AddStation(DeterministicRandom random, ZonePlacement placement, List<ZoneStation> stations, PointOfInterest pointOfInterest)
         {
-            StationType type = StationGeneration.PickType(random, isOrbital);
-            StationProfile profile = StationGeneration.RollProfile(random, type);
+            StationType type = StationGeneration.PickType(random, pointOfInterest.AssociatedPlanet != null);
+            StationProfile profile = StationGeneration.RollProfile(random, type, pointOfInterest.IsLateSignal);
             float headingDegrees = random.AngleDegrees();
             if (placement.TryPlace(StationTypes.FootprintRadiusUnits(type), out Vector3 position))
             {
                 // On the zone plane, where ships fly, so the docking bays can be reached.
                 position.y = 0f;
-                stations.Add(new ZoneStation(name, type, position, headingDegrees, profile));
+                stations.Add(new ZoneStation(pointOfInterest.Name, type, position, headingDegrees, profile));
             }
         }
 
         static void AddStrandedShip(DeterministicRandom random, ZonePlacement placement, List<ZoneStation> stations,
-            List<ResourceDeposit> deposits, string name)
+            List<ResourceDeposit> deposits, PointOfInterest pointOfInterest)
         {
-            StrandedHull hull = StationGeneration.RollStrandedHull(random);
-            StationProfile profile = StationGeneration.RollProfile(random, StationType.StrandedShip);
+            string name = pointOfInterest.Name;
+            StrandedHull hull = StationGeneration.RollStrandedHull(random, pointOfInterest.IsLateSignal);
+            StationProfile profile = StationGeneration.RollProfile(random, StationType.StrandedShip, pointOfInterest.IsLateSignal);
             float headingDegrees = random.AngleDegrees();
             if (!placement.TryPlace(StrandedShipClasses.FootprintRadiusUnits(hull.Class), out Vector3 position))
             {

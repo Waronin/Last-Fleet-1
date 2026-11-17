@@ -49,11 +49,23 @@ namespace LastFleet.Stations
             return profile.Radiation == StationRadiation.Elevated ? SearchBlocker.Radiation : SearchBlocker.None;
         }
 
+        /// <summary>A place found by its late signal holds half again as much (GDD: late signals are worth more).</summary>
+        public const float LateSignalFindFactor = 1.5f;
+
         public static List<Reward> RollFinds(ulong seed, StationType type, StationCondition condition)
+        {
+            return RollFinds(seed, type, condition, false);
+        }
+
+        public static List<Reward> RollFinds(ulong seed, StationType type, StationCondition condition, bool isLateSignal)
         {
             DeterministicRandom random = new DeterministicRandom(seed);
             (int minimum, int maximum) = FindCount(type);
             int count = random.Range(minimum, maximum + 1);
+            if (isLateSignal)
+            {
+                count = (int)Math.Round(count * LateSignalFindFactor);
+            }
             if (condition == StationCondition.Ruined)
             {
                 count = Math.Max(1, (int)Math.Round(count * 0.6f));

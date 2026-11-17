@@ -31,6 +31,23 @@ namespace LastFleet.Zones
 
         public bool IsRevealed => Contents != null;
 
+        /// <summary>The signal of a late point of interest has come in; stays received for the rest of the run.</summary>
+        public bool IsSignalReceived { get; private set; }
+
+        /// <summary>The fleet knows the place: shown on arrival, or a late signal that has come in.</summary>
+        public bool IsKnown => !PointOfInterest.IsLateSignal || IsSignalReceived;
+
+        /// <summary>The late signal comes in; returns false if the place was already known.</summary>
+        public bool ReceiveSignal()
+        {
+            if (IsKnown)
+            {
+                return false;
+            }
+            IsSignalReceived = true;
+            return true;
+        }
+
         /// <summary>Reveals the zone (ship arrival or detail scan). Calling it again has no effect.</summary>
         public ZoneContents Reveal()
         {

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 
 namespace LastFleet.StarSystem.Tests
@@ -87,7 +88,8 @@ namespace LastFleet.StarSystem.Tests
             }
 
             int strandedShips = CountStrandedShips(layout);
-            int expected = 1 + layout.Planets.Count + moonCount + layout.AsteroidBelts.Count + layout.Stations.Count + strandedShips + 1;
+            int lateSignals = CountLateSignals(layout);
+            int expected = 1 + layout.Planets.Count + moonCount + layout.AsteroidBelts.Count + layout.Stations.Count + strandedShips + lateSignals + 1;
             Assert.AreEqual(expected, layout.PointsOfInterest.Count);
             Assert.AreEqual(PointOfInterestKind.Star, layout.PointsOfInterest[0].Kind);
         }
@@ -115,12 +117,55 @@ namespace LastFleet.StarSystem.Tests
             Assert.That(share, Is.InRange(0.12f, 0.28f), "About one system in five has a stranded ship.");
         }
 
+        [Test]
+        public void LateSignals_AreAFewStationsAndStrandedShips_InTheSecondPartOfTheCountdown()
+        {
+            int total = 0;
+            int systemsWithout = 0;
+            int strandedShips = 0;
+            for (int seed = 0; seed < SeedSampleCount; seed++)
+            {
+                StarSystemLayout layout = StarSystemGenerator.Generate((ulong)seed, "Test");
+                int count = CountLateSignals(layout);
+                Assert.LessOrEqual(count, 2, $"Seed {seed}");
+                total += count;
+                systemsWithout += count == 0 ? 1 : 0;
+                HashSet<string> names = new HashSet<string>();
+                foreach (PointOfInterest point in layout.PointsOfInterest)
+                {
+                    Assert.IsTrue(names.Add(point.Name), $"Seed {seed}: duplicate name {point.Name}");
+                    if (!point.IsLateSignal)
+                    {
+                        continue;
+                    }
+                    Assert.That(point.Kind, Is.EqualTo(PointOfInterestKind.Station).Or.EqualTo(PointOfInterestKind.StrandedShip));
+                    Assert.That(point.LateSignalFraction, Is.InRange(0.4f, 0.9f));
+                    strandedShips += point.Kind == PointOfInterestKind.StrandedShip ? 1 : 0;
+                }
+                Assert.IsFalse(layout.PointsOfInterest[layout.ArrivalPointOfInterestIndex].IsLateSignal);
+            }
+
+            Assert.That(total / (float)SeedSampleCount, Is.InRange(0.85f, 1.25f), "About one late signal per system.");
+            Assert.That(systemsWithout / (float)SeedSampleCount, Is.InRange(0.12f, 0.28f), "About one system in five has none.");
+            Assert.That(strandedShips / (float)total, Is.InRange(0.35f, 0.65f), "Half are stranded ships.");
+        }
+
+        static int CountLateSignals(StarSystemLayout layout)
+        {
+            int count = 0;
+            foreach (PointOfInterest point in layout.PointsOfInterest)
+            {
+                count += point.IsLateSignal ? 1 : 0;
+            }
+            return count;
+        }
+
         static int CountStrandedShips(StarSystemLayout layout)
         {
             int count = 0;
             foreach (PointOfInterest point in layout.PointsOfInterest)
             {
-                if (point.Kind == PointOfInterestKind.StrandedShip)
+                if (point.Kind == PointOfInterestKind.StrandedShip && !point.IsLateSignal)
                 {
                     count++;
                 }

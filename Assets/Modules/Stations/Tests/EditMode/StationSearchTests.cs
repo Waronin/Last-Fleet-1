@@ -33,6 +33,17 @@ namespace LastFleet.Stations.Tests
         }
 
         [Test]
+        public void LateSignalStations_HoldHalfAgainAsMuch()
+        {
+            for (ulong seed = 0; seed < 50; seed++)
+            {
+                int usual = StationSearchRules.RollFinds(seed, StationType.Outpost, StationCondition.Damaged).Count;
+                int late = StationSearchRules.RollFinds(seed, StationType.Outpost, StationCondition.Damaged, true).Count;
+                Assert.AreEqual((int)System.Math.Round(usual * StationSearchRules.LateSignalFindFactor), late, $"Seed {seed}");
+            }
+        }
+
+        [Test]
         public void IndustrialStations_HoldMoreThanOutposts_AndRuinsLess()
         {
             float outposts = AverageCount(StationType.Outpost, StationCondition.Intact);

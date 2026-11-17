@@ -1,0 +1,19 @@
+{
+    "name": "LastFleet.LateSignals",
+    "rootNamespace": "LastFleet.LateSignals",
+    "references": [
+        "LastFleet.Shared",
+        "LastFleet.StarSystem",
+        "LastFleet.Zones",
+        "LastFleet.Pursuit"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,26 @@
+{
+    "name": "LastFleet.LateSignals.Tests.EditMode",
+    "rootNamespace": "LastFleet.LateSignals.Tests",
+    "references": [
+        "LastFleet.LateSignals",
+        "LastFleet.StarSystem",
+        "LastFleet.Zones",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

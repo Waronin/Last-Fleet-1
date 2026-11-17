@@ -127,6 +127,37 @@ namespace LastFleet.Zones.Tests
         }
 
         [Test]
+        public void LateSignals_AreNeverRuinedOrHostile_AndStrandedOnesAlwaysCarrySurvivors()
+        {
+            DeterministicRandom random = new DeterministicRandom(13UL);
+            foreach (StationType type in (StationType[])Enum.GetValues(typeof(StationType)))
+            {
+                for (int i = 0; i < SampleCount / 4; i++)
+                {
+                    StationProfile profile = StationGeneration.RollProfile(random, type, true);
+                    Assert.AreNotEqual(StationCondition.Ruined, profile.Condition, $"{type}");
+                    Assert.AreNotEqual(StationAttitude.Hostile, profile.Attitude, $"{type}");
+                    if (type == StationType.StrandedShip)
+                    {
+                        Assert.IsTrue(profile.IsInhabited);
+                    }
+                }
+            }
+        }
+
+        [Test]
+        public void LateStrandedHulls_AreInBetterShape()
+        {
+            DeterministicRandom random = new DeterministicRandom(17UL);
+            for (int i = 0; i < SampleCount; i++)
+            {
+                StrandedHull hull = StationGeneration.RollStrandedHull(random, true);
+                Assert.That(hull.Fraction, Is.InRange(StationGeneration.LateSignalMinimumHullFraction, StationGeneration.LateSignalMaximumHullFraction));
+                Assert.Greater(hull.Fraction, StrandedHull.MinimumFoundFraction);
+            }
+        }
+
+        [Test]
         public void StrandedSurvivors_AllWantToLeave()
         {
             StationProfile profile = new StationProfile(StationAtmosphere.Breathable, 200, StationAttitude.Wary, StationCondition.Damaged,

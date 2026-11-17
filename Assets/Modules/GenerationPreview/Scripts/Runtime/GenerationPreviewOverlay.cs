@@ -120,6 +120,10 @@ namespace LastFleet.GenerationPreview
             for (int i = 0; i < system.Zones.Count; i++)
             {
                 ZoneRecord zone = system.Zones[i];
+                if (!zone.IsKnown)
+                {
+                    continue;
+                }
                 string selection = i == _controller.SelectedPointOfInterestIndex ? "> " : "   ";
                 string state = zone.IsRevealed ? DescribeContents(zone.Contents) : "unexplored";
                 string fuel = zone.PointOfInterest.IsFuelSource ? " [fuel]" : string.Empty;

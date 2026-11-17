@@ -6,6 +6,7 @@ using LastFleet.FleetJump;
 using LastFleet.Galaxy;
 using LastFleet.Hud;
 using LastFleet.Inspection;
+using LastFleet.LateSignals;
 using LastFleet.Localization;
 using LastFleet.Mining;
 using LastFleet.People;
@@ -94,6 +95,7 @@ namespace LastFleet.GenerationPreview
         [SerializeField] RewardDelivery _rewards;
         [SerializeField] CombatService _combat;
         [SerializeField] PursuitClock _pursuit;
+        [SerializeField] LateSignalReceiver _lateSignals;
         [SerializeField] ProninAttack _proninAttack;
         [SerializeField] FleetJumpService _fleetJump;
         [SerializeField] FleetJumpDialog _jumpDialog;
@@ -165,7 +167,7 @@ namespace LastFleet.GenerationPreview
         {
             if (_galaxyMapView == null || _starSystemView == null || _zoneWorld == null || _environment == null ||
                 _cameraRig == null || _shipRegistry == null || _shipInput == null || _groupInput == null ||
-                _hangarInput == null || _mining == null || _scouting == null || _population == null || _docking == null || _search == null || _rewards == null || _combat == null || _pursuit == null || _proninAttack == null || _fleetJump == null || _jumpDialog == null || _jumpStatus == null || _inspection == null || _shipPanel == null || _quests == null ||
+                _hangarInput == null || _mining == null || _scouting == null || _population == null || _docking == null || _search == null || _rewards == null || _combat == null || _pursuit == null || _lateSignals == null || _proninAttack == null || _fleetJump == null || _jumpDialog == null || _jumpStatus == null || _inspection == null || _shipPanel == null || _quests == null ||
                 _refineryPrefab == null || _tankerPrefab == null || _linerPrefab == null || _harvesterPrefab == null || _shuttlePrefab == null ||
                 _cruiserPrefab == null || _fighterPrefab == null)
             {
@@ -222,6 +224,8 @@ namespace LastFleet.GenerationPreview
             _rewards.Notice += ShowNotice;
             _combat.Notice += ShowNotice;
             _pursuit.Notice += ShowNotice;
+            _lateSignals.Notice += ShowNotice;
+            _lateSignals.SignalReceived += OnLateSignalReceived;
             _proninAttack.Notice += ShowNotice;
             _fleetJump.Notice += ShowNotice;
             _fleetJump.Jumped += OnFleetJumped;
@@ -299,6 +303,8 @@ namespace LastFleet.GenerationPreview
             _rewards.Notice -= ShowNotice;
             _combat.Notice -= ShowNotice;
             _pursuit.Notice -= ShowNotice;
+            _lateSignals.Notice -= ShowNotice;
+            _lateSignals.SignalReceived -= OnLateSignalReceived;
             _proninAttack.Notice -= ShowNotice;
             _fleetJump.Notice -= ShowNotice;
             _fleetJump.Jumped -= OnFleetJumped;
@@ -696,6 +702,14 @@ namespace LastFleet.GenerationPreview
             return _quests.TryGetMarker(systemIndex, out GameText marker) ? marker : null;
         }
 
+        void OnLateSignalReceived(int pointOfInterestIndex)
+        {
+            if (_starSystemView.Layout != null)
+            {
+                _starSystemView.SetPointOfInterestHidden(pointOfInterestIndex, false);
+            }
+        }
+
         void OnFleetJumped(int systemIndex, IReadOnlyList<ShipAgent> jumpers)
         {
             EnterStarSystem(systemIndex, jumpers);
@@ -719,6 +733,11 @@ namespace LastFleet.GenerationPreview
             _starSystemView.Show(system.Layout);
             for (int i = 0; i < system.Zones.Count; i++)
             {
+                // Late signals not yet received stay off the map until they come in.
+                if (!system.Zones[i].IsKnown)
+                {
+                    _starSystemView.SetPointOfInterestHidden(i, true);
+                }
                 if (system.Zones[i].IsRevealed)
                 {
                     _starSystemView.SetMarkerStyle(i, PointOfInterestMarkerStyle.Explored);
@@ -749,6 +768,7 @@ namespace LastFleet.GenerationPreview
 
             // Every arrival starts a new countdown and the jump drive's cooldown, also on a return to a visited system.
             _pursuit.Begin();
+            _lateSignals.Listen(system);
             _fleetJump.ArrivedIn(Galaxy, systemIndex);
         }
 

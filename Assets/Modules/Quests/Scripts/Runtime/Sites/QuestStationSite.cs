@@ -61,7 +61,7 @@ namespace LastFleet.Quests
         }
 
         /// <summary>
-        /// A zone away from the jump point, the star and stranded ships, unexplored ones first so the player finds the
+        /// A known zone away from the jump point, the star and stranded ships (a late signal may not have come in yet), unexplored ones first so the player finds the
         /// station rather than seeing it appear, and station zones before other kinds.
         /// </summary>
         public static int ChooseZone(SystemZones system, DeterministicRandom random)
@@ -72,7 +72,8 @@ namespace LastFleet.Quests
             {
                 ZoneRecord zone = system.Zones[i];
                 PointOfInterestKind kind = zone.PointOfInterest.Kind;
-                if (kind == PointOfInterestKind.JumpPoint || kind == PointOfInterestKind.Star || kind == PointOfInterestKind.StrandedShip)
+                if (kind == PointOfInterestKind.JumpPoint || kind == PointOfInterestKind.Star || kind == PointOfInterestKind.StrandedShip ||
+                    zone.PointOfInterest.IsLateSignal)
                 {
                     continue;
                 }
@@ -94,7 +95,7 @@ namespace LastFleet.Quests
                 // Only jump point and star: anything but the arrival zone, where the fleet would see it appear.
                 for (int i = 0; i < system.Zones.Count; i++)
                 {
-                    if (i != system.Layout.ArrivalPointOfInterestIndex)
+                    if (i != system.Layout.ArrivalPointOfInterestIndex && !system.Zones[i].PointOfInterest.IsLateSignal)
                     {
                         return i;
                     }
