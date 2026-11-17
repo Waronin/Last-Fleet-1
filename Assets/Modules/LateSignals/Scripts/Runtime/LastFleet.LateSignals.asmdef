@@ -6,6 +6,7 @@
         "LastFleet.StarSystem",
         "LastFleet.Zones",
         "LastFleet.Pursuit",
+        "LastFleet.Ships",
         "LastFleet.Dialogue",
         "LastFleet.Exploration"
     ],

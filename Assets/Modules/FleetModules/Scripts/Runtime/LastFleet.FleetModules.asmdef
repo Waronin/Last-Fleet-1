@@ -1,0 +1,20 @@
+{
+    "name": "LastFleet.FleetModules",
+    "rootNamespace": "LastFleet.FleetModules",
+    "references": [
+        "LastFleet.Shared",
+        "LastFleet.Localization",
+        "LastFleet.Ships",
+        "LastFleet.Rewards",
+        "LastFleet.ShipControl"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

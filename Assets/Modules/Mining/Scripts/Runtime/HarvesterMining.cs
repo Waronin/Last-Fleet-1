@@ -36,11 +36,14 @@ namespace LastFleet.Mining
         bool _isIssuingOrder;
 
         public MiningState State { get; private set; }
-        public CargoHold Cargo => _cargo ??= new CargoHold(_cargoCapacity);
+        public CargoHold Cargo => _cargo ??= new CargoHold(EffectiveCargoCapacity);
         public ResourceDeposit Deposit { get; private set; }
         public float YieldMultiplier => Deposit != null ? MiningYield.Multiplier(Deposit.MiningSeconds) : 1f;
         public Vector3 DepositWorldPosition => _zone.transform.TransformPoint(Deposit.LocalPosition);
         public bool IsAutomationActive => State != MiningState.Inactive;
+
+        float EffectiveCargoCapacity => _cargoCapacity * Ship.Effects.Multiplier(FleetStat.CargoCapacity);
+        ShipAgent Ship => _ship != null ? _ship : _ship = GetComponent<ShipAgent>();
 
         // Subscribed for the object's whole life: docked ships are inactive but must still react.
         void Awake()
@@ -49,6 +52,7 @@ namespace LastFleet.Mining
             _ship.OrdersReplaced += OnOrdersReplaced;
             _ship.DockedInHangar += OnDockedInHangar;
             _ship.JumpRefusedForFuel += OnJumpRefusedForFuel;
+            _ship.EffectsChanged += OnEffectsChanged;
         }
 
         void OnDestroy()
@@ -56,6 +60,15 @@ namespace LastFleet.Mining
             _ship.OrdersReplaced -= OnOrdersReplaced;
             _ship.DockedInHangar -= OnDockedInHangar;
             _ship.JumpRefusedForFuel -= OnJumpRefusedForFuel;
+            _ship.EffectsChanged -= OnEffectsChanged;
+        }
+
+        void OnEffectsChanged(ShipAgent ship)
+        {
+            if (_cargo != null)
+            {
+                _cargo.ChangeCapacity(EffectiveCargoCapacity);
+            }
         }
 
         public void Initialize(MiningCoordinator coordinator)
@@ -182,8 +195,9 @@ namespace LastFleet.Mining
             }
 
             float multiplier = MiningYield.Multiplier(Deposit.MiningSeconds);
-            // A short-handed crew mines more slowly.
-            float wanted = Mathf.Min(_extractionPerSecond * deltaTime * _ship.WorkEfficiency, Cargo.FreeSpace / multiplier);
+            // A short-handed crew mines more slowly; fleet modules speed up some raw materials.
+            float rate = _extractionPerSecond * _ship.WorkEfficiency * _ship.Effects.MiningRateMultiplier(Deposit.Resource);
+            float wanted = Mathf.Min(rate * deltaTime, Cargo.FreeSpace / multiplier);
             float extracted = Deposit.Extract(wanted);
             Deposit.RecordMining(deltaTime);
             Cargo.Load(Deposit.Resource, extracted * multiplier);

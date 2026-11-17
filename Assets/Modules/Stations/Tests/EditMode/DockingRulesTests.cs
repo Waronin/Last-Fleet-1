@@ -25,6 +25,21 @@ namespace LastFleet.Stations.Tests
         }
 
         [Test]
+        public void FleetModules_WardOffRadiationAndHostileCrews()
+        {
+            FleetEffects none = new FleetEffects();
+            FleetEffects modules = new FleetEffects();
+            modules.Replace(System.Array.Empty<FleetStatBonus>(), new[] { FleetAbility.RadiationImmunity, FleetAbility.PacifyHostileStations });
+
+            Assert.IsFalse(DockingHazardRules.IsWardedOff(DockingHazard.Radiation, none));
+            Assert.IsFalse(DockingHazardRules.IsWardedOff(DockingHazard.Capture, none));
+            Assert.IsTrue(DockingHazardRules.IsWardedOff(DockingHazard.Radiation, modules));
+            Assert.IsTrue(DockingHazardRules.IsWardedOff(DockingHazard.HostileAttack, modules));
+            Assert.IsTrue(DockingHazardRules.IsWardedOff(DockingHazard.Capture, modules));
+            Assert.IsFalse(DockingHazardRules.IsWardedOff(DockingHazard.ToxicAtmosphere, modules));
+        }
+
+        [Test]
         public void HarmlessStation_HasNoHazards()
         {
             List<DockingHazard> hazards = new List<DockingHazard>();

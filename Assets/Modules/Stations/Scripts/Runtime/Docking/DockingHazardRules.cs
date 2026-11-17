@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using LastFleet.Ships;
 using LastFleet.Zones;
 
 namespace LastFleet.Stations
@@ -54,6 +55,25 @@ namespace LastFleet.Stations
                 hazards.Add(DockingHazard.HostileAttack);
                 hazards.Add(DockingHazard.Capture);
             }
+        }
+
+        /// <summary>
+        /// True when fleet modules keep the hazard from happening: radiation shielding protects the crew,
+        /// and pacified hostile crews behave like wary ones, which neither attack nor capture.
+        /// </summary>
+        public static bool IsWardedOff(DockingHazard hazard, FleetEffects effects)
+        {
+            if (effects == null)
+            {
+                throw new ArgumentNullException(nameof(effects));
+            }
+            return hazard switch
+            {
+                DockingHazard.Radiation => effects.Has(FleetAbility.RadiationImmunity),
+                DockingHazard.HostileAttack => effects.Has(FleetAbility.PacifyHostileStations),
+                DockingHazard.Capture => effects.Has(FleetAbility.PacifyHostileStations),
+                _ => false
+            };
         }
 
         public static float MeanSeconds(DockingHazard hazard)

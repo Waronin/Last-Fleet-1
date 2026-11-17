@@ -43,7 +43,8 @@ namespace LastFleet.Repairs
             }
         }
 
-        public float HullPerSecondFor(ShipAgent ship) => ship.IsCapital ? _capitalShipHullPerSecond : _smallShipHullPerSecond;
+        public float HullPerSecondFor(ShipAgent ship) =>
+            (ship.IsCapital ? _capitalShipHullPerSecond : _smallShipHullPerSecond) * ship.Effects.Multiplier(FleetStat.RepairRate);
 
         public RepairEligibility Check(ShipAgent ship)
         {

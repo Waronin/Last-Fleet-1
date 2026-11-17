@@ -15,12 +15,25 @@ namespace LastFleet.Mining
             Capacity = capacity;
         }
 
-        public float Capacity { get; }
+        public float Capacity { get; private set; }
         public float Amount { get; private set; }
         public ResourceKind Resource { get; private set; }
         public bool IsEmpty => Amount <= 0f;
         public bool IsFull => Amount >= Capacity;
-        public float FreeSpace => Capacity - Amount;
+        public float FreeSpace => Math.Max(0f, Capacity - Amount);
+
+        /// <summary>
+        /// Resizes the hold, e.g. when fleet modules add cargo bays. A smaller hold keeps what it carries
+        /// until it is unloaded; it just takes nothing more.
+        /// </summary>
+        public void ChangeCapacity(float capacity)
+        {
+            if (capacity <= 0f || float.IsNaN(capacity))
+            {
+                throw new ArgumentOutOfRangeException(nameof(capacity), "Cargo capacity must be positive.");
+            }
+            Capacity = capacity;
+        }
 
         /// <summary>Loads up to the given amount; another material only fits into an empty hold.</summary>
         public float Load(ResourceKind resource, float amount)

@@ -26,6 +26,7 @@
         "LastFleet.Exploration",
         "LastFleet.Inspection",
         "LastFleet.LateSignals",
+        "LastFleet.FleetModules",
         "LastFleet.ShipControl",
         "LastFleet.Space",
         "LastFleet.CameraControl",

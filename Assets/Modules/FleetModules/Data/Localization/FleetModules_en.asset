@@ -1,0 +1,189 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: FleetModules_en
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: a2969eb9060744e4bac7db8d1c3aa68b, type: 2}
+  m_Metadata:
+    m_Items:
+    - rid: 5599359018023780434
+  m_TableData:
+  - m_Id: 863580160
+    m_Localized: Gas Extractors
+    m_Metadata:
+      m_Items: []
+  - m_Id: 897134592
+    m_Localized: Ore Drills
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328896
+    m_Localized: Ice Cutters
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328897
+    m_Localized: Extended Cargo Bays
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328898
+    m_Localized: Reinforced Plating
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328899
+    m_Localized: Radiation Shielding
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328900
+    m_Localized: Envoy Protocols
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328901
+    m_Localized: Capital Ship Drives
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328902
+    m_Localized: Small Craft Thrusters
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328903
+    m_Localized: Signal Amplifier
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328904
+    m_Localized: Gas is mined 20 % faster.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328905
+    m_Localized: Ore is mined 20 % faster.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328906
+    m_Localized: Ice is mined 20 % faster.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328907
+    m_Localized: +30 % cargo space for harvesters, -10 % hull for all ships.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328908
+    m_Localized: +30 % hull for all ships, -10 % repair speed.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328909
+    m_Localized: No crew member dies of radiation while mining or docked.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328910
+    m_Localized: 'Hostile station crews behave like wary ones: no attacks, no capture while docked.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328911
+    m_Localized: Capital ships fly 50 % faster but use 10 % more fuel.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328912
+    m_Localized: Small ships fly 40 % faster but use 8 % more fuel.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328913
+    m_Localized: Late signals come in twice as early.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328914
+    m_Localized: 'Upgrade module recovered: {count} waiting. Press U to choose a fleet module.'
+    m_Metadata:
+      m_Items:
+      - rid: 5599359018023780434
+  - m_Id: 905523200
+    m_Localized: '{module} installed for the whole fleet.'
+    m_Metadata:
+      m_Items:
+      - rid: 5599359018023780434
+  - m_Id: 905523201
+    m_Localized: '{module} installed; {removed} was scrapped.'
+    m_Metadata:
+      m_Items:
+      - rid: 5599359018023780434
+  - m_Id: 905523202
+    m_Localized: Upgrade module discarded.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 905523203
+    m_Localized: Fleet modules ({used}/{slots} slots)
+    m_Metadata:
+      m_Items:
+      - rid: 5599359018023780434
+  - m_Id: 905523204
+    m_Localized: "\u2013 empty slot \u2013"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 905523205
+    m_Localized: 'Upgrade module ready ({count} waiting): choose one'
+    m_Metadata:
+      m_Items:
+      - rid: 5599359018023780434
+  - m_Id: 905523206
+    m_Localized: No upgrade module waiting. Search stations and complete requests to find more.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 905523207
+    m_Localized: Which module should {module} replace? The old one is lost.
+    m_Metadata:
+      m_Items:
+      - rid: 5599359018023780434
+  - m_Id: 905523208
+    m_Localized: Install
+    m_Metadata:
+      m_Items: []
+  - m_Id: 905523209
+    m_Localized: "Replace\u2026"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 905523210
+    m_Localized: Discard module
+    m_Metadata:
+      m_Items: []
+  - m_Id: 905523211
+    m_Localized: Back
+    m_Metadata:
+      m_Items: []
+  - m_Id: 905523212
+    m_Localized: Close (U)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 905523213
+    m_Localized: 'Modules {used}/{slots} [U]'
+    m_Metadata:
+      m_Items:
+      - rid: 5599359018023780434
+  - m_Id: 905523214
+    m_Localized: "Modules {used}/{slots} \xB7 {count} new [U]"
+    m_Metadata:
+      m_Items:
+      - rid: 5599359018023780434
+  references:
+    version: 2
+    RefIds:
+    - rid: 5599359018023780434
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 
+        m_SharedEntries:
+        - id: 901328914
+        - id: 905523200
+        - id: 905523201
+        - id: 905523203
+        - id: 905523205
+        - id: 905523207
+        - id: 905523213
+        - id: 905523214

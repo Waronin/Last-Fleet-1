@@ -3,6 +3,7 @@ using LastFleet.CameraControl;
 using LastFleet.Combat;
 using LastFleet.Exploration;
 using LastFleet.FleetJump;
+using LastFleet.FleetModules;
 using LastFleet.Galaxy;
 using LastFleet.Hud;
 using LastFleet.Inspection;
@@ -122,6 +123,8 @@ namespace LastFleet.GenerationPreview
         [SerializeField] EmpTargetingInput _empTargeting;
         [Tooltip("Optional. Small ships fly home to refuel below their threshold; set in the ship window.")]
         [SerializeField] FuelReturnService _fuelReturn;
+        [Tooltip("Optional. Fleet modules; their notices go into the notice feed.")]
+        [SerializeField] FleetModuleService _fleetModules;
         [Tooltip("Spawned on arrival in a system until fleet jumps carry the fleet along.")]
         [SerializeField] ShipAgent _refineryPrefab;
         [SerializeField] ShipAgent _tankerPrefab;
@@ -219,6 +222,10 @@ namespace LastFleet.GenerationPreview
             {
                 _fuelReturn.Notice += ShowNotice;
             }
+            if (_fleetModules != null)
+            {
+                _fleetModules.Notice += ShowNotice;
+            }
             _docking.Notice += ShowNotice;
             _search.Notice += ShowNotice;
             _rewards.Notice += ShowNotice;
@@ -297,6 +304,10 @@ namespace LastFleet.GenerationPreview
             if (_fuelReturn != null)
             {
                 _fuelReturn.Notice -= ShowNotice;
+            }
+            if (_fleetModules != null)
+            {
+                _fleetModules.Notice -= ShowNotice;
             }
             _docking.Notice -= ShowNotice;
             _search.Notice -= ShowNotice;

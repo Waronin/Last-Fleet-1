@@ -15,7 +15,22 @@ namespace LastFleet.Ships
             Current = maximum;
         }
 
-        public float Maximum { get; }
+        public float Maximum { get; private set; }
+
+        /// <summary>
+        /// Changes the full hull, e.g. when fleet modules add plating, and keeps the share of it that is
+        /// intact: a ship at 50 % stays at 50 %. A destroyed hull stays destroyed.
+        /// </summary>
+        public void Rescale(float maximum)
+        {
+            if (maximum <= 0f || float.IsNaN(maximum))
+            {
+                throw new ArgumentOutOfRangeException(nameof(maximum), "Hull points must be positive.");
+            }
+            float fraction = Fraction;
+            Maximum = maximum;
+            Current = fraction >= 1f ? maximum : maximum * fraction;
+        }
         public float Current { get; private set; }
         public float Fraction => Current / Maximum;
         public bool IsDestroyed => Current <= 0f;

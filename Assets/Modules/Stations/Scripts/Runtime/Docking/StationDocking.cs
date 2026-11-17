@@ -172,6 +172,11 @@ namespace LastFleet.Stations
         {
             foreach (DockingHazard hazard in _hazards)
             {
+                // Checked on every step, so a module installed while docked protects at once.
+                if (DockingHazardRules.IsWardedOff(hazard, _ship.Effects))
+                {
+                    continue;
+                }
                 if (UnityEngine.Random.value < HazardTiming.ChanceWithin(DockingHazardRules.MeanSeconds(hazard), deltaTime))
                 {
                     // A capture removes the ship; nothing else happens to it afterwards.

@@ -180,8 +180,8 @@ namespace LastFleet.Mining
 
             if (hazardEvent == HazardEvent.Radiation)
             {
-                // The crew report the loss; the deposit stays as it is.
-                if (ship.Crew != null)
+                // The crew report the loss; the deposit stays as it is. Shielded crews are safe.
+                if (ship.Crew != null && !ship.Effects.Has(FleetAbility.RadiationImmunity))
                 {
                     ship.Crew.Kill(1, MiningTexts.RadiationCause);
                 }

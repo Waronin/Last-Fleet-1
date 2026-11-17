@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using LastFleet.Pursuit;
 using LastFleet.Shared.Text;
+using LastFleet.Ships;
 using LastFleet.StarSystem;
 using LastFleet.Zones;
 using UnityEngine;
@@ -16,6 +17,8 @@ namespace LastFleet.LateSignals
     public sealed class LateSignalReceiver : MonoBehaviour
     {
         [SerializeField] PursuitClock _pursuit;
+        [Tooltip("The player's fleet; its modules can bring the signals in earlier.")]
+        [SerializeField] ShipRegistry _fleet;
 
         readonly List<ZoneRecord> _received = new List<ZoneRecord>();
         SystemZones _system;
@@ -30,9 +33,9 @@ namespace LastFleet.LateSignals
 
         void Awake()
         {
-            if (_pursuit == null)
+            if (_pursuit == null || _fleet == null)
             {
-                Debug.LogError("LateSignalReceiver needs the pursuit clock.", this);
+                Debug.LogError("LateSignalReceiver needs the pursuit clock and the fleet.", this);
                 enabled = false;
             }
         }
@@ -51,7 +54,9 @@ namespace LastFleet.LateSignals
                 return;
             }
 
-            LateSignalSchedule.ReceiveDue(_system, countdown.ElapsedSeconds / countdown.ArrivalSeconds, _received);
+            // A shorter delay lets every signal in at that share of its planned point: half the delay, half the wait.
+            float delay = _fleet.Effects.Multiplier(FleetStat.LateSignalDelay);
+            LateSignalSchedule.ReceiveDue(_system, countdown.ElapsedSeconds / countdown.ArrivalSeconds / delay, _received);
             foreach (ZoneRecord zone in _received)
             {
                 SignalReceived?.Invoke(zone);

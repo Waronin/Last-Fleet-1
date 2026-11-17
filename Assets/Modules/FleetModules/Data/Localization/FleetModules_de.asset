@@ -1,0 +1,189 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: FleetModules_de
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: de
+  m_SharedData: {fileID: 11400000, guid: a2969eb9060744e4bac7db8d1c3aa68b, type: 2}
+  m_Metadata:
+    m_Items:
+    - rid: 5599359018023780433
+  m_TableData:
+  - m_Id: 863580160
+    m_Localized: Gasabsauger
+    m_Metadata:
+      m_Items: []
+  - m_Id: 897134592
+    m_Localized: Erzbohrer
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328896
+    m_Localized: "Eisfr\xE4sen"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328897
+    m_Localized: "Erweiterte Lader\xE4ume"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328898
+    m_Localized: "Verst\xE4rkte Panzerung"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328899
+    m_Localized: Strahlenschutz
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328900
+    m_Localized: Gesandtenprotokolle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328901
+    m_Localized: Kapitalschiff-Antriebe
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328902
+    m_Localized: Kleinschiff-Triebwerke
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328903
+    m_Localized: "Signalverst\xE4rker"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328904
+    m_Localized: Gas wird 20 % schneller abgebaut.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328905
+    m_Localized: Erz wird 20 % schneller abgebaut.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328906
+    m_Localized: Eis wird 20 % schneller abgebaut.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328907
+    m_Localized: "+30 % Laderaum f\xFCr Sammler, -10 % H\xFClle f\xFCr alle Schiffe."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328908
+    m_Localized: "+30 % H\xFClle f\xFCr alle Schiffe, -10 % Reparaturgeschwindigkeit."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328909
+    m_Localized: Beim Abbau und angedockt stirbt niemand mehr an Strahlung.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328910
+    m_Localized: 'Feindliche Stationsbesatzungen verhalten sich wie vorsichtige: kein Angriff, keine Kaperung beim Andocken.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328911
+    m_Localized: Kapitalschiffe fliegen 50 % schneller, verbrauchen aber 10 % mehr Treibstoff.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328912
+    m_Localized: Kleine Schiffe fliegen 40 % schneller, verbrauchen aber 8 % mehr Treibstoff.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328913
+    m_Localized: "Sp\xE4te Signale kommen doppelt so fr\xFCh herein."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328914
+    m_Localized: "Upgrade-Modul geborgen: {count} wartend. U dr\xFCcken, um ein Flottenmodul zu w\xE4hlen."
+    m_Metadata:
+      m_Items:
+      - rid: 5599359018023780433
+  - m_Id: 905523200
+    m_Localized: "{module} f\xFCr die ganze Flotte eingebaut."
+    m_Metadata:
+      m_Items:
+      - rid: 5599359018023780433
+  - m_Id: 905523201
+    m_Localized: '{module} eingebaut; {removed} wurde verschrottet.'
+    m_Metadata:
+      m_Items:
+      - rid: 5599359018023780433
+  - m_Id: 905523202
+    m_Localized: Upgrade-Modul verworfen.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 905523203
+    m_Localized: "Flottenmodule ({used}/{slots} Pl\xE4tze)"
+    m_Metadata:
+      m_Items:
+      - rid: 5599359018023780433
+  - m_Id: 905523204
+    m_Localized: "\u2013 freier Platz \u2013"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 905523205
+    m_Localized: "Upgrade-Modul bereit ({count} wartend): w\xE4hle eins"
+    m_Metadata:
+      m_Items:
+      - rid: 5599359018023780433
+  - m_Id: 905523206
+    m_Localized: "Kein Upgrade-Modul wartet. Durchsuche Stationen und erf\xFClle Auftr\xE4ge, um weitere zu finden."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 905523207
+    m_Localized: Welches Modul soll {module} ersetzen? Das alte geht verloren.
+    m_Metadata:
+      m_Items:
+      - rid: 5599359018023780433
+  - m_Id: 905523208
+    m_Localized: Einbauen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 905523209
+    m_Localized: "Ersetzen\u2026"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 905523210
+    m_Localized: Modul verwerfen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 905523211
+    m_Localized: "Zur\xFCck"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 905523212
+    m_Localized: "Schlie\xDFen (U)"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 905523213
+    m_Localized: 'Module {used}/{slots} [U]'
+    m_Metadata:
+      m_Items:
+      - rid: 5599359018023780433
+  - m_Id: 905523214
+    m_Localized: "Module {used}/{slots} \xB7 {count} neu [U]"
+    m_Metadata:
+      m_Items:
+      - rid: 5599359018023780433
+  references:
+    version: 2
+    RefIds:
+    - rid: 5599359018023780433
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 
+        m_SharedEntries:
+        - id: 901328914
+        - id: 905523200
+        - id: 905523201
+        - id: 905523203
+        - id: 905523205
+        - id: 905523207
+        - id: 905523213
+        - id: 905523214

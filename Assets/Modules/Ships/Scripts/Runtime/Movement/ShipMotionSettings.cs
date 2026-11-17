@@ -49,6 +49,25 @@ namespace LastFleet.Ships
         public float ArrivalToleranceUnits => _arrivalToleranceUnits;
         public float AlignToleranceDegrees => _alignToleranceDegrees;
 
+        /// <summary>
+        /// The same flight played faster by the factor: speeds and turn rate times the factor,
+        /// accelerations times its square. Every manoeuvre keeps its path and takes 1/factor of the time.
+        /// </summary>
+        public ShipMotionSettings TimeScaled(float factor)
+        {
+            if (factor <= 0f || float.IsNaN(factor))
+            {
+                throw new ArgumentOutOfRangeException(nameof(factor), "The time factor must be positive.");
+            }
+            if (Mathf.Approximately(factor, 1f))
+            {
+                return this;
+            }
+            float squared = factor * factor;
+            return new ShipMotionSettings(_maximumSpeed * factor, _mainDriveAcceleration * squared, _turnRateDegreesPerSecond * factor,
+                _thrusterAcceleration * squared, _thrusterMaximumSpeed * factor, _maneuverRangeUnits, _arrivalToleranceUnits, _alignToleranceDegrees);
+        }
+
         /// <summary>Time for a 180 degree flip.</summary>
         public float FlipSeconds => 180f / _turnRateDegreesPerSecond;
     }

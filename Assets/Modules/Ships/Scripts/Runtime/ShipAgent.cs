@@ -57,6 +57,7 @@ namespace LastFleet.Ships
         ShipMotion _motion;
         ShipFuel _fuel;
         ShipCrew _crew;
+        FleetEffects _effects;
         ZoneWorld _zoneWorld;
         ZoneView _zone;
         Hangar _dockedIn;
@@ -129,6 +130,12 @@ namespace LastFleet.Ships
 
         /// <summary>Share of full working speed for tasks such as mining and scanning; 1 without a crew system.</summary>
         public float WorkEfficiency => Crew != null ? Crew.Efficiency : 1f;
+
+        /// <summary>The effects of the side the ship belongs to, e.g. fleet modules; none before it is registered.</summary>
+        public FleetEffects Effects => _effects ??= new FleetEffects();
+
+        /// <summary>The fleet effects on this ship changed: its side changed them, or it changed sides.</summary>
+        public event Action<ShipAgent> EffectsChanged;
 
         /// <summary>Zone the ship is charging a jump to, or -1.</summary>
         public int TargetZoneIndex => Activity == ShipActivity.ChargingJump ? _jumpTargetZoneIndex : -1;
@@ -267,6 +274,40 @@ namespace LastFleet.Ships
         internal void SetAllegiance(Allegiance allegiance)
         {
             Allegiance = allegiance;
+        }
+
+        /// <summary>Takes on the effects of the registry the ship now belongs to.</summary>
+        internal void BindEffects(FleetEffects effects)
+        {
+            if (effects == null)
+            {
+                throw new ArgumentNullException(nameof(effects));
+            }
+            if (_effects == effects)
+            {
+                return;
+            }
+            if (_effects != null)
+            {
+                _effects.Changed -= OnEffectsChanged;
+            }
+            _effects = effects;
+            _effects.Changed += OnEffectsChanged;
+            OnEffectsChanged();
+        }
+
+        void OnEffectsChanged()
+        {
+            if (_motion != null)
+            {
+                _motion.ChangeSettings(MotionSettings());
+            }
+            EffectsChanged?.Invoke(this);
+        }
+
+        ShipMotionSettings MotionSettings()
+        {
+            return _movementProfile.Motion.TimeScaled(Effects.SpeedMultiplier(_size));
         }
 
         /// <summary>
@@ -415,6 +456,10 @@ namespace LastFleet.Ships
             {
                 Crew.BecameDerelict -= OnBecameDerelict;
             }
+            if (_effects != null)
+            {
+                _effects.Changed -= OnEffectsChanged;
+            }
             Destroyed?.Invoke(this);
         }
 
@@ -498,7 +543,7 @@ namespace LastFleet.Ships
         {
             if (_motion.MainDriveActive || _motion.ThrustersActive)
             {
-                Fuel.Tank.Drain(Fuel.Consumption.ForTravel(distanceUnits));
+                Fuel.Tank.Drain(Fuel.Consumption.ForTravel(distanceUnits) * Effects.FuelUseMultiplier(_size));
             }
             _motion.MainDriveAvailable = !Fuel.Tank.IsEmpty;
         }
@@ -700,7 +745,7 @@ namespace LastFleet.Ships
         /// <summary>Fuel a small jump from the current zone to another zone of the system costs.</summary>
         public float JumpFuelCost(int targetZoneIndex)
         {
-            return Fuel.Consumption.ForJump(JumpDeltaAU(targetZoneIndex).magnitude);
+            return Fuel.Consumption.ForJump(JumpDeltaAU(targetZoneIndex).magnitude) * Effects.FuelUseMultiplier(_size);
         }
 
         Vector2 JumpDeltaAU(int targetZoneIndex)
@@ -712,7 +757,7 @@ namespace LastFleet.Ships
 
         ShipMotion CreateMotion(Vector3 localPosition, float headingDegrees)
         {
-            ShipMotion motion = new ShipMotion(_movementProfile.Motion, ToPlane(localPosition), headingDegrees);
+            ShipMotion motion = new ShipMotion(MotionSettings(), ToPlane(localPosition), headingDegrees);
             motion.MainDriveAvailable = !Fuel.Tank.IsEmpty;
             return motion;
         }

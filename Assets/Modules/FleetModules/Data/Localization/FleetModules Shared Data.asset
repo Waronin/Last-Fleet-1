@@ -1,0 +1,172 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: FleetModules Shared Data
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.SharedTableData
+  m_TableCollectionName: FleetModules
+  m_TableCollectionNameGuidString: a2969eb9060744e4bac7db8d1c3aa68b
+  m_Entries:
+  - m_Id: 863580160
+    m_Key: module.name.GasMining
+    m_Metadata:
+      m_Items: []
+  - m_Id: 897134592
+    m_Key: module.name.OreMining
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328896
+    m_Key: module.name.IceMining
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328897
+    m_Key: module.name.CargoBays
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328898
+    m_Key: module.name.HullPlating
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328899
+    m_Key: module.name.RadiationShielding
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328900
+    m_Key: module.name.StationDiplomacy
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328901
+    m_Key: module.name.CapitalShipDrives
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328902
+    m_Key: module.name.SmallShipDrives
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328903
+    m_Key: module.name.SignalAmplifier
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328904
+    m_Key: module.effect.GasMining
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328905
+    m_Key: module.effect.OreMining
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328906
+    m_Key: module.effect.IceMining
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328907
+    m_Key: module.effect.CargoBays
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328908
+    m_Key: module.effect.HullPlating
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328909
+    m_Key: module.effect.RadiationShielding
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328910
+    m_Key: module.effect.StationDiplomacy
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328911
+    m_Key: module.effect.CapitalShipDrives
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328912
+    m_Key: module.effect.SmallShipDrives
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328913
+    m_Key: module.effect.SignalAmplifier
+    m_Metadata:
+      m_Items: []
+  - m_Id: 901328914
+    m_Key: notice.ready
+    m_Metadata:
+      m_Items: []
+  - m_Id: 905523200
+    m_Key: notice.installed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 905523201
+    m_Key: notice.replaced
+    m_Metadata:
+      m_Items: []
+  - m_Id: 905523202
+    m_Key: notice.discarded
+    m_Metadata:
+      m_Items: []
+  - m_Id: 905523203
+    m_Key: window.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 905523204
+    m_Key: window.empty-slot
+    m_Metadata:
+      m_Items: []
+  - m_Id: 905523205
+    m_Key: window.offer
+    m_Metadata:
+      m_Items: []
+  - m_Id: 905523206
+    m_Key: window.none-waiting
+    m_Metadata:
+      m_Items: []
+  - m_Id: 905523207
+    m_Key: window.choose-slot
+    m_Metadata:
+      m_Items: []
+  - m_Id: 905523208
+    m_Key: button.install
+    m_Metadata:
+      m_Items: []
+  - m_Id: 905523209
+    m_Key: button.replace
+    m_Metadata:
+      m_Items: []
+  - m_Id: 905523210
+    m_Key: button.discard
+    m_Metadata:
+      m_Items: []
+  - m_Id: 905523211
+    m_Key: button.back
+    m_Metadata:
+      m_Items: []
+  - m_Id: 905523212
+    m_Key: button.close
+    m_Metadata:
+      m_Items: []
+  - m_Id: 905523213
+    m_Key: hud.button
+    m_Metadata:
+      m_Items: []
+  - m_Id: 905523214
+    m_Key: hud.button-waiting
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 5599359018023780432
+  references:
+    version: 2
+    RefIds:
+    - rid: 5599359018023780432
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1794941752728

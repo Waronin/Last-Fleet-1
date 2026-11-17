@@ -15,7 +15,10 @@ namespace LastFleet.Rewards
         Item
     }
 
-    /// <summary>Things without an effect yet; their systems (upgrades, end scenarios, archive) come later.</summary>
+    /// <summary>
+    /// Things counted in the fleet inventory. An upgrade module is installed as a fleet module of the
+    /// player's choice (FleetModules); clues and archive records wait for end scenarios and the archive.
+    /// </summary>
     public enum ItemKind
     {
         UpgradeModule,

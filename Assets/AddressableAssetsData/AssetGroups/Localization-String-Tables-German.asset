@@ -45,6 +45,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Locale-de
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2118149b9f04df94c8c1f854f78b40af
+    m_Address: FleetModules_de
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-de
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 26971e922f3d03147afec95eb50927b0
     m_Address: People_de
     m_ReadOnly: 1

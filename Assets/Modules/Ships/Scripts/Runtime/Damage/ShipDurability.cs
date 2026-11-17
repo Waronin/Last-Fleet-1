@@ -17,10 +17,31 @@ namespace LastFleet.Ships
         ShipHull _hull;
         ShipAgent _ship;
 
-        public ShipHull Hull => _hull ??= new ShipHull(_maximumHull);
+        public ShipHull Hull => _hull ??= new ShipHull(EffectiveMaximumHull);
 
-        /// <summary>The configured full hull; safe to read on a prefab, where no hull state should be created.</summary>
+        /// <summary>The configured full hull without fleet effects; safe to read on a prefab, where no hull state should be created.</summary>
         public float MaximumHull => _maximumHull;
+
+        float EffectiveMaximumHull => _maximumHull * Ship.Effects.Multiplier(FleetStat.MaximumHull);
+
+        // Subscribed for the object's whole life: effects change also while the ship sits in a hangar.
+        void Awake()
+        {
+            Ship.EffectsChanged += OnEffectsChanged;
+        }
+
+        void OnDestroy()
+        {
+            Ship.EffectsChanged -= OnEffectsChanged;
+        }
+
+        void OnEffectsChanged(ShipAgent ship)
+        {
+            if (_hull != null)
+            {
+                _hull.Rescale(EffectiveMaximumHull);
+            }
+        }
 
         /// <summary>
         /// Starts the hull at the given size and state instead of whole at the configured maximum, for a ship
@@ -39,6 +60,7 @@ namespace LastFleet.Ships
             _maximumHull = maximum;
             _hull = new ShipHull(maximum);
             _hull.TakeDamage(maximum - current);
+            _hull.Rescale(EffectiveMaximumHull);
         }
         ShipAgent Ship => _ship != null ? _ship : _ship = GetComponent<ShipAgent>();
 

@@ -92,6 +92,27 @@ namespace LastFleet.Ships.Tests
         }
 
         [Test]
+        public void TransferTo_GivesTheShipTheEffectsOfItsNewSide()
+        {
+            ShipRegistry fleet = CreateRegistry(Allegiance.HumanFleet);
+            ShipRegistry stranded = CreateRegistry(Allegiance.Pronin);
+            fleet.Effects.Replace(new[] { new FleetStatBonus(FleetStat.MaximumHull, 0.3f) }, Array.Empty<FleetAbility>());
+            ShipAgent ship = CreateShip();
+            stranded.Register(ship);
+            int changes = 0;
+            ship.EffectsChanged += s => changes++;
+
+            stranded.TransferTo(ship, fleet);
+
+            Assert.AreSame(fleet.Effects, ship.Effects);
+            Assert.AreEqual(1.3f, ship.Effects.Multiplier(FleetStat.MaximumHull), 1e-5f);
+            Assert.AreEqual(1, changes);
+
+            fleet.Effects.Replace(Array.Empty<FleetStatBonus>(), Array.Empty<FleetAbility>());
+            Assert.AreEqual(2, changes);
+        }
+
+        [Test]
         public void TransferTo_RejectsShipsOfOtherRegistries()
         {
             ShipRegistry fleet = CreateRegistry(Allegiance.HumanFleet);

@@ -43,7 +43,7 @@ namespace LastFleet.Ships
         /// <summary>A precise approach starts slowing down this far out (about 100 m), so the touch is soft.</summary>
         const float PreciseBrakingDistanceUnits = 1f;
 
-        readonly ShipMotionSettings _settings;
+        ShipMotionSettings _settings;
         Vector2 _destination;
         Vector2 _courseDirection;
         float _courseMaximumSpeed = float.PositiveInfinity;
@@ -58,6 +58,12 @@ namespace LastFleet.Ships
             _settings = settings ?? throw new ArgumentNullException(nameof(settings));
             Position = position;
             HeadingDegrees = headingDegrees;
+        }
+
+        /// <summary>Switches to other movement settings, e.g. when fleet modules change the speed; the course is kept.</summary>
+        public void ChangeSettings(ShipMotionSettings settings)
+        {
+            _settings = settings ?? throw new ArgumentNullException(nameof(settings));
         }
 
         public Vector2 Position { get; private set; }

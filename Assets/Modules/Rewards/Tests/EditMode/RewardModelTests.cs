@@ -7,6 +7,21 @@ namespace LastFleet.Rewards.Tests
     public class RewardModelTests
     {
         [Test]
+        public void Inventory_TakesItemsOneByOneAndReportsEveryChange()
+        {
+            FleetInventory inventory = new FleetInventory();
+            int changes = 0;
+            inventory.Changed += item => changes++;
+
+            inventory.Add(ItemKind.UpgradeModule, 1);
+
+            Assert.IsTrue(inventory.TryTake(ItemKind.UpgradeModule));
+            Assert.IsFalse(inventory.TryTake(ItemKind.UpgradeModule));
+            Assert.AreEqual(0, inventory.CountOf(ItemKind.UpgradeModule));
+            Assert.AreEqual(2, changes);
+        }
+
+        [Test]
         public void Hold_StacksEqualFinds_AndKeepsDifferentOnesApart()
         {
             RewardHold hold = new RewardHold();

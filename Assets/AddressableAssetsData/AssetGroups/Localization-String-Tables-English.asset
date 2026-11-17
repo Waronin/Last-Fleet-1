@@ -117,6 +117,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Locale-en
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9c08c6f4040b4e049a58e7b5733f46e2
+    m_Address: FleetModules_en
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a97bb2d1aff561141975b2721d61fdbb
     m_Address: Stations_en
     m_ReadOnly: 1

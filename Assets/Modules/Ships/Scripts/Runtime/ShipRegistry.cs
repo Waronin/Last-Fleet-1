@@ -26,8 +26,12 @@ namespace LastFleet.Ships
         readonly SquadRoster _squads = new SquadRoster();
         readonly Dictionary<string, int> _spawnedPerClass = new Dictionary<string, int>();
         readonly List<ShipDurability> _damageTargets = new List<ShipDurability>();
+        readonly FleetEffects _effects = new FleetEffects();
 
         public Allegiance Allegiance => _allegiance;
+
+        /// <summary>Effects on every ship of this side, e.g. from the player's fleet modules.</summary>
+        public FleetEffects Effects => _effects;
         public IReadOnlyList<ShipAgent> Ships => _ships;
         public IReadOnlyList<Hangar> Hangars => _hangars;
         public SquadRoster Squads => _squads;
@@ -183,6 +187,7 @@ namespace LastFleet.Ships
             _spawnedPerClass[ship.ClassName] = spawned + 1;
             ship.AssignSerialNumber(spawned + 1);
             ship.SetAllegiance(_allegiance);
+            ship.BindEffects(_effects);
             if (ship.TryGetComponent(out ShipPresentation presentation))
             {
                 presentation.RefreshBracket();
