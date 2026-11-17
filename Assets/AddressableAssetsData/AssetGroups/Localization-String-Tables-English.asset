@@ -129,6 +129,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Locale-en
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bdf4e0d0ecaeb114eaef4629690da484
+    m_Address: Tutorial_en
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c04045894d27d964395800dae056aeac
     m_Address: Ships_en
     m_ReadOnly: 1

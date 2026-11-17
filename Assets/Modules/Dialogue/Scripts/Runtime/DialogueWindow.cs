@@ -19,8 +19,10 @@ namespace LastFleet.Dialogue
         [SerializeField] DialogueService _dialogue;
         [SerializeField] ShipCommandInput _shipInput;
 
-        GUIStyle _speakerStyle;
-        GUIStyle _lineStyle;
+        // Built lazily in OnGUI; serialized GUIStyle fields would come back as empty styles after a reload
+        // and hide the text.
+        [System.NonSerialized] GUIStyle _speakerStyle;
+        [System.NonSerialized] GUIStyle _lineStyle;
 
         void Awake()
         {

@@ -29,8 +29,9 @@ namespace LastFleet.Inspection
         readonly List<string> _resolvedDisabledReasons = new List<string>();
         string _resolvedTitle;
         string _resolvedClose;
-        GUIStyle _titleStyle;
-        GUIStyle _hintStyle;
+        // Built lazily in OnGUI; serialized GUIStyle fields would come back as empty styles after a reload.
+        [System.NonSerialized] GUIStyle _titleStyle;
+        [System.NonSerialized] GUIStyle _hintStyle;
 
         public IInspectionTarget Target { get; private set; }
 

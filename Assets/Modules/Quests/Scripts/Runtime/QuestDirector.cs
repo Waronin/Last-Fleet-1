@@ -96,11 +96,24 @@ namespace LastFleet.Quests
             _dialogue.Clear();
             _cargo.Clear();
 
-            foreach (QuestChainDefinition definition in openingChains)
+            StartChains(openingChains, galaxy.StartSystemIndex);
+        }
+
+        /// <summary>
+        /// Starts chains later in the run with their first step in the given system, e.g. after the prologue
+        /// in the system the fleet jumped to. Call before <see cref="SystemEntered"/> for that system.
+        /// </summary>
+        public void StartChains(IReadOnlyList<QuestChainDefinition> chains, int systemIndex)
+        {
+            if (_galaxy == null)
+            {
+                throw new InvalidOperationException("Begin a run before starting quest chains.");
+            }
+            foreach (QuestChainDefinition definition in chains)
             {
                 QuestChain chain = new QuestChain(definition);
                 _chains.Add(chain);
-                PlaceStep(chain, galaxy.StartSystemIndex);
+                PlaceStep(chain, systemIndex);
             }
             MarkersChanged?.Invoke();
         }

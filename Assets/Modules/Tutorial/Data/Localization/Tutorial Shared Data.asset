@@ -1,0 +1,152 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: Tutorial Shared Data
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.SharedTableData
+  m_TableCollectionName: Tutorial
+  m_TableCollectionNameGuidString: 0895a644807b8ed47b7c5d92a41a8a76
+  m_Entries:
+  - m_Id: 813248512
+    m_Key: speaker.liner-captain
+    m_Metadata:
+      m_Items: []
+  - m_Id: 842608640
+    m_Key: speaker.admiral
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997248
+    m_Key: offer.line
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997249
+    m_Key: offer.play
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997250
+    m_Key: offer.skip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997251
+    m_Key: skipped.line
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997252
+    m_Key: step.explore.line
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997253
+    m_Key: step.explore.objective
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997254
+    m_Key: step.dock.line
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997255
+    m_Key: step.dock.objective
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997256
+    m_Key: step.search.line
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997257
+    m_Key: step.search.objective
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997258
+    m_Key: step.mine.line
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997259
+    m_Key: step.mine.objective
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997260
+    m_Key: step.deliver.line
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997261
+    m_Key: step.deliver.objective
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997262
+    m_Key: step.raid.line
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997263
+    m_Key: step.raid.objective
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997264
+    m_Key: step.military.line
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997265
+    m_Key: step.military.objective
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997266
+    m_Key: step.fight.line
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997267
+    m_Key: step.fight.objective
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997268
+    m_Key: step.jump.line
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997269
+    m_Key: step.jump.objective
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997270
+    m_Key: farewell.line
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997271
+    m_Key: notice.raid
+    m_Metadata:
+      m_Items: []
+  - m_Id: 855191552
+    m_Key: notice.jump-held
+    m_Metadata:
+      m_Items: []
+  - m_Id: 855191553
+    m_Key: panel.header
+    m_Metadata:
+      m_Items: []
+  - m_Id: 855191554
+    m_Key: panel.step
+    m_Metadata:
+      m_Items: []
+  - m_Id: 855191555
+    m_Key: button.next-step
+    m_Metadata:
+      m_Items: []
+  - m_Id: 855191556
+    m_Key: button.end-prologue
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 5599359018023780435
+  references:
+    version: 2
+    RefIds:
+    - rid: 5599359018023780435
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1794948013093

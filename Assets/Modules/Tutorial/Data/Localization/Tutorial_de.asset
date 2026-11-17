@@ -1,0 +1,157 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Tutorial_de
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: de
+  m_SharedData: {fileID: 11400000, guid: 0895a644807b8ed47b7c5d92a41a8a76, type: 2}
+  m_Metadata:
+    m_Items:
+    - rid: 5599359018023780436
+  m_TableData:
+  - m_Id: 813248512
+    m_Localized: "Kapit\xE4n Ellis, Liner"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 842608640
+    m_Localized: Admiral Voss, Kreuzer
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997248
+    m_Localized: "Hier Ellis vom Liner. Wir sind entkommen, aber nur wir Zivilisten, ohne ein einziges Kriegsschiff. Soll ich dich durch die Flotte f\xFChren, bevor wir weiterziehen?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997249
+    m_Localized: Prolog spielen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997250
+    m_Localized: "Prolog \xFCberspringen"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997251
+    m_Localized: "Hier Admiral Voss. Mein Kreuzer und seine J\xE4ger haben sich euch angeschlossen. Ab jetzt sind uns die Pronin auf den Fersen; bleibt nirgends zu lange."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997252
+    m_Localized: "Bevor wir irgendwohin gehen, brauchen wir Vorr\xE4te. Esc \xF6ffnet die Systemkarte. Klick auf einen Ort, um zu sehen, was wir dar\xFCber wissen, und schick von dort ein Schiff zum Erkunden."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997253
+    m_Localized: 'Erkunde einen Ort mit einer Station (Systemkarte: Esc, Ort anklicken, Erkunden).'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997254
+    m_Localized: "Eine Station. Sehen wir sie uns an. W\xE4hle links in der Staffelliste die Shuttles aus und starte sie mit L. Dann Rechtsklick auf die Station: Der erste Befehl scannt sie, der n\xE4chste dockt an."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997255
+    m_Localized: Docke ein Schiff an der Station an.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997256
+    m_Localized: "Wir haben angedockt. Klick auf die Station, um ihr Fenster zu \xF6ffnen. Eine verlassene Station kann man durchsuchen; wenn jemand an Bord ist, ruf ihn lieber an."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997257
+    m_Localized: Durchsuche die Station oder ruf sie an (Stationsfenster).
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997258
+    m_Localized: "Jetzt Rohstoffe. Die Sammelschiffe sitzen in der Raffinerie. W\xE4hle sie aus, starte sie mit L und klick mit rechts auf einen Asteroiden. Ab dann bauen sie von selbst ab und liefern ab."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997259
+    m_Localized: Schick Sammelschiffe zum Abbau.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997260
+    m_Localized: Gut. Sobald die erste Ladung abgeliefert ist, siehst du sie oben in der Vorratsleiste.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997261
+    m_Localized: Liefere die erste Ladung ab.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997262
+    m_Localized: "Kontakt am Sprungpunkt! Pronin-J\xE4ger, sie sind uns gefolgt! Wir haben keine Waffen. Hol die kleinen Schiffe in die Hangars: H ruft die ausgew\xE4hlten zur\xFCck, Strg+H alle."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997263
+    m_Localized: "Ruf die kleinen Schiffe in ihre Hangars zur\xFCck."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997264
+    m_Localized: "Hier Admiral Voss, Kreuzer. Wir haben euren Ruf geh\xF6rt und sind euch nachgesprungen. Meine J\xE4ger geh\xF6ren dir: W\xE4hle sie in der Staffelliste aus und starte sie mit L."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997265
+    m_Localized: "Starte die J\xE4ger des Kreuzers."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997266
+    m_Localized: "Rechtsklick auf einen Feind greift ihn an. J\xE4ger ohne Befehl schie\xDFen auch von selbst auf alles in Reichweite."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997267
+    m_Localized: "Zerst\xF6re die Pronin-J\xE4ger."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997268
+    m_Localized: "Das war nur ein Sp\xE4htrupp; es kommen mehr. Wir schlie\xDFen uns euch an. Holt alle kleinen Schiffe heim, denn was nicht im Hangar ist, bleibt zur\xFCck. Dann \xF6ffne von der Systemkarte aus mit Esc die Sternenkarte und doppelklicke ein System in Reichweite, um den Sprungantrieb aufzuladen."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997269
+    m_Localized: Spring mit der Flotte in ein anderes System.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997270
+    m_Localized: "Wir sind durch. Ab jetzt l\xE4uft die Uhr: Die Pronin finden uns in jedem System. Sammle, was du kannst, und spring rechtzeitig."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997271
+    m_Localized: "{count} Pronin-J\xE4ger sind am Sprungpunkt eingesprungen."
+    m_Metadata:
+      m_Items:
+      - rid: 5599359018023780436
+  - m_Id: 855191552
+    m_Localized: "Der Sprungantrieb ist noch nicht bereit. Schlie\xDF erst den Prolog ab oder beende ihn."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 855191553
+    m_Localized: Prolog
+    m_Metadata:
+      m_Items: []
+  - m_Id: 855191554
+    m_Localized: Schritt {step} von {count}
+    m_Metadata:
+      m_Items:
+      - rid: 5599359018023780436
+  - m_Id: 855191555
+    m_Localized: "Schritt \xFCberspringen"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 855191556
+    m_Localized: Prolog beenden
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 5599359018023780436
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 
+        m_SharedEntries:
+        - id: 850997271
+        - id: 855191554

@@ -1,0 +1,26 @@
+{
+    "name": "LastFleet.Tutorial",
+    "rootNamespace": "LastFleet.Tutorial",
+    "references": [
+        "LastFleet.Shared",
+        "LastFleet.Localization",
+        "LastFleet.Dialogue",
+        "LastFleet.StarSystem",
+        "LastFleet.Zones",
+        "LastFleet.Ships",
+        "LastFleet.Combat",
+        "LastFleet.Mining",
+        "LastFleet.Stations",
+        "LastFleet.ShipControl",
+        "LastFleet.Space"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

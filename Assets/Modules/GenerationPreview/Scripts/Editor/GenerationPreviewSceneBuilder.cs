@@ -28,6 +28,7 @@ using LastFleet.Ships.Editor;
 using LastFleet.Space;
 using LastFleet.Space.Editor;
 using LastFleet.StarSystem;
+using LastFleet.Tutorial;
 using LastFleet.Zones;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -252,6 +253,14 @@ namespace LastFleet.GenerationPreview.Editor
             RunEndWindow runEndWindow = questObject.AddComponent<RunEndWindow>();
             EditorAssetUtility.SetReferences(runEndWindow, ("_shipInput", shipInput));
 
+            GameObject prologueObject = new GameObject("Prologue");
+            PrologueDirector prologue = prologueObject.AddComponent<PrologueDirector>();
+            EditorAssetUtility.SetReferences(prologue, ("_dialogue", dialogue), ("_fleet", shipRegistry), ("_pronin", proninRegistry),
+                ("_zoneWorld", zoneWorld), ("_search", search), ("_mining", mining),
+                ("_proninFighterPrefab", CombatShipPrefabBuilder.LoadOrCreateProninFighter()));
+            PrologueObjectivePanel prologuePanel = prologueObject.AddComponent<PrologueObjectivePanel>();
+            EditorAssetUtility.SetReferences(prologuePanel, ("_prologue", prologue), ("_shipInput", shipInput));
+
             GameObject previewObject = new GameObject("Generation Preview");
             GenerationPreviewController preview = previewObject.AddComponent<GenerationPreviewController>();
             EditorAssetUtility.SetReferences(preview,
@@ -259,7 +268,7 @@ namespace LastFleet.GenerationPreview.Editor
                 ("_environment", environment), ("_cameraRig", cameraRig), ("_shipRegistry", shipRegistry),
                 ("_shipInput", shipInput), ("_groupInput", groupInput), ("_hangarInput", hangarInput), ("_mining", mining),
                 ("_scouting", scouting), ("_population", population), ("_docking", docking), ("_search", search), ("_rewards", rewards), ("_combat", combat), ("_pursuit", pursuit), ("_lateSignals", lateSignals), ("_proninAttack", proninAttack), ("_fleetJump", fleetJump), ("_jumpDialog", jumpDialog), ("_jumpStatus", jumpStatus), ("_inspection", inspection), ("_shipPanel", shipPanel), ("_quests", quests),
-                ("_runEndWindow", runEndWindow), ("_water", water), ("_evacuation", evacuation), ("_requests", requests), ("_repairs", repairs), ("_strandedShips", strandedShips), ("_hulkBodies", hulkBodies), ("_emp", emp), ("_empTargeting", empTargeting), ("_fuelReturn", fuelReturn), ("_fleetModules", fleetModules),
+                ("_runEndWindow", runEndWindow), ("_water", water), ("_evacuation", evacuation), ("_requests", requests), ("_repairs", repairs), ("_strandedShips", strandedShips), ("_hulkBodies", hulkBodies), ("_emp", emp), ("_empTargeting", empTargeting), ("_fuelReturn", fuelReturn), ("_fleetModules", fleetModules), ("_prologue", prologue),
                 ("_cruiserPrefab", CombatShipPrefabBuilder.LoadOrCreateCruiser()),
                 ("_fighterPrefab", CombatShipPrefabBuilder.LoadOrCreateFighter()),
                 ("_refineryPrefab", ShipPrefabBuilder.LoadOrCreateRefinery()),

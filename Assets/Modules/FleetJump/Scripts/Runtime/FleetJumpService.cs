@@ -23,6 +23,7 @@ namespace LastFleet.FleetJump
         readonly List<ShipAgent> _jumpers = new List<ShipAgent>();
         GalaxyLayout _galaxy;
         FleetJumpDrive _drive;
+        GameText _holdReason;
 
         /// <summary>The drive, or null before the fleet arrived anywhere.</summary>
         public FleetJumpDrive Drive => _galaxy != null ? _drive : null;
@@ -66,6 +67,24 @@ namespace LastFleet.FleetJump
             CurrentSystemIndex = systemIndex;
             _drive.StartCooldown();
             HoldLaunches(false);
+        }
+
+        /// <summary>
+        /// Keeps the drive from charging and gives the reason, e.g. during the prologue; null lifts the hold.
+        /// A new arrival does not lift it.
+        /// </summary>
+        public void SetHold(GameText reason)
+        {
+            _holdReason = reason;
+        }
+
+        /// <summary>Ends a running cooldown at once, e.g. when the prologue lets the fleet jump.</summary>
+        public void FinishCooldown()
+        {
+            if (Drive != null && _drive.State == FleetJumpState.CoolingDown)
+            {
+                Advance(_drive.CooldownRemainingSeconds);
+            }
         }
 
         public bool IsInRange(int systemIndex)
@@ -133,6 +152,10 @@ namespace LastFleet.FleetJump
             if (Drive == null)
             {
                 return FleetJumpTexts.JumpFailed;
+            }
+            if (_holdReason != null)
+            {
+                return _holdReason;
             }
             if (!IsInRange(targetSystemIndex))
             {

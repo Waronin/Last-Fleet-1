@@ -1,0 +1,157 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Tutorial_en
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: 0895a644807b8ed47b7c5d92a41a8a76, type: 2}
+  m_Metadata:
+    m_Items:
+    - rid: 5599359018023780437
+  m_TableData:
+  - m_Id: 813248512
+    m_Localized: Captain Ellis, liner
+    m_Metadata:
+      m_Items: []
+  - m_Id: 842608640
+    m_Localized: Admiral Voss, cruiser
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997248
+    m_Localized: Ellis on the liner. We made it out, but it is only us civilians, without a single warship. Shall I walk you through the fleet before we move on?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997249
+    m_Localized: Play the prologue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997250
+    m_Localized: Skip the prologue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997251
+    m_Localized: Admiral Voss here. My cruiser and its fighters have joined you. From now on the Pronin are on our heels; do not stay anywhere too long.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997252
+    m_Localized: We need supplies before we go anywhere. Press Esc for the system map. Click a place to see what we know about it, and send a ship to explore it from there.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997253
+    m_Localized: 'Explore a place with a station (system map: Esc, click a place, Explore).'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997254
+    m_Localized: 'A station. Let us have a look. Select the shuttles in the squad list on the left and launch them with L. Then right-click the station: the first order scans it, the next one docks.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997255
+    m_Localized: Dock a ship at the station.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997256
+    m_Localized: We are docked. Click the station to open its window. An abandoned station can be searched; people aboard would rather be hailed.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997257
+    m_Localized: Search the station or hail it (station window).
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997258
+    m_Localized: Now raw materials. The harvesters sit in the refinery. Select them, launch them with L and right-click an asteroid. They mine and deliver on their own from then on.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997259
+    m_Localized: Send harvesters to mine.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997260
+    m_Localized: Good. Once the first load is delivered, you will see it in the supply bar at the top.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997261
+    m_Localized: Deliver the first load.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997262
+    m_Localized: 'Contact at the jump point! Pronin fighters, they followed us! We have no weapons. Bring the small ships into the hangars: H recalls the selected ships, Ctrl+H all of them.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997263
+    m_Localized: Recall the small ships to their hangars.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997264
+    m_Localized: 'Admiral Voss, cruiser. We heard your call and jumped after you. My fighters are yours: select them in the squad list and launch them with L.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997265
+    m_Localized: Launch the cruiser's fighters.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997266
+    m_Localized: Right-click an enemy to attack it. Fighters without orders also fire at anything in range.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997267
+    m_Localized: Destroy the Pronin fighters.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997268
+    m_Localized: That was only a scouting party; more will come. We are joining you. Bring every small ship home, since whatever is outside a hangar stays behind. Then open the star map from the system map with Esc and double-click a system in range to charge the jump drive.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997269
+    m_Localized: Jump with the fleet to another system.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997270
+    m_Localized: 'We are through. From here on the clock is running: the Pronin will find us in every system. Gather what you can and jump in time.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850997271
+    m_Localized: '{count} Pronin fighters jumped in at the jump point.'
+    m_Metadata:
+      m_Items:
+      - rid: 5599359018023780437
+  - m_Id: 855191552
+    m_Localized: The jump drive is not ready yet. Finish the prologue first, or end it.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 855191553
+    m_Localized: Prologue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 855191554
+    m_Localized: Step {step} of {count}
+    m_Metadata:
+      m_Items:
+      - rid: 5599359018023780437
+  - m_Id: 855191555
+    m_Localized: Skip step
+    m_Metadata:
+      m_Items: []
+  - m_Id: 855191556
+    m_Localized: End prologue
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 5599359018023780437
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 
+        m_SharedEntries:
+        - id: 850997271
+        - id: 855191554

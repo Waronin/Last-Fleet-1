@@ -26,6 +26,7 @@ using LastFleet.Stations;
 using LastFleet.StrandedShips;
 using LastFleet.Space;
 using LastFleet.StarSystem;
+using LastFleet.Tutorial;
 using LastFleet.Zones;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -52,7 +53,8 @@ namespace LastFleet.GenerationPreview
     /// Zone: ship control via ShipCommandInput, Tab / Shift+Tab cycles revealed zones, F follows the
     /// selected ship, X extracts half of the nearest deposit, Esc opens the system map.
     /// Every arrival in a system starts the pursuit countdown and the jump drive's cooldown; T skips
-    /// both ahead by a minute.
+    /// both ahead by a minute. With a prologue director, each run first offers the prologue: until it is
+    /// skipped or ends with the first jump, the fleet has no military, countdown, quests or jump.
     /// </summary>
     public sealed class GenerationPreviewController : MonoBehaviour
     {
@@ -125,6 +127,8 @@ namespace LastFleet.GenerationPreview
         [SerializeField] FuelReturnService _fuelReturn;
         [Tooltip("Optional. Fleet modules; their notices go into the notice feed.")]
         [SerializeField] FleetModuleService _fleetModules;
+        [Tooltip("Optional. Offers the prologue at the start of a run; without it every run starts with the whole fleet and the countdown.")]
+        [SerializeField] PrologueDirector _prologue;
         [Tooltip("Spawned on arrival in a system until fleet jumps carry the fleet along.")]
         [SerializeField] ShipAgent _refineryPrefab;
         [SerializeField] ShipAgent _tankerPrefab;
@@ -144,6 +148,9 @@ namespace LastFleet.GenerationPreview
         float _lastClickTime = float.NegativeInfinity;
         int _lastClickedIndex = -1;
         ZoneView _lastZone;
+        // False while the prologue is offered or played: no countdown, no late signals, no quests yet.
+        bool _isGameLoopRunning;
+        bool _hasMilitaryJoined;
 
         public GenerationPreviewMode Mode { get; private set; }
         public int GalaxySeed => _galaxySeed;
@@ -225,6 +232,13 @@ namespace LastFleet.GenerationPreview
             if (_fleetModules != null)
             {
                 _fleetModules.Notice += ShowNotice;
+            }
+            if (_prologue != null)
+            {
+                _prologue.Notice += ShowNotice;
+                _prologue.Skipped += StartGameLoopHere;
+                _prologue.MilitaryRequested += BringInMilitary;
+                _prologue.JumpCleared += ClearJumpAfterPrologue;
             }
             _docking.Notice += ShowNotice;
             _search.Notice += ShowNotice;
@@ -308,6 +322,13 @@ namespace LastFleet.GenerationPreview
             if (_fleetModules != null)
             {
                 _fleetModules.Notice -= ShowNotice;
+            }
+            if (_prologue != null)
+            {
+                _prologue.Notice -= ShowNotice;
+                _prologue.Skipped -= StartGameLoopHere;
+                _prologue.MilitaryRequested -= BringInMilitary;
+                _prologue.JumpCleared -= ClearJumpAfterPrologue;
             }
             _docking.Notice -= ShowNotice;
             _search.Notice -= ShowNotice;
@@ -643,11 +664,57 @@ namespace LastFleet.GenerationPreview
             _jumpDialog.Close();
             GalaxyLayout galaxy = GalaxyGenerator.Generate((ulong)_galaxySeed, _galaxySettings);
             _galaxyMapView.Show(galaxy);
+
+            // With a prologue on offer the fleet starts without the military, countdown, quests and jumps;
+            // the prologue's answer or end starts the game loop.
+            bool offersPrologue = _prologue != null;
+            if (offersPrologue)
+            {
+                _prologue.Cancel();
+            }
+            _isGameLoopRunning = !offersPrologue;
+            _hasMilitaryJoined = false;
+            _pursuit.Stop();
+            _fleetJump.SetHold(offersPrologue ? PrologueTexts.JumpHeld : null);
+
             // Before the arrival, so the first quest step is in place when the start system is entered.
-            _quests.BeginRun(galaxy, _runZones, new[] { MeltdownQuest.Create() });
+            _quests.BeginRun(galaxy, _runZones, offersPrologue ? System.Array.Empty<QuestChainDefinition>() : OpeningChains());
             EnterStarSystem(galaxy.StartSystemIndex, null);
             ShowNotice(GameText.Verbatim($"New run with galaxy seed {_galaxySeed}; arrived at the jump point."));
             RunStarted?.Invoke();
+            if (offersPrologue)
+            {
+                _prologue.Offer();
+            }
+        }
+
+        static QuestChainDefinition[] OpeningChains()
+        {
+            return new[] { MeltdownQuest.Create() };
+        }
+
+        /// <summary>The prologue was skipped or ended early: the military joins and the game loop starts in this system.</summary>
+        void StartGameLoopHere()
+        {
+            if (_isGameLoopRunning)
+            {
+                return;
+            }
+            _isGameLoopRunning = true;
+            _fleetJump.SetHold(null);
+            BringInMilitary();
+            _quests.StartChains(OpeningChains(), CurrentSystem.SystemIndex);
+            _quests.SystemEntered(CurrentSystem);
+            RefreshQuestMarkers();
+            _pursuit.Begin();
+            _lateSignals.Listen(CurrentSystem);
+        }
+
+        /// <summary>The prologue's last step: the fleet may jump at once.</summary>
+        void ClearJumpAfterPrologue()
+        {
+            _fleetJump.SetHold(null);
+            _fleetJump.FinishCooldown();
         }
 
         void ShowGalaxyMap()
@@ -723,6 +790,12 @@ namespace LastFleet.GenerationPreview
 
         void OnFleetJumped(int systemIndex, IReadOnlyList<ShipAgent> jumpers)
         {
+            // The prologue ends with the first jump; the game loop and the quests start in the target system.
+            if (_prologue != null && _prologue.CompleteOnFleetJump())
+            {
+                _isGameLoopRunning = true;
+                _quests.StartChains(OpeningChains(), systemIndex);
+            }
             EnterStarSystem(systemIndex, jumpers);
         }
 
@@ -767,7 +840,11 @@ namespace LastFleet.GenerationPreview
 
             if (arrivingShips == null)
             {
-                SpawnStartingFleet(arrival);
+                SpawnCivilianFleet(arrival);
+                if (_isGameLoopRunning)
+                {
+                    BringInMilitary();
+                }
             }
             else
             {
@@ -778,21 +855,43 @@ namespace LastFleet.GenerationPreview
             ShowNotice(GenerationPreviewTexts.ArrivedInSystem.Format(("system", system.Layout.Name), ("known", system.RevealedCount)));
 
             // Every arrival starts a new countdown and the jump drive's cooldown, also on a return to a visited system.
-            _pursuit.Begin();
-            _lateSignals.Listen(system);
+            // During the prologue there is no countdown and nothing comes in late.
+            if (_isGameLoopRunning)
+            {
+                _pursuit.Begin();
+                _lateSignals.Listen(system);
+            }
             _fleetJump.ArrivedIn(Galaxy, systemIndex);
         }
 
         /// <summary>
-        /// The run's starting fleet: a liner with a shuttle squad, a refinery with two harvester squads,
-        /// a tanker and a cruiser with two fighter squads in their hangars.
+        /// The military part of the starting fleet: a cruiser with two fighter squads in its hangar, at the
+        /// jump point of the current system. With the prologue it jumps in during the raid.
         /// </summary>
-        void SpawnStartingFleet(ZoneView arrival)
+        void BringInMilitary()
         {
+            if (_hasMilitaryJoined)
+            {
+                return;
+            }
+            if (CurrentSystem == null || !_zoneWorld.TryGetView(CurrentSystem.Layout.ArrivalPointOfInterestIndex, out ZoneView arrival))
+            {
+                Debug.LogError("The military found no jump point zone to arrive in.", this);
+                return;
+            }
+            _hasMilitaryJoined = true;
             ShipAgent cruiser = _shipRegistry.Spawn(_cruiserPrefab, arrival, CruiserArrivalPosition, 0f);
             Hangar fighterHangar = cruiser.GetComponent<Hangar>();
             _shipRegistry.SpawnSquadDocked(_fighterPrefab, fighterHangar, FightersPerSquad);
             _shipRegistry.SpawnSquadDocked(_fighterPrefab, fighterHangar, FightersPerSquad);
+        }
+
+        /// <summary>
+        /// The civilian part of the starting fleet: a liner with a shuttle squad, a refinery with two
+        /// harvester squads and a tanker.
+        /// </summary>
+        void SpawnCivilianFleet(ZoneView arrival)
+        {
             ShipAgent liner = _shipRegistry.Spawn(_linerPrefab, arrival, LinerArrivalPosition, 0f);
             _shipRegistry.SpawnSquadDocked(_shuttlePrefab, liner.GetComponent<Hangar>(), ShuttlesPerSquad);
             ShipAgent refinery = _shipRegistry.Spawn(_refineryPrefab, arrival, RefineryArrivalPosition, 0f);
