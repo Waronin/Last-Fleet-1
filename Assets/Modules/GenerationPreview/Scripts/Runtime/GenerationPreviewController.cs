@@ -113,6 +113,8 @@ namespace LastFleet.GenerationPreview
         [SerializeField] RepairService _repairs;
         [Tooltip("Optional. Lets the player repair stranded ships and take them into the fleet.")]
         [SerializeField] StrandedShipRecovery _strandedShips;
+        [Tooltip("Optional. Stranded hulks under Pronin fire; its notices go into the notice feed.")]
+        [SerializeField] StrandedHulkBodies _hulkBodies;
         [Tooltip("Optional. EMP missiles of the warships: firing, building and their notices.")]
         [SerializeField] EmpService _emp;
         [SerializeField] EmpTargetingInput _empTargeting;
@@ -202,6 +204,10 @@ namespace LastFleet.GenerationPreview
             {
                 _strandedShips.Notice += ShowNotice;
             }
+            if (_hulkBodies != null)
+            {
+                _hulkBodies.Notice += ShowNotice;
+            }
             if (_emp != null && _empTargeting != null)
             {
                 _emp.Notice += ShowNotice;
@@ -274,6 +280,10 @@ namespace LastFleet.GenerationPreview
             if (_strandedShips != null)
             {
                 _strandedShips.Notice -= ShowNotice;
+            }
+            if (_hulkBodies != null)
+            {
+                _hulkBodies.Notice -= ShowNotice;
             }
             if (_emp != null && _empTargeting != null)
             {

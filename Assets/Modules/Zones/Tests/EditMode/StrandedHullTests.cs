@@ -18,6 +18,19 @@ namespace LastFleet.Zones.Tests
         }
 
         [Test]
+        public void Damage_UndoesRepairs_AndBreaksTheHullAtZero()
+        {
+            StrandedHull hull = new StrandedHull(StrandedShipClass.Refinery, 0.4f);
+            hull.Repair(0.3f);
+
+            Assert.IsFalse(hull.TakeDamage(0.5f));
+            Assert.AreEqual(0.2f, hull.Fraction, 1e-5f);
+            Assert.IsTrue(hull.TakeDamage(0.5f));
+            Assert.AreEqual(0f, hull.Fraction);
+            Assert.IsTrue(hull.IsBroken);
+        }
+
+        [Test]
         public void OnlyAWholeHull_CanBeRecovered_AndRecoveryEndsTheOrder()
         {
             StrandedHull hull = new StrandedHull(StrandedShipClass.Liner, 0.5f);

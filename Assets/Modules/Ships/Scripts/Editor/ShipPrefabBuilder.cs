@@ -438,7 +438,7 @@ namespace LastFleet.Ships.Editor
             EditorAssetUtility.FindProperty(profile, "_jumpChargeSeconds").floatValue = 15f;
         }
 
-        static ShipMovementProfile LoadOrCreateIndustrialProfile()
+        internal static ShipMovementProfile LoadOrCreateIndustrialProfile()
         {
             return LoadOrCreateProfile(IndustrialMovementProfileName, ConfigureIndustrialMovement);
         }

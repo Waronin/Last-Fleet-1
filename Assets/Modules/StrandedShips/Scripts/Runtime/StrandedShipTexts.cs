@@ -36,5 +36,8 @@ namespace LastFleet.StrandedShips
 
         /// <summary>{station}</summary>
         public static readonly GameTextKey OutOfMetal = new GameTextKey(Table, "notice.no-metal");
+
+        /// <summary>{station}, {count} survivors who died, {cause}</summary>
+        public static readonly GameTextKey HulkDestroyed = new GameTextKey(Table, "notice.destroyed");
     }
 }

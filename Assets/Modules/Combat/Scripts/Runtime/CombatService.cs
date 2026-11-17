@@ -8,44 +8,68 @@ using UnityEngine;
 namespace LastFleet.Combat
 {
     /// <summary>
-    /// Scene-wide combat services between the player's fleet and the Pronin: finds enemies for
-    /// weapons and hunters, resolves hits through shields into hull damage and carries out attack
-    /// orders. It is the only place that knows both sides' registries.
+    /// Scene-wide combat services between all sides: finds enemies for weapons and hunters, resolves
+    /// hits through shields into hull damage and carries out attack orders. It is the only place that
+    /// knows every side's registry; who is an enemy of whom comes from <see cref="FactionRelations"/>.
     /// </summary>
     public sealed class CombatService : MonoBehaviour
     {
         [SerializeField] ShipRegistry _fleet;
-        [SerializeField] ShipRegistry _pronin;
+        [Tooltip("Every other side, e.g. the Pronin and stranded ships; one registry per side.")]
+        [SerializeField] ShipRegistry[] _otherSides = new ShipRegistry[0];
         [Tooltip("Optional. Rocks, stations and capital ships give cover against weapon fire.")]
         [SerializeField] ObstacleField _obstacles;
 
         readonly List<FighterCombat> _escorts = new List<FighterCombat>();
         readonly List<ShipAgent> _candidates = new List<ShipAgent>();
+        readonly List<ShipRegistry> _sides = new List<ShipRegistry>();
 
         /// <summary>Short feedback for the player, e.g. when an enemy is shot down.</summary>
         public event Action<GameText> Notice;
 
         void Awake()
         {
-            if (_fleet == null || _pronin == null || _fleet.Allegiance == _pronin.Allegiance)
+            _sides.Clear();
+            if (_fleet != null)
             {
-                Debug.LogError("CombatService needs the fleet's and the Pronin's ship registries.", this);
+                _sides.Add(_fleet);
+            }
+            foreach (ShipRegistry side in _otherSides)
+            {
+                if (side == null || _sides.Exists(known => known.Allegiance == side.Allegiance))
+                {
+                    Debug.LogError("CombatService needs one registry per side, without gaps.", this);
+                    enabled = false;
+                    return;
+                }
+                _sides.Add(side);
+            }
+            if (_fleet == null || _sides.Count < 2)
+            {
+                Debug.LogError("CombatService needs the fleet's registry and at least one other side.", this);
                 enabled = false;
             }
         }
 
         void OnEnable()
         {
-            Subscribe(_fleet);
-            Subscribe(_pronin);
-            _pronin.ShipLost += OnEnemyLost;
+            foreach (ShipRegistry side in _sides)
+            {
+                Subscribe(side);
+                if (FactionRelations.AreHostile(_fleet.Allegiance, side.Allegiance))
+                {
+                    side.ShipLost += OnEnemyLost;
+                }
+            }
         }
 
         void OnDisable()
         {
-            Unsubscribe(_fleet);
-            Unsubscribe(_pronin);
-            _pronin.ShipLost -= OnEnemyLost;
+            foreach (ShipRegistry side in _sides)
+            {
+                Unsubscribe(side);
+                side.ShipLost -= OnEnemyLost;
+            }
         }
 
         /// <summary>Distance on the zone plane between two ships; docked ships sit at their carrier's bay.</summary>
@@ -59,12 +83,13 @@ namespace LastFleet.Combat
         public static bool IsHostileInZone(ShipAgent ship, ShipAgent other)
         {
             // Unity's overloaded equality treats a destroyed ship as null.
-            return other != null && !other.IsDocked && other.Allegiance != ship.Allegiance && other.Zone == ship.Zone;
+            return other != null && !other.IsDocked && FactionRelations.AreHostile(ship.Allegiance, other.Allegiance) && other.Zone == ship.Zone;
         }
 
-        public ShipRegistry OpponentsOf(ShipAgent ship)
+        /// <summary>Whether the side's ships are enemies of the ship; searches loop over every side and skip the others.</summary>
+        static bool IsHostileSide(ShipAgent ship, ShipRegistry side)
         {
-            return ship.Allegiance == _fleet.Allegiance ? _pronin : _fleet;
+            return FactionRelations.AreHostile(ship.Allegiance, side.Allegiance);
         }
 
         /// <summary>
@@ -87,18 +112,25 @@ namespace LastFleet.Combat
         {
             ShipAgent nearest = null;
             float bestDistanceSquared = maximumDistanceUnits * maximumDistanceUnits;
-            foreach (ShipAgent candidate in OpponentsOf(ship).Ships)
+            foreach (ShipRegistry side in _sides)
             {
-                if (!IsHostileInZone(ship, candidate))
+                if (!IsHostileSide(ship, side))
                 {
                     continue;
                 }
-                Vector3 offset = candidate.WorldPosition - worldPoint;
-                float distanceSquared = offset.x * offset.x + offset.z * offset.z;
-                if (distanceSquared <= bestDistanceSquared)
+                foreach (ShipAgent candidate in side.Ships)
                 {
-                    bestDistanceSquared = distanceSquared;
-                    nearest = candidate;
+                    if (!IsHostileInZone(ship, candidate))
+                    {
+                        continue;
+                    }
+                    Vector3 offset = candidate.WorldPosition - worldPoint;
+                    float distanceSquared = offset.x * offset.x + offset.z * offset.z;
+                    if (distanceSquared <= bestDistanceSquared)
+                    {
+                        bestDistanceSquared = distanceSquared;
+                        nearest = candidate;
+                    }
                 }
             }
             return nearest;
@@ -112,21 +144,28 @@ namespace LastFleet.Combat
         {
             ShipAgent nearest = null;
             float bestDistance = maximumDistanceUnits;
-            foreach (ShipAgent candidate in OpponentsOf(ship).Ships)
+            foreach (ShipRegistry side in _sides)
             {
-                if (!IsHostileInZone(ship, candidate))
+                if (!IsHostileSide(ship, side))
                 {
                     continue;
                 }
-                Vector3 offset = candidate.WorldPosition - ship.WorldPosition;
-                float distance = PlanarDistance(ship, candidate);
-                if (distance > bestDistance || !WeaponSettings.IsInArc(forward, new Vector2(offset.x, offset.z), arcDegrees) ||
-                    !HasLineOfFire(ship, candidate))
+                foreach (ShipAgent candidate in side.Ships)
                 {
-                    continue;
+                    if (!IsHostileInZone(ship, candidate))
+                    {
+                        continue;
+                    }
+                    Vector3 offset = candidate.WorldPosition - ship.WorldPosition;
+                    float distance = PlanarDistance(ship, candidate);
+                    if (distance > bestDistance || !WeaponSettings.IsInArc(forward, new Vector2(offset.x, offset.z), arcDegrees) ||
+                        !HasLineOfFire(ship, candidate))
+                    {
+                        continue;
+                    }
+                    bestDistance = distance;
+                    nearest = candidate;
                 }
-                bestDistance = distance;
-                nearest = candidate;
             }
             return nearest;
         }
@@ -136,22 +175,30 @@ namespace LastFleet.Combat
         {
             ShipAgent best = null;
             float bestCost = float.PositiveInfinity;
-            IReadOnlyList<ShipAgent> prey = OpponentsOf(hunter).Ships;
-            foreach (ShipAgent candidate in prey)
+            foreach (ShipRegistry side in _sides)
             {
-                if (candidate.IsDocked || candidate.Zone == null)
+                if (!IsHostileSide(hunter, side))
                 {
                     continue;
                 }
-
-                ZoneView zone = candidate.Zone;
-                Vector3 local = zone.transform.InverseTransformPoint(candidate.WorldPosition);
-                float travel = ShipAvailability.TravelCost(hunter, zone.Record.PointOfInterestIndex, zone.Record.PointOfInterest.PositionAU, local);
-                float cost = HuntingRules.Cost(candidate.IsCapital, CountEscorts(candidate, prey), travel);
-                if (cost < bestCost)
+                // Escorts are ships of the prey's own side.
+                IReadOnlyList<ShipAgent> prey = side.Ships;
+                foreach (ShipAgent candidate in prey)
                 {
-                    bestCost = cost;
-                    best = candidate;
+                    if (candidate.IsDocked || candidate.Zone == null)
+                    {
+                        continue;
+                    }
+
+                    ZoneView zone = candidate.Zone;
+                    Vector3 local = zone.transform.InverseTransformPoint(candidate.WorldPosition);
+                    float travel = ShipAvailability.TravelCost(hunter, zone.Record.PointOfInterestIndex, zone.Record.PointOfInterest.PositionAU, local);
+                    float cost = HuntingRules.Cost(candidate.IsCapital, CountEscorts(candidate, prey), travel);
+                    if (cost < bestCost)
+                    {
+                        bestCost = cost;
+                        best = candidate;
+                    }
                 }
             }
             return best;
@@ -161,11 +208,18 @@ namespace LastFleet.Combat
         public ShipAgent FindRandomHuntTarget(ShipAgent hunter)
         {
             _candidates.Clear();
-            foreach (ShipAgent candidate in OpponentsOf(hunter).Ships)
+            foreach (ShipRegistry side in _sides)
             {
-                if (!candidate.IsDocked && candidate.Zone != null)
+                if (!IsHostileSide(hunter, side))
                 {
-                    _candidates.Add(candidate);
+                    continue;
+                }
+                foreach (ShipAgent candidate in side.Ships)
+                {
+                    if (!candidate.IsDocked && candidate.Zone != null)
+                    {
+                        _candidates.Add(candidate);
+                    }
                 }
             }
             return _candidates.Count > 0 ? _candidates[UnityEngine.Random.Range(0, _candidates.Count)] : null;
@@ -186,23 +240,30 @@ namespace LastFleet.Combat
             }
         }
 
-        /// <summary>The enemy ship nearest to a screen point within the radius in the zone, or false.</summary>
+        /// <summary>The ship of a side hostile to the fleet nearest to a screen point within the radius in the zone, or false.</summary>
         public bool TryPickHostile(ZoneView zone, Camera camera, Vector2 pointer, float radiusPixels, out ShipAgent hostile)
         {
             hostile = null;
             float bestDistanceSquared = radiusPixels * radiusPixels;
-            foreach (ShipAgent ship in _pronin.Ships)
+            foreach (ShipRegistry side in _sides)
             {
-                if (ship.IsDocked || ship.Zone != zone)
+                if (!FactionRelations.AreHostile(_fleet.Allegiance, side.Allegiance))
                 {
                     continue;
                 }
-                Vector3 screen = camera.WorldToScreenPoint(ship.transform.position);
-                float distanceSquared = (new Vector2(screen.x, screen.y) - pointer).sqrMagnitude;
-                if (screen.z > 0f && distanceSquared < bestDistanceSquared)
+                foreach (ShipAgent ship in side.Ships)
                 {
-                    bestDistanceSquared = distanceSquared;
-                    hostile = ship;
+                    if (ship.IsDocked || ship.Zone != zone)
+                    {
+                        continue;
+                    }
+                    Vector3 screen = camera.WorldToScreenPoint(ship.transform.position);
+                    float distanceSquared = (new Vector2(screen.x, screen.y) - pointer).sqrMagnitude;
+                    if (screen.z > 0f && distanceSquared < bestDistanceSquared)
+                    {
+                        bestDistanceSquared = distanceSquared;
+                        hostile = ship;
+                    }
                 }
             }
             return hostile != null;
@@ -285,7 +346,14 @@ namespace LastFleet.Combat
 
         ShipRegistry RegistryOf(ShipAgent ship)
         {
-            return ship.Allegiance == _fleet.Allegiance ? _fleet : _pronin;
+            foreach (ShipRegistry side in _sides)
+            {
+                if (side.Allegiance == ship.Allegiance)
+                {
+                    return side;
+                }
+            }
+            throw new InvalidOperationException($"No registry for the side {ship.Allegiance} of {ship.name}.");
         }
 
         static int CountEscorts(ShipAgent ship, IReadOnlyList<ShipAgent> side)

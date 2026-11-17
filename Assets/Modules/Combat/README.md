@@ -9,7 +9,7 @@ GDD references: *Kampf*, *Kleine Schiffe*, *Kapitalschiffe*, *Der Feind*, *Resso
 
 | Piece | Where | Role |
 | --- | --- | --- |
-| `Allegiance` | Ships | Side of a ship (`HumanFleet`, `Pronin`), set by the registry that owns it. |
+| `Allegiance` + `FactionRelations` | Ships | Side of a ship (`HumanFleet`, `Pronin`, `Stranded`), set by the registry that owns it. `FactionRelations` says who fights whom: the Pronin fight the fleet and stranded ships, everything else is neutral. New factions (e.g. for quests) add a value and their pairs. |
 | `ShipRegistry` (one per side) | Ships | Fleet systems (mining, recall, selection, population) only see their own side. `TransferTo` moves a ship to the other side, e.g. on capture; `ShipRemoved` means "no longer ours", losses come through `ShipLost`. |
 | `ShipOrder.Intercept` + `InterceptRun` | Ships | Attack run: aim beside the target, fly past at run speed, hold course to the break-off distance, come about. Follows the target across zones. |
 | `ShipMotion.SetCourse(direction, maximumSpeed)` | Ships | Course without braking and with a speed limit; used by attack runs, station keeping and jump charging. |
@@ -17,7 +17,7 @@ GDD references: *Kampf*, *Kleine Schiffe*, *Kapitalschiffe*, *Der Feind*, *Resso
 | `ShipOrder.Follow` | Ships | Station keeping at an offset in the followed ship's frame, at its speed plus a share of the gap; across zones. |
 | Cover (`CombatService.HasLineOfFire`) | Combat | Weapons only fire with a free line of fire; obstacles between shooter and target block it (the two themselves do not). Chasing and self-defense still pick targets in cover and fly around. |
 | `EscortDuty` | Combat | Whom an escort protects: one ship or its whole squad (led by the current leader). While the lead sits in a hangar the escort waits at the carrier and picks the lead up again on launch. |
-| `CombatService` | Combat | The only place that knows both registries: finds targets, resolves hits (shield first, then hull), carries out attack orders, reports enemy losses. |
+| `CombatService` | Combat | The only place that knows every side's registry (the fleet plus `_otherSides`): finds targets on hostile sides, resolves hits (shield first, then hull), carries out attack orders, reports losses of sides hostile to the fleet. |
 | `ShipWeapons` + `WeaponSettings` + `WeaponCycle` | Combat | Range, damage, bursts, firing arc, linear hit falloff, round speed. A hit is rolled on firing and lands when the round arrives. |
 | `ShipShield` + `ShieldCharge` | Combat | Absorbs weapon hits only; recharges after a delay without hits. Hazards bypass it. |
 | `FighterCombat` | Combat | Attack runs after an order; follow-up target after a kill; self-defense when idle (`_defendWhenIdle`). Escort: keep station around the protected ships, attack enemies within the guard radius of any of them, break a chase off at the leash and return. |

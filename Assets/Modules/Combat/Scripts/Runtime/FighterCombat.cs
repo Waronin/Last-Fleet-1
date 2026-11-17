@@ -346,7 +346,7 @@ namespace LastFleet.Combat
         bool IsEnemy(ShipAgent target)
         {
             // Unity's overloaded equality treats a destroyed ship as null.
-            return target != null && target != _ship && target.Allegiance != _ship.Allegiance;
+            return target != null && target != _ship && FactionRelations.AreHostile(_ship.Allegiance, target.Allegiance);
         }
 
         void OnOrdersReplaced(ShipAgent ship)

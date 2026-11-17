@@ -62,6 +62,20 @@ namespace LastFleet.Zones
             return restored;
         }
 
+        /// <summary>Takes damage as a share of the full hull, e.g. from Pronin fire; true once nothing is left.</summary>
+        public bool TakeDamage(float fraction)
+        {
+            if (fraction < 0f)
+            {
+                throw new ArgumentOutOfRangeException(nameof(fraction), "Cannot take negative damage.");
+            }
+            Fraction = Math.Max(0f, Fraction - fraction);
+            return IsBroken;
+        }
+
+        /// <summary>Shot to pieces: there is nothing left to repair.</summary>
+        public bool IsBroken => Fraction <= 0f;
+
         public void MarkRecovered()
         {
             if (!IsWhole)

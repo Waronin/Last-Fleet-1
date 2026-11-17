@@ -51,7 +51,7 @@ namespace LastFleet.Ships
                 return false;
             }
             return ObstacleAvoidance.IsLineBlocked(PlanePosition(zone, shooter.WorldPosition), PlanePosition(zone, target.WorldPosition),
-                In(zone), shooter, target);
+                In(zone), shooter.ObstacleSource, target.ObstacleSource);
         }
 
         public static Vector2 PlanePosition(ZoneView zone, Vector3 worldPosition)

@@ -135,6 +135,10 @@ MonoBehaviour:
     m_Key: class.StationGuard
     m_Metadata:
       m_Items: []
+  - m_Id: 7296204853030912
+    m_Key: class.StrandedHulk
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

@@ -88,7 +88,7 @@ namespace LastFleet.Ships
                 SetBracketColor(_selectedBracketColor);
                 return;
             }
-            SetBracketColor(_ship.Allegiance == Allegiance.HumanFleet ? _bracketColor : _hostileBracketColor);
+            SetBracketColor(FactionRelations.AreHostile(Allegiance.HumanFleet, _ship.Allegiance) ? _hostileBracketColor : _bracketColor);
         }
 
         void LateUpdate()

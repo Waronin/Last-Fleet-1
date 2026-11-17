@@ -80,6 +80,20 @@ namespace LastFleet.Ships
         public bool IsCapital => _size == ShipSize.Capital;
         public float ObstacleRadiusUnits => _obstacleRadiusUnits;
 
+        /// <summary>
+        /// The obstacle that is this ship for line of fire: the ship itself, or what it stands in for, e.g. the
+        /// station of a stranded hulk whose hull it carries. Shots at the ship are not blocked by it.
+        /// </summary>
+        public object ObstacleSource => _standsInFor ?? this;
+
+        object _standsInFor;
+
+        /// <summary>Makes the ship stand in for another obstacle in combat, e.g. a stranded hulk's station.</summary>
+        public void StandInFor(object obstacleSource)
+        {
+            _standsInFor = obstacleSource;
+        }
+
         /// <summary>The side the ship fights for, set by the registry that owns it.</summary>
         public Allegiance Allegiance { get; private set; }
 

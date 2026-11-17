@@ -75,6 +75,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - rid: 5599359018023780424
+  - m_Id: 16760585138176
+    m_Localized: "{station} wurde zerst\xF6rt ({cause}){count:cond:>0?: {} \xDCberlebende sind an Bord gestorben|}."
+    m_Metadata:
+      m_Items:
+      - rid: 5599359018023780424
   references:
     version: 2
     RefIds:
@@ -91,3 +96,4 @@ MonoBehaviour:
         - id: 997797894
         - id: 997797895
         - id: 997797896
+        - id: 16760585138176

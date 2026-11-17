@@ -20,6 +20,9 @@ namespace LastFleet.Ships.Editor
         const string ProninFighterPrefabPath = ShipPrefabBuilder.PrefabFolder + "/ProninFighter.prefab";
         const string ProninCarrierPrefabPath = ShipPrefabBuilder.PrefabFolder + "/ProninCarrier.prefab";
         const string StationGuardPrefabPath = ShipPrefabBuilder.PrefabFolder + "/StationGuard.prefab";
+        const string StrandedHulkPrefabPath = ShipPrefabBuilder.PrefabFolder + "/StrandedHulk.prefab";
+        // Wreck spread like a liner's: hulks are 0.9 to 1.6 km long.
+        const float StrandedHulkWreckRadius = 6f;
         const string LitShaderName = ShipPrefabBuilder.LitShaderName;
         const string UnlitShaderName = ShipPrefabBuilder.UnlitShaderName;
 
@@ -83,6 +86,34 @@ namespace LastFleet.Ships.Editor
             LoadOrCreateProninFighter();
             LoadOrCreateProninCarrier();
             LoadOrCreateStationGuard();
+            AssetDatabase.DeleteAsset(StrandedHulkPrefabPath);
+            LoadOrCreateStrandedHulk();
+        }
+
+        /// <summary>
+        /// The hull of a stranded capital ship in combat, on the side of stranded ships: a capital ship without a
+        /// model, drives or weapons that never moves. The hulk's station model shows it; its hull size is set
+        /// per class when it is spawned. Destroyed, it explodes and breaks into wrecks like any capital ship.
+        /// </summary>
+        public static ShipAgent LoadOrCreateStrandedHulk()
+        {
+            GameObject existing = AssetDatabase.LoadAssetAtPath<GameObject>(StrandedHulkPrefabPath);
+            if (existing != null)
+            {
+                return existing.GetComponent<ShipAgent>();
+            }
+
+            GameObject root = new GameObject("StrandedHulk");
+            ShipAgent agent = root.AddComponent<ShipAgent>();
+            // Its station is the obstacle, so the hulk itself is none.
+            ShipPrefabBuilder.ConfigureAgent(agent, "StrandedHulk", ShipSize.Capital, ShipPrefabBuilder.LoadOrCreateIndustrialProfile());
+            ShipPrefabBuilder.AddDurability(root, 1000f);
+            // Every ship needs a tank; the hulk never moves, so a token one will do.
+            ShipPrefabBuilder.AddFuel(root, 1f, 1f, 1f);
+            ShipPrefabBuilder.AddCapitalWreckage(root, StrandedHulkWreckRadius);
+            CombatEffectsBuilder.AddHitFeedback(root, 0f, 0.6f);
+            CombatEffectsBuilder.AddDestruction(root, 14f);
+            return ShipPrefabBuilder.SavePrefab(root, StrandedHulkPrefabPath);
         }
 
         /// <summary>Military capital ship with a fighter hangar and defensive guns (GDD: Cruiser 1).</summary>

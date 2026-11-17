@@ -69,6 +69,17 @@ namespace LastFleet.Zones
             return boarding;
         }
 
+        /// <summary>Everyone still aboard dies, e.g. when the station or wreck is destroyed; returns how many.</summary>
+        public int PerishAll()
+        {
+            int deaths = Count;
+            Count = 0;
+            Willing = 0;
+            Died += deaths;
+            _pendingDeaths = 0f;
+            return deaths;
+        }
+
         /// <summary>
         /// People die at the given share of those aboard per minute, the willing among them first, since on a
         /// hazardous station everyone is willing. Returns how many died in this step.

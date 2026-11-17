@@ -21,6 +21,25 @@ namespace LastFleet.Ships
 
         /// <summary>The configured full hull; safe to read on a prefab, where no hull state should be created.</summary>
         public float MaximumHull => _maximumHull;
+
+        /// <summary>
+        /// Starts the hull at the given size and state instead of whole at the configured maximum, for a ship
+        /// whose hull is kept elsewhere, e.g. a stranded hulk. Only before anything used the hull.
+        /// </summary>
+        public void InitializeHull(float maximum, float current)
+        {
+            if (_hull != null)
+            {
+                throw new InvalidOperationException($"{name}'s hull is already in use.");
+            }
+            if (current <= 0f || current > maximum)
+            {
+                throw new ArgumentOutOfRangeException(nameof(current), "The hull must be between empty (exclusive) and full.");
+            }
+            _maximumHull = maximum;
+            _hull = new ShipHull(maximum);
+            _hull.TakeDamage(maximum - current);
+        }
         ShipAgent Ship => _ship != null ? _ship : _ship = GetComponent<ShipAgent>();
 
         /// <summary>Raised for every hit, with the damage and its cause.</summary>
