@@ -49,6 +49,7 @@ namespace LastFleet.StarSystem
         [SerializeField] Color _fuelMarkerColor = new Color(1f, 0.55f, 0.15f);
         [SerializeField] Color _jumpPointColor = new Color(0.5f, 1f, 0.6f);
         [SerializeField] Color _strandedShipColor = new Color(1f, 0.4f, 0.25f);
+        [SerializeField] Color _wreckFieldColor = new Color(0.55f, 0.5f, 0.45f);
         [SerializeField] Color _unexploredMarkerColor = new Color(0.45f, 0.45f, 0.5f);
         [SerializeField] Color _exploredMarkerColor = new Color(0.3f, 0.9f, 1f);
         [SerializeField] Color _selectedMarkerColor = new Color(1f, 0.85f, 0.2f);
@@ -102,6 +103,7 @@ namespace LastFleet.StarSystem
                 {
                     PointOfInterestKind.Station => CreateStation(point),
                     PointOfInterestKind.StrandedShip => CreateStrandedShip(point),
+                    PointOfInterestKind.WreckField => CreateWreckField(point),
                     _ => null
                 });
             }
@@ -284,6 +286,7 @@ namespace LastFleet.StarSystem
                 PointOfInterestKind.Moon => _moonDiameterUnits * 0.5f + MarkerMarginUnits,
                 PointOfInterestKind.Station => _stationSizeUnits * 0.5f + MarkerMarginUnits,
                 PointOfInterestKind.StrandedShip => _stationSizeUnits * 0.7f + MarkerMarginUnits,
+                PointOfInterestKind.WreckField => _stationSizeUnits * 0.9f + MarkerMarginUnits,
                 _ => BeltMarkerRadiusUnits
             };
         }
@@ -390,6 +393,28 @@ namespace LastFleet.StarSystem
             body.transform.localRotation = Quaternion.Euler(15f, 30f, 20f);
             BlockoutPrimitives.SetColor(body, _strandedShipColor, _propertyBlock);
             return body;
+        }
+
+        /// <summary>A loose cluster of grey shards: debris, not one body. The first shard carries the field.</summary>
+        Renderer CreateWreckField(PointOfInterest point)
+        {
+            Vector3 center = GetPointOfInterestLocalPosition(point);
+            Renderer field = CreateShard(point.Name, center, new Vector3(0.5f, 0.3f, 0.8f), Quaternion.Euler(20f, 10f, 35f));
+            CreateShard("Shard", center + new Vector3(0.7f, 0.2f, 0.4f) * _stationSizeUnits, new Vector3(0.3f, 0.3f, 0.5f),
+                Quaternion.Euler(-30f, 60f, 10f)).transform.SetParent(field.transform, true);
+            CreateShard("Shard", center + new Vector3(-0.6f, -0.1f, -0.5f) * _stationSizeUnits, new Vector3(0.4f, 0.25f, 0.3f),
+                Quaternion.Euler(45f, -20f, -15f)).transform.SetParent(field.transform, true);
+            return field;
+        }
+
+        Renderer CreateShard(string name, Vector3 localPosition, Vector3 size, Quaternion rotation)
+        {
+            Renderer shard = BlockoutPrimitives.CreatePrimitive(PrimitiveType.Cube, transform, _glowMaterial, name);
+            shard.transform.localPosition = localPosition;
+            shard.transform.localRotation = rotation;
+            shard.transform.localScale = size * _stationSizeUnits;
+            BlockoutPrimitives.SetColor(shard, _wreckFieldColor, _propertyBlock);
+            return shard;
         }
 
         void CreateJumpPointBeacon(PointOfInterest jumpPoint)

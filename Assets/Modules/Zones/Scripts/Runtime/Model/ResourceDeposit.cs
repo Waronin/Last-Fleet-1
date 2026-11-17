@@ -75,9 +75,9 @@ namespace LastFleet.Zones
             {
                 throw new ArgumentOutOfRangeException(nameof(amount), "Amount must be positive.");
             }
-            if (shape != DepositShape.Asteroid && hazard != DepositHazard.None)
+            if (shape == DepositShape.GasCloud && hazard != DepositHazard.None)
             {
-                throw new ArgumentException("Only asteroids have mining hazards.", nameof(hazard));
+                throw new ArgumentException("Only asteroids and wrecks have mining hazards.", nameof(hazard));
             }
 
             Shape = shape;
@@ -106,6 +106,16 @@ namespace LastFleet.Zones
                 DepositHazard.None, slotAngleOffsetDegrees);
             wreck.Scan();
             return wreck;
+        }
+
+        /// <summary>
+        /// Wreckage of an older battle drifting in a wreck field (GDD: late signals). Nobody saw it break apart, so like
+        /// a rock it needs a scan to show its amount and hazard: a leaking reactor or fuel left in its tanks.
+        /// </summary>
+        public static ResourceDeposit DriftingWreck(Vector3 localPosition, float metalAmount, float slotAngleOffsetDegrees, float radiusUnits,
+            DepositHazard hazard)
+        {
+            return new ResourceDeposit(DepositShape.Wreck, ResourceKind.Metal, localPosition, radiusUnits, metalAmount, hazard, slotAngleOffsetDegrees);
         }
 
         public DepositShape Shape { get; }

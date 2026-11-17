@@ -31,6 +31,20 @@ namespace LastFleet.Zones
         const float MinimumHulkWreckMetal = 60f;
         const float MaximumHulkWreckMetal = 140f;
         const float HulkWreckFootprintUnits = ResourceDeposit.WreckRadiusUnits + ResourceDeposit.SlotClearanceUnits;
+        // A wreck field (GDD: late signals): the remains of an old battle, more metal than anywhere else and some of it dangerous.
+        const int MinimumFieldWrecks = 8;
+        const int MaximumFieldWrecks = 14;
+        const float MinimumFieldWreckMetal = 100f;
+        const float MaximumFieldWreckMetal = 300f;
+        const float MinimumFieldWreckRadiusUnits = 1.4f;
+        const float MaximumFieldWreckRadiusUnits = 2.4f;
+        const float HazardousFieldWreckChance = 1f / 3f;
+
+        // A leaking reactor irradiates the salvage crew; fuel left in the tanks can explode.
+        static readonly (DepositHazard Value, float Weight)[] FieldWreckHazards =
+        {
+            (DepositHazard.Radioactive, 0.5f), (DepositHazard.GasPockets, 0.5f)
+        };
 
         static readonly (ResourceKind Value, float Weight)[] OreOnly = { (ResourceKind.Ore, 1f) };
         static readonly (ResourceKind Value, float Weight)[] IceOnly = { (ResourceKind.Ice, 1f) };
@@ -98,6 +112,10 @@ namespace LastFleet.Zones
                 case PointOfInterestKind.StrandedShip:
                     // Placed first like a station; pieces of its broken hull drift nearby as metal wrecks.
                     AddStrandedShip(random, placement, stations, deposits, pointOfInterest);
+                    break;
+                case PointOfInterestKind.WreckField:
+                    // The dead hull is placed first, so its footprint always fits; the wrecks drift around it.
+                    AddWreckField(random, placement, stations, deposits, pointOfInterest.Name);
                     break;
                 case PointOfInterestKind.Star:
                     break;
@@ -213,6 +231,31 @@ namespace LastFleet.Zones
             }
         }
 
+        static void AddWreckField(DeterministicRandom random, ZonePlacement placement, List<ZoneStation> stations, List<ResourceDeposit> deposits,
+            string name)
+        {
+            StationProfile profile = StationGeneration.RollProfile(random, StationType.Derelict);
+            float headingDegrees = random.AngleDegrees();
+            if (placement.TryPlace(StationTypes.FootprintRadiusUnits(StationType.Derelict), out Vector3 position))
+            {
+                position.y = 0f;
+                stations.Add(new ZoneStation($"{name} Derelict", StationType.Derelict, position, headingDegrees, profile));
+            }
+
+            int wreckCount = random.Range(MinimumFieldWrecks, MaximumFieldWrecks + 1);
+            for (int i = 0; i < wreckCount; i++)
+            {
+                float radius = random.Range(MinimumFieldWreckRadiusUnits, MaximumFieldWreckRadiusUnits);
+                float metal = Mathf.Round(random.Range(MinimumFieldWreckMetal, MaximumFieldWreckMetal));
+                DepositHazard hazard = random.Chance(HazardousFieldWreckChance) ? random.PickWeighted(FieldWreckHazards) : DepositHazard.None;
+                float angle = random.AngleDegrees();
+                if (placement.TryPlace(radius + ResourceDeposit.SlotClearanceUnits, out Vector3 wreckPosition))
+                {
+                    deposits.Add(ResourceDeposit.DriftingWreck(wreckPosition, metal, angle, radius, hazard));
+                }
+            }
+        }
+
         static ZoneBackdrop CreateBackdrop(PointOfInterest pointOfInterest, Star star)
         {
             return pointOfInterest.Kind switch
@@ -220,7 +263,7 @@ namespace LastFleet.Zones
                 PointOfInterestKind.Star => new ZoneBackdrop(ZoneBackdropKind.Star, star.Color),
                 PointOfInterestKind.Planet => new ZoneBackdrop(ZoneBackdropKind.Planet, CelestialPalette.PlanetColor(pointOfInterest.AssociatedPlanet.Kind)),
                 PointOfInterestKind.Moon => new ZoneBackdrop(ZoneBackdropKind.Moon, CelestialPalette.MoonColor),
-                PointOfInterestKind.Station or PointOfInterestKind.StrandedShip when pointOfInterest.AssociatedPlanet != null =>
+                PointOfInterestKind.Station or PointOfInterestKind.StrandedShip or PointOfInterestKind.WreckField when pointOfInterest.AssociatedPlanet != null =>
                     new ZoneBackdrop(ZoneBackdropKind.Planet, CelestialPalette.PlanetColor(pointOfInterest.AssociatedPlanet.Kind)),
                 _ => new ZoneBackdrop(ZoneBackdropKind.None, Color.black)
             };

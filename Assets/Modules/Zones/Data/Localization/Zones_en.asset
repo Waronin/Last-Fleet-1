@@ -142,6 +142,10 @@ MonoBehaviour:
     m_Localized: Stranded ship
     m_Metadata:
       m_Items: []
+  - m_Id: 7365997446639616
+    m_Localized: Derelict
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

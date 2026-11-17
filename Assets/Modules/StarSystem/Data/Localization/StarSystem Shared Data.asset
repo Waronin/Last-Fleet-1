@@ -43,6 +43,10 @@ MonoBehaviour:
     m_Key: point-of-interest.StrandedShip
     m_Metadata:
       m_Items: []
+  - m_Id: 7365995903135744
+    m_Key: point-of-interest.WreckField
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

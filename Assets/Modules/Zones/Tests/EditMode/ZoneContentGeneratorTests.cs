@@ -105,6 +105,44 @@ namespace LastFleet.Zones.Tests
             }
         }
 
+        [Test]
+        public void WreckFields_HoldADerelictAndMuchMetal_SomeOfItDangerous()
+        {
+            int fields = 0;
+            int wrecks = 0;
+            int hazardous = 0;
+            foreach (SystemZones system in GenerateSystems())
+            {
+                foreach (ZoneRecord zone in system.Zones)
+                {
+                    if (zone.PointOfInterest.Kind != PointOfInterestKind.WreckField)
+                    {
+                        continue;
+                    }
+                    fields++;
+                    ZoneContents contents = zone.Reveal();
+                    Assert.AreEqual(1, contents.Stations.Count);
+                    ZoneStation derelict = contents.Stations[0];
+                    Assert.AreEqual(StationType.Derelict, derelict.Type);
+                    Assert.IsFalse(derelict.Profile.IsInhabited);
+                    Assert.AreEqual(StationCondition.Damaged, derelict.Profile.Condition);
+                    Assert.That(contents.Deposits.Count, Is.InRange(6, 14), "A few may not fit.");
+                    foreach (ResourceDeposit wreck in contents.Deposits)
+                    {
+                        Assert.AreEqual(DepositShape.Wreck, wreck.Shape);
+                        Assert.That(wreck.InitialAmount, Is.InRange(100f, 300f));
+                        Assert.IsFalse(wreck.IsScanned);
+                        Assert.That(wreck.Hazard, Is.EqualTo(DepositHazard.None).Or.EqualTo(DepositHazard.Radioactive).Or.EqualTo(DepositHazard.GasPockets));
+                        wrecks++;
+                        hazardous += wreck.Hazard != DepositHazard.None ? 1 : 0;
+                    }
+                }
+            }
+
+            Assert.Greater(fields, 5, "Enough wreck fields in the sample.");
+            Assert.That(hazardous / (float)wrecks, Is.InRange(0.2f, 0.45f), "About a third of the wrecks is dangerous.");
+        }
+
         static IEnumerable<SystemZones> GenerateSystems()
         {
             for (int seed = 0; seed < SystemSampleCount; seed++)

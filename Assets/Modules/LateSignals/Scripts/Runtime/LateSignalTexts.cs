@@ -14,6 +14,9 @@ namespace LastFleet.LateSignals
         public static readonly GameTextKey RadioSilenceBroken = new GameTextKey(Table, "notice.radio-silence");
 
         /// <summary>{zone}</summary>
+        public static readonly GameTextKey WreckFieldInRange = new GameTextKey(Table, "notice.wreck-field");
+
+        /// <summary>{zone}</summary>
         public static readonly GameTextKey SignalPickedUp = new GameTextKey(Table, "notice.signal");
     }
 }

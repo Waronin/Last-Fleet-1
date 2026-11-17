@@ -21,10 +21,15 @@ namespace LastFleet.Zones.Tests
         }
 
         [Test]
-        public void OnlyAsteroids_CarryMiningHazards()
+        public void DriftingWrecks_CanCarryAHazard_AndNeedAScan()
         {
+            ResourceDeposit wreck = ResourceDeposit.DriftingWreck(Vector3.zero, 200f, 0f, 2f, DepositHazard.Radioactive);
+
+            Assert.AreEqual(ResourceKind.Metal, wreck.Resource);
+            Assert.AreEqual(DepositHazard.Radioactive, wreck.Hazard);
+            Assert.IsFalse(wreck.IsScanned, "Nobody saw an old wreck break apart.");
             Assert.Throws<ArgumentException>(() =>
-                new ResourceDeposit(DepositShape.Wreck, ResourceKind.Metal, Vector3.zero, 1f, 10f, DepositHazard.Brittle, 0f));
+                new ResourceDeposit(DepositShape.GasCloud, ResourceKind.Gas, Vector3.zero, 1f, 10f, DepositHazard.GasPockets, 0f));
         }
 
         [Test]

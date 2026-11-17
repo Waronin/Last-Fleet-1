@@ -15,7 +15,10 @@ namespace LastFleet.StarSystem
         JumpPoint,
 
         /// <summary>A damaged capital ship adrift, in orbit or in deep space; the fleet can repair and take it in.</summary>
-        StrandedShip
+        StrandedShip,
+
+        /// <summary>The remains of an old battle drifting into sensor range: metal wrecks and one dead hull to search.</summary>
+        WreckField
     }
 
     /// <summary>
@@ -69,8 +72,9 @@ namespace LastFleet.StarSystem
         /// <summary>Hidden from the system scan until its signal comes in during the countdown.</summary>
         public bool IsLateSignal => LateSignalFraction > 0f;
 
-        /// <summary>True for moons and for stations and stranded ships in orbit, which are drawn relative to their planet.</summary>
-        public bool IsSatellite => (Kind == PointOfInterestKind.Moon || Kind == PointOfInterestKind.Station || Kind == PointOfInterestKind.StrandedShip) &&
+        /// <summary>True for moons and for stations, stranded ships and wreck fields in orbit, which are drawn relative to their planet.</summary>
+        public bool IsSatellite => (Kind == PointOfInterestKind.Moon || Kind == PointOfInterestKind.Station || Kind == PointOfInterestKind.StrandedShip ||
+                                    Kind == PointOfInterestKind.WreckField) &&
                                    AssociatedPlanet != null;
     }
 }

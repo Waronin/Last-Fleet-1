@@ -119,7 +119,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &307851881
+--- !u!1 &207505650
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -127,1144 +127,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 307851883}
-  - component: {fileID: 307851882}
-  m_Layer: 0
-  m_Name: Space Environment
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &307851882
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 307851881}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb06cbf26e6be9a4c861c6a9d48eddfd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: LastFleet.Space::LastFleet.Space.SpaceEnvironment
-  _sun: {fileID: 0}
-  _skybox: {fileID: 2100000, guid: 69be342da3b881d4e9df2aa80dae63c3, type: 2}
-  _ambientSky: {r: 0.045, g: 0.055, b: 0.08, a: 1}
-  _ambientEquator: {r: 0.03, g: 0.03, b: 0.045, a: 1}
-  _ambientGround: {r: 0.015, g: 0.015, b: 0.02, a: 1}
---- !u!4 &307851883
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 307851881}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &333349010
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 333349012}
-  - component: {fileID: 333349011}
-  m_Layer: 0
-  m_Name: Galaxy Map View
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &333349011
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 333349010}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 92a17c760ba44f64bb0b5f32f207e498, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: LastFleet.Galaxy::LastFleet.Galaxy.GalaxyMapView
-  _markerMaterial: {fileID: 2100000, guid: 06c46979a9beef94092b234acccad413, type: 2}
-  _lineMaterial: {fileID: 2100000, guid: 06c46979a9beef94092b234acccad413, type: 2}
-  _unitsPerLightYear: 1
-  _markerDiameterUnits: 5
-  _lineWidthUnits: 1.2
-  _systemColor: {r: 0.7, g: 0.75, b: 0.85, a: 1}
-  _startSystemColor: {r: 0.3, g: 1, b: 0.45, a: 1}
-  _currentSystemColor: {r: 1, g: 1, b: 1, a: 1}
-  _selectedSystemColor: {r: 1, g: 0.85, b: 0.2, a: 1}
-  _reachableSystemColor: {r: 0.4, g: 0.75, b: 1, a: 1}
-  _jumpLineColor: {r: 0.3, g: 0.6, b: 1, a: 1}
-  _highlightColor: {r: 1, g: 0.35, b: 0.85, a: 1}
---- !u!4 &333349012
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 333349010}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &373571946
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 373571948}
-  - component: {fileID: 373571947}
-  m_Layer: 0
-  m_Name: Inspection Panel
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &373571947
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 373571946}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f68cf258fc37ce545b4fc01f9783850f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: LastFleet.Inspection::LastFleet.Inspection.InspectionPanel
-  _shipInput: {fileID: 487379869}
-  _anchorBottom: 0
---- !u!4 &373571948
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 373571946}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &466893028
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 466893030}
-  - component: {fileID: 466893029}
-  m_Layer: 0
-  m_Name: Stranded Ships
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &466893029
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 466893028}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 78ef453bddba69e479e139ca2b16b997, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: LastFleet.Ships::LastFleet.Ships.ShipRegistry
-  _allegiance: 2
-  _zoneWorld: {fileID: 876832265}
-  _camera: {fileID: 1271692851}
-  _obstacles: {fileID: 0}
-  _formationSpacingUnits: 6
---- !u!4 &466893030
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 466893028}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &487379866
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 487379889}
-  - component: {fileID: 487379868}
-  - component: {fileID: 487379867}
-  - component: {fileID: 487379870}
-  - component: {fileID: 487379869}
-  - component: {fileID: 487379886}
-  - component: {fileID: 487379885}
-  - component: {fileID: 487379875}
-  - component: {fileID: 487379884}
-  - component: {fileID: 487379872}
-  - component: {fileID: 487379871}
-  - component: {fileID: 487379874}
-  - component: {fileID: 487379883}
-  - component: {fileID: 487379873}
-  - component: {fileID: 487379881}
-  - component: {fileID: 487379882}
-  - component: {fileID: 487379880}
-  - component: {fileID: 487379879}
-  - component: {fileID: 487379878}
-  - component: {fileID: 487379877}
-  - component: {fileID: 487379876}
-  - component: {fileID: 487379888}
-  - component: {fileID: 487379887}
-  m_Layer: 0
-  m_Name: Ships
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &487379867
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 487379866}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d62f29676e9e2e445833000793fc43b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: LastFleet.Ships::LastFleet.Ships.ObstacleField
-  _registries:
-  - {fileID: 487379868}
-  - {fileID: 2114659904}
---- !u!114 &487379868
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 487379866}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 78ef453bddba69e479e139ca2b16b997, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: LastFleet.Ships::LastFleet.Ships.ShipRegistry
-  _allegiance: 0
-  _zoneWorld: {fileID: 876832265}
-  _camera: {fileID: 1271692851}
-  _obstacles: {fileID: 487379867}
-  _formationSpacingUnits: 6
---- !u!114 &487379869
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 487379866}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45b076157fa8128409d12da117285415, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: LastFleet.ShipControl::LastFleet.ShipControl.ShipCommandInput
-  _camera: {fileID: 1271692851}
-  _registry: {fileID: 487379868}
-  _scouting: {fileID: 487379872}
-  _docking: {fileID: 487379871}
-  _combat: {fileID: 487379870}
-  _pickRadiusPixels: 18
-  _selectionBoxColor: {r: 0.4, g: 0.8, b: 1, a: 0.25}
---- !u!114 &487379870
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 487379866}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4c8cfca55454b3245a7977f530297473, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: LastFleet.Combat::LastFleet.Combat.CombatService
-  _fleet: {fileID: 487379868}
-  _otherSides:
-  - {fileID: 2114659904}
-  - {fileID: 466893029}
-  _obstacles: {fileID: 487379867}
---- !u!114 &487379871
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 487379866}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db143b11eb43d7142855c7ec1b23c094, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: LastFleet.Stations::LastFleet.Stations.DockingService
-  _registry: {fileID: 487379868}
---- !u!114 &487379872
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 487379866}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 505d1961479b549438ec0aa72fd1fa06, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: LastFleet.Exploration::LastFleet.Exploration.ScoutingService
-  _registry: {fileID: 487379868}
---- !u!114 &487379873
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 487379866}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ddaed6c371259d54b91ab532bd1c275e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: LastFleet.People::LastFleet.People.FleetPopulation
-  _registry: {fileID: 487379868}
---- !u!114 &487379874
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 487379866}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe924fb35d721b649afe7af0034a77df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: LastFleet.Stations::LastFleet.Stations.SearchService
-  _docking: {fileID: 487379871}
---- !u!114 &487379875
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 487379866}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 870a06b13236c704595f174e61cb24cc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: LastFleet.ShipControl::LastFleet.ShipControl.FuelReturnService
-  _registry: {fileID: 487379868}
-  _dryCarrierFuel: 0.5
---- !u!114 &487379876
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 487379866}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e545d2e56743e245aa8a48f7b8d9f1b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: LastFleet.TacticalWeapons::LastFleet.TacticalWeapons.EmpTargetingInput
-  _camera: {fileID: 1271692851}
-  _commandInput: {fileID: 487379869}
-  _emp: {fileID: 487379877}
-  _previewMaterial: {fileID: 2100000, guid: 89b996e921a339c48a61972572e03d6f, type: 2}
-  _previewWidthUnits: 1.5
---- !u!114 &487379877
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 487379866}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49d8911f4bce0404c8a44060746c8026, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: LastFleet.TacticalWeapons::LastFleet.TacticalWeapons.EmpService
-  _fleet: {fileID: 487379868}
-  _pronin: {fileID: 2114659904}
-  _missilePrefab: {fileID: 1687973032515447282, guid: e6822145718717545a2d40fd560c5c4f, type: 3}
-  _blastPrefab: {fileID: 5924108984293848823, guid: 485ebb426c61bc24cbf9b3ea541c16a6, type: 3}
-  _blastRadiusUnits: 200
-  _proninStunSeconds: 10
-  _humanStunSeconds: 7
-  _missileSpeedUnitsPerSecond: 80
---- !u!114 &487379878
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 487379866}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4957cc0acf469d24ab7c5bd69fccdae1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: LastFleet.StrandedShips::LastFleet.StrandedShips.StrandedHulkBodies
-  _zoneWorld: {fileID: 876832265}
-  _stranded: {fileID: 466893029}
-  _recovery: {fileID: 487379879}
-  _docking: {fileID: 487379871}
-  _hulkPrefab: {fileID: 7755175387308677856, guid: e9d86764a3e274b4989cd6dbbbe4bcdd, type: 3}
---- !u!114 &487379879
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 487379866}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 22438ae8deff02345bd8dadc45bf4b12, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: LastFleet.StrandedShips::LastFleet.StrandedShips.StrandedShipRecovery
-  _registry: {fileID: 487379868}
-  _docking: {fileID: 487379871}
-  _shipPrefabs:
-  - {fileID: 7877930830435579649, guid: 6ea1c669cd8e1114cb9423baf7aefa26, type: 3}
-  - {fileID: 5142392371226416469, guid: c71e6b935d877254fb6b91100578858b, type: 3}
-  - {fileID: 903284044567673753, guid: 9bdc23b715d6080408c524bb13c54d37, type: 3}
-  - {fileID: 3452719541496944547, guid: 3ce2a74ec94abf24fa3a5ab471b12c04, type: 3}
-  _metalPerHullPoint: 0.5
-  _hullPerSecond: 10
---- !u!114 &487379880
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 487379866}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc96a28d18f5c004ea9cc51247132ca9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: LastFleet.Repairs::LastFleet.Repairs.RepairService
-  _registry: {fileID: 487379868}
-  _metalPerHullPoint: 0.5
-  _smallShipHullPerSecond: 2
-  _capitalShipHullPerSecond: 10
---- !u!114 &487379881
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 487379866}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5cfcbeba7c0d01d439267566fc5c6473, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: LastFleet.Stations::LastFleet.Stations.EvacuationService
-  _fleet: {fileID: 487379868}
-  _docking: {fileID: 487379871}
-  _zoneWorld: {fileID: 876832265}
-  _secondsPerPerson: 0.5
-  _hazardDeathSharePerMinute: 0.1
---- !u!114 &487379882
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 487379866}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 821ec31ce5ca2b44489ab77e8664ae7b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: LastFleet.Provisions::LastFleet.Provisions.FleetWaterSupply
-  _registry: {fileID: 487379868}
-  _population: {fileID: 487379873}
-  _peoplePerUnitPerMinute: 50
-  _deathFractionPerMinute: 0.01
-  _warningMinutes: 5
-  _deathBatchSeconds: 15
---- !u!114 &487379883
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 487379866}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd67d3169aea2da4ba23e9b935734b73, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: LastFleet.Rewards::LastFleet.Rewards.RewardDelivery
-  _registry: {fileID: 487379868}
---- !u!114 &487379884
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 487379866}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 627188e59c1218f4d9e6c143a8e93eb2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: LastFleet.Mining::LastFleet.Mining.MiningCoordinator
-  _registry: {fileID: 487379868}
---- !u!114 &487379885
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 487379866}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d4b4b20f3848c3648a10001df94d99eb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: LastFleet.ShipControl::LastFleet.ShipControl.HangarCommandInput
-  _commandInput: {fileID: 487379869}
-  _registry: {fileID: 487379868}
---- !u!114 &487379886
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 487379866}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 866e8f3efff1fc349a5aa9471b525862, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: LastFleet.ShipControl::LastFleet.ShipControl.ControlGroupInput
-  _commandInput: {fileID: 487379869}
-  _registry: {fileID: 487379868}
---- !u!114 &487379887
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 487379866}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: efc3d01bb79262e45ba806b576eca6b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: LastFleet.People::LastFleet.People.CrewRecruitment
-  _registry: {fileID: 487379868}
-  _secondsPerCrewMember: 10
---- !u!114 &487379888
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 487379866}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f4cddd8b75229344a0c0a2bfd688c4c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: LastFleet.TacticalWeapons::LastFleet.TacticalWeapons.StunMarkerView
-  _registries:
-  - {fileID: 487379868}
-  - {fileID: 2114659904}
-  _ringMaterial: {fileID: 2100000, guid: d4c119fafeab8fb4c8c9a68a0d5d8ed2, type: 2}
-  _capitalRadiusFactor: 1.5
-  _smallShipRadiusUnits: 3
-  _startWidening: 1.6
-  _lineWidthUnits: 0.35
-  _flickersPerSecond: 6
---- !u!4 &487379889
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 487379866}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &695705152
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 695705154}
-  - component: {fileID: 695705153}
-  m_Layer: 0
-  m_Name: Star System View
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &695705153
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 695705152}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7fd54f1113728a244bcc1c1d15fb9bd1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: LastFleet.StarSystem::LastFleet.StarSystem.StarSystemView
-  _bodyMaterial: {fileID: 2100000, guid: 6acb9e3f078b2af4bac1420766283dfa, type: 2}
-  _glowMaterial: {fileID: 2100000, guid: 06c46979a9beef94092b234acccad413, type: 2}
-  _unitsPerSqrtAU: 60
-  _satelliteUnitsPerAU: 600
-  _starDiameterUnits: 24
-  _earthDiameterUnits: 4
-  _moonDiameterUnits: 1.2
-  _stationSizeUnits: 1.5
-  _asteroidSizeUnits: 0.8
-  _asteroidsPerBelt: 180
-  _lineWidthUnits: 0.5
-  _starLightBrightness: 1.2
-  _orbitColor: {r: 0.25, g: 0.4, b: 0.6, a: 1}
-  _stationColor: {r: 0.9, g: 0.9, b: 0.95, a: 1}
-  _fuelMarkerColor: {r: 1, g: 0.55, b: 0.15, a: 1}
-  _jumpPointColor: {r: 0.5, g: 1, b: 0.6, a: 1}
-  _strandedShipColor: {r: 1, g: 0.4, b: 0.25, a: 1}
-  _unexploredMarkerColor: {r: 0.45, g: 0.45, b: 0.5, a: 1}
-  _exploredMarkerColor: {r: 0.3, g: 0.9, b: 1, a: 1}
-  _selectedMarkerColor: {r: 1, g: 0.85, b: 0.2, a: 1}
-  _highlightColor: {r: 1, g: 0.35, b: 0.85, a: 1}
-  _starGlowIntensity: 4
---- !u!4 &695705154
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 695705152}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &760794254
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 760794261}
-  - component: {fileID: 760794256}
-  - component: {fileID: 760794260}
-  - component: {fileID: 760794257}
-  - component: {fileID: 760794258}
-  - component: {fileID: 760794259}
-  - component: {fileID: 760794255}
-  m_Layer: 0
-  m_Name: Quests
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &760794255
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 760794254}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 561d2b4c79b7a9c4990a874bd5e4c104, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: LastFleet.RunEnd::LastFleet.RunEnd.RunEndWindow
-  _shipInput: {fileID: 487379869}
---- !u!114 &760794256
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 760794254}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a2ad6e7902810cf478d1e66f27fdde85, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: LastFleet.Dialogue::LastFleet.Dialogue.DialogueService
---- !u!114 &760794257
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 760794254}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b14792c260cc5c341a4fa3188a60adab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: LastFleet.Quests::LastFleet.Quests.QuestDirector
-  _fleet: {fileID: 487379868}
-  _pronin: {fileID: 2114659904}
-  _zoneWorld: {fileID: 876832265}
-  _search: {fileID: 487379874}
-  _dialogue: {fileID: 760794256}
-  _shuttlePrefab: {fileID: 5850452951789750662, guid: ae1f2227297f8b940b4bdb55d87628c4, type: 3}
-  _proninFighterPrefab: {fileID: 6468499856932491739, guid: 2c1cb16c696442b4883d2b09eff3e432, type: 3}
-  _guardFighterPrefab: {fileID: 846422202927604547, guid: 506a0fd2d9b02a44fa0f561b60fe0087, type: 3}
-  _explosionPrefab: {fileID: 2967978022378356793, guid: a30e2280a78291a48abf3411f291b8a5, type: 3}
---- !u!114 &760794258
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 760794254}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3990511a8cec123438a99ffa9a5bfed4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: LastFleet.Quests::LastFleet.Quests.StationRequestBoard
-  _zoneWorld: {fileID: 876832265}
-  _fleet: {fileID: 487379868}
-  _dialogue: {fileID: 760794256}
-  _rewards: {fileID: 487379883}
---- !u!114 &760794259
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 760794254}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0a9a31d682d2a947af28eb8261030fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: LastFleet.Quests::LastFleet.Quests.QuestLogPanel
-  _quests: {fileID: 760794257}
-  _shipInput: {fileID: 487379869}
-  _requests: {fileID: 760794258}
---- !u!114 &760794260
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 760794254}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f2f15cac9bd9a048a7680c264248b0b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: LastFleet.Dialogue::LastFleet.Dialogue.DialogueWindow
-  _dialogue: {fileID: 760794256}
-  _shipInput: {fileID: 487379869}
---- !u!4 &760794261
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 760794254}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &876832264
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 876832266}
-  - component: {fileID: 876832265}
-  m_Layer: 0
-  m_Name: Zone World
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &876832265
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 876832264}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6dc5005cfb4ae44b85f03be90bc63d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: LastFleet.Zones::LastFleet.Zones.ZoneWorld
-  _gridMaterial: {fileID: 2100000, guid: 14f4b9c7479973e459891d9d5ca3e2af, type: 2}
-  _bodyMaterial: {fileID: 2100000, guid: 6acb9e3f078b2af4bac1420766283dfa, type: 2}
-  _glowMaterial: {fileID: 2100000, guid: 06c46979a9beef94092b234acccad413, type: 2}
-  _stationViews: {fileID: 11400000, guid: e56505c5bbb8ede44a6d9fb0af86cdfe, type: 2}
-  _zoneSun: {fileID: 1328079642}
-  _zoneSpacingUnits: 4000
-  _columns: 6
-  _sunDownwardTilt: 0.4
---- !u!4 &876832266
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 876832264}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6000, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1032138999
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1032139001}
-  - component: {fileID: 1032139000}
-  m_Layer: 0
-  m_Name: Global Volume
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1032139000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1032138999}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.RenderPipelines.Core.Runtime::UnityEngine.Rendering.Volume
-  m_IsGlobal: 1
-  priority: 0
-  blendDistance: 0
-  weight: 1
-  sharedProfile: {fileID: 11400000, guid: 10fc4df2da32a41aaa32d77bc913491c, type: 2}
---- !u!4 &1032139001
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1032138999}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1252583072
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1252583077}
-  - component: {fileID: 1252583076}
-  - component: {fileID: 1252583075}
-  - component: {fileID: 1252583074}
-  - component: {fileID: 1252583073}
-  m_Layer: 0
-  m_Name: Pursuit Clock
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1252583073
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1252583072}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9567769afbea562469ce7ab42bb852cc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: LastFleet.FleetJump::LastFleet.FleetJump.FleetJumpService
-  _settings:
-    _cooldownSeconds: 300
-    _chargeSeconds: 30
-    _fullRangeTankFraction: 0.3
-  _fleet: {fileID: 487379868}
---- !u!114 &1252583074
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1252583072}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c5040420c7024f4f85757e361abe44a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: LastFleet.Pursuit::LastFleet.Pursuit.ProninAttack
-  _pursuit: {fileID: 1252583076}
-  _zoneWorld: {fileID: 876832265}
-  _fleet: {fileID: 487379868}
-  _pronin: {fileID: 2114659904}
-  _carrierPrefab: {fileID: 8178776548313182792, guid: 188fcdd42d2435e4a8ca54ac06e667b5, type: 3}
-  _fighterPrefab: {fileID: 6468499856932491739, guid: 2c1cb16c696442b4883d2b09eff3e432, type: 3}
-  _fightersPerWave: 6
-  _maximumFighters: 12
---- !u!114 &1252583075
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1252583072}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5b593c33b47db54885c31640ad9bc22, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: LastFleet.LateSignals::LastFleet.LateSignals.LateSignalReceiver
-  _pursuit: {fileID: 1252583076}
---- !u!114 &1252583076
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1252583072}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 108cee06d92f87e489b3e79cd6ba38a0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: LastFleet.Pursuit::LastFleet.Pursuit.PursuitClock
-  _settings:
-    _arrivalSeconds: 780
-    _warningLeadSeconds: 30
-    _carrierStrikeDelaySeconds: 30
-    _fighterWaveIntervalSeconds: 60
---- !u!4 &1252583077
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1252583072}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1271692850
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1271692854}
-  - component: {fileID: 1271692851}
-  - component: {fileID: 1271692853}
-  - component: {fileID: 1271692852}
-  m_Layer: 0
-  m_Name: Main Camera
-  m_TagString: MainCamera
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!20 &1271692851
-Camera:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1271692850}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
-  m_projectionMatrixMode: 1
-  m_GateFitMode: 2
-  m_FOVAxisMode: 0
-  m_Iso: 200
-  m_ShutterSpeed: 0.005
-  m_Aperture: 16
-  m_FocusDistance: 10
-  m_FocalLength: 50
-  m_BladeCount: 5
-  m_Curvature: {x: 2, y: 11}
-  m_BarrelClipping: 0.25
-  m_Anamorphism: 0
-  m_SensorSize: {x: 36, y: 24}
-  m_LensShift: {x: 0, y: 0}
-  m_NormalizedViewPortRect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
-  near clip plane: 0.3
-  far clip plane: 2100
-  field of view: 50
-  orthographic: 0
-  orthographic size: 5
-  m_Depth: 0
-  m_CullingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_RenderingPath: -1
-  m_TargetTexture: {fileID: 0}
-  m_TargetDisplay: 0
-  m_TargetEye: 3
-  m_HDR: 1
-  m_AllowMSAA: 1
-  m_AllowDynamicResolution: 0
-  m_ForceIntoRT: 0
-  m_OcclusionCulling: 1
-  m_StereoConvergence: 10
-  m_StereoSeparation: 0.022
---- !u!114 &1271692852
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1271692850}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalCameraData
-  m_RenderShadows: 1
-  m_RequiresDepthTextureOption: 2
-  m_RequiresOpaqueTextureOption: 2
-  m_CameraType: 0
-  m_Cameras: []
-  m_RendererIndex: -1
-  m_VolumeLayerMask:
-    serializedVersion: 2
-    m_Bits: 1
-  m_VolumeTrigger: {fileID: 0}
-  m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 1
-  m_Antialiasing: 0
-  m_AntialiasingQuality: 2
-  m_StopNaN: 0
-  m_Dithering: 0
-  m_ClearDepth: 1
-  m_AllowXRRendering: 1
-  m_AllowHDROutput: 1
-  m_UseScreenCoordOverride: 0
-  m_ScreenSizeOverride: {x: 0, y: 0, z: 0, w: 0}
-  m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
-  m_RequiresDepthTexture: 0
-  m_RequiresColorTexture: 0
-  m_TaaSettings:
-    m_Quality: 3
-    m_FrameInfluence: 0.1
-    m_JitterScale: 1
-    m_MipBias: 0
-    m_VarianceClampScale: 0.9
-    m_ContrastAdaptiveSharpening: 0
-  m_Version: 2
---- !u!81 &1271692853
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1271692850}
-  m_Enabled: 1
---- !u!4 &1271692854
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1271692850}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0.3904484, y: 0.34682903, z: -0.16172904, w: 0.8373192}
-  m_LocalPosition: {x: -272.71167, y: 459.62665, z: -272.71167}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1522069795}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1328079641
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1328079643}
-  - component: {fileID: 1328079642}
+  - component: {fileID: 207505652}
+  - component: {fileID: 207505651}
   m_Layer: 0
   m_Name: Zone Sun
   m_TagString: Untagged
@@ -1272,13 +136,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!108 &1328079642
+--- !u!108 &207505651
 Light:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1328079641}
+  m_GameObject: {fileID: 207505650}
   m_Enabled: 0
   serializedVersion: 13
   m_Type: 1
@@ -1337,13 +201,13 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
---- !u!4 &1328079643
+--- !u!4 &207505652
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1328079641}
+  m_GameObject: {fileID: 207505650}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -1352,7 +216,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1434851206
+--- !u!1 &481025416
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1360,101 +224,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1434851211}
-  - component: {fileID: 1434851210}
-  - component: {fileID: 1434851209}
-  - component: {fileID: 1434851207}
-  - component: {fileID: 1434851208}
-  m_Layer: 0
-  m_Name: Supply Bar
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1434851207
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1434851206}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 043ba004e2f0686479027eb5698fa641, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: LastFleet.Hud::LastFleet.Hud.JumpStatusIndicator
-  _fleetJump: {fileID: 1252583073}
-  _shipInput: {fileID: 487379869}
---- !u!114 &1434851208
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1434851206}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49f30210055252f4ba19a168bbe37831, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: LastFleet.Hud::LastFleet.Hud.FleetJumpDialog
-  _fleetJump: {fileID: 1252583073}
-  _shipInput: {fileID: 487379869}
-  _quests: {fileID: 760794257}
---- !u!114 &1434851209
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1434851206}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f54bd4f93117a8b4283816b64b4c5348, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: LastFleet.Hud::LastFleet.Hud.ThreatIndicator
-  _pursuit: {fileID: 1252583076}
-  _shipInput: {fileID: 487379869}
---- !u!114 &1434851210
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1434851206}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 21756f5cf82a2694f870396e74634723, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: LastFleet.Hud::LastFleet.Hud.SupplyBar
-  _mining: {fileID: 487379884}
-  _shipInput: {fileID: 487379869}
-  _water: {fileID: 487379882}
---- !u!4 &1434851211
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1434851206}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1522069794
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1522069795}
-  - component: {fileID: 1522069796}
+  - component: {fileID: 481025417}
+  - component: {fileID: 481025418}
   m_Layer: 0
   m_Name: Camera Rig
   m_TagString: Untagged
@@ -1462,35 +233,35 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1522069795
+--- !u!4 &481025417
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1522069794}
+  m_GameObject: {fileID: 481025416}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1271692854}
+  - {fileID: 1606502386}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1522069796
+--- !u!114 &481025418
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1522069794}
+  m_GameObject: {fileID: 481025416}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 60a5f5d7a99eee94d875807d75bf9833, type: 3}
   m_Name: 
   m_EditorClassIdentifier: LastFleet.CameraControl::LastFleet.CameraControl.RtsCameraRig
-  _camera: {fileID: 1271692851}
+  _camera: {fileID: 1606502383}
   _boundsCenter: {x: 0, y: 0, z: 0}
   _boundsRadius: 500
   _minimumDistance: 3
@@ -1508,7 +279,7 @@ MonoBehaviour:
   _panSpeed: 1
   _fastPanMultiplier: 3
   _panSmoothTimeSeconds: 0.1
---- !u!1 &1534630202
+--- !u!1 &710632281
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1516,11 +287,205 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1534630207}
-  - component: {fileID: 1534630206}
-  - component: {fileID: 1534630205}
-  - component: {fileID: 1534630204}
-  - component: {fileID: 1534630203}
+  - component: {fileID: 710632286}
+  - component: {fileID: 710632285}
+  - component: {fileID: 710632284}
+  - component: {fileID: 710632282}
+  - component: {fileID: 710632283}
+  m_Layer: 0
+  m_Name: Supply Bar
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &710632282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 710632281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 043ba004e2f0686479027eb5698fa641, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.Hud::LastFleet.Hud.JumpStatusIndicator
+  _fleetJump: {fileID: 1528782146}
+  _shipInput: {fileID: 1438555372}
+--- !u!114 &710632283
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 710632281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49f30210055252f4ba19a168bbe37831, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.Hud::LastFleet.Hud.FleetJumpDialog
+  _fleetJump: {fileID: 1528782146}
+  _shipInput: {fileID: 1438555372}
+  _quests: {fileID: 1931372568}
+--- !u!114 &710632284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 710632281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f54bd4f93117a8b4283816b64b4c5348, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.Hud::LastFleet.Hud.ThreatIndicator
+  _pursuit: {fileID: 1528782149}
+  _shipInput: {fileID: 1438555372}
+--- !u!114 &710632285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 710632281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21756f5cf82a2694f870396e74634723, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.Hud::LastFleet.Hud.SupplyBar
+  _mining: {fileID: 1438555387}
+  _shipInput: {fileID: 1438555372}
+  _water: {fileID: 1438555385}
+--- !u!4 &710632286
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 710632281}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &765907067
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 765907069}
+  - component: {fileID: 765907068}
+  m_Layer: 0
+  m_Name: Zone World
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &765907068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 765907067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6dc5005cfb4ae44b85f03be90bc63d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.Zones::LastFleet.Zones.ZoneWorld
+  _gridMaterial: {fileID: 2100000, guid: 14f4b9c7479973e459891d9d5ca3e2af, type: 2}
+  _bodyMaterial: {fileID: 2100000, guid: 6acb9e3f078b2af4bac1420766283dfa, type: 2}
+  _glowMaterial: {fileID: 2100000, guid: 06c46979a9beef94092b234acccad413, type: 2}
+  _stationViews: {fileID: 11400000, guid: e56505c5bbb8ede44a6d9fb0af86cdfe, type: 2}
+  _zoneSun: {fileID: 207505651}
+  _zoneSpacingUnits: 4000
+  _columns: 6
+  _sunDownwardTilt: 0.4
+--- !u!4 &765907069
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 765907067}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 6000, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &801796156
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 801796158}
+  - component: {fileID: 801796157}
+  m_Layer: 0
+  m_Name: Pronin Ships
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &801796157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 801796156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78ef453bddba69e479e139ca2b16b997, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.Ships::LastFleet.Ships.ShipRegistry
+  _allegiance: 1
+  _zoneWorld: {fileID: 765907068}
+  _camera: {fileID: 1606502383}
+  _obstacles: {fileID: 1438555370}
+  _formationSpacingUnits: 6
+--- !u!4 &801796158
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 801796156}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1131825259
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1131825264}
+  - component: {fileID: 1131825263}
+  - component: {fileID: 1131825262}
+  - component: {fileID: 1131825261}
+  - component: {fileID: 1131825260}
   m_Layer: 0
   m_Name: Generation Preview
   m_TagString: Untagged
@@ -1528,60 +493,60 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1534630203
+--- !u!114 &1131825260
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1534630202}
+  m_GameObject: {fileID: 1131825259}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8f0b8c9ab854c28489da0a797d400efb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: LastFleet.GenerationPreview::LastFleet.GenerationPreview.DeveloperRaidInput
-  _controller: {fileID: 1534630206}
-  _pronin: {fileID: 2114659904}
+  _controller: {fileID: 1131825263}
+  _pronin: {fileID: 801796157}
   _proninFighterPrefab: {fileID: 6468499856932491739, guid: 2c1cb16c696442b4883d2b09eff3e432, type: 3}
   _fightersPerRaid: 3
---- !u!114 &1534630204
+--- !u!114 &1131825261
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1534630202}
+  m_GameObject: {fileID: 1131825259}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c14676f6fdd717d4f9b2223001617653, type: 3}
   m_Name: 
   m_EditorClassIdentifier: LastFleet.GenerationPreview::LastFleet.GenerationPreview.GenerationPreviewOverlay
-  _controller: {fileID: 1534630206}
---- !u!114 &1534630205
+  _controller: {fileID: 1131825263}
+--- !u!114 &1131825262
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1534630202}
+  m_GameObject: {fileID: 1131825259}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 113e4f07f01526a4b8d0c716b6699c90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: LastFleet.GenerationPreview::LastFleet.GenerationPreview.RunEndFlow
-  _controller: {fileID: 1534630206}
-  _quests: {fileID: 760794257}
-  _dialogue: {fileID: 760794256}
-  _fleet: {fileID: 487379868}
-  _population: {fileID: 487379873}
-  _window: {fileID: 760794255}
---- !u!114 &1534630206
+  _controller: {fileID: 1131825263}
+  _quests: {fileID: 1931372568}
+  _dialogue: {fileID: 1931372567}
+  _fleet: {fileID: 1438555371}
+  _population: {fileID: 1438555376}
+  _window: {fileID: 1931372566}
+--- !u!114 &1131825263
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1534630202}
+  m_GameObject: {fileID: 1131825259}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f9f1ab46e5c5495458512f4c46708ec7, type: 3}
@@ -1595,41 +560,41 @@ MonoBehaviour:
     _jumpRangeLightYears: 50
     _minimumSpacingLightYears: 15
     _placementAttemptsPerSystem: 40
-  _galaxyMapView: {fileID: 333349011}
-  _starSystemView: {fileID: 695705153}
-  _zoneWorld: {fileID: 876832265}
-  _environment: {fileID: 307851882}
-  _cameraRig: {fileID: 1522069796}
-  _shipRegistry: {fileID: 487379868}
-  _shipInput: {fileID: 487379869}
-  _groupInput: {fileID: 487379886}
-  _hangarInput: {fileID: 487379885}
-  _mining: {fileID: 487379884}
-  _scouting: {fileID: 487379872}
-  _population: {fileID: 487379873}
-  _docking: {fileID: 487379871}
-  _search: {fileID: 487379874}
-  _rewards: {fileID: 487379883}
-  _combat: {fileID: 487379870}
-  _pursuit: {fileID: 1252583076}
-  _lateSignals: {fileID: 1252583075}
-  _proninAttack: {fileID: 1252583074}
-  _fleetJump: {fileID: 1252583073}
-  _jumpDialog: {fileID: 1434851208}
-  _jumpStatus: {fileID: 1434851207}
-  _inspection: {fileID: 373571947}
-  _shipPanel: {fileID: 2106842859}
-  _quests: {fileID: 760794257}
-  _runEndWindow: {fileID: 760794255}
-  _water: {fileID: 487379882}
-  _evacuation: {fileID: 487379881}
-  _requests: {fileID: 760794258}
-  _repairs: {fileID: 487379880}
-  _strandedShips: {fileID: 487379879}
-  _hulkBodies: {fileID: 487379878}
-  _emp: {fileID: 487379877}
-  _empTargeting: {fileID: 487379876}
-  _fuelReturn: {fileID: 487379875}
+  _galaxyMapView: {fileID: 1368461798}
+  _starSystemView: {fileID: 1533636993}
+  _zoneWorld: {fileID: 765907068}
+  _environment: {fileID: 1582488592}
+  _cameraRig: {fileID: 481025418}
+  _shipRegistry: {fileID: 1438555371}
+  _shipInput: {fileID: 1438555372}
+  _groupInput: {fileID: 1438555389}
+  _hangarInput: {fileID: 1438555388}
+  _mining: {fileID: 1438555387}
+  _scouting: {fileID: 1438555375}
+  _population: {fileID: 1438555376}
+  _docking: {fileID: 1438555374}
+  _search: {fileID: 1438555377}
+  _rewards: {fileID: 1438555386}
+  _combat: {fileID: 1438555373}
+  _pursuit: {fileID: 1528782149}
+  _lateSignals: {fileID: 1528782148}
+  _proninAttack: {fileID: 1528782147}
+  _fleetJump: {fileID: 1528782146}
+  _jumpDialog: {fileID: 710632283}
+  _jumpStatus: {fileID: 710632282}
+  _inspection: {fileID: 2133737185}
+  _shipPanel: {fileID: 2146484172}
+  _quests: {fileID: 1931372568}
+  _runEndWindow: {fileID: 1931372566}
+  _water: {fileID: 1438555385}
+  _evacuation: {fileID: 1438555384}
+  _requests: {fileID: 1931372569}
+  _repairs: {fileID: 1438555383}
+  _strandedShips: {fileID: 1438555382}
+  _hulkBodies: {fileID: 1438555381}
+  _emp: {fileID: 1438555380}
+  _empTargeting: {fileID: 1438555379}
+  _fuelReturn: {fileID: 1438555378}
   _refineryPrefab: {fileID: 5142392371226416469, guid: c71e6b935d877254fb6b91100578858b, type: 3}
   _tankerPrefab: {fileID: 903284044567673753, guid: 9bdc23b715d6080408c524bb13c54d37, type: 3}
   _linerPrefab: {fileID: 7877930830435579649, guid: 6ea1c669cd8e1114cb9423baf7aefa26, type: 3}
@@ -1638,13 +603,13 @@ MonoBehaviour:
   _cruiserPrefab: {fileID: 3452719541496944547, guid: 3ce2a74ec94abf24fa3a5ab471b12c04, type: 3}
   _fighterPrefab: {fileID: 5460214823038301168, guid: 79821c973ee63804f8674d775b5f52b3, type: 3}
   _pickRadiusPixels: 14
---- !u!4 &1534630207
+--- !u!4 &1131825264
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1534630202}
+  m_GameObject: {fileID: 1131825259}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -1653,7 +618,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2106842858
+--- !u!1 &1173158337
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1661,8 +626,1093 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2106842860}
-  - component: {fileID: 2106842859}
+  - component: {fileID: 1173158339}
+  - component: {fileID: 1173158338}
+  m_Layer: 0
+  m_Name: Global Volume
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1173158338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1173158337}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Core.Runtime::UnityEngine.Rendering.Volume
+  m_IsGlobal: 1
+  priority: 0
+  blendDistance: 0
+  weight: 1
+  sharedProfile: {fileID: 11400000, guid: 10fc4df2da32a41aaa32d77bc913491c, type: 2}
+--- !u!4 &1173158339
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1173158337}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1368461797
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1368461799}
+  - component: {fileID: 1368461798}
+  m_Layer: 0
+  m_Name: Galaxy Map View
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1368461798
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1368461797}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92a17c760ba44f64bb0b5f32f207e498, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.Galaxy::LastFleet.Galaxy.GalaxyMapView
+  _markerMaterial: {fileID: 2100000, guid: 06c46979a9beef94092b234acccad413, type: 2}
+  _lineMaterial: {fileID: 2100000, guid: 06c46979a9beef94092b234acccad413, type: 2}
+  _unitsPerLightYear: 1
+  _markerDiameterUnits: 5
+  _lineWidthUnits: 1.2
+  _systemColor: {r: 0.7, g: 0.75, b: 0.85, a: 1}
+  _startSystemColor: {r: 0.3, g: 1, b: 0.45, a: 1}
+  _currentSystemColor: {r: 1, g: 1, b: 1, a: 1}
+  _selectedSystemColor: {r: 1, g: 0.85, b: 0.2, a: 1}
+  _reachableSystemColor: {r: 0.4, g: 0.75, b: 1, a: 1}
+  _jumpLineColor: {r: 0.3, g: 0.6, b: 1, a: 1}
+  _highlightColor: {r: 1, g: 0.35, b: 0.85, a: 1}
+--- !u!4 &1368461799
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1368461797}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1438555369
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1438555392}
+  - component: {fileID: 1438555371}
+  - component: {fileID: 1438555370}
+  - component: {fileID: 1438555373}
+  - component: {fileID: 1438555372}
+  - component: {fileID: 1438555389}
+  - component: {fileID: 1438555388}
+  - component: {fileID: 1438555378}
+  - component: {fileID: 1438555387}
+  - component: {fileID: 1438555375}
+  - component: {fileID: 1438555374}
+  - component: {fileID: 1438555377}
+  - component: {fileID: 1438555386}
+  - component: {fileID: 1438555376}
+  - component: {fileID: 1438555384}
+  - component: {fileID: 1438555385}
+  - component: {fileID: 1438555383}
+  - component: {fileID: 1438555382}
+  - component: {fileID: 1438555381}
+  - component: {fileID: 1438555380}
+  - component: {fileID: 1438555379}
+  - component: {fileID: 1438555391}
+  - component: {fileID: 1438555390}
+  m_Layer: 0
+  m_Name: Ships
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1438555370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1438555369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d62f29676e9e2e445833000793fc43b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.Ships::LastFleet.Ships.ObstacleField
+  _registries:
+  - {fileID: 1438555371}
+  - {fileID: 801796157}
+--- !u!114 &1438555371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1438555369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78ef453bddba69e479e139ca2b16b997, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.Ships::LastFleet.Ships.ShipRegistry
+  _allegiance: 0
+  _zoneWorld: {fileID: 765907068}
+  _camera: {fileID: 1606502383}
+  _obstacles: {fileID: 1438555370}
+  _formationSpacingUnits: 6
+--- !u!114 &1438555372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1438555369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45b076157fa8128409d12da117285415, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.ShipControl::LastFleet.ShipControl.ShipCommandInput
+  _camera: {fileID: 1606502383}
+  _registry: {fileID: 1438555371}
+  _scouting: {fileID: 1438555375}
+  _docking: {fileID: 1438555374}
+  _combat: {fileID: 1438555373}
+  _pickRadiusPixels: 18
+  _selectionBoxColor: {r: 0.4, g: 0.8, b: 1, a: 0.25}
+--- !u!114 &1438555373
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1438555369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c8cfca55454b3245a7977f530297473, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.Combat::LastFleet.Combat.CombatService
+  _fleet: {fileID: 1438555371}
+  _otherSides:
+  - {fileID: 801796157}
+  - {fileID: 1593479442}
+  _obstacles: {fileID: 1438555370}
+--- !u!114 &1438555374
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1438555369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db143b11eb43d7142855c7ec1b23c094, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.Stations::LastFleet.Stations.DockingService
+  _registry: {fileID: 1438555371}
+--- !u!114 &1438555375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1438555369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 505d1961479b549438ec0aa72fd1fa06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.Exploration::LastFleet.Exploration.ScoutingService
+  _registry: {fileID: 1438555371}
+--- !u!114 &1438555376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1438555369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddaed6c371259d54b91ab532bd1c275e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.People::LastFleet.People.FleetPopulation
+  _registry: {fileID: 1438555371}
+--- !u!114 &1438555377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1438555369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe924fb35d721b649afe7af0034a77df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.Stations::LastFleet.Stations.SearchService
+  _docking: {fileID: 1438555374}
+--- !u!114 &1438555378
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1438555369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 870a06b13236c704595f174e61cb24cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.ShipControl::LastFleet.ShipControl.FuelReturnService
+  _registry: {fileID: 1438555371}
+  _dryCarrierFuel: 0.5
+--- !u!114 &1438555379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1438555369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e545d2e56743e245aa8a48f7b8d9f1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.TacticalWeapons::LastFleet.TacticalWeapons.EmpTargetingInput
+  _camera: {fileID: 1606502383}
+  _commandInput: {fileID: 1438555372}
+  _emp: {fileID: 1438555380}
+  _previewMaterial: {fileID: 2100000, guid: 89b996e921a339c48a61972572e03d6f, type: 2}
+  _previewWidthUnits: 1.5
+--- !u!114 &1438555380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1438555369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49d8911f4bce0404c8a44060746c8026, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.TacticalWeapons::LastFleet.TacticalWeapons.EmpService
+  _fleet: {fileID: 1438555371}
+  _pronin: {fileID: 801796157}
+  _missilePrefab: {fileID: 1687973032515447282, guid: e6822145718717545a2d40fd560c5c4f, type: 3}
+  _blastPrefab: {fileID: 5924108984293848823, guid: 485ebb426c61bc24cbf9b3ea541c16a6, type: 3}
+  _blastRadiusUnits: 200
+  _proninStunSeconds: 10
+  _humanStunSeconds: 7
+  _missileSpeedUnitsPerSecond: 80
+--- !u!114 &1438555381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1438555369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4957cc0acf469d24ab7c5bd69fccdae1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.StrandedShips::LastFleet.StrandedShips.StrandedHulkBodies
+  _zoneWorld: {fileID: 765907068}
+  _stranded: {fileID: 1593479442}
+  _recovery: {fileID: 1438555382}
+  _docking: {fileID: 1438555374}
+  _hulkPrefab: {fileID: 7755175387308677856, guid: e9d86764a3e274b4989cd6dbbbe4bcdd, type: 3}
+--- !u!114 &1438555382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1438555369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22438ae8deff02345bd8dadc45bf4b12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.StrandedShips::LastFleet.StrandedShips.StrandedShipRecovery
+  _registry: {fileID: 1438555371}
+  _docking: {fileID: 1438555374}
+  _shipPrefabs:
+  - {fileID: 7877930830435579649, guid: 6ea1c669cd8e1114cb9423baf7aefa26, type: 3}
+  - {fileID: 5142392371226416469, guid: c71e6b935d877254fb6b91100578858b, type: 3}
+  - {fileID: 903284044567673753, guid: 9bdc23b715d6080408c524bb13c54d37, type: 3}
+  - {fileID: 3452719541496944547, guid: 3ce2a74ec94abf24fa3a5ab471b12c04, type: 3}
+  _metalPerHullPoint: 0.5
+  _hullPerSecond: 10
+--- !u!114 &1438555383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1438555369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc96a28d18f5c004ea9cc51247132ca9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.Repairs::LastFleet.Repairs.RepairService
+  _registry: {fileID: 1438555371}
+  _metalPerHullPoint: 0.5
+  _smallShipHullPerSecond: 2
+  _capitalShipHullPerSecond: 10
+--- !u!114 &1438555384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1438555369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5cfcbeba7c0d01d439267566fc5c6473, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.Stations::LastFleet.Stations.EvacuationService
+  _fleet: {fileID: 1438555371}
+  _docking: {fileID: 1438555374}
+  _zoneWorld: {fileID: 765907068}
+  _secondsPerPerson: 0.5
+  _hazardDeathSharePerMinute: 0.1
+--- !u!114 &1438555385
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1438555369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 821ec31ce5ca2b44489ab77e8664ae7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.Provisions::LastFleet.Provisions.FleetWaterSupply
+  _registry: {fileID: 1438555371}
+  _population: {fileID: 1438555376}
+  _peoplePerUnitPerMinute: 50
+  _deathFractionPerMinute: 0.01
+  _warningMinutes: 5
+  _deathBatchSeconds: 15
+--- !u!114 &1438555386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1438555369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd67d3169aea2da4ba23e9b935734b73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.Rewards::LastFleet.Rewards.RewardDelivery
+  _registry: {fileID: 1438555371}
+--- !u!114 &1438555387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1438555369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627188e59c1218f4d9e6c143a8e93eb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.Mining::LastFleet.Mining.MiningCoordinator
+  _registry: {fileID: 1438555371}
+--- !u!114 &1438555388
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1438555369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4b4b20f3848c3648a10001df94d99eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.ShipControl::LastFleet.ShipControl.HangarCommandInput
+  _commandInput: {fileID: 1438555372}
+  _registry: {fileID: 1438555371}
+--- !u!114 &1438555389
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1438555369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 866e8f3efff1fc349a5aa9471b525862, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.ShipControl::LastFleet.ShipControl.ControlGroupInput
+  _commandInput: {fileID: 1438555372}
+  _registry: {fileID: 1438555371}
+--- !u!114 &1438555390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1438555369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efc3d01bb79262e45ba806b576eca6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.People::LastFleet.People.CrewRecruitment
+  _registry: {fileID: 1438555371}
+  _secondsPerCrewMember: 10
+--- !u!114 &1438555391
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1438555369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f4cddd8b75229344a0c0a2bfd688c4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.TacticalWeapons::LastFleet.TacticalWeapons.StunMarkerView
+  _registries:
+  - {fileID: 1438555371}
+  - {fileID: 801796157}
+  _ringMaterial: {fileID: 2100000, guid: d4c119fafeab8fb4c8c9a68a0d5d8ed2, type: 2}
+  _capitalRadiusFactor: 1.5
+  _smallShipRadiusUnits: 3
+  _startWidening: 1.6
+  _lineWidthUnits: 0.35
+  _flickersPerSecond: 6
+--- !u!4 &1438555392
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1438555369}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1528782145
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1528782150}
+  - component: {fileID: 1528782149}
+  - component: {fileID: 1528782148}
+  - component: {fileID: 1528782147}
+  - component: {fileID: 1528782146}
+  m_Layer: 0
+  m_Name: Pursuit Clock
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1528782146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1528782145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9567769afbea562469ce7ab42bb852cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.FleetJump::LastFleet.FleetJump.FleetJumpService
+  _settings:
+    _cooldownSeconds: 300
+    _chargeSeconds: 30
+    _fullRangeTankFraction: 0.3
+  _fleet: {fileID: 1438555371}
+--- !u!114 &1528782147
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1528782145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c5040420c7024f4f85757e361abe44a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.Pursuit::LastFleet.Pursuit.ProninAttack
+  _pursuit: {fileID: 1528782149}
+  _zoneWorld: {fileID: 765907068}
+  _fleet: {fileID: 1438555371}
+  _pronin: {fileID: 801796157}
+  _carrierPrefab: {fileID: 8178776548313182792, guid: 188fcdd42d2435e4a8ca54ac06e667b5, type: 3}
+  _fighterPrefab: {fileID: 6468499856932491739, guid: 2c1cb16c696442b4883d2b09eff3e432, type: 3}
+  _fightersPerWave: 6
+  _maximumFighters: 12
+--- !u!114 &1528782148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1528782145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5b593c33b47db54885c31640ad9bc22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.LateSignals::LastFleet.LateSignals.LateSignalReceiver
+  _pursuit: {fileID: 1528782149}
+--- !u!114 &1528782149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1528782145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 108cee06d92f87e489b3e79cd6ba38a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.Pursuit::LastFleet.Pursuit.PursuitClock
+  _settings:
+    _arrivalSeconds: 780
+    _warningLeadSeconds: 30
+    _carrierStrikeDelaySeconds: 30
+    _fighterWaveIntervalSeconds: 60
+--- !u!4 &1528782150
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1528782145}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1533636992
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1533636994}
+  - component: {fileID: 1533636993}
+  m_Layer: 0
+  m_Name: Star System View
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1533636993
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1533636992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fd54f1113728a244bcc1c1d15fb9bd1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.StarSystem::LastFleet.StarSystem.StarSystemView
+  _bodyMaterial: {fileID: 2100000, guid: 6acb9e3f078b2af4bac1420766283dfa, type: 2}
+  _glowMaterial: {fileID: 2100000, guid: 06c46979a9beef94092b234acccad413, type: 2}
+  _unitsPerSqrtAU: 60
+  _satelliteUnitsPerAU: 600
+  _starDiameterUnits: 24
+  _earthDiameterUnits: 4
+  _moonDiameterUnits: 1.2
+  _stationSizeUnits: 1.5
+  _asteroidSizeUnits: 0.8
+  _asteroidsPerBelt: 180
+  _lineWidthUnits: 0.5
+  _starLightBrightness: 1.2
+  _orbitColor: {r: 0.25, g: 0.4, b: 0.6, a: 1}
+  _stationColor: {r: 0.9, g: 0.9, b: 0.95, a: 1}
+  _fuelMarkerColor: {r: 1, g: 0.55, b: 0.15, a: 1}
+  _jumpPointColor: {r: 0.5, g: 1, b: 0.6, a: 1}
+  _strandedShipColor: {r: 1, g: 0.4, b: 0.25, a: 1}
+  _wreckFieldColor: {r: 0.55, g: 0.5, b: 0.45, a: 1}
+  _unexploredMarkerColor: {r: 0.45, g: 0.45, b: 0.5, a: 1}
+  _exploredMarkerColor: {r: 0.3, g: 0.9, b: 1, a: 1}
+  _selectedMarkerColor: {r: 1, g: 0.85, b: 0.2, a: 1}
+  _highlightColor: {r: 1, g: 0.35, b: 0.85, a: 1}
+  _starGlowIntensity: 4
+--- !u!4 &1533636994
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1533636992}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1582488591
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1582488593}
+  - component: {fileID: 1582488592}
+  m_Layer: 0
+  m_Name: Space Environment
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1582488592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1582488591}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb06cbf26e6be9a4c861c6a9d48eddfd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.Space::LastFleet.Space.SpaceEnvironment
+  _sun: {fileID: 0}
+  _skybox: {fileID: 2100000, guid: 69be342da3b881d4e9df2aa80dae63c3, type: 2}
+  _ambientSky: {r: 0.045, g: 0.055, b: 0.08, a: 1}
+  _ambientEquator: {r: 0.03, g: 0.03, b: 0.045, a: 1}
+  _ambientGround: {r: 0.015, g: 0.015, b: 0.02, a: 1}
+--- !u!4 &1582488593
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1582488591}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1593479441
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1593479443}
+  - component: {fileID: 1593479442}
+  m_Layer: 0
+  m_Name: Stranded Ships
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1593479442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1593479441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78ef453bddba69e479e139ca2b16b997, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.Ships::LastFleet.Ships.ShipRegistry
+  _allegiance: 2
+  _zoneWorld: {fileID: 765907068}
+  _camera: {fileID: 1606502383}
+  _obstacles: {fileID: 0}
+  _formationSpacingUnits: 6
+--- !u!4 &1593479443
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1593479441}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1606502382
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1606502386}
+  - component: {fileID: 1606502383}
+  - component: {fileID: 1606502385}
+  - component: {fileID: 1606502384}
+  m_Layer: 0
+  m_Name: Main Camera
+  m_TagString: MainCamera
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!20 &1606502383
+Camera:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1606502382}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_ClearFlags: 1
+  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_projectionMatrixMode: 1
+  m_GateFitMode: 2
+  m_FOVAxisMode: 0
+  m_Iso: 200
+  m_ShutterSpeed: 0.005
+  m_Aperture: 16
+  m_FocusDistance: 10
+  m_FocalLength: 50
+  m_BladeCount: 5
+  m_Curvature: {x: 2, y: 11}
+  m_BarrelClipping: 0.25
+  m_Anamorphism: 0
+  m_SensorSize: {x: 36, y: 24}
+  m_LensShift: {x: 0, y: 0}
+  m_NormalizedViewPortRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  near clip plane: 0.3
+  far clip plane: 2100
+  field of view: 50
+  orthographic: 0
+  orthographic size: 5
+  m_Depth: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingPath: -1
+  m_TargetTexture: {fileID: 0}
+  m_TargetDisplay: 0
+  m_TargetEye: 3
+  m_HDR: 1
+  m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
+  m_ForceIntoRT: 0
+  m_OcclusionCulling: 1
+  m_StereoConvergence: 10
+  m_StereoSeparation: 0.022
+--- !u!114 &1606502384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1606502382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalCameraData
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
+  m_RenderPostProcessing: 1
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_AllowHDROutput: 1
+  m_UseScreenCoordOverride: 0
+  m_ScreenSizeOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_TaaSettings:
+    m_Quality: 3
+    m_FrameInfluence: 0.1
+    m_JitterScale: 1
+    m_MipBias: 0
+    m_VarianceClampScale: 0.9
+    m_ContrastAdaptiveSharpening: 0
+  m_Version: 2
+--- !u!81 &1606502385
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1606502382}
+  m_Enabled: 1
+--- !u!4 &1606502386
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1606502382}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.3904484, y: 0.34682903, z: -0.16172904, w: 0.8373192}
+  m_LocalPosition: {x: -272.71167, y: 459.62665, z: -272.71167}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 481025417}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1931372565
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1931372572}
+  - component: {fileID: 1931372567}
+  - component: {fileID: 1931372571}
+  - component: {fileID: 1931372568}
+  - component: {fileID: 1931372569}
+  - component: {fileID: 1931372570}
+  - component: {fileID: 1931372566}
+  m_Layer: 0
+  m_Name: Quests
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1931372566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1931372565}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 561d2b4c79b7a9c4990a874bd5e4c104, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.RunEnd::LastFleet.RunEnd.RunEndWindow
+  _shipInput: {fileID: 1438555372}
+--- !u!114 &1931372567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1931372565}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2ad6e7902810cf478d1e66f27fdde85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.Dialogue::LastFleet.Dialogue.DialogueService
+--- !u!114 &1931372568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1931372565}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b14792c260cc5c341a4fa3188a60adab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.Quests::LastFleet.Quests.QuestDirector
+  _fleet: {fileID: 1438555371}
+  _pronin: {fileID: 801796157}
+  _zoneWorld: {fileID: 765907068}
+  _search: {fileID: 1438555377}
+  _dialogue: {fileID: 1931372567}
+  _shuttlePrefab: {fileID: 5850452951789750662, guid: ae1f2227297f8b940b4bdb55d87628c4, type: 3}
+  _proninFighterPrefab: {fileID: 6468499856932491739, guid: 2c1cb16c696442b4883d2b09eff3e432, type: 3}
+  _guardFighterPrefab: {fileID: 846422202927604547, guid: 506a0fd2d9b02a44fa0f561b60fe0087, type: 3}
+  _explosionPrefab: {fileID: 2967978022378356793, guid: a30e2280a78291a48abf3411f291b8a5, type: 3}
+--- !u!114 &1931372569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1931372565}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3990511a8cec123438a99ffa9a5bfed4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.Quests::LastFleet.Quests.StationRequestBoard
+  _zoneWorld: {fileID: 765907068}
+  _fleet: {fileID: 1438555371}
+  _dialogue: {fileID: 1931372567}
+  _rewards: {fileID: 1438555386}
+--- !u!114 &1931372570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1931372565}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0a9a31d682d2a947af28eb8261030fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.Quests::LastFleet.Quests.QuestLogPanel
+  _quests: {fileID: 1931372568}
+  _shipInput: {fileID: 1438555372}
+  _requests: {fileID: 1931372569}
+--- !u!114 &1931372571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1931372565}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f2f15cac9bd9a048a7680c264248b0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.Dialogue::LastFleet.Dialogue.DialogueWindow
+  _dialogue: {fileID: 1931372567}
+  _shipInput: {fileID: 1438555372}
+--- !u!4 &1931372572
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1931372565}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2133737184
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2133737186}
+  - component: {fileID: 2133737185}
+  m_Layer: 0
+  m_Name: Inspection Panel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2133737185
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2133737184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f68cf258fc37ce545b4fc01f9783850f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LastFleet.Inspection::LastFleet.Inspection.InspectionPanel
+  _shipInput: {fileID: 1438555372}
+  _anchorBottom: 0
+--- !u!4 &2133737186
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2133737184}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2146484171
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2146484173}
+  - component: {fileID: 2146484172}
   m_Layer: 0
   m_Name: Ship Panel
   m_TagString: Untagged
@@ -1670,76 +1720,27 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &2106842859
+--- !u!114 &2146484172
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2106842858}
+  m_GameObject: {fileID: 2146484171}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f68cf258fc37ce545b4fc01f9783850f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: LastFleet.Inspection::LastFleet.Inspection.InspectionPanel
-  _shipInput: {fileID: 487379869}
+  _shipInput: {fileID: 1438555372}
   _anchorBottom: 1
---- !u!4 &2106842860
+--- !u!4 &2146484173
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2106842858}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2114659903
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2114659905}
-  - component: {fileID: 2114659904}
-  m_Layer: 0
-  m_Name: Pronin Ships
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &2114659904
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2114659903}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 78ef453bddba69e479e139ca2b16b997, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: LastFleet.Ships::LastFleet.Ships.ShipRegistry
-  _allegiance: 1
-  _zoneWorld: {fileID: 876832265}
-  _camera: {fileID: 1271692851}
-  _obstacles: {fileID: 487379867}
-  _formationSpacingUnits: 6
---- !u!4 &2114659905
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2114659903}
+  m_GameObject: {fileID: 2146484171}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -1752,19 +1753,19 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 307851883}
-  - {fileID: 1032139001}
-  - {fileID: 1522069795}
-  - {fileID: 1328079643}
-  - {fileID: 876832266}
-  - {fileID: 333349012}
-  - {fileID: 695705154}
-  - {fileID: 487379889}
-  - {fileID: 2114659905}
-  - {fileID: 466893030}
-  - {fileID: 373571948}
-  - {fileID: 2106842860}
-  - {fileID: 1434851211}
-  - {fileID: 1252583077}
-  - {fileID: 760794261}
-  - {fileID: 1534630207}
+  - {fileID: 1582488593}
+  - {fileID: 1173158339}
+  - {fileID: 481025417}
+  - {fileID: 207505652}
+  - {fileID: 765907069}
+  - {fileID: 1368461799}
+  - {fileID: 1533636994}
+  - {fileID: 1438555392}
+  - {fileID: 801796158}
+  - {fileID: 1593479443}
+  - {fileID: 2133737186}
+  - {fileID: 2146484173}
+  - {fileID: 710632286}
+  - {fileID: 1528782150}
+  - {fileID: 1931372572}
+  - {fileID: 1131825264}

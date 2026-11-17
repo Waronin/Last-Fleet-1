@@ -83,6 +83,7 @@ namespace LastFleet.Zones.Tests
 
             HashSet<StationType> built = new HashSet<StationType>((StationType[])Enum.GetValues(typeof(StationType)));
             built.Remove(StationType.StrandedShip);
+            built.Remove(StationType.Derelict);
             CollectionAssert.AreEquivalent(built, seen);
         }
 

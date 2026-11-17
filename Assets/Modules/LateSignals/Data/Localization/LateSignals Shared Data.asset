@@ -27,6 +27,10 @@ MonoBehaviour:
     m_Key: notice.signal
     m_Metadata:
       m_Items: []
+  - m_Id: 12104316301312
+    m_Key: notice.wreck-field
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

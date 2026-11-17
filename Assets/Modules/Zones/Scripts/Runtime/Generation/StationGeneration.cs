@@ -38,7 +38,7 @@ namespace LastFleet.Zones
             (StationAttitude.Friendly, 0.6f), (StationAttitude.Wary, 0.4f)
         };
 
-        /// <summary>One of the built station types; stranded ships are generated on their own (<see cref="RollStrandedHull"/>).</summary>
+        /// <summary>One of the built station types; stranded ships and derelicts are generated on their own (<see cref="RollStrandedHull"/>).</summary>
         public static StationType PickType(DeterministicRandom random, bool isOrbital)
         {
             return random.PickWeighted(isOrbital ? OrbitalTypes : DeepSpaceTypes);
@@ -107,6 +107,8 @@ namespace LastFleet.Zones
                 StationType.Industrial => new TypeOdds(0.3f, 30, 300, 0.35f, 0.35f, 0.25f, 0.45f, 0.25f),
                 // A stranded ship is never intact: its hull is what needs repairing.
                 StationType.StrandedShip => new TypeOdds(0.6f, 20, 400, 0.5f, 0.3f, 0f, 0.6f, 0.2f),
+                // A dead hull, always damaged (a ruin would hold fewer finds); some leak poison or radiation and stay closed.
+                StationType.Derelict => new TypeOdds(0f, 0, 0, 0.35f, 0.5f, 0f, 1f, 0.15f),
                 _ => new TypeOdds(0.85f, 800, 3000, 0.8f, 0.15f, 0.4f, 0.45f, 0.1f)
             };
         }

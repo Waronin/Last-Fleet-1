@@ -35,7 +35,11 @@ namespace LastFleet.StarSystem
         // Late signals come in the second part of the countdown, some shortly before the attack.
         const float EarliestLateSignalFraction = 0.4f;
         const float LatestLateSignalFraction = 0.9f;
-        const float LateStrandedShipShare = 0.5f;
+        // Wreck fields only come as late signals, drifting into sensor range.
+        static readonly (PointOfInterestKind Value, float Weight)[] LateSignalKinds =
+        {
+            (PointOfInterestKind.StrandedShip, 0.4f), (PointOfInterestKind.Station, 0.4f), (PointOfInterestKind.WreckField, 0.2f)
+        };
 
         static readonly (int Value, float Weight)[] LateSignalCounts = { (0, 0.2f), (1, 0.55f), (2, 0.25f) };
 
@@ -124,21 +128,29 @@ namespace LastFleet.StarSystem
 
         /// <summary>
         /// Places that show up during the countdown (GDD: late signals): 0–2 per system, each a distress call
-        /// from a stranded ship or a station breaking radio silence. What they hold is rolled better on reveal.
+        /// from a stranded ship, a station breaking radio silence or a wreck field drifting into sensor range. What they hold is rolled better on reveal.
         /// </summary>
         static void AddLateSignals(DeterministicRandom random, string systemName, List<Planet> planets, int stationCount,
             bool hasStrandedShip, List<PointOfInterest> pointsOfInterest)
         {
             int count = random.PickWeighted(LateSignalCounts);
             int strandedShipCount = hasStrandedShip ? 1 : 0;
+            int wreckFieldCount = 0;
             for (int i = 0; i < count; i++)
             {
                 float fraction = random.Range(EarliestLateSignalFraction, LatestLateSignalFraction);
-                if (random.Chance(LateStrandedShipShare))
+                PointOfInterestKind kind = random.PickWeighted(LateSignalKinds);
+                if (kind == PointOfInterestKind.StrandedShip)
                 {
                     strandedShipCount++;
                     string name = strandedShipCount == 1 ? $"{systemName} Stranded Ship" : $"{systemName} Stranded Ship {strandedShipCount}";
                     pointsOfInterest.Add(CreateInOrbitOrAdrift(random, name, PointOfInterestKind.StrandedShip, planets, fraction));
+                }
+                else if (kind == PointOfInterestKind.WreckField)
+                {
+                    wreckFieldCount++;
+                    string name = wreckFieldCount == 1 ? $"{systemName} Wreck Field" : $"{systemName} Wreck Field {wreckFieldCount}";
+                    pointsOfInterest.Add(CreateInOrbitOrAdrift(random, name, PointOfInterestKind.WreckField, planets, fraction));
                 }
                 else
                 {

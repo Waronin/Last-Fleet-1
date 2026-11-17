@@ -17,7 +17,7 @@ namespace LastFleet.Stations.Editor
     /// </summary>
     static class StrandedShipPrefabBuilder
     {
-        const string ShipPrefabFolder = "Assets/Modules/Ships/Prefabs";
+        internal const string ShipPrefabFolder = "Assets/Modules/Ships/Prefabs";
         const float RollDegrees = 8f;
         const float PortGapUnits = 0.4f;
         const string EngineGlowName = "Engine Glow";
@@ -86,7 +86,7 @@ namespace LastFleet.Stations.Editor
         }
 
         /// <summary>Copies every hull mesh of the ship, flattened under the model; engines and unlit markers stay behind.</summary>
-        static void CopyHullParts(Transform ship, Transform model)
+        internal static void CopyHullParts(Transform ship, Transform model)
         {
             Material deadWindows = StationPrefabBuilder.LoadOrCreateMaterial("StrandedWindows", StationPrefabBuilder.LitShaderName, DeadWindowColor);
             foreach (MeshRenderer source in ship.GetComponentsInChildren<MeshRenderer>())
@@ -158,7 +158,7 @@ namespace LastFleet.Stations.Editor
         }
 
         /// <summary>A lit frame just off the flank, midship; the port faces away from the hull.</summary>
-        static void AddPort(Transform root, List<Transform> ports, float side, Bounds bounds)
+        internal static void AddPort(Transform root, List<Transform> ports, float side, Bounds bounds)
         {
             float flank = side < 0f ? bounds.min.x : bounds.max.x;
             int number = ports.Count + 1;
@@ -179,7 +179,7 @@ namespace LastFleet.Stations.Editor
             ports.Add(port);
         }
 
-        static Bounds ModelBounds(Transform root)
+        internal static Bounds ModelBounds(Transform root)
         {
             Bounds bounds = new Bounds(Vector3.zero, Vector3.zero);
             bool first = true;

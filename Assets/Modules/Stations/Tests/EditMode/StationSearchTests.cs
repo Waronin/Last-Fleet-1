@@ -44,6 +44,16 @@ namespace LastFleet.Stations.Tests
         }
 
         [Test]
+        public void Derelicts_InTheirLateWreckField_HoldFourToEightFinds()
+        {
+            for (ulong seed = 0; seed < 100; seed++)
+            {
+                int count = StationSearchRules.RollFinds(seed, StationType.Derelict, StationCondition.Damaged, true).Count;
+                Assert.That(count, Is.InRange(4, 8), $"Seed {seed}");
+            }
+        }
+
+        [Test]
         public void IndustrialStations_HoldMoreThanOutposts_AndRuinsLess()
         {
             float outposts = AverageCount(StationType.Outpost, StationCondition.Intact);

@@ -118,11 +118,12 @@ namespace LastFleet.StarSystem.Tests
         }
 
         [Test]
-        public void LateSignals_AreAFewStationsAndStrandedShips_InTheSecondPartOfTheCountdown()
+        public void LateSignals_AreAFewStationsStrandedShipsAndWreckFields_InTheSecondPartOfTheCountdown()
         {
             int total = 0;
             int systemsWithout = 0;
             int strandedShips = 0;
+            int wreckFields = 0;
             for (int seed = 0; seed < SeedSampleCount; seed++)
             {
                 StarSystemLayout layout = StarSystemGenerator.Generate((ulong)seed, "Test");
@@ -138,16 +139,19 @@ namespace LastFleet.StarSystem.Tests
                     {
                         continue;
                     }
-                    Assert.That(point.Kind, Is.EqualTo(PointOfInterestKind.Station).Or.EqualTo(PointOfInterestKind.StrandedShip));
+                    Assert.That(point.Kind, Is.EqualTo(PointOfInterestKind.Station).Or.EqualTo(PointOfInterestKind.StrandedShip)
+                        .Or.EqualTo(PointOfInterestKind.WreckField));
                     Assert.That(point.LateSignalFraction, Is.InRange(0.4f, 0.9f));
                     strandedShips += point.Kind == PointOfInterestKind.StrandedShip ? 1 : 0;
+                    wreckFields += point.Kind == PointOfInterestKind.WreckField ? 1 : 0;
                 }
                 Assert.IsFalse(layout.PointsOfInterest[layout.ArrivalPointOfInterestIndex].IsLateSignal);
             }
 
             Assert.That(total / (float)SeedSampleCount, Is.InRange(0.85f, 1.25f), "About one late signal per system.");
             Assert.That(systemsWithout / (float)SeedSampleCount, Is.InRange(0.12f, 0.28f), "About one system in five has none.");
-            Assert.That(strandedShips / (float)total, Is.InRange(0.35f, 0.65f), "Half are stranded ships.");
+            Assert.That(strandedShips / (float)total, Is.InRange(0.3f, 0.5f), "Two in five are stranded ships.");
+            Assert.That(wreckFields / (float)total, Is.InRange(0.12f, 0.28f), "One in five is a wreck field.");
         }
 
         static int CountLateSignals(StarSystemLayout layout)

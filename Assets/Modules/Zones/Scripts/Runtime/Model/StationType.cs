@@ -21,7 +21,13 @@ namespace LastFleet.Zones
         /// A damaged capital ship adrift, docked at and searched like a station; repaired, it joins the fleet.
         /// Its size depends on its class (see <see cref="StrandedShipClasses"/>), not on this type.
         /// </summary>
-        StrandedShip
+        StrandedShip,
+
+        /// <summary>
+        /// The broken hull of a dead capital ship in a wreck field: never inhabited and beyond repair, but it can be
+        /// searched like an abandoned station for what its stores still hold.
+        /// </summary>
+        Derelict
     }
 
     /// <summary>
@@ -40,6 +46,7 @@ namespace LastFleet.Zones
                 StationType.Research => 26f,
                 StationType.Industrial => 36f,
                 StationType.Habitat => 46f,
+                StationType.Derelict => 13f,
                 _ => throw OutOfRange(type)
             };
         }
@@ -53,6 +60,7 @@ namespace LastFleet.Zones
                 StationType.Research => 5f,
                 StationType.Industrial => 7f,
                 StationType.Habitat => 9f,
+                StationType.Derelict => 1.6f,
                 _ => throw OutOfRange(type)
             };
         }
@@ -69,6 +77,7 @@ namespace LastFleet.Zones
                 StationType.Research => 2f,
                 StationType.Industrial => 2.5f,
                 StationType.Habitat => 3f,
+                StationType.Derelict => 2f,
                 _ => throw OutOfRange(type)
             };
         }
@@ -81,6 +90,7 @@ namespace LastFleet.Zones
                 StationType.Research => 3,
                 StationType.Industrial => 4,
                 StationType.Habitat => 6,
+                StationType.Derelict => 2,
                 _ => throw OutOfRange(type)
             };
         }

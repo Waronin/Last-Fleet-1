@@ -34,6 +34,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - rid: 5599359018023780431
+  - m_Id: 12104316301312
+    m_Localized: 'New signal: a wreck field has drifted into sensor range at {zone}.'
+    m_Metadata:
+      m_Items:
+      - rid: 5599359018023780431
   references:
     version: 2
     RefIds:
@@ -45,3 +50,4 @@ MonoBehaviour:
         - id: 842608640
         - id: 871968768
         - id: 871968769
+        - id: 12104316301312

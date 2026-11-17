@@ -117,6 +117,8 @@ namespace LastFleet.Stations
                 StationType.Industrial => (6, 10),
                 StationType.Habitat => (6, 10),
                 StationType.StrandedShip => (3, 6),
+                // A wreck field is always a late signal, so its derelict yields half again as much: 4–8 finds.
+                StationType.Derelict => (3, 5),
                 _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
             };
         }
@@ -139,6 +141,11 @@ namespace LastFleet.Stations
                 {
                     (FindKind.Resource, 0.45f), (FindKind.Fuel, 0.25f), (FindKind.Survivors, 0.05f),
                     (FindKind.UpgradeModule, 0.2f), (FindKind.ArchiveRecord, 0.05f)
+                },
+                // What a dead warship still holds: fuel, parts and its logs; nobody left alive.
+                StationType.Derelict => new[]
+                {
+                    (FindKind.Resource, 0.2f), (FindKind.Fuel, 0.3f), (FindKind.UpgradeModule, 0.25f), (FindKind.ArchiveRecord, 0.25f)
                 },
                 // Ship stores and logs: fuel from the tanks, parts from the engine rooms, the captain's log.
                 StationType.StrandedShip => new[]

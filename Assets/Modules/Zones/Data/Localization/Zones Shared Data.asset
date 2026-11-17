@@ -139,6 +139,10 @@ MonoBehaviour:
     m_Key: station-type.StrandedShip
     m_Metadata:
       m_Items: []
+  - m_Id: 7365997446639616
+    m_Key: station-type.Derelict
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

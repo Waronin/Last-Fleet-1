@@ -34,6 +34,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - rid: 5599359018023780430
+  - m_Id: 12104316301312
+    m_Localized: 'Neues Signal: Ein Wrackfeld ist bei {zone} in Sensorreichweite getrieben.'
+    m_Metadata:
+      m_Items:
+      - rid: 5599359018023780430
   references:
     version: 2
     RefIds:
@@ -45,3 +50,4 @@ MonoBehaviour:
         - id: 842608640
         - id: 871968768
         - id: 871968769
+        - id: 12104316301312

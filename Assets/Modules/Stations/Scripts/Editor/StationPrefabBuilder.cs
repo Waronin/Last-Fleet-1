@@ -44,10 +44,11 @@ namespace LastFleet.Stations.Editor
                 AssetDatabase.DeleteAsset(PrefabPath(type));
             }
             StrandedShipPrefabBuilder.DeleteAll();
+            DerelictPrefabBuilder.Delete();
             LoadOrCreateCatalog();
         }
 
-        /// <summary>The catalog with one prefab per type and one per stranded ship class; missing prefabs are built first.</summary>
+        /// <summary>The catalog with one prefab per type and one per stranded ship class and the derelict; missing prefabs are built first.</summary>
         public static StationPrefabCatalog LoadOrCreateCatalog()
         {
             List<StationView> prefabs = new List<StationView>
@@ -61,6 +62,7 @@ namespace LastFleet.Stations.Editor
             {
                 prefabs.Add(StrandedShipPrefabBuilder.LoadOrCreate(shipClass));
             }
+            prefabs.Add(DerelictPrefabBuilder.LoadOrCreate());
 
             StationPrefabCatalog catalog = AssetDatabase.LoadAssetAtPath<StationPrefabCatalog>(CatalogPath);
             if (catalog == null)

@@ -62,6 +62,7 @@ namespace LastFleet.LateSignals
             {
                 PointOfInterestKind.StrandedShip => LateSignalTexts.DistressCall,
                 PointOfInterestKind.Station => LateSignalTexts.RadioSilenceBroken,
+                PointOfInterestKind.WreckField => LateSignalTexts.WreckFieldInRange,
                 _ => LateSignalTexts.SignalPickedUp
             };
             return key.Format(("zone", point.Name));
