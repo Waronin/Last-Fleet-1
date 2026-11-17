@@ -11,7 +11,10 @@ namespace LastFleet.StarSystem
         Station,
 
         /// <summary>Empty arrival zone at the system edge where the fleet jumps in.</summary>
-        JumpPoint
+        JumpPoint,
+
+        /// <summary>A damaged capital ship adrift, in orbit or in deep space; the fleet can repair and take it in.</summary>
+        StrandedShip
     }
 
     /// <summary>
@@ -44,7 +47,8 @@ namespace LastFleet.StarSystem
         /// <summary>The belt for asteroid belt points, otherwise null.</summary>
         public AsteroidBelt Belt { get; }
 
-        /// <summary>True for moons and orbital stations, which are drawn relative to their planet.</summary>
-        public bool IsSatellite => (Kind == PointOfInterestKind.Moon || Kind == PointOfInterestKind.Station) && AssociatedPlanet != null;
+        /// <summary>True for moons and for stations and stranded ships in orbit, which are drawn relative to their planet.</summary>
+        public bool IsSatellite => (Kind == PointOfInterestKind.Moon || Kind == PointOfInterestKind.Station || Kind == PointOfInterestKind.StrandedShip) &&
+                                   AssociatedPlanet != null;
     }
 }

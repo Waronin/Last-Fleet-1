@@ -1,0 +1,22 @@
+{
+    "name": "LastFleet.StrandedShips",
+    "rootNamespace": "LastFleet.StrandedShips",
+    "references": [
+        "LastFleet.Shared",
+        "LastFleet.Zones",
+        "LastFleet.Ships",
+        "LastFleet.Stations",
+        "LastFleet.Mining",
+        "LastFleet.Repairs",
+        "LastFleet.People"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

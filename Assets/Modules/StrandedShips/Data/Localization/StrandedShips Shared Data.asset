@@ -1,0 +1,76 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: StrandedShips Shared Data
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.SharedTableData
+  m_TableCollectionName: StrandedShips
+  m_TableCollectionNameGuidString: 8a3cdb25bf9997842aca4728459854bd
+  m_Entries:
+  - m_Id: 955854848
+    m_Key: action.repair
+    m_Metadata:
+      m_Items: []
+  - m_Id: 993603584
+    m_Key: action.cancel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 993603585
+    m_Key: line.type
+    m_Metadata:
+      m_Items: []
+  - m_Id: 997797888
+    m_Key: line.hull
+    m_Metadata:
+      m_Items: []
+  - m_Id: 997797889
+    m_Key: line.cost
+    m_Metadata:
+      m_Items: []
+  - m_Id: 997797890
+    m_Key: line.waiting-crew
+    m_Metadata:
+      m_Items: []
+  - m_Id: 997797891
+    m_Key: line.waiting-metal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 997797892
+    m_Key: line.repairing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 997797893
+    m_Key: feedback.ordered
+    m_Metadata:
+      m_Items: []
+  - m_Id: 997797894
+    m_Key: feedback.cancelled
+    m_Metadata:
+      m_Items: []
+  - m_Id: 997797895
+    m_Key: notice.recovered
+    m_Metadata:
+      m_Items: []
+  - m_Id: 997797896
+    m_Key: notice.no-metal
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 5599359018023780422
+  references:
+    version: 2
+    RefIds:
+    - rid: 5599359018023780422
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1794915898207

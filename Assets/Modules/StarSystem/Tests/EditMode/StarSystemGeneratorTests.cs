@@ -86,9 +86,46 @@ namespace LastFleet.StarSystem.Tests
                 moonCount += planet.Moons.Count;
             }
 
-            int expected = 1 + layout.Planets.Count + moonCount + layout.AsteroidBelts.Count + layout.Stations.Count + 1;
+            int strandedShips = CountStrandedShips(layout);
+            int expected = 1 + layout.Planets.Count + moonCount + layout.AsteroidBelts.Count + layout.Stations.Count + strandedShips + 1;
             Assert.AreEqual(expected, layout.PointsOfInterest.Count);
             Assert.AreEqual(PointOfInterestKind.Star, layout.PointsOfInterest[0].Kind);
+        }
+
+        [Test]
+        public void StrandedShips_AreRarerThanStations_AndAtMostOnePerSystem()
+        {
+            int systemsWithStrandedShip = 0;
+            for (int seed = 0; seed < SeedSampleCount; seed++)
+            {
+                StarSystemLayout layout = StarSystemGenerator.Generate((ulong)seed, "Test");
+                int count = CountStrandedShips(layout);
+                Assert.LessOrEqual(count, 1, $"Seed {seed}");
+                systemsWithStrandedShip += count;
+                foreach (PointOfInterest point in layout.PointsOfInterest)
+                {
+                    if (point.Kind == PointOfInterestKind.StrandedShip && point.AssociatedPlanet != null)
+                    {
+                        CollectionAssert.Contains(layout.Planets, point.AssociatedPlanet, $"Seed {seed}");
+                    }
+                }
+            }
+
+            float share = systemsWithStrandedShip / (float)SeedSampleCount;
+            Assert.That(share, Is.InRange(0.12f, 0.28f), "About one system in five has a stranded ship.");
+        }
+
+        static int CountStrandedShips(StarSystemLayout layout)
+        {
+            int count = 0;
+            foreach (PointOfInterest point in layout.PointsOfInterest)
+            {
+                if (point.Kind == PointOfInterestKind.StrandedShip)
+                {
+                    count++;
+                }
+            }
+            return count;
         }
 
         [Test]

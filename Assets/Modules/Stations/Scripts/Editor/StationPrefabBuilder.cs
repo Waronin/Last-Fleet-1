@@ -17,15 +17,15 @@ namespace LastFleet.Stations.Editor
     public static class StationPrefabBuilder
     {
         const string ModuleRoot = "Assets/Modules/Stations";
-        const string PrefabFolder = ModuleRoot + "/Prefabs";
+        internal const string PrefabFolder = ModuleRoot + "/Prefabs";
         const string DataFolder = ModuleRoot + "/Data";
         const string MaterialFolder = ModuleRoot + "/Graphics/Blockout";
         const string CatalogPath = DataFolder + "/StationPrefabs.asset";
-        const string LitShaderName = "Universal Render Pipeline/Lit";
-        const string UnlitShaderName = "Universal Render Pipeline/Unlit";
+        internal const string LitShaderName = "Universal Render Pipeline/Lit";
+        internal const string UnlitShaderName = "Universal Render Pipeline/Unlit";
         const float ArmThicknessUnits = 1.2f;
-        const float PortFrameSizeUnits = 2.4f;
-        const float PortFrameDepthUnits = 0.3f;
+        internal const float PortFrameSizeUnits = 2.4f;
+        internal const float PortFrameDepthUnits = 0.3f;
         static readonly int BaseColorId = Shader.PropertyToID("_BaseColor");
 
         static readonly Color HullColor = new Color(0.62f, 0.64f, 0.68f);
@@ -43,10 +43,11 @@ namespace LastFleet.Stations.Editor
             {
                 AssetDatabase.DeleteAsset(PrefabPath(type));
             }
+            StrandedShipPrefabBuilder.DeleteAll();
             LoadOrCreateCatalog();
         }
 
-        /// <summary>The catalog with one prefab per type; missing prefabs are built first.</summary>
+        /// <summary>The catalog with one prefab per type and one per stranded ship class; missing prefabs are built first.</summary>
         public static StationPrefabCatalog LoadOrCreateCatalog()
         {
             List<StationView> prefabs = new List<StationView>
@@ -56,6 +57,10 @@ namespace LastFleet.Stations.Editor
                 LoadOrCreate(StationType.Industrial, BuildIndustrialStation),
                 LoadOrCreate(StationType.Habitat, BuildHabitatRing)
             };
+            foreach (StrandedShipClass shipClass in (StrandedShipClass[])System.Enum.GetValues(typeof(StrandedShipClass)))
+            {
+                prefabs.Add(StrandedShipPrefabBuilder.LoadOrCreate(shipClass));
+            }
 
             StationPrefabCatalog catalog = AssetDatabase.LoadAssetAtPath<StationPrefabCatalog>(CatalogPath);
             if (catalog == null)
@@ -243,7 +248,7 @@ namespace LastFleet.Stations.Editor
             return LoadOrCreateMaterial("StationHull", LitShaderName, HullColor);
         }
 
-        static Material Dark()
+        internal static Material Dark()
         {
             return LoadOrCreateMaterial("StationDark", LitShaderName, DarkColor);
         }
@@ -258,12 +263,12 @@ namespace LastFleet.Stations.Editor
             return LoadOrCreateMaterial("StationWindows", UnlitShaderName, WindowColor);
         }
 
-        static Material Port()
+        internal static Material Port()
         {
             return LoadOrCreateMaterial("StationPort", UnlitShaderName, PortColor);
         }
 
-        static Material LoadOrCreateMaterial(string name, string shaderName, Color color)
+        internal static Material LoadOrCreateMaterial(string name, string shaderName, Color color)
         {
             string path = $"{MaterialFolder}/{name}.mat";
             bool isNew = AssetDatabase.LoadAssetAtPath<Material>(path) == null;
@@ -276,7 +281,7 @@ namespace LastFleet.Stations.Editor
             return material;
         }
 
-        static Renderer CreatePart(Transform parent, PrimitiveType type, string name, Material material, Vector3 localPosition, Vector3 localScale)
+        internal static Renderer CreatePart(Transform parent, PrimitiveType type, string name, Material material, Vector3 localPosition, Vector3 localScale)
         {
             GameObject part = GameObject.CreatePrimitive(type);
             part.name = name;

@@ -15,6 +15,7 @@
         "LastFleet.Provisions",
         "LastFleet.Stations",
         "LastFleet.Stations.Editor",
+        "LastFleet.StrandedShips",
         "LastFleet.GenerationPreview",
         "LastFleet.Galaxy",
         "LastFleet.Hud",

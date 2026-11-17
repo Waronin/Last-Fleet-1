@@ -85,7 +85,7 @@ namespace LastFleet.Stations
         /// <summary>Sends the crews of every ship docked at the station to search it; returns feedback.</summary>
         public GameText RequestSearch(ZoneView zone, ZoneStation station)
         {
-            if (station.IsDestroyed)
+            if (station.IsGone)
             {
                 return StationTexts.StationDestroyed.Format(("station", station.Name));
             }

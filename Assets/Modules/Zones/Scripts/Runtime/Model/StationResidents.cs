@@ -15,14 +15,19 @@ namespace LastFleet.Zones
 
         float _pendingDeaths;
 
-        public StationResidents(StationProfile profile)
+        public StationResidents(StationProfile profile) : this(profile, false)
+        {
+        }
+
+        /// <summary>Survivors on a wreck such as a stranded ship all want out, unless they are hostile.</summary>
+        public StationResidents(StationProfile profile, bool everyoneWantsToLeave)
         {
             if (profile == null)
             {
                 throw new ArgumentNullException(nameof(profile));
             }
             Count = profile.Occupants;
-            Willing = WillingFor(profile);
+            Willing = everyoneWantsToLeave && profile.Attitude != StationAttitude.Hostile ? profile.Occupants : WillingFor(profile);
         }
 
         /// <summary>People aboard the station right now.</summary>

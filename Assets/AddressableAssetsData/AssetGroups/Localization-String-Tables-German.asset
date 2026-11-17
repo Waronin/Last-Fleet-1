@@ -69,6 +69,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Locale-de
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 448757c379f07fd45aca591192c0aa7c
+    m_Address: StrandedShips_de
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-de
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 48df3dc687213a84b89834d5ec4c6be1
     m_Address: ShipControl_de
     m_ReadOnly: 1

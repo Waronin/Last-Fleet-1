@@ -73,7 +73,7 @@ namespace LastFleet.Ships
             }
             foreach (ZoneStation station in contents.Stations)
             {
-                if (station.IsDestroyed)
+                if (station.IsGone)
                 {
                     continue;
                 }

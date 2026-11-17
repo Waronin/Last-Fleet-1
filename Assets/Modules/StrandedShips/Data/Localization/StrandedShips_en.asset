@@ -1,0 +1,93 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: StrandedShips_en
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: 8a3cdb25bf9997842aca4728459854bd, type: 2}
+  m_Metadata:
+    m_Items:
+    - rid: 5599359018023780423
+  m_TableData:
+  - m_Id: 955854848
+    m_Localized: Repair hulk
+    m_Metadata:
+      m_Items: []
+  - m_Id: 993603584
+    m_Localized: Stop repairs
+    m_Metadata:
+      m_Items: []
+  - m_Id: 993603585
+    m_Localized: '{class} (stranded), about {length:0.0} km'
+    m_Metadata:
+      m_Items:
+      - rid: 5599359018023780423
+  - m_Id: 997797888
+    m_Localized: 'Hull: {percent} %'
+    m_Metadata:
+      m_Items:
+      - rid: 5599359018023780423
+  - m_Id: 997797889
+    m_Localized: 'Repair: {metal} metal, {seconds} s with a crew docked'
+    m_Metadata:
+      m_Items:
+      - rid: 5599359018023780423
+  - m_Id: 997797890
+    m_Localized: 'Repair: waiting for a docked ship with a crew'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 997797891
+    m_Localized: 'Repair: waiting for metal'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 997797892
+    m_Localized: 'Repair: in progress, {seconds} s left'
+    m_Metadata:
+      m_Items:
+      - rid: 5599359018023780423
+  - m_Id: 997797893
+    m_Localized: '{station}: repairs ordered. They run while a ship with a crew is docked.'
+    m_Metadata:
+      m_Items:
+      - rid: 5599359018023780423
+  - m_Id: 997797894
+    m_Localized: '{station}: repairs stopped. The work done so far stays.'
+    m_Metadata:
+      m_Items:
+      - rid: 5599359018023780423
+  - m_Id: 997797895
+    m_Localized: '{ship} joins the fleet{count:cond:>0? with {} survivors aboard|}. Its tanks are dry: the tanker must fill them before the jump.'
+    m_Metadata:
+      m_Items:
+      - rid: 5599359018023780423
+  - m_Id: 997797896
+    m_Localized: 'Out of metal: the repair of {station} is paused.'
+    m_Metadata:
+      m_Items:
+      - rid: 5599359018023780423
+  references:
+    version: 2
+    RefIds:
+    - rid: 5599359018023780423
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 
+        m_SharedEntries:
+        - id: 993603585
+        - id: 997797888
+        - id: 997797889
+        - id: 997797892
+        - id: 997797893
+        - id: 997797894
+        - id: 997797895
+        - id: 997797896

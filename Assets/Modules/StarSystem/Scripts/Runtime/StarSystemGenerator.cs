@@ -28,6 +28,9 @@ namespace LastFleet.StarSystem
         const float OrbitalStationDistanceAU = 0.02f;
         const float MoonSpacingAU = 0.004f;
         const float JumpPointDistanceFactor = 1.25f;
+        // About one system in five; stations come 1–4 per system.
+        const float StrandedShipChance = 0.2f;
+        const ulong StrandedShipSalt = 0x5742A1DUL;
 
         static readonly StarProfile[] StarProfiles =
         {
@@ -78,11 +81,45 @@ namespace LastFleet.StarSystem
             List<Station> stations = GenerateStations(random, systemName, planets);
             List<PointOfInterest> pointsOfInterest = CollectPointsOfInterest(random, systemName, planets, belts, stations);
 
+            // Rolled from its own stream, so systems that had no stranded ship before keep every other roll.
+            if (TryCreateStrandedShip(new DeterministicRandom(DeterministicRandom.DeriveSeed(seed, StrandedShipSalt)), systemName, planets,
+                    out PointOfInterest strandedShip))
+            {
+                pointsOfInterest.Add(strandedShip);
+            }
+
             // The jump point is appended last so adding it does not change any earlier point of interest.
             pointsOfInterest.Add(CreateJumpPoint(random, systemName, planets, belts));
             int arrivalIndex = pointsOfInterest.Count - 1;
 
             return new StarSystemLayout(seed, systemName, star, planets, belts, stations, pointsOfInterest, arrivalIndex);
+        }
+
+        /// <summary>
+        /// A stranded capital ship in some systems (GDD: new capital ships are rare finds): rarer than
+        /// stations, at most one per system, in orbit around a planet or adrift between the orbits.
+        /// </summary>
+        static bool TryCreateStrandedShip(DeterministicRandom random, string systemName, List<Planet> planets, out PointOfInterest strandedShip)
+        {
+            strandedShip = null;
+            if (!random.Chance(StrandedShipChance))
+            {
+                return false;
+            }
+
+            string name = $"{systemName} Stranded Ship";
+            if (random.Chance(OrbitalStationChance))
+            {
+                Planet planet = planets[random.Range(0, planets.Count)];
+                Vector2 orbitalPositionAU = planet.PositionAU + OrbitMath.PositionOnOrbit(OrbitalStationDistanceAU, random.AngleDegrees());
+                strandedShip = new PointOfInterest(name, PointOfInterestKind.StrandedShip, orbitalPositionAU, false, planet, null);
+                return true;
+            }
+
+            float radiusAU = random.Range(planets[0].OrbitRadiusAU, planets[planets.Count - 1].OrbitRadiusAU);
+            strandedShip = new PointOfInterest(name, PointOfInterestKind.StrandedShip, OrbitMath.PositionOnOrbit(radiusAU, random.AngleDegrees()),
+                false, null, null);
+            return true;
         }
 
         /// <summary>Empty arrival zone beyond the outermost orbit, where the fleet jumps in.</summary>

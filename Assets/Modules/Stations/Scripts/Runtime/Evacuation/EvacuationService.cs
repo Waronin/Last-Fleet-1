@@ -210,7 +210,7 @@ namespace LastFleet.Stations
         /// <summary>Why the station cannot be evacuated now, or null.</summary>
         public GameText BlockedReason(ZoneStation station)
         {
-            if (station.IsDestroyed)
+            if (station.IsGone)
             {
                 return StationTexts.StationDestroyed.Format(("station", station.Name));
             }
@@ -252,7 +252,7 @@ namespace LastFleet.Stations
         void Advance(EvacuationRun run, float deltaSeconds, ref int room, bool retryPorts)
         {
             // Unity's overloaded equality treats a zone view destroyed with its system as null.
-            if (run.Zone == null || run.Station.IsDestroyed)
+            if (run.Zone == null || run.Station.IsGone)
             {
                 MarkEnding(run, EndReason.Silent);
                 return;
@@ -387,7 +387,7 @@ namespace LastFleet.Stations
             foreach (ZoneStation station in _hazardStations)
             {
                 StationResidents residents = station.Residents;
-                if (residents.Count == 0 || station.IsDestroyed)
+                if (residents.Count == 0 || station.IsGone)
                 {
                     continue;
                 }

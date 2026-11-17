@@ -52,6 +52,12 @@ namespace LastFleet.Stations
         public DockingState State { get; private set; }
         public ZoneStation Station { get; private set; }
 
+        /// <summary>The zone of the station the ship docks at; null when inactive.</summary>
+        public ZoneView Zone => State == DockingState.Inactive ? null : _zone;
+
+        /// <summary>Docked with a living crew aboard, who can work at the station.</summary>
+        public bool IsDockedWithCrew => State == DockingState.Docked && !_ship.IsDerelict;
+
         /// <summary>Whether the crew reports what it finds on arrival; automated trips such as evacuation runs stay quiet.</summary>
         public bool ReportsArrival { get; private set; }
         public ShipAgent Ship => _ship;

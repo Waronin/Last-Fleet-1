@@ -93,7 +93,7 @@ namespace LastFleet.Quests
             {
                 ZoneStation station = stations[i];
                 // A station that already has someone to talk to, such as a quest giver, keeps them.
-                if (station.Contact != null || station.IsDestroyed)
+                if (station.Contact != null || station.IsGone)
                 {
                     continue;
                 }

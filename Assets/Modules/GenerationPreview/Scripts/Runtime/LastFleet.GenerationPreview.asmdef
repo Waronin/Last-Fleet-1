@@ -12,6 +12,7 @@
         "LastFleet.Rewards",
         "LastFleet.Repairs",
         "LastFleet.Stations",
+        "LastFleet.StrandedShips",
         "LastFleet.People",
         "LastFleet.Provisions",
         "LastFleet.Localization",

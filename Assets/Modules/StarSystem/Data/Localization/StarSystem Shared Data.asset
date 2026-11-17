@@ -39,6 +39,10 @@ MonoBehaviour:
     m_Key: point-of-interest.JumpPoint
     m_Metadata:
       m_Items: []
+  - m_Id: 7279445718675456
+    m_Key: point-of-interest.StrandedShip
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

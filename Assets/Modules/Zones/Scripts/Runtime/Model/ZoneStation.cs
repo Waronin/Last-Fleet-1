@@ -16,8 +16,25 @@ namespace LastFleet.Zones
         public const float ScanStandoffMarginUnits = 20f;
 
         public ZoneStation(string name, StationType type, Vector3 localPosition, float headingDegrees, StationProfile profile)
+            : this(name, type, localPosition, headingDegrees, profile, null)
         {
+        }
+
+        /// <summary>A stranded capital ship: a station of type <see cref="StationType.StrandedShip"/> with a hull to repair.</summary>
+        public ZoneStation(string name, Vector3 localPosition, float headingDegrees, StationProfile profile, StrandedHull strandedHull)
+            : this(name, StationType.StrandedShip, localPosition, headingDegrees, profile,
+                strandedHull ?? throw new ArgumentNullException(nameof(strandedHull)))
+        {
+        }
+
+        ZoneStation(string name, StationType type, Vector3 localPosition, float headingDegrees, StationProfile profile, StrandedHull strandedHull)
+        {
+            if ((type == StationType.StrandedShip) != (strandedHull != null))
+            {
+                throw new ArgumentException("Exactly the stranded ships have a stranded hull.", nameof(type));
+            }
             Name = name;
+            StrandedHull = strandedHull;
             Type = type;
             LocalPosition = localPosition;
             HeadingDegrees = headingDegrees;
@@ -30,19 +47,34 @@ namespace LastFleet.Zones
         public float HeadingDegrees { get; }
         public StationProfile Profile { get; }
 
-        /// <summary>The people aboard during the run, who may join the fleet; starts from the profile's occupants.</summary>
-        public StationResidents Residents => _residents ??= new StationResidents(Profile);
+        /// <summary>The hull of a stranded capital ship; null for an ordinary station.</summary>
+        public StrandedHull StrandedHull { get; }
+
+        public bool IsStrandedShip => StrandedHull != null;
+
+        /// <summary>
+        /// The people aboard during the run, who may join the fleet; starts from the profile's occupants.
+        /// Survivors of a stranded ship all want to leave it.
+        /// </summary>
+        public StationResidents Residents => _residents ??= new StationResidents(Profile, IsStrandedShip);
 
         StationResidents _residents;
-        public float FootprintRadiusUnits => StationTypes.FootprintRadiusUnits(Type);
-        public int DockingPortCount => StationTypes.DockingPortCount(Type);
+
+        public float FootprintRadiusUnits =>
+            IsStrandedShip ? StrandedShipClasses.FootprintRadiusUnits(StrandedHull.Class) : StationTypes.FootprintRadiusUnits(Type);
+
+        public int DockingPortCount => IsStrandedShip ? StrandedShipClasses.DockingPortCount : StationTypes.DockingPortCount(Type);
+
+        /// <summary>Rough length for players, e.g. "about 5 km".</summary>
+        public float NominalLengthKlicks =>
+            IsStrandedShip ? StrandedShipClasses.NominalLengthKlicks(StrandedHull.Class) : StationTypes.NominalLengthKlicks(Type);
 
         /// <summary>Null until the station has been scanned.</summary>
         public StationScanReport ScanReport { get; private set; }
 
         public bool IsScanned => ScanReport != null;
         public float ScanStandoffUnits => FootprintRadiusUnits + ScanStandoffMarginUnits;
-        public float ScanDurationFactor => StationTypes.ScanDurationFactor(Type);
+        public float ScanDurationFactor => IsStrandedShip ? StrandedShipClasses.ScanDurationFactor : StationTypes.ScanDurationFactor(Type);
 
         public void CompleteScan(float accuracyRoll)
         {
@@ -81,7 +113,7 @@ namespace LastFleet.Zones
         /// </summary>
         public IStationContact Contact { get; private set; }
 
-        public bool HasContactToTalkTo => Contact != null && Contact.HasSomethingToSay && !IsDestroyed;
+        public bool HasContactToTalkTo => Contact != null && Contact.HasSomethingToSay && !IsGone;
 
         public void SetContact(IStationContact contact)
         {
@@ -107,5 +139,11 @@ namespace LastFleet.Zones
             IsDestroyed = true;
             Contact = null;
         }
+
+        /// <summary>A stranded ship that joined the fleet; like a destroyed station, the hulk is no longer in the zone.</summary>
+        public bool IsRecovered => IsStrandedShip && StrandedHull.IsRecovered;
+
+        /// <summary>Destroyed or recovered: nothing to dock at, search, hail, pick or fly around anymore.</summary>
+        public bool IsGone => IsDestroyed || IsRecovered;
     }
 }

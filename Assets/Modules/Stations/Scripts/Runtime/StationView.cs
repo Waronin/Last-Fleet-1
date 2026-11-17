@@ -13,10 +13,19 @@ namespace LastFleet.Stations
     public sealed class StationView : MonoBehaviour
     {
         [SerializeField] StationType _type;
+        [Tooltip("Only for the stranded ship type: which capital ship class this hulk shows.")]
+        [SerializeField] StrandedShipClass _strandedClass;
         [FormerlySerializedAs("_dockingBays")]
         [SerializeField] Transform[] _dockingPorts = new Transform[0];
 
         public StationType Type => _type;
+        public StrandedShipClass StrandedClass => _strandedClass;
+
+        /// <summary>Whether this model is the one for the station: same type, and for a stranded ship the same class.</summary>
+        public bool Shows(ZoneStation station)
+        {
+            return station.Type == _type && (!station.IsStrandedShip || station.StrandedHull.Class == _strandedClass);
+        }
         public IReadOnlyList<Transform> DockingPorts => _dockingPorts;
     }
 }

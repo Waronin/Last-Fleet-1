@@ -26,9 +26,23 @@ namespace LastFleet.Zones
             (StationAttitude.Friendly, 0.45f), (StationAttitude.Wary, 0.35f), (StationAttitude.Hostile, 0.2f)
         };
 
+        // Survivors of a stranded ship hope for rescue: never hostile, though some are wary of strangers.
+        static readonly (StationAttitude Value, float Weight)[] StrandedAttitudes =
+        {
+            (StationAttitude.Friendly, 0.6f), (StationAttitude.Wary, 0.4f)
+        };
+
+        /// <summary>One of the built station types; stranded ships are generated on their own (<see cref="RollStrandedHull"/>).</summary>
         public static StationType PickType(DeterministicRandom random, bool isOrbital)
         {
             return random.PickWeighted(isOrbital ? OrbitalTypes : DeepSpaceTypes);
+        }
+
+        /// <summary>The class of a stranded ship and how much of its hull is left (20–50 %).</summary>
+        public static StrandedHull RollStrandedHull(DeterministicRandom random)
+        {
+            StrandedShipClass shipClass = StrandedShipClasses.Pick(random);
+            return new StrandedHull(shipClass, random.Range(StrandedHull.MinimumFoundFraction, StrandedHull.MaximumFoundFraction));
         }
 
         /// <summary>A toxic or radioactive station keeps only this fraction of the usual occupants alive.</summary>
@@ -51,7 +65,8 @@ namespace LastFleet.Zones
                 // Few hold out in poison or radiation; the roll stays, so the stations after it do not change.
                 occupants = Math.Max(1, occupants / HazardousOccupantDivisor);
             }
-            return new StationProfile(atmosphere, occupants, random.PickWeighted(Attitudes), condition, radiation);
+            StationAttitude attitude = random.PickWeighted(type == StationType.StrandedShip ? StrandedAttitudes : Attitudes);
+            return new StationProfile(atmosphere, occupants, attitude, condition, radiation);
         }
 
         static TypeOdds OddsFor(StationType type)
@@ -61,6 +76,8 @@ namespace LastFleet.Zones
                 StationType.Outpost => new TypeOdds(0.55f, 10, 80, 0.6f, 0.3f, 0.35f, 0.45f, 0.15f),
                 StationType.Research => new TypeOdds(0.5f, 15, 120, 0.6f, 0.25f, 0.4f, 0.4f, 0.35f),
                 StationType.Industrial => new TypeOdds(0.3f, 30, 300, 0.35f, 0.35f, 0.25f, 0.45f, 0.25f),
+                // A stranded ship is never intact: its hull is what needs repairing.
+                StationType.StrandedShip => new TypeOdds(0.6f, 20, 400, 0.5f, 0.3f, 0f, 0.6f, 0.2f),
                 _ => new TypeOdds(0.85f, 800, 3000, 0.8f, 0.15f, 0.4f, 0.45f, 0.1f)
             };
         }

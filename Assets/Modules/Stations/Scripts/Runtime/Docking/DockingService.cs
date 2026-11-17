@@ -66,7 +66,7 @@ namespace LastFleet.Stations
         /// <summary>Sends every given small ship that can dock to its own free port; returns how many go.</summary>
         public int RequestDocking(ZoneView zone, ZoneStation station, IReadOnlyList<ShipAgent> ships)
         {
-            if (station.IsDestroyed)
+            if (station.IsGone)
             {
                 Notice?.Invoke(StationTexts.StationDestroyed.Format(("station", station.Name)));
                 return 0;
@@ -201,7 +201,7 @@ namespace LastFleet.Stations
         /// </summary>
         internal bool TryDockQuietly(ZoneView zone, ZoneStation station, ShipAgent ship)
         {
-            return !station.IsDestroyed && CanDock(ship) && TrySend(zone, station, ship, false);
+            return !station.IsGone && CanDock(ship) && TrySend(zone, station, ship, false);
         }
 
         bool TrySend(ZoneView zone, ZoneStation station, ShipAgent ship, bool announce = true)

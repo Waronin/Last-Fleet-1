@@ -138,6 +138,10 @@ MonoBehaviour:
     m_Localized: Wreckage
     m_Metadata:
       m_Items: []
+  - m_Id: 7279447241207808
+    m_Localized: Stranded ship
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

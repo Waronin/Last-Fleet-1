@@ -48,6 +48,7 @@ namespace LastFleet.StarSystem
         [SerializeField] Color _stationColor = new Color(0.9f, 0.9f, 0.95f);
         [SerializeField] Color _fuelMarkerColor = new Color(1f, 0.55f, 0.15f);
         [SerializeField] Color _jumpPointColor = new Color(0.5f, 1f, 0.6f);
+        [SerializeField] Color _strandedShipColor = new Color(1f, 0.4f, 0.25f);
         [SerializeField] Color _unexploredMarkerColor = new Color(0.45f, 0.45f, 0.5f);
         [SerializeField] Color _exploredMarkerColor = new Color(0.3f, 0.9f, 1f);
         [SerializeField] Color _selectedMarkerColor = new Color(1f, 0.85f, 0.2f);
@@ -95,6 +96,13 @@ namespace LastFleet.StarSystem
             foreach (Station station in layout.Stations)
             {
                 CreateStation(station);
+            }
+            foreach (PointOfInterest point in layout.PointsOfInterest)
+            {
+                if (point.Kind == PointOfInterestKind.StrandedShip)
+                {
+                    CreateStrandedShip(point);
+                }
             }
             CreateJumpPointBeacon(layout.PointsOfInterest[layout.ArrivalPointOfInterestIndex]);
             CreateMarkers(layout);
@@ -246,6 +254,7 @@ namespace LastFleet.StarSystem
                 PointOfInterestKind.Planet => PlanetDiameterUnits(point.AssociatedPlanet) * 0.5f + MarkerMarginUnits,
                 PointOfInterestKind.Moon => _moonDiameterUnits * 0.5f + MarkerMarginUnits,
                 PointOfInterestKind.Station => _stationSizeUnits * 0.5f + MarkerMarginUnits,
+                PointOfInterestKind.StrandedShip => _stationSizeUnits * 0.7f + MarkerMarginUnits,
                 _ => BeltMarkerRadiusUnits
             };
         }
@@ -344,6 +353,16 @@ namespace LastFleet.StarSystem
             body.transform.localScale = Vector3.one * _stationSizeUnits;
             body.transform.localRotation = Quaternion.Euler(0f, 45f, 0f);
             BlockoutPrimitives.SetColor(body, _stationColor, _propertyBlock);
+        }
+
+        /// <summary>A long, tilted sliver in rust red: a hull, not a station.</summary>
+        void CreateStrandedShip(PointOfInterest point)
+        {
+            Renderer body = BlockoutPrimitives.CreatePrimitive(PrimitiveType.Cube, transform, _glowMaterial, point.Name);
+            body.transform.localPosition = GetPointOfInterestLocalPosition(point);
+            body.transform.localScale = new Vector3(0.4f, 0.4f, 1.4f) * _stationSizeUnits;
+            body.transform.localRotation = Quaternion.Euler(15f, 30f, 20f);
+            BlockoutPrimitives.SetColor(body, _strandedShipColor, _propertyBlock);
         }
 
         void CreateJumpPointBeacon(PointOfInterest jumpPoint)

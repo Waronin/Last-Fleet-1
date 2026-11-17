@@ -72,7 +72,7 @@ namespace LastFleet.Zones.Tests
         }
 
         [Test]
-        public void EveryType_AppearsInOrbitOrDeepSpace()
+        public void EveryBuiltType_AppearsInOrbitOrDeepSpace()
         {
             DeterministicRandom random = new DeterministicRandom(11UL);
             HashSet<StationType> seen = new HashSet<StationType>();
@@ -81,7 +81,61 @@ namespace LastFleet.Zones.Tests
                 seen.Add(StationGeneration.PickType(random, i % 2 == 0));
             }
 
-            CollectionAssert.AreEquivalent((StationType[])Enum.GetValues(typeof(StationType)), seen);
+            HashSet<StationType> built = new HashSet<StationType>((StationType[])Enum.GetValues(typeof(StationType)));
+            built.Remove(StationType.StrandedShip);
+            CollectionAssert.AreEquivalent(built, seen);
+        }
+
+        [Test]
+        public void StrandedShips_AreDamagedAndNeverHostile()
+        {
+            DeterministicRandom random = new DeterministicRandom(5UL);
+            int inhabited = 0;
+            for (int i = 0; i < SampleCount; i++)
+            {
+                StationProfile profile = StationGeneration.RollProfile(random, StationType.StrandedShip);
+                Assert.AreNotEqual(StationCondition.Intact, profile.Condition);
+                Assert.AreNotEqual(StationAttitude.Hostile, profile.Attitude);
+                if (profile.IsInhabited)
+                {
+                    inhabited++;
+                }
+            }
+            Assert.That(inhabited / (float)SampleCount, Is.InRange(0.5f, 0.7f), "About 60 % carry survivors.");
+        }
+
+        [Test]
+        public void StrandedHulls_AreFoundBetweenAFifthAndHalfWhole_CruisersRarest()
+        {
+            DeterministicRandom random = new DeterministicRandom(9UL);
+            Dictionary<StrandedShipClass, int> counts = new Dictionary<StrandedShipClass, int>();
+            for (int i = 0; i < SampleCount; i++)
+            {
+                StrandedHull hull = StationGeneration.RollStrandedHull(random);
+                Assert.That(hull.Fraction, Is.InRange(StrandedHull.MinimumFoundFraction, StrandedHull.MaximumFoundFraction));
+                counts.TryGetValue(hull.Class, out int count);
+                counts[hull.Class] = count + 1;
+            }
+            foreach (StrandedShipClass shipClass in (StrandedShipClass[])Enum.GetValues(typeof(StrandedShipClass)))
+            {
+                Assert.IsTrue(counts.ContainsKey(shipClass), $"{shipClass} never found.");
+                if (shipClass != StrandedShipClass.Cruiser)
+                {
+                    Assert.Greater(counts[shipClass], counts[StrandedShipClass.Cruiser]);
+                }
+            }
+        }
+
+        [Test]
+        public void StrandedSurvivors_AllWantToLeave()
+        {
+            StationProfile profile = new StationProfile(StationAtmosphere.Breathable, 200, StationAttitude.Wary, StationCondition.Damaged,
+                StationRadiation.None);
+            ZoneStation hulk = new ZoneStation("Hulk", UnityEngine.Vector3.zero, 0f, profile, new StrandedHull(StrandedShipClass.Liner, 0.3f));
+            ZoneStation station = new ZoneStation("Station", StationType.Habitat, UnityEngine.Vector3.zero, 0f, profile);
+
+            Assert.AreEqual(200, hulk.Residents.Willing);
+            Assert.AreEqual(20, station.Residents.Willing);
         }
 
         [Test]

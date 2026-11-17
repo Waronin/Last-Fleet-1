@@ -4,7 +4,9 @@ using LastFleet.Exploration;
 using LastFleet.Shared.Text;
 using LastFleet.Ships;
 using LastFleet.Stations;
+using LastFleet.StrandedShips;
 using LastFleet.Zones;
+using UnityEngine;
 
 namespace LastFleet.Inspection
 {
@@ -24,14 +26,18 @@ namespace LastFleet.Inspection
         readonly DockingService _docking;
         readonly SearchService _search;
         readonly EvacuationService _evacuation;
+        readonly StrandedShipRecovery _recovery;
         readonly Func<IReadOnlyList<ShipAgent>> _selectedShips;
         readonly List<ShipAgent> _docked = new List<ShipAgent>();
         readonly List<ShipAgent> _assigned = new List<ShipAgent>();
 
+        /// <param name="recovery">Optional; without it a stranded ship shows no repair.</param>
         public StationInspection(ZoneView zone, ZoneStation station, ScoutingService scouting, ShipRegistry registry,
-            DockingService docking, SearchService search, EvacuationService evacuation, Func<IReadOnlyList<ShipAgent>> selectedShips)
+            DockingService docking, SearchService search, EvacuationService evacuation, StrandedShipRecovery recovery,
+            Func<IReadOnlyList<ShipAgent>> selectedShips)
         {
             _evacuation = evacuation;
+            _recovery = recovery;
             _zone = zone;
             _station = station ?? throw new ArgumentNullException(nameof(station));
             _scouting = scouting;
@@ -43,7 +49,7 @@ namespace LastFleet.Inspection
 
         public ZoneStation Station => _station;
         public GameText Title => GameText.Verbatim(_station.Name);
-        public bool IsValid => _zone != null && !_station.IsDestroyed;
+        public bool IsValid => _zone != null && !_station.IsGone;
 
         public void Describe(List<GameText> lines)
         {
@@ -52,6 +58,7 @@ namespace LastFleet.Inspection
             lines.Add(TypeLine(_station));
             lines.Add(InspectionTexts.StationPorts.Format(("count", _station.DockingPortCount)));
             DescribeKnowledge(_station, lines);
+            DescribeStrandedHull(lines);
             DescribeHail(_station, lines);
             DescribeResidents(lines);
             DescribeDocking(lines);
@@ -90,6 +97,50 @@ namespace LastFleet.Inspection
                 actions.Add(new InspectionAction(StationTexts.EvacuateAction, null, evacuationBlocked == null, evacuationBlocked,
                     () => _evacuation.RequestEvacuation(_zone, _station, _selectedShips())));
             }
+
+            if (_recovery != null && _station.IsStrandedShip)
+            {
+                // Nothing runs on its own (as with repairs): the player orders the work and can stop it.
+                actions.Add(_station.StrandedHull.IsRepairOrdered
+                    ? new InspectionAction(StrandedShipTexts.CancelAction, null, true, null, () => _recovery.CancelRepair(_station))
+                    : new InspectionAction(StrandedShipTexts.RepairAction, null, true, null, () => _recovery.OrderRepair(_station)));
+            }
+        }
+
+        /// <summary>
+        /// A stranded ship's hull once a scan or a docked crew has seen it, what the repair costs, and how the
+        /// ordered repair is getting on.
+        /// </summary>
+        void DescribeStrandedHull(List<GameText> lines)
+        {
+            if (_recovery == null || !_station.IsStrandedShip)
+            {
+                return;
+            }
+            StrandedHull hull = _station.StrandedHull;
+            StrandedRepairPlan plan = _recovery.PlanFor(_station);
+            if (_station.IsEnvironmentKnown)
+            {
+                lines.Add(StrandedShipTexts.HullLine.Format(("percent", Mathf.FloorToInt(hull.Fraction * 100f))));
+                if (plan != null)
+                {
+                    lines.Add(StrandedShipTexts.CostLine.Format(("metal", Mathf.CeilToInt(plan.MetalLeft(hull))),
+                        ("seconds", Mathf.CeilToInt(plan.SecondsLeft(hull)))));
+                }
+            }
+
+            switch (_recovery.StateOf(_station))
+            {
+                case StrandedRepairState.WaitingForCrew:
+                    lines.Add(StrandedShipTexts.WaitingForCrewLine);
+                    break;
+                case StrandedRepairState.WaitingForMetal:
+                    lines.Add(StrandedShipTexts.WaitingForMetalLine);
+                    break;
+                case StrandedRepairState.Repairing when plan != null:
+                    lines.Add(StrandedShipTexts.RepairingLine.Format(("seconds", Mathf.CeilToInt(plan.SecondsLeft(hull)))));
+                    break;
+            }
         }
 
         /// <summary>
@@ -114,8 +165,13 @@ namespace LastFleet.Inspection
         /// <summary>Type and rough size, which are visible from afar.</summary>
         public static GameText TypeLine(ZoneStation station)
         {
+            if (station.IsStrandedShip)
+            {
+                GameText shipClass = ShipTexts.Classes.For(StrandedShipClasses.ShipClassName(station.StrandedHull.Class));
+                return StrandedShipTexts.TypeLine.Format(("class", shipClass), ("length", station.NominalLengthKlicks));
+            }
             return InspectionTexts.StationTypeLine.Format(("type", ZoneTexts.StationTypeNames.For(station.Type)),
-                ("length", StationTypes.NominalLengthKlicks(station.Type)));
+                ("length", station.NominalLengthKlicks));
         }
 
         /// <summary>

@@ -104,6 +104,7 @@ namespace LastFleet.Stations
                 StationType.Research => (4, 7),
                 StationType.Industrial => (6, 10),
                 StationType.Habitat => (6, 10),
+                StationType.StrandedShip => (3, 6),
                 _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
             };
         }
@@ -126,6 +127,12 @@ namespace LastFleet.Stations
                 {
                     (FindKind.Resource, 0.45f), (FindKind.Fuel, 0.25f), (FindKind.Survivors, 0.05f),
                     (FindKind.UpgradeModule, 0.2f), (FindKind.ArchiveRecord, 0.05f)
+                },
+                // Ship stores and logs: fuel from the tanks, parts from the engine rooms, the captain's log.
+                StationType.StrandedShip => new[]
+                {
+                    (FindKind.Resource, 0.3f), (FindKind.Fuel, 0.3f), (FindKind.Survivors, 0.15f),
+                    (FindKind.UpgradeModule, 0.15f), (FindKind.ArchiveRecord, 0.1f)
                 },
                 _ => new[]
                 {

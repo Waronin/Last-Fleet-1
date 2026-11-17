@@ -17,14 +17,31 @@ namespace LastFleet.Stations.Tests
         const float PlaneToleranceUnits = 0.01f;
 
         [Test]
-        public void Catalog_HasOnePrefabPerType()
+        public void Catalog_HasOnePrefabPerTypeAndStrandedShipClass()
         {
             StationPrefabCatalog catalog = LoadCatalog();
             foreach (StationType type in (StationType[])Enum.GetValues(typeof(StationType)))
             {
-                Assert.IsTrue(catalog.TryGetPrefab(type, out StationView prefab), $"No prefab for {type}.");
+                if (type == StationType.StrandedShip)
+                {
+                    continue;
+                }
+                ZoneStation station = new ZoneStation("Test", type, Vector3.zero, 0f, AbandonedProfile());
+                Assert.IsTrue(catalog.TryGetPrefab(station, out StationView prefab), $"No prefab for {type}.");
                 Assert.AreEqual(type, prefab.Type);
             }
+            foreach (StrandedShipClass shipClass in (StrandedShipClass[])Enum.GetValues(typeof(StrandedShipClass)))
+            {
+                ZoneStation hulk = new ZoneStation("Test", Vector3.zero, 0f, AbandonedProfile(), new StrandedHull(shipClass, 0.3f));
+                Assert.IsTrue(catalog.TryGetPrefab(hulk, out StationView prefab), $"No prefab for a stranded {shipClass}.");
+                Assert.AreEqual(StationType.StrandedShip, prefab.Type);
+                Assert.AreEqual(shipClass, prefab.StrandedClass);
+            }
+        }
+
+        static StationProfile AbandonedProfile()
+        {
+            return new StationProfile(StationAtmosphere.Breathable, 0, StationAttitude.None, StationCondition.Damaged, StationRadiation.None);
         }
 
         [Test]
@@ -33,11 +50,11 @@ namespace LastFleet.Stations.Tests
             List<string> failures = new List<string>();
             foreach (StationView prefab in AllPrefabs())
             {
-                float footprint = StationTypes.FootprintRadiusUnits(prefab.Type);
+                float footprint = FootprintOf(prefab);
                 float extent = PlanarExtent(prefab.transform);
                 if (extent > footprint)
                 {
-                    failures.Add($"{prefab.Type}: model reaches {extent:0.0} units, footprint is {footprint:0.0}");
+                    failures.Add($"{NameOf(prefab)}: model reaches {extent:0.0} units, footprint is {footprint:0.0}");
                 }
             }
             Assert.IsEmpty(failures, string.Join("\n", failures));
@@ -48,15 +65,15 @@ namespace LastFleet.Stations.Tests
         {
             foreach (StationView prefab in AllPrefabs())
             {
-                Assert.AreEqual(StationTypes.DockingPortCount(prefab.Type), prefab.DockingPorts.Count, $"{prefab.Type} port count");
+                Assert.AreEqual(PortCountOf(prefab), prefab.DockingPorts.Count, $"{NameOf(prefab)} port count");
                 foreach (Transform port in prefab.DockingPorts)
                 {
-                    Assert.IsNotNull(port, $"{prefab.Type} has an empty port slot.");
+                    Assert.IsNotNull(port, $"{NameOf(prefab)} has an empty port slot.");
                     Vector3 local = prefab.transform.InverseTransformPoint(port.position);
                     Vector3 forward = prefab.transform.InverseTransformDirection(port.forward);
-                    Assert.AreEqual(0f, local.y, PlaneToleranceUnits, $"{prefab.Type} {port.name} is off the plane.");
+                    Assert.AreEqual(0f, local.y, PlaneToleranceUnits, $"{NameOf(prefab)} {port.name} is off the plane.");
                     Assert.Greater(Vector2.Dot(new Vector2(local.x, local.z), new Vector2(forward.x, forward.z)), 0f,
-                        $"{prefab.Type} {port.name} faces into the station.");
+                        $"{NameOf(prefab)} {port.name} faces into the station.");
                 }
             }
         }
@@ -68,16 +85,26 @@ namespace LastFleet.Stations.Tests
             return catalog;
         }
 
-        static IEnumerable<StationView> AllPrefabs()
+        static IReadOnlyList<StationView> AllPrefabs()
         {
-            StationPrefabCatalog catalog = LoadCatalog();
-            foreach (StationType type in (StationType[])Enum.GetValues(typeof(StationType)))
-            {
-                if (catalog.TryGetPrefab(type, out StationView prefab))
-                {
-                    yield return prefab;
-                }
-            }
+            return LoadCatalog().Prefabs;
+        }
+
+        static float FootprintOf(StationView prefab)
+        {
+            return prefab.Type == StationType.StrandedShip
+                ? StrandedShipClasses.FootprintRadiusUnits(prefab.StrandedClass)
+                : StationTypes.FootprintRadiusUnits(prefab.Type);
+        }
+
+        static int PortCountOf(StationView prefab)
+        {
+            return prefab.Type == StationType.StrandedShip ? StrandedShipClasses.DockingPortCount : StationTypes.DockingPortCount(prefab.Type);
+        }
+
+        static string NameOf(StationView prefab)
+        {
+            return prefab.Type == StationType.StrandedShip ? $"Stranded {prefab.StrandedClass}" : prefab.Type.ToString();
         }
 
         /// <summary>Largest distance from the station center on the zone plane over every mesh vertex.</summary>

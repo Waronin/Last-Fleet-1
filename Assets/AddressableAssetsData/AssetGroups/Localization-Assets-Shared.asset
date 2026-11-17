@@ -85,6 +85,11 @@ MonoBehaviour:
     m_ReadOnly: 1
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8a3cdb25bf9997842aca4728459854bd
+    m_Address: Assets/Modules/StrandedShips/Data/Localization/StrandedShips Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8ee8e0fa4a0081f479108d74d33cbf44
     m_Address: Assets/Modules/Exploration/Data/Localization/Exploration Shared Data.asset
     m_ReadOnly: 1

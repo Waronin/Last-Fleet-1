@@ -18,6 +18,7 @@ using LastFleet.Rewards;
 using LastFleet.RunEnd;
 using LastFleet.Stations;
 using LastFleet.Stations.Editor;
+using LastFleet.StrandedShips;
 using LastFleet.Shared.Editor;
 using LastFleet.ShipControl;
 using LastFleet.Ships;
@@ -138,6 +139,21 @@ namespace LastFleet.GenerationPreview.Editor
             EditorAssetUtility.SetReferences(water, ("_registry", shipRegistry), ("_population", population));
             RepairService repairs = shipsObject.AddComponent<RepairService>();
             EditorAssetUtility.SetReferences(repairs, ("_registry", shipRegistry));
+            StrandedShipRecovery strandedShips = shipsObject.AddComponent<StrandedShipRecovery>();
+            EditorAssetUtility.SetReferences(strandedShips, ("_registry", shipRegistry), ("_docking", docking));
+            SerializedObject strandedData = new SerializedObject(strandedShips);
+            SerializedProperty capitalPrefabs = EditorAssetUtility.FindProperty(strandedData, "_shipPrefabs");
+            ShipAgent[] recoverable =
+            {
+                ShipPrefabBuilder.LoadOrCreateLiner(), ShipPrefabBuilder.LoadOrCreateRefinery(), ShipPrefabBuilder.LoadOrCreateTanker(),
+                CombatShipPrefabBuilder.LoadOrCreateCruiser()
+            };
+            capitalPrefabs.arraySize = recoverable.Length;
+            for (int i = 0; i < recoverable.Length; i++)
+            {
+                capitalPrefabs.GetArrayElementAtIndex(i).objectReferenceValue = recoverable[i];
+            }
+            strandedData.ApplyModifiedPropertiesWithoutUndo();
             EmpService emp = shipsObject.AddComponent<EmpService>();
             EditorAssetUtility.SetReferences(emp, ("_fleet", shipRegistry), ("_pronin", proninRegistry),
                 ("_missilePrefab", TacticalWeaponPrefabBuilder.LoadOrCreateMissile()), ("_blastPrefab", TacticalWeaponPrefabBuilder.LoadOrCreateBlast()));
@@ -216,7 +232,7 @@ namespace LastFleet.GenerationPreview.Editor
                 ("_environment", environment), ("_cameraRig", cameraRig), ("_shipRegistry", shipRegistry),
                 ("_shipInput", shipInput), ("_groupInput", groupInput), ("_hangarInput", hangarInput), ("_mining", mining),
                 ("_scouting", scouting), ("_population", population), ("_docking", docking), ("_search", search), ("_rewards", rewards), ("_combat", combat), ("_pursuit", pursuit), ("_proninAttack", proninAttack), ("_fleetJump", fleetJump), ("_jumpDialog", jumpDialog), ("_jumpStatus", jumpStatus), ("_inspection", inspection), ("_shipPanel", shipPanel), ("_quests", quests),
-                ("_runEndWindow", runEndWindow), ("_water", water), ("_evacuation", evacuation), ("_requests", requests), ("_repairs", repairs), ("_emp", emp), ("_empTargeting", empTargeting), ("_fuelReturn", fuelReturn),
+                ("_runEndWindow", runEndWindow), ("_water", water), ("_evacuation", evacuation), ("_requests", requests), ("_repairs", repairs), ("_strandedShips", strandedShips), ("_emp", emp), ("_empTargeting", empTargeting), ("_fuelReturn", fuelReturn),
                 ("_cruiserPrefab", CombatShipPrefabBuilder.LoadOrCreateCruiser()),
                 ("_fighterPrefab", CombatShipPrefabBuilder.LoadOrCreateFighter()),
                 ("_refineryPrefab", ShipPrefabBuilder.LoadOrCreateRefinery()),

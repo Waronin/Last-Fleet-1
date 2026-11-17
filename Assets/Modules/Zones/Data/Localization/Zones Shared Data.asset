@@ -135,6 +135,10 @@ MonoBehaviour:
     m_Key: shape.Wreck
     m_Metadata:
       m_Items: []
+  - m_Id: 7279447241207808
+    m_Key: station-type.StrandedShip
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

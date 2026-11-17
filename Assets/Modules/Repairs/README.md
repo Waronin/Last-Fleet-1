@@ -41,4 +41,4 @@ Agreed with the designer on 2026-11-09. Change them only on purpose.
 - **Named engineers** (specialists) and whether their number or skill changes the pace.
 - No hotkey for repairs yet; the ship window is the only way.
 - Hangar UI that lists the docked ships with their hull, so damaged ones are easier to find.
-- Stranded capital ships that must be repaired before they join (GDD: *Neue Kapitalschiffe*).
+- Stranded capital ships are repaired by their own rules, not in a shipyard queue (see the StrandedShips module).

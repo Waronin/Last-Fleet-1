@@ -66,7 +66,7 @@ namespace LastFleet.Zones
         /// </summary>
         public void ShowStation(ZoneStation station)
         {
-            if (station.IsDestroyed || _viewByStation.ContainsKey(station))
+            if (station.IsGone || _viewByStation.ContainsKey(station))
             {
                 return;
             }
@@ -192,7 +192,7 @@ namespace LastFleet.Zones
             float bestDistance = float.MaxValue;
             foreach (ZoneStation candidate in Record.Contents.Stations)
             {
-                if (candidate.IsDestroyed)
+                if (candidate.IsGone)
                 {
                     continue;
                 }

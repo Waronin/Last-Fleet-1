@@ -15,7 +15,13 @@ namespace LastFleet.Zones
         Industrial,
 
         /// <summary>About 9 km ring; many people to rescue.</summary>
-        Habitat
+        Habitat,
+
+        /// <summary>
+        /// A damaged capital ship adrift, docked at and searched like a station; repaired, it joins the fleet.
+        /// Its size depends on its class (see <see cref="StrandedShipClasses"/>), not on this type.
+        /// </summary>
+        StrandedShip
     }
 
     /// <summary>
@@ -34,7 +40,7 @@ namespace LastFleet.Zones
                 StationType.Research => 26f,
                 StationType.Industrial => 36f,
                 StationType.Habitat => 46f,
-                _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+                _ => throw OutOfRange(type)
             };
         }
 
@@ -47,7 +53,7 @@ namespace LastFleet.Zones
                 StationType.Research => 5f,
                 StationType.Industrial => 7f,
                 StationType.Habitat => 9f,
-                _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+                _ => throw OutOfRange(type)
             };
         }
 
@@ -63,7 +69,7 @@ namespace LastFleet.Zones
                 StationType.Research => 2f,
                 StationType.Industrial => 2.5f,
                 StationType.Habitat => 3f,
-                _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+                _ => throw OutOfRange(type)
             };
         }
 
@@ -75,8 +81,15 @@ namespace LastFleet.Zones
                 StationType.Research => 3,
                 StationType.Industrial => 4,
                 StationType.Habitat => 6,
-                _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+                _ => throw OutOfRange(type)
             };
+        }
+
+        static Exception OutOfRange(StationType type)
+        {
+            return type == StationType.StrandedShip
+                ? new ArgumentException("A stranded ship's size depends on its class; ask the ZoneStation or StrandedShipClasses.", nameof(type))
+                : new ArgumentOutOfRangeException(nameof(type), type, null);
         }
     }
 }

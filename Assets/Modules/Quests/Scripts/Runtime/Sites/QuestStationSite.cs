@@ -61,7 +61,7 @@ namespace LastFleet.Quests
         }
 
         /// <summary>
-        /// A zone away from the jump point and the star, unexplored ones first so the player finds the
+        /// A zone away from the jump point, the star and stranded ships, unexplored ones first so the player finds the
         /// station rather than seeing it appear, and station zones before other kinds.
         /// </summary>
         public static int ChooseZone(SystemZones system, DeterministicRandom random)
@@ -72,7 +72,7 @@ namespace LastFleet.Quests
             {
                 ZoneRecord zone = system.Zones[i];
                 PointOfInterestKind kind = zone.PointOfInterest.Kind;
-                if (kind == PointOfInterestKind.JumpPoint || kind == PointOfInterestKind.Star)
+                if (kind == PointOfInterestKind.JumpPoint || kind == PointOfInterestKind.Star || kind == PointOfInterestKind.StrandedShip)
                 {
                     continue;
                 }

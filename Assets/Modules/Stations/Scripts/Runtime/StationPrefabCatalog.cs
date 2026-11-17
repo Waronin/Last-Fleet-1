@@ -1,20 +1,23 @@
 using System;
+using System.Collections.Generic;
 using LastFleet.Zones;
 using UnityEngine;
 
 namespace LastFleet.Stations
 {
-    /// <summary>One model per station type; zones create station views through it.</summary>
+    /// <summary>One model per station type, and one per class of stranded ship; zones create station views through it.</summary>
     [CreateAssetMenu(menuName = "Last Fleet/Station Prefab Catalog", fileName = "StationPrefabs")]
     public sealed class StationPrefabCatalog : StationViewSource
     {
         [SerializeField] StationView[] _prefabs = new StationView[0];
 
-        public bool TryGetPrefab(StationType type, out StationView prefab)
+        public IReadOnlyList<StationView> Prefabs => _prefabs;
+
+        public bool TryGetPrefab(ZoneStation station, out StationView prefab)
         {
             foreach (StationView candidate in _prefabs)
             {
-                if (candidate != null && candidate.Type == type)
+                if (candidate != null && candidate.Shows(station))
                 {
                     prefab = candidate;
                     return true;
@@ -26,9 +29,10 @@ namespace LastFleet.Stations
 
         public override Transform CreateView(ZoneStation station, Transform zone)
         {
-            if (!TryGetPrefab(station.Type, out StationView prefab))
+            if (!TryGetPrefab(station, out StationView prefab))
             {
-                throw new InvalidOperationException($"{name} has no prefab for station type {station.Type}.");
+                string kind = station.IsStrandedShip ? $"stranded {station.StrandedHull.Class}" : $"station type {station.Type}";
+                throw new InvalidOperationException($"{name} has no prefab for {kind}.");
             }
 
             StationView view = Instantiate(prefab, zone, false);

@@ -18,6 +18,9 @@ namespace LastFleet.Ships
         ShipAgent _ship;
 
         public ShipHull Hull => _hull ??= new ShipHull(_maximumHull);
+
+        /// <summary>The configured full hull; safe to read on a prefab, where no hull state should be created.</summary>
+        public float MaximumHull => _maximumHull;
         ShipAgent Ship => _ship != null ? _ship : _ship = GetComponent<ShipAgent>();
 
         /// <summary>Raised for every hit, with the damage and its cause.</summary>

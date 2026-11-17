@@ -25,6 +25,12 @@ namespace LastFleet.Zones
         // was at 40 % of today's radius (100 per cubic unit then, divided by 2.5 cubed).
         const float AsteroidAmountPerCubicUnit = 6.4f;
         const float GasAmountPerSquareUnit = 50f;
+        // Hull pieces around a stranded ship: a little metal, less than a destroyed capital ship leaves.
+        const int MinimumHulkWrecks = 2;
+        const int MaximumHulkWrecks = 4;
+        const float MinimumHulkWreckMetal = 60f;
+        const float MaximumHulkWreckMetal = 140f;
+        const float HulkWreckFootprintUnits = ResourceDeposit.WreckRadiusUnits + ResourceDeposit.SlotClearanceUnits;
 
         static readonly (ResourceKind Value, float Weight)[] OreOnly = { (ResourceKind.Ore, 1f) };
         static readonly (ResourceKind Value, float Weight)[] IceOnly = { (ResourceKind.Ice, 1f) };
@@ -88,6 +94,10 @@ namespace LastFleet.Zones
                     // The station is placed first, so its large footprint always fits; debris drifts around it.
                     AddStation(random, placement, stations, pointOfInterest.Name, pointOfInterest.AssociatedPlanet != null);
                     AddDeposits(random, placement, deposits, random.Range(3, 9), StationDebris);
+                    break;
+                case PointOfInterestKind.StrandedShip:
+                    // Placed first like a station; pieces of its broken hull drift nearby as metal wrecks.
+                    AddStrandedShip(random, placement, stations, deposits, pointOfInterest.Name);
                     break;
                 case PointOfInterestKind.Star:
                     break;
@@ -177,6 +187,31 @@ namespace LastFleet.Zones
             }
         }
 
+        static void AddStrandedShip(DeterministicRandom random, ZonePlacement placement, List<ZoneStation> stations,
+            List<ResourceDeposit> deposits, string name)
+        {
+            StrandedHull hull = StationGeneration.RollStrandedHull(random);
+            StationProfile profile = StationGeneration.RollProfile(random, StationType.StrandedShip);
+            float headingDegrees = random.AngleDegrees();
+            if (!placement.TryPlace(StrandedShipClasses.FootprintRadiusUnits(hull.Class), out Vector3 position))
+            {
+                return;
+            }
+            position.y = 0f;
+            stations.Add(new ZoneStation(name, position, headingDegrees, profile, hull));
+
+            int wreckCount = random.Range(MinimumHulkWrecks, MaximumHulkWrecks + 1);
+            for (int i = 0; i < wreckCount; i++)
+            {
+                float metal = Mathf.Round(random.Range(MinimumHulkWreckMetal, MaximumHulkWreckMetal));
+                float angle = random.AngleDegrees();
+                if (placement.TryPlace(HulkWreckFootprintUnits, out Vector3 wreckPosition))
+                {
+                    deposits.Add(ResourceDeposit.Wreck(wreckPosition, metal, angle));
+                }
+            }
+        }
+
         static ZoneBackdrop CreateBackdrop(PointOfInterest pointOfInterest, Star star)
         {
             return pointOfInterest.Kind switch
@@ -184,7 +219,7 @@ namespace LastFleet.Zones
                 PointOfInterestKind.Star => new ZoneBackdrop(ZoneBackdropKind.Star, star.Color),
                 PointOfInterestKind.Planet => new ZoneBackdrop(ZoneBackdropKind.Planet, CelestialPalette.PlanetColor(pointOfInterest.AssociatedPlanet.Kind)),
                 PointOfInterestKind.Moon => new ZoneBackdrop(ZoneBackdropKind.Moon, CelestialPalette.MoonColor),
-                PointOfInterestKind.Station when pointOfInterest.AssociatedPlanet != null =>
+                PointOfInterestKind.Station or PointOfInterestKind.StrandedShip when pointOfInterest.AssociatedPlanet != null =>
                     new ZoneBackdrop(ZoneBackdropKind.Planet, CelestialPalette.PlanetColor(pointOfInterest.AssociatedPlanet.Kind)),
                 _ => new ZoneBackdrop(ZoneBackdropKind.None, Color.black)
             };

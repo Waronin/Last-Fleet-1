@@ -21,6 +21,7 @@ using LastFleet.Shared.Text;
 using LastFleet.ShipControl;
 using LastFleet.Ships;
 using LastFleet.Stations;
+using LastFleet.StrandedShips;
 using LastFleet.Space;
 using LastFleet.StarSystem;
 using LastFleet.Zones;
@@ -110,6 +111,8 @@ namespace LastFleet.GenerationPreview
         [SerializeField] StationRequestBoard _requests;
         [Tooltip("Optional. Lets the player order hull repairs from the ship window.")]
         [SerializeField] RepairService _repairs;
+        [Tooltip("Optional. Lets the player repair stranded ships and take them into the fleet.")]
+        [SerializeField] StrandedShipRecovery _strandedShips;
         [Tooltip("Optional. EMP missiles of the warships: firing, building and their notices.")]
         [SerializeField] EmpService _emp;
         [SerializeField] EmpTargetingInput _empTargeting;
@@ -195,6 +198,10 @@ namespace LastFleet.GenerationPreview
             {
                 _repairs.Notice += ShowNotice;
             }
+            if (_strandedShips != null)
+            {
+                _strandedShips.Notice += ShowNotice;
+            }
             if (_emp != null && _empTargeting != null)
             {
                 _emp.Notice += ShowNotice;
@@ -264,6 +271,10 @@ namespace LastFleet.GenerationPreview
             {
                 _repairs.Notice -= ShowNotice;
             }
+            if (_strandedShips != null)
+            {
+                _strandedShips.Notice -= ShowNotice;
+            }
             if (_emp != null && _empTargeting != null)
             {
                 _emp.Notice -= ShowNotice;
@@ -300,7 +311,8 @@ namespace LastFleet.GenerationPreview
 
         void InspectStation(ZoneView zone, ZoneStation station)
         {
-            _inspection.Show(new StationInspection(zone, station, _scouting, _shipRegistry, _docking, _search, _evacuation, () => Selection.Ships));
+            _inspection.Show(new StationInspection(zone, station, _scouting, _shipRegistry, _docking, _search, _evacuation, _strandedShips,
+                () => Selection.Ships));
         }
 
         void InspectPointOfInterest(int index)
