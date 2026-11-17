@@ -11,7 +11,7 @@ namespace LastFleet.Dialogue
         public DialogueConversation(DialogueScript script)
         {
             Script = script ?? throw new ArgumentNullException(nameof(script));
-            Current = script.Start;
+            MoveTo(script.Start.Id);
         }
 
         public DialogueScript Script { get; }
@@ -20,6 +20,33 @@ namespace LastFleet.Dialogue
         public DialogueNode Current { get; private set; }
 
         public bool IsFinished => Current == null;
+
+        /// <summary>Seconds left to answer the current node; infinite when it has no time limit.</summary>
+        public float SecondsLeft { get; private set; }
+
+        /// <summary>
+        /// Lets time pass on the current node. When its time limit runs out, its default choice is taken, consequence
+        /// included; returns true then.
+        /// </summary>
+        public bool Tick(float deltaSeconds)
+        {
+            if (deltaSeconds < 0f)
+            {
+                throw new ArgumentOutOfRangeException(nameof(deltaSeconds), "Time cannot run backwards.");
+            }
+            if (IsFinished || !Current.HasTimeLimit)
+            {
+                return false;
+            }
+
+            SecondsLeft -= deltaSeconds;
+            if (SecondsLeft > 0f)
+            {
+                return false;
+            }
+            Choose(Current.DefaultChoiceIndex);
+            return true;
+        }
 
         /// <summary>Moves on from a node without choices.</summary>
         public void Continue()
@@ -54,6 +81,7 @@ namespace LastFleet.Dialogue
         void MoveTo(string nodeId)
         {
             Current = nodeId != null ? Script.GetNode(nodeId) : null;
+            SecondsLeft = Current != null && Current.HasTimeLimit ? Current.TimeLimitSeconds : float.PositiveInfinity;
         }
 
         void RequireOpen()

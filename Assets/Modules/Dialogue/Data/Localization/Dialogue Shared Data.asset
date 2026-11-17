@@ -27,6 +27,10 @@ MonoBehaviour:
     m_Key: line.waiting
     m_Metadata:
       m_Items: []
+  - m_Id: 4455547419570176
+    m_Key: line.time-left
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

@@ -32,6 +32,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - rid: 5599358745442254926
+  - m_Id: 4455547419570176
+    m_Localized: 'Noch {seconds} s, dann: {choice}'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254926
   references:
     version: 2
     RefIds:
@@ -41,3 +46,4 @@ MonoBehaviour:
         m_Entries: 
         m_SharedEntries:
         - id: 2088316928
+        - id: 4455547419570176

@@ -39,6 +39,23 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - rid: 5599359018023780430
+  - m_Id: 19545611382784
+    m_Localized: "Notruf \u2013 {zone}"
+    m_Metadata:
+      m_Items:
+      - rid: 5599359018023780430
+  - m_Id: 19545649131520
+    m_Localized: "Hier spricht die Besatzung eines gestrandeten Schiffs. Unser Antrieb ist tot, und die Luft wird knapp. Wenn uns jemand h\xF6rt: Bitte schickt Hilfe!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 19545653325824
+    m_Localized: Shuttle schicken
+    m_Metadata:
+      m_Items: []
+  - m_Id: 19545653325825
+    m_Localized: Ignorieren
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:
@@ -51,3 +68,4 @@ MonoBehaviour:
         - id: 871968768
         - id: 871968769
         - id: 12104316301312
+        - id: 19545611382784

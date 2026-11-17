@@ -702,11 +702,11 @@ namespace LastFleet.GenerationPreview
             return _quests.TryGetMarker(systemIndex, out GameText marker) ? marker : null;
         }
 
-        void OnLateSignalReceived(int pointOfInterestIndex)
+        void OnLateSignalReceived(ZoneRecord zone)
         {
             if (_starSystemView.Layout != null)
             {
-                _starSystemView.SetPointOfInterestHidden(pointOfInterestIndex, false);
+                _starSystemView.SetPointOfInterestHidden(zone.PointOfInterestIndex, false);
             }
         }
 

@@ -24,6 +24,8 @@ namespace LastFleet.Dialogue
         GameText _speaker;
         GameText _line;
         string _nextNodeId;
+        float _timeLimitSeconds;
+        int _defaultChoiceIndex = -1;
 
         /// <summary>A single line, e.g. a radio message: one node that ends when continued.</summary>
         public static DialogueScript Message(GameText speaker, GameText line)
@@ -45,6 +47,18 @@ namespace LastFleet.Dialogue
         {
             RequireNode();
             _choices.Add(new DialogueChoice(label, nextNodeId, chosen));
+            return this;
+        }
+
+        /// <summary>
+        /// The player has this long to answer the current node, else the choice at this index is taken for them
+        /// (GDD: events have a time limit and fall back to a default). Give it after the node's choices.
+        /// </summary>
+        public DialogueBuilder TimeLimit(float seconds, int defaultChoiceIndex)
+        {
+            RequireNode();
+            _timeLimitSeconds = seconds;
+            _defaultChoiceIndex = defaultChoiceIndex;
             return this;
         }
 
@@ -76,12 +90,14 @@ namespace LastFleet.Dialogue
             {
                 return;
             }
-            _nodes.Add(new DialogueNode(_id, _speaker, _line, _choices, _nextNodeId));
+            _nodes.Add(new DialogueNode(_id, _speaker, _line, _choices, _nextNodeId, _timeLimitSeconds, _defaultChoiceIndex));
             _choices.Clear();
             _id = null;
             _speaker = null;
             _line = null;
             _nextNodeId = null;
+            _timeLimitSeconds = 0f;
+            _defaultChoiceIndex = -1;
         }
     }
 }

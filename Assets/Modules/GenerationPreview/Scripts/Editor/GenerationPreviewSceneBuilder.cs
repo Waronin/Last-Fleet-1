@@ -227,6 +227,8 @@ namespace LastFleet.GenerationPreview.Editor
             DialogueService dialogue = questObject.AddComponent<DialogueService>();
             DialogueWindow dialogueWindow = questObject.AddComponent<DialogueWindow>();
             EditorAssetUtility.SetReferences(dialogueWindow, ("_dialogue", dialogue), ("_shipInput", shipInput));
+            DistressCallRadio distressCalls = pursuitObject.AddComponent<DistressCallRadio>();
+            EditorAssetUtility.SetReferences(distressCalls, ("_receiver", lateSignals), ("_dialogue", dialogue), ("_scouting", scouting));
             QuestDirector quests = questObject.AddComponent<QuestDirector>();
             EditorAssetUtility.SetReferences(quests, ("_fleet", shipRegistry), ("_pronin", proninRegistry), ("_zoneWorld", zoneWorld),
                 ("_search", search), ("_dialogue", dialogue),

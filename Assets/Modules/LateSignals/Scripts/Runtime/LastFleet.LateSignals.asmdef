@@ -5,7 +5,9 @@
         "LastFleet.Shared",
         "LastFleet.StarSystem",
         "LastFleet.Zones",
-        "LastFleet.Pursuit"
+        "LastFleet.Pursuit",
+        "LastFleet.Dialogue",
+        "LastFleet.Exploration"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

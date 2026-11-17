@@ -1,4 +1,5 @@
 using LastFleet.Localization;
+using LastFleet.Shared.Text;
 using LastFleet.ShipControl;
 using UnityEngine;
 
@@ -57,6 +58,12 @@ namespace LastFleet.Dialogue
             GUILayout.BeginVertical(GUI.skin.box);
             GUILayout.Label(GameTextResolver.Resolve(node.Speaker), _speakerStyle);
             GUILayout.Label(GameTextResolver.Resolve(node.Line), _lineStyle);
+            if (node.HasTimeLimit)
+            {
+                GameText fallback = node.Choices[node.DefaultChoiceIndex].Label;
+                GUILayout.Label(GameTextResolver.Resolve(DialogueTexts.TimeLeftLine.Format(("seconds", Mathf.CeilToInt(conversation.SecondsLeft)),
+                    ("choice", fallback))));
+            }
             if (_dialogue.WaitingCount > 0)
             {
                 GUILayout.Label(GameTextResolver.Resolve(DialogueTexts.WaitingLine.Format(("count", _dialogue.WaitingCount))));

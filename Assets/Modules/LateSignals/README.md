@@ -16,6 +16,7 @@ Agreed with the designer on 2026-11-17. Change them only on purpose.
 | When | Each at a random point **between 40 % and 90 % of the countdown** to the Pronin's arrival (about 5–12 minutes at 13 minutes), some shortly before the attack. They follow time compression. |
 | Worth | Better than what is known on arrival. Stranded ship: **40–75 % hull** instead of 20–50 %, **always survivors**, never ruined. Station: **never hostile, never ruined**, and **half again as many finds** when searched. Searching needs an empty station, so the extra finds count only on abandoned ones; on inhabited ones the value is the friendlier people. |
 | Wreck field | **8–14 drifting wrecks with 100–300 metal** each (about 1,500–3,000 in all), salvaged like other wrecks but **unscanned**: about **a third carries a hazard**, a leaking reactor (`Radioactive`) or fuel left in the tanks (`GasPockets`), using the mining hazard rules. In the middle lies a **derelict** (`StationType.Derelict`), a dead cruiser broken in two: never inhabited, never repaired, **searched like an abandoned station** for 4–8 finds (fuel, modules, archive records, resources). About a quarter leak poison or radiation and stay closed. |
+| Distress call | (2026-11-17) A stranded ship's signal also opens a **radio popup** in the existing dialogue window: **"Send a shuttle"** orders a free small ship there, like the explore order; **"Ignore"** does nothing. The game keeps running; without an answer the call is **ignored after 45 s** of real time (GDD: events, 30–60 s, default option). The place stays on the map either way. Stations and wreck fields only send a notice. |
 | Expiry | **None.** A received signal stays until the fleet leaves; the only pressure is the countdown. |
 | Revisits | A received signal stays known for the run. Signals not yet received wait for the next countdown in that system. |
 
@@ -32,11 +33,12 @@ Agreed with the designer on 2026-11-17. Change them only on purpose.
 | `DerelictPrefabBuilder` | Stations (Editor) | Blockout derelict from the cruiser prefab, broken in two. |
 | `LateSignalSchedule` | LateSignals | Plain rule: which signals are due at a share of the countdown. |
 | `LateSignalReceiver` | LateSignals | Follows the `PursuitClock`, receives due signals, sends a notice and an event with the zone index. |
+| `DistressCallRadio` | LateSignals | Opens the distress call popup through `DialogueService`; sends a shuttle through `ScoutingService`. |
+| `DialogueBuilder.TimeLimit` | Dialogue | Optional answer time per node with a default choice, counted on real time by `DialogueService`. |
 | Controller | GenerationPreview | Hides unknown places on showing a system, reveals them on `SignalReceived`. |
 
 Quest stations never go to a late place, since it may not be known yet.
 
 ## Open
 
-- An event popup for the distress call ("Shuttle schicken oder ignorieren", GDD: events) once events exist.
 - Balancing of counts, timing and worth after playtests.

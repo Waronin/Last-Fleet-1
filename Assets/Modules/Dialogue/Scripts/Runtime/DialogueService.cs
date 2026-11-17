@@ -52,6 +52,18 @@ namespace LastFleet.Dialogue
             ShowNextIfFinished();
         }
 
+        /// <summary>
+        /// Runs the answer timer on real time, so a popup stays readable however fast the game runs; the game
+        /// itself never stops for it.
+        /// </summary>
+        void Update()
+        {
+            if (Current != null && Current.Tick(Time.unscaledDeltaTime))
+            {
+                ShowNextIfFinished();
+            }
+        }
+
         /// <summary>Drops every conversation, e.g. when a new run starts.</summary>
         public void Clear()
         {

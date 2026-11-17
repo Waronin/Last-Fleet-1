@@ -28,6 +28,47 @@ namespace LastFleet.Dialogue.Tests
         }
 
         [Test]
+        public void TimeLimit_TakesTheDefaultChoiceWhenItRunsOut()
+        {
+            int ignored = 0;
+            DialogueScript script = new DialogueBuilder()
+                .Say("call", Speaker, Line("help"))
+                .Choice(Line("send"), null)
+                .Choice(Line("ignore"), null, () => ignored++)
+                .TimeLimit(45f, 1)
+                .Build();
+            DialogueConversation conversation = new DialogueConversation(script);
+
+            Assert.IsFalse(conversation.Tick(44f));
+            Assert.AreEqual(1f, conversation.SecondsLeft, 1e-4f);
+            Assert.AreEqual(0, ignored);
+            Assert.IsTrue(conversation.Tick(1f));
+            Assert.AreEqual(1, ignored);
+            Assert.IsTrue(conversation.IsFinished);
+            Assert.IsFalse(conversation.Tick(10f), "A finished conversation has no timer.");
+        }
+
+        [Test]
+        public void NodesWithoutTimeLimit_WaitForThePlayer()
+        {
+            DialogueConversation conversation = new DialogueConversation(DialogueBuilder.Message(Speaker, Line("hello")));
+
+            Assert.IsFalse(conversation.Tick(1000f));
+            Assert.IsFalse(conversation.IsFinished);
+            Assert.IsTrue(float.IsPositiveInfinity(conversation.SecondsLeft));
+        }
+
+        [Test]
+        public void TimeLimit_NeedsAValidDefaultChoice()
+        {
+            Assert.Throws<ArgumentException>(() => new DialogueBuilder()
+                .Say("call", Speaker, Line("help"))
+                .Choice(Line("send"), null)
+                .TimeLimit(30f, 1)
+                .Build());
+        }
+
+        [Test]
         public void ChoiceWithoutNextNode_EndsTheConversation()
         {
             DialogueScript script = new DialogueBuilder()

@@ -35,6 +35,14 @@ namespace LastFleet.Dialogue
         readonly DialogueChoice[] _choices;
 
         public DialogueNode(string id, GameText speaker, GameText line, IReadOnlyList<DialogueChoice> choices, string nextNodeId)
+            : this(id, speaker, line, choices, nextNodeId, 0f, -1)
+        {
+        }
+
+        /// <param name="timeLimitSeconds">0 to wait for the player; otherwise the default choice is taken when the time runs out.</param>
+        /// <param name="defaultChoiceIndex">The answer given for the player when the time runs out (GDD: events), -1 without a limit.</param>
+        public DialogueNode(string id, GameText speaker, GameText line, IReadOnlyList<DialogueChoice> choices, string nextNodeId,
+            float timeLimitSeconds, int defaultChoiceIndex)
         {
             if (string.IsNullOrWhiteSpace(id))
             {
@@ -50,6 +58,16 @@ namespace LastFleet.Dialogue
             Line = line ?? throw new ArgumentNullException(nameof(line));
             _choices = choices != null ? new List<DialogueChoice>(choices).ToArray() : Array.Empty<DialogueChoice>();
             NextNodeId = nextNodeId;
+            if (timeLimitSeconds < 0f)
+            {
+                throw new ArgumentOutOfRangeException(nameof(timeLimitSeconds), "A time limit cannot be negative.");
+            }
+            if (timeLimitSeconds > 0f && (defaultChoiceIndex < 0 || defaultChoiceIndex >= _choices.Length))
+            {
+                throw new ArgumentException($"Node '{id}' has a time limit, so it needs one of its choices as the default.", nameof(defaultChoiceIndex));
+            }
+            TimeLimitSeconds = timeLimitSeconds;
+            DefaultChoiceIndex = timeLimitSeconds > 0f ? defaultChoiceIndex : -1;
         }
 
         public string Id { get; }
@@ -60,5 +78,13 @@ namespace LastFleet.Dialogue
 
         /// <summary>For nodes without choices: what follows when the player continues; null ends the conversation.</summary>
         public string NextNodeId { get; }
+
+        /// <summary>Seconds the player has to answer; 0 waits for the player.</summary>
+        public float TimeLimitSeconds { get; }
+
+        public bool HasTimeLimit => TimeLimitSeconds > 0f;
+
+        /// <summary>The answer taken when the time runs out; -1 without a time limit.</summary>
+        public int DefaultChoiceIndex { get; }
     }
 }

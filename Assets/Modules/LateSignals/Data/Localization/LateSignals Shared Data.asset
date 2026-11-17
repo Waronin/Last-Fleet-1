@@ -31,6 +31,22 @@ MonoBehaviour:
     m_Key: notice.wreck-field
     m_Metadata:
       m_Items: []
+  - m_Id: 19545611382784
+    m_Key: dialogue.distress.speaker
+    m_Metadata:
+      m_Items: []
+  - m_Id: 19545649131520
+    m_Key: dialogue.distress.line
+    m_Metadata:
+      m_Items: []
+  - m_Id: 19545653325824
+    m_Key: dialogue.distress.send
+    m_Metadata:
+      m_Items: []
+  - m_Id: 19545653325825
+    m_Key: dialogue.distress.ignore
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

@@ -39,6 +39,23 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - rid: 5599359018023780431
+  - m_Id: 19545611382784
+    m_Localized: "Distress call \u2013 {zone}"
+    m_Metadata:
+      m_Items:
+      - rid: 5599359018023780431
+  - m_Id: 19545649131520
+    m_Localized: This is the crew of a stranded ship. Our drive is dead and the air is running out. If anyone can hear us, please, send help!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 19545653325824
+    m_Localized: Send a shuttle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 19545653325825
+    m_Localized: Ignore
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:
@@ -51,3 +68,4 @@ MonoBehaviour:
         - id: 871968768
         - id: 871968769
         - id: 12104316301312
+        - id: 19545611382784

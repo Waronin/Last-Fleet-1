@@ -18,5 +18,12 @@ namespace LastFleet.LateSignals
 
         /// <summary>{zone}</summary>
         public static readonly GameTextKey SignalPickedUp = new GameTextKey(Table, "notice.signal");
+
+        /// <summary>{zone}</summary>
+        public static readonly GameTextKey DistressSpeaker = new GameTextKey(Table, "dialogue.distress.speaker");
+
+        public static readonly GameTextKey DistressLine = new GameTextKey(Table, "dialogue.distress.line");
+        public static readonly GameTextKey SendShuttle = new GameTextKey(Table, "dialogue.distress.send");
+        public static readonly GameTextKey IgnoreCall = new GameTextKey(Table, "dialogue.distress.ignore");
     }
 }

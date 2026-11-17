@@ -22,8 +22,11 @@ namespace LastFleet.LateSignals
 
         public event Action<GameText> Notice;
 
-        /// <summary>The point of interest index of a place whose signal just came in.</summary>
-        public event Action<int> SignalReceived;
+        /// <summary>The zone of a place whose signal just came in.</summary>
+        public event Action<ZoneRecord> SignalReceived;
+
+        /// <summary>The system listened to, or null.</summary>
+        public SystemZones ListenedSystem => _system;
 
         void Awake()
         {
@@ -51,7 +54,7 @@ namespace LastFleet.LateSignals
             LateSignalSchedule.ReceiveDue(_system, countdown.ElapsedSeconds / countdown.ArrivalSeconds, _received);
             foreach (ZoneRecord zone in _received)
             {
-                SignalReceived?.Invoke(zone.PointOfInterestIndex);
+                SignalReceived?.Invoke(zone);
                 Notice?.Invoke(NoticeFor(zone.PointOfInterest));
             }
         }
