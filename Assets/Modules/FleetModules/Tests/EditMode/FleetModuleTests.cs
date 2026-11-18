@@ -10,6 +10,24 @@ namespace LastFleet.FleetModules.Tests
     public class FleetModuleTests
     {
         [Test]
+        public void Slots_Clear_FreesEverySlot_AndReportsOnlyARealChange()
+        {
+            FleetModuleSlots slots = new FleetModuleSlots(3);
+            slots.Install(FleetModuleKind.GasMining);
+            slots.Install(FleetModuleKind.CargoBays);
+            int changes = 0;
+            slots.Changed += () => changes++;
+
+            slots.Clear();
+            slots.Clear();
+
+            Assert.AreEqual(0, slots.Installed.Count);
+            Assert.IsFalse(slots.IsInstalled(FleetModuleKind.GasMining));
+            Assert.AreEqual(1, changes);
+            slots.Install(FleetModuleKind.GasMining);
+        }
+
+        [Test]
         public void Slots_FillUpAndThenOnlyReplace()
         {
             FleetModuleSlots slots = new FleetModuleSlots(3);

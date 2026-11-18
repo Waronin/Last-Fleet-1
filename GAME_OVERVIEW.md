@@ -1,11 +1,17 @@
 # Last Fleet – Spielstand und Featureübersicht
 
-Stand: 9. November 2026 (Commit `692f301`, „Add small delivery quests at inhabited stations“).
+Stand: 18. November 2026 (Commit `6610a08`, „Add win and lose screens with a scored run account and saved
+run history“).
 
 Dieses Dokument beschreibt, was im Prototyp heute tatsächlich spielbar ist. Zahlen sind die aktuellen
-Balancing-Werte aus dem Code und können sich ändern. Technische Details zu einzelnen Bereichen stehen in
-[Assets/Modules/Combat/README.md](Assets/Modules/Combat/README.md) und
-[Assets/Modules/Quests/README.md](Assets/Modules/Quests/README.md).
+Balancing-Werte aus dem Code und können sich ändern. Technische Details und die mit dem Designer
+vereinbarten Entscheidungen stehen in den READMEs der Module:
+[Combat](Assets/Modules/Combat/README.md), [Quests](Assets/Modules/Quests/README.md),
+[Repairs](Assets/Modules/Repairs/README.md), [TacticalWeapons](Assets/Modules/TacticalWeapons/README.md),
+[StrandedShips](Assets/Modules/StrandedShips/README.md), [LateSignals](Assets/Modules/LateSignals/README.md),
+[FleetModules](Assets/Modules/FleetModules/README.md), [Tutorial](Assets/Modules/Tutorial/README.md),
+[AbandonedShips](Assets/Modules/AbandonedShips/README.md), [Hud](Assets/Modules/Hud/README.md) und
+[RunEnd](Assets/Modules/RunEnd/README.md).
 
 ---
 
@@ -27,23 +33,31 @@ Geschehen weiterläuft. Das Spiel läuft sogar weiter, wenn das Fenster den Foku
    Zonen müssen erst von einem Schiff besucht werden, bevor man sieht, was darin liegt.
 3. **Ausbeuten.** Harvester bauen Erz, Eis und Gas ab, das als Metall, Wasser und Treibstoff in die Lager
    der Flotte geht. Shuttles scannen Asteroiden und Stationen, docken an, durchsuchen verlassene Stationen
-   und holen Überlebende und Bewohner an Bord.
-4. **Überleben.** Gefahren beim Abbau, verstrahlte oder feindliche Stationen und Pronin-Jäger kosten
+   und holen Überlebende und Bewohner an Bord. Gestrandete Großkampfschiffe und verlassene kleine Schiffe
+   lassen sich reparieren bzw. neu bemannen und verstärken die Flotte.
+4. **Späte Signale abwägen.** Während der Countdown läuft, tauchen neue Orte auf: Notrufe, Stationen, die
+   ihr Funkschweigen brechen, und Wrackfelder. Sie sind wertvoller als das, was bei der Ankunft bekannt
+   war, kommen aber erst spät. Bleiben lohnt sich, kostet aber Zeit.
+5. **Überleben.** Gefahren beim Abbau, verstrahlte oder feindliche Stationen und Pronin-Jäger kosten
    Schiffe und Menschenleben. Die Menschen brauchen Wasser, die Schiffe Treibstoff.
-5. **Weiterspringen.** Nach der Abkühlzeit des großen Sprungantriebs wählt der Spieler ein Ziel in
+6. **Weiterspringen.** Nach der Abkühlzeit des großen Sprungantriebs wählt der Spieler ein Ziel in
    Reichweite. Jedes Großkampfschiff bezahlt den Sprung aus dem eigenen Tank. Wer nicht zahlen kann oder
    als kleines Schiff nicht in einem Hangar sitzt, bleibt zurück und ist verloren.
 
 Spätestens wenn der Countdown abläuft, taucht ein **Pronin-Träger** auf, der Jägerwellen startet und die
 Flotte durch das System jagt. Wer zu lange bleibt, verliert immer mehr.
 
-### Ziel eines Runs
+### Ablauf und Ziel eines Runs
 
-Die Questkette **„Meltdown“** zieht sich über fünf Sternsysteme. Sie endet damit, dass die Flotte einen
-Stern zur Supernova bringt und rechtzeitig aus dem System springen muss. Gelingt
-das, ist der Run **gewonnen**. Bleibt die Flotte im System, ist er **verloren**. Danach zeigt ein
-Endbildschirm die geretteten Menschen, die verbliebenen Schiffe und die Spielzeit, und ein neuer Run mit
-einer neuen Galaxie kann beginnen.
+Jeder Run beginnt mit einem Funkspruch, der einen optionalen **Prolog** anbietet. Er bringt im Startsystem
+ohne Zeitdruck Erkunden, Andocken, Durchsuchen, Abbau und einen ersten Kampf bei und endet mit dem ersten
+Sprung.
+
+Die Questkette **„Meltdown“** zieht sich danach über fünf Sternsysteme. Sie endet damit, dass die Flotte
+einen Stern zur Supernova bringt und rechtzeitig aus dem System springen muss. Gelingt das, ist der Run
+**gewonnen**. Verloren ist er, wenn die Flotte in der Supernova bleibt oder ihr **letztes Großkampfschiff
+zerstört** wird. Ein Endbildschirm zeigt dann eine Wertung mit Punkten, vergleicht sie mit früheren Runs,
+die auf der Festplatte gespeichert werden, und ein neuer Run mit einer neuen Galaxie kann beginnen.
 
 ### Was den Ton bestimmt
 
@@ -75,10 +89,12 @@ Galaxie, Systeme und Zonen erzeugt und Entwickler-Tasten zum Testen anbietet.
 - **Sternklassen:** Roter Zwerg, Oranger Zwerg, Gelber Zwerg, Weißer Stern, Blauer Riese.
 - **Planeten:** Gestein, Wüste, Ozean, Eis, Gasriese, Eisriese – mit Monden auf Umlaufbahnen.
 - **Asteroidengürtel** mit unterschiedlicher Zusammensetzung.
-- **Stationen** im Orbit oder im tiefen Raum.
+- **Stationen** im Orbit oder im tiefen Raum (1–4 pro System).
+- In etwa **jedem fünften System** ein **gestrandetes Großkampfschiff** als eigener Ort (siehe Abschnitt 7).
 - Ein **Sprungpunkt** am Systemrand: eine leere Ankunftszone, in der die Flotte erscheint.
-- Die **Systemkarte** zeigt alle Orte, den Stationstyp bereits erkundeter Zonen und markiert die Zone einer
-  Queststation.
+- **0–2 späte Orte**, die erst während des Countdowns auftauchen (siehe „Späte Signale“ unten).
+- Die **Systemkarte** zeigt alle bekannten Orte, den Stationstyp bereits erkundeter Zonen und markiert die
+  Zone einer Queststation. Gestrandete Schiffe sind als rostroter Splitter eingezeichnet.
 
 ### Zonen
 - Jeder Ort im System ist eine **Zone** mit 50 km Radius (1 Einheit = 100 m), mit einer Hintergrundkulisse
@@ -88,12 +104,37 @@ Galaxie, Systeme und Zonen erzeugt und Entwickler-Tasten zum Testen anbietet.
   - **Monde:** 4–10 Vorkommen.
   - **Planeten:** Vorkommen passend zum Planetentyp (z. B. Gas bei Gasriesen).
   - **Stationen:** die Station selbst, umgeben von 3–8 Trümmern.
+  - **Gestrandete Schiffe:** das Wrack eines Großkampfschiffs, umgeben von 2–4 Rumpfteilen mit je
+    60–140 Metall.
+  - **Wrackfelder:** treibende Wracks und ein Derelikt (siehe „Späte Signale“).
+  - **Verlassene kleine Schiffe** ohne Besatzung treiben in Wrackfeldern (60 %, 1–2 Schiffe), bei
+    gestrandeten Schiffen (25 %) und bei Stationen (25 %, je 1 Schiff), siehe Abschnitt 4.
   - Jedes System enthält garantiert ein **Treibstoff-Vorkommen**.
 - Unbekannte Zonen müssen **erkundet** werden: Ein Schiff fliegt hin, erst dann wird der Inhalt erzeugt und
   sichtbar.
 - Mit **Tab / Shift+Tab** wechselt man zwischen bereits aufgedeckten Zonen.
 - Der Zustand jeder Zone (Scans, abgebaute Mengen, Wracks, Stationszustand) bleibt für den ganzen Run
   erhalten.
+
+### Späte Signale
+- Jedes System hat **0–2 späte Orte** (keiner 20 %, einer 55 %, zwei 25 %). Sie werden mit dem System
+  erzeugt, sind aber auf der Karte versteckt, bis zwischen **40 % und 90 % des Pronin-Countdowns**
+  vergangen sind (etwa nach 5–12 Minuten).
+- Arten:
+  - **Notruf eines gestrandeten Schiffs** (40 %): Es hat noch 40–75 % Rumpf statt 20–50 % und immer
+    Überlebende an Bord. Der Notruf öffnet einen **Funkspruch**: „Shuttle schicken“ schickt ein freies
+    kleines Schiff hin, „Ignorieren“ tut nichts. Ohne Antwort wird der Ruf nach **45 Sekunden** Echtzeit
+    ignoriert. Der Ort bleibt in jedem Fall auf der Karte.
+  - **Station, die ihr Funkschweigen bricht** (40 %): nie feindlich, nie eine Ruine, beim Durchsuchen
+    **anderthalbmal so viele Funde**.
+  - **Wrackfeld** (20 %, gibt es nur als spätes Signal): **8–14 treibende Wracks mit je 100–300 Metall**,
+    ungescannt. Etwa ein Drittel birgt eine Gefahr: ein leckender Reaktor (radioaktiv) oder Treibstoffreste
+    (Gastaschen). In der Mitte liegt ein **Derelikt**, ein in zwei Teile zerbrochener Kreuzer, der wie eine
+    verlassene Station durchsucht wird (4–8 Funde). Etwa ein Viertel davon ist verstrahlt oder giftig und
+    bleibt verschlossen.
+- Empfangene Signale verfallen nicht und bleiben für den Run bekannt. Nicht empfangene warten auf den
+  nächsten Countdown in diesem System. Queststationen liegen nie an späten Orten.
+- Das Flottenmodul **Signalverstärker** lässt die Signale doppelt so früh kommen.
 
 ---
 
@@ -114,7 +155,9 @@ Galaxie, Systeme und Zonen erzeugt und Entwickler-Tasten zum Testen anbietet.
   - auf ein ungescanntes Vorkommen oder eine Station mit einem Shuttle: scannen,
   - auf eine Station mit kleinen Schiffen: andocken (ein Shuttle scannt eine ungescannte Station zuerst),
   - auf einen Feind: angreifen,
-  - mit Jägern auf ein eigenes Schiff: eskortieren.
+  - mit Jägern auf ein eigenes Schiff: eskortieren,
+  - mit kleinen Schiffen auf ein kleines Schiff ohne Besatzung: eine Person hinüberschicken (siehe
+    Abschnitt 4, „Verlassene Schiffe und Crew-Übergabe“).
 - **Shift** hängt Befehle an eine Warteschlange an (z. B. „starten, fliegen, zurückkehren“).
 - Ein neuer Befehl ersetzt laufende Automatik wie Abbau, Eskorte oder Evakuierung.
 
@@ -136,7 +179,14 @@ Galaxie, Systeme und Zonen erzeugt und Entwickler-Tasten zum Testen anbietet.
 - **Schiffsfenster** (unten rechts) für die Auswahl: Rumpf, Schild, Treibstoff, Besatzung und Effizienz,
   Passagiere und Überbelegung, Aufgabe, Bewegung, Zone, Squad, Ladung, Funde an Bord, Hangar und Lager.
   Bei mehreren Schiffen eine Zeile pro Schiff. Aktionen: zurück in den Hangar, starten, Squad bilden,
-  Ladung abwerfen.
+  Ladung abwerfen, reparieren, betanken, Auto-Tanken, EMP-Rakete abfeuern und bauen.
+- **Flottenmodule:** Ein Button oben in der Mitte zeigt, wie viele Module zur Wahl bereitstehen. **U** öffnet
+  das Fenster (siehe Abschnitt 4).
+- **Erfolgsmeldungen** (oben Mitte): kurze Einblendungen für kleine Erfolge, z. B. gerettete Menschen, ein
+  neues Schiff, wieder genug Wasser, eine von Feinden befreite Zone, gesicherte Funde, ein abgebautes
+  Vorkommen. Bis zu 3 gleichzeitig, je 4 Sekunden. Sie fangen keine Klicks ab.
+- **Prolog-Ziel** (oben Mitte, nur im Prolog): aktueller Schritt und Ziel, „Schritt überspringen“ und
+  „Prolog beenden“.
 - **Versorgungsleiste** (oben): Treibstoff, Metall und Wasser im Lager im Verhältnis zur Kapazität, dazu wie
   lange das Wasser noch reicht.
 - **Bedrohungsanzeige** (oben): der Pronin-Countdown, 30 s vor Ablauf rot.
@@ -226,6 +276,63 @@ Schiffe tragen lesbare, übersetzbare Namen wie „Sammelschiff 3“ oder „Har
   keine neuen an, kann nicht starten und wird für keine Aufgabe mehr ausgewählt.
 - **Nachbesetzung:** Leere Posten angedockter Schiffe werden aus den Passagieren des Trägers aufgefüllt,
   eine Person alle 10 Sekunden.
+- Verliert ein eigenes Schiff seine letzte Person, gibt es eine Meldung. Eine **Crew-Übergabe** bringt es
+  wieder zum Fliegen (siehe unten).
+
+### Neue Schiffe für die Flotte
+Kleine Schiffe werden nie gebaut, sondern nur gefunden. Großkampfschiffe kommen nur durch Bergung hinzu.
+
+**Gestrandete Großkampfschiffe**
+- Ein Linienschiff (40 %), eine Raffinerie (25 %), ein Tanker (25 %) oder ein Kreuzer (10 %), gefunden mit
+  **20–50 % Rumpf** (als spätes Signal 40–75 %).
+- Bis zur Reparatur verhält es sich **wie eine Station**: scannen, anfunken, andocken, durchsuchen
+  (3–6 Funde, vor allem Rohstoffe und Treibstoff) und evakuieren. Etwa **60 %** tragen **20–400
+  Überlebende**, nie feindlich, und **alle wollen weg**. Giftige Luft oder Strahlung wirken wie auf Stationen.
+- **Reparatur:** Der Spieler gibt sie im Fenster des Wracks in Auftrag („Wrack reparieren“). Sie läuft nur,
+  solange ein Schiff mit Besatzung angedockt ist, im Tempo einer Werft (**10 Rumpfpunkte/s, 0,5 Metall pro
+  Punkt**) und pausiert ohne Besatzung oder ohne Metall. Ein Linienschiff mit 30 % braucht 175 s und 875 Metall.
+- **Beitritt:** Ist der Rumpf ganz, erscheint an derselben Stelle ein Schiff der Flotte dieser Klasse, mit
+  vollem Rumpf, **leeren Tanks**, leeren Lagern und leerem Hangar. Wer noch an Bord ist, wird zu seinen
+  Passagieren. Angedockte Schiffe legen ab. Ohne Betankung durch den Tanker bleibt es beim Flottensprung zurück.
+- **Pronin** greifen gestrandete Schiffe an. Treffer senken den Rumpf und machen Reparaturfortschritt zunichte.
+  Bei 0 explodiert das Wrack wie ein Großkampfschiff, hinterlässt 6 Metallwracks, und die Überlebenden an
+  Bord sterben.
+
+**Verlassene Schiffe und Crew-Übergabe**
+- Gefundene kleine Schiffe ohne Besatzung sind ein Shuttle (40 %), ein Harvester (35 %) oder ein Jäger
+  (25 %), mit 30–80 % Rumpf und 5–20 % Treibstoff.
+- Eigene Schiffe ohne Besatzung und gefundene werden **gleich gerettet**: Kleine Schiffe auswählen und das
+  Schiff ohne Besatzung **rechts anklicken**. Das nächste ausgewählte Schiff mit **mindestens zwei Personen**
+  an Bord fliegt längsseits, und **eine Person steigt über**. Ein anderer Befehl an das Spenderschiff
+  bricht die Übergabe ab.
+- Das gerettete Schiff fliegt mit einer Person (langsamer), bis sein Hangar die Posten auffüllt.
+- Gefundene Schiffe treten als **eigenes Squad** bei und bekommen einen Träger mit Platz als Heimathangar.
+  Eigene Schiffe kehren in ihr Squad und ihren Hangar zurück.
+- Bis zur Rettung gehören gefundene Schiffe zur Seite der Gestrandeten und werden von den Pronin gejagt.
+
+### Flottenmodule
+Flottenmodule **ersetzen die Upgrades einzelner Schiffe**. Sie wirken auf die ganze Flotte.
+- Gefundene **Upgrade-Module** (aus Durchsuchungen und Auftragsbelohnungen) warten im Flotteninventar.
+  Jedes bietet eine **Wahl aus 3** noch nicht eingebauten Modulen. Ein Hinweis meldet das, der Button oben
+  zeigt die Anzahl, **U** öffnet das Fenster. Das Spiel läuft weiter.
+- Einbauen ist **sofort und kostenlos**. Es gibt **4 Plätze** (zum Testen 3–5 einstellbar). Sind alle
+  belegt, **ersetzt** das neue Modul ein eingebautes, das dabei zerstört wird. Ein wartendes Modul kann
+  auch verworfen werden.
+
+| Modul | Wirkung | Nachteil |
+| --- | --- | --- |
+| Gasabsauger / Erzbohrer / Eisfräsen | +20 % Abbautempo für diesen Rohstoff | – |
+| Erweiterte Laderäume | +30 % Laderaum der Harvester | −10 % Rumpf, alle Schiffe |
+| Verstärkte Panzerung | +30 % Rumpf, alle Schiffe | −10 % Reparaturtempo |
+| Strahlenschutz | Keine Besatzungstoten durch Strahlung beim Abbau oder Andocken (die Strahlendosis der Meltdown-Quest gilt weiter) | – |
+| Gesandtenprotokolle | Feindliche Stationscrews gelten beim Andocken als misstrauisch: kein Angriff, kein Kapern | – |
+| Kapitalschiff-Antriebe | Großkampfschiffe 50 % schneller | +10 % Treibstoffverbrauch |
+| Kleinschiff-Triebwerke | Kleine Schiffe 40 % schneller | +8 % Treibstoffverbrauch |
+| Signalverstärker | Späte Signale kommen doppelt so früh | – |
+
+Schneller heißt: Alle Manöver nehmen denselben Weg und dauern entsprechend kürzer. Der Flottensprung
+zwischen Systemen wird nicht schneller. Gleiche Werte aus verschiedenen Modulen addieren sich (Laderäume
+−10 % und Panzerung +30 % Rumpf ergeben +20 %).
 
 ### Flugverhalten
 - Schiffe fliegen mit **Trägheit**: Sie beschleunigen mit dem Hauptantrieb, wenden und bremsen.
@@ -315,8 +422,9 @@ Jedes abbauende Schiff erhöht das Risiko. Die Wartezeit ist zufällig und unabh
   kehrt direkt zum Abbau zurück.
 
 ### Wracks bergen
-- Zerstörte Schiffe **beider Seiten** hinterlassen Wracks aus Metall. Sie sind sofort bekannt, haben keine
-  Gefahr und bleiben für den Rest des Runs liegen.
+- Zerstörte Schiffe **aller Seiten** hinterlassen Wracks aus Metall. Sie sind sofort bekannt, haben keine
+  Gefahr und bleiben für den Rest des Runs liegen. (Anders die treibenden Wracks in Wrackfeldern: Sie sind
+  ungescannt und können eine Abbaugefahr tragen, siehe „Späte Signale“.)
   - **Kleine Schiffe** (Jäger, Shuttles, Harvester, Pronin-Jäger): ein Wrack mit **25 Metall**.
   - **Großkampfschiffe** (auch der Pronin-Träger): Sie zerbrechen in **6 große Rumpfteile zu je 150 Metall**
     (900 gesamt), etwa dreimal so groß wie ein Jägerwrack und verstreut um die Stelle des Untergangs.
@@ -338,9 +446,12 @@ Jedes abbauende Schiff erhöht das Risiko. Die Wartezeit ist zufällig und unabh
 | Forschungsstation | ca. 5 km | 3 | Archivdaten, Hinweise |
 | Industriestation | ca. 7 km | 4 | Rohstoffe, Module |
 | Habitatring | ca. 9 km | 6 | Überlebende |
+| Derelikt (nur in Wrackfeldern) | Kreuzerwrack, in zwei Teile zerbrochen | – | 4–8: Treibstoff, Module, Archivdaten, Rohstoffe |
+| Gestrandetes Schiff | so groß wie seine Klasse | 2 mittschiffs | 3–6: vor allem Rohstoffe und Treibstoff |
 
 Stationen sind 3- bis 6-mal so groß wie Großkampfschiffe. Ihre Andockports liegen am Ende von Armen auf der
-Zonenebene und zeigen nach außen.
+Zonenebene und zeigen nach außen. Ein Derelikt ist nie bewohnt und kann nicht repariert werden. Gestrandete
+Schiffe sind Stationen nur, bis sie repariert sind (siehe Abschnitt 4).
 
 ### Verdecktes Profil
 Jede Station hat ein aus dem Seed erzeugtes, zunächst verborgenes Profil:
@@ -351,7 +462,7 @@ Jede Station hat ein aus dem Seed erzeugtes, zunächst verborgenes Profil:
 
 Der Typ verschiebt die Wahrscheinlichkeiten (Habitate meist bewohnt, Industriestationen oft verlassen und
 rauer), der Ort verschiebt den Typ (im Orbit eher Habitate und Industrie, im tiefen Raum eher Außenposten
-und Forschung).
+und Forschung). Stationen aus späten Signalen sind nie feindlich und nie eine Ruine.
 
 ### Scannen
 - Scanschiffe halten etwa 2 km Abstand zum Rumpf. Ein Shuttle braucht 3 s (Außenposten) bis 6 s
@@ -378,6 +489,7 @@ und Forschung).
   - Giftige Luft und Stationsstrahlung töten etwa alle 30 s ein Besatzungsmitglied.
   - Eine feindliche Crew greift etwa alle 20 s an und **kapert** das Schiff nach durchschnittlich etwa
     60 s. Ein gekapertes Schiff ist mit allen an Bord verloren und wird als gekapert gemeldet.
+  - Die Flottenmodule **Strahlenschutz** und **Gesandtenprotokolle** schalten diese Gefahren ab.
 
 ### Durchsuchen
 - Angedockte Crews können **verlassene, begehbare** Stationen durchsuchen (atembare oder dünne Luft, keine
@@ -387,8 +499,8 @@ und Forschung).
 - **Überlebende in Kryostase** setzen sich auf freie Sitze und steigen bei der Landung aus. Ohne freien Sitz
   warten sie auf das nächste Schiff.
 - **Alles andere** fährt an Bord mit und zählt erst bei der Landung: Rohstoffe ins Lager, Treibstoff in die
-  Tanks, Gegenstände (Upgrade-Module, Hinweise, Archivdaten) ins Flotteninventar. Wird das Schiff zerstört
-  oder gekapert, ist alles verloren.
+  Tanks, Gegenstände (Upgrade-Module, Hinweise, Archivdaten) ins Flotteninventar. Upgrade-Module werden zu
+  Flottenmodulen (Abschnitt 4). Wird das Schiff zerstört oder gekapert, ist alles verloren.
 
 ### Bewohner und Evakuierung
 - Stationen behalten ihre Bewohner als Spielzustand.
@@ -405,7 +517,13 @@ und Forschung).
 ## 8. Kampf
 
 ### Seiten
-- Flotte und Pronin haben getrennte Register. Abbau, Auswahl und Bevölkerung sehen nur eigene Schiffe.
+- Es gibt drei Seiten: die **Flotte**, die **Pronin** und die **Gestrandeten** (gestrandete Großkampfschiffe
+  und verlassene kleine Schiffe). Jede Seite hat ihr eigenes Register. Abbau, Auswahl und Bevölkerung sehen
+  nur eigene Schiffe.
+- Eine **Fraktionstabelle** legt fest, wer wen bekämpft: Die Pronin sind Feind der Flotte und der
+  Gestrandeten, Flotte und Gestrandete sind neutral zueinander. Spätere Quest-Fraktionen können sich dort
+  eintragen.
+- Pronin-Jäger greifen gestrandete Schiffe an. Der Pronin-Träger jagt weiterhin nur die Flotte.
 - Feindliche Schiffe haben **rote** Markierungen, Stationswachen **bronzene**.
 
 ### Waffen und Schilde
@@ -482,6 +600,8 @@ Im Nahduell braucht ein Jäger etwa 7,5 s für einen Pronin-Jäger, umgekehrt si
 - Nach 30 s beginnt der Träger zu **jagen**: Alle 2 s prüft er, welche Zone die meisten eigenen
   Großkampfschiffe enthält (auch solche, die gerade dorthin springen), springt hinterher, stoppt etwa
   120 Einheiten davor und feuert seine Strahlen. Bewegen sich die Ziele innerhalb der Zone weg, rückt er nach.
+- Während der Countdown läuft, kommen die **späten Signale** herein (Abschnitt 2). Sie sind der Anreiz,
+  länger zu bleiben.
 
 ---
 
@@ -530,6 +650,28 @@ Im Nahduell braucht ein Jäger etwa 7,5 s für einen Pronin-Jäger, umgekehrt si
   eine Quest annehmen.
 - Dialoge sind **Funksprüche**: Das Spiel läuft weiter, das Fenster blockiert nur Klicks auf sich selbst.
   Mehrere Funksprüche werden in eine Warteschlange gestellt.
+- Ein Funkspruch kann eine **Antwortfrist** mit Standardantwort haben, die in Echtzeit läuft. Bisher nutzt
+  das der Notruf gestrandeter Schiffe (45 s, danach „Ignorieren“).
+
+### Der Prolog (optional)
+- Zu Beginn **jedes Runs** bietet Kapitän Ellis vom Linienschiff per Funk an, den Prolog zu spielen oder zu
+  überspringen.
+- Der Prolog spielt im **Startsystem**. Solange er läuft, gibt es keinen Pronin-Countdown, keine späten
+  Signale und keine Quests, und der Sprungantrieb ist gesperrt.
+- Jeder Schritt ist ein Funkspruch mit einem Ziel, das das Spiel selbst erkennt. Das Zielfeld oben bietet
+  „Schritt überspringen“ und „Prolog beenden“.
+  1. Einen Ort mit Station erkunden.
+  2. Ein Schiff an der Station andocken.
+  3. Die Station durchsuchen oder anfunken.
+  4. Harvester zum Abbau schicken.
+  5. Die erste Ladung abliefern.
+  6. Die kleinen Schiffe zurückrufen: **3 Pronin-Jäger** springen am Sprungpunkt ein.
+  7. Admiral Voss: Der **Kreuzer** mit zwei Jägerstaffeln kommt 20 s später an, die Jäger starten.
+  8. Die Pronin-Jäger zerstören.
+  9. In ein anderes System springen. Der Antrieb ist jetzt frei und sofort bereit.
+- Bis zum Kampf fliegt nur die zivile Flotte, das Militär kommt erst in Schritt 7 dazu.
+- Mit dem ersten Sprung beginnt das normale Spiel, und **Meltdown** startet im Zielsystem. Wer den Prolog
+  überspringt oder vorzeitig beendet, beginnt wie bisher mit der ganzen Flotte und Meltdown im Startsystem.
 
 ### Die Kette „Meltdown“ (vollständig spielbar)
 
@@ -561,16 +703,39 @@ Im Nahduell braucht ein Jäger etwa 7,5 s für einen Pronin-Jäger, umgekehrt si
 ### Kleine Lieferaufträge
 - Etwa **jede dritte** bewohnte, nicht feindliche Station bittet um eine Menge **Treibstoff, Metall oder
   Wasser** (100–600, steigt mit der Bewohnerzahl).
-- Bezahlung: eine andere Ressource zum **1,5-fachen** Wert oder in 20 % der Fälle ein **Upgrade-Modul**.
+- Bezahlung: eine andere Ressource zum **1,5-fachen** Wert oder in 20 % der Fälle ein **Upgrade-Modul**, das
+  eine Wahl aus drei Flottenmodulen eröffnet.
 - Das Angebot hört man beim Anfunken oder von einer angedockten Crew. Nach der Annahme übergibt das nächste
   angedockte Schiff mit Besatzung die Waren aus den Lagern der Industrieschiffe, sobald genug da ist.
 - Angenommene Aufträge stehen im Quest-Log. Offene Aufträge verfallen beim Sprung.
 
 ### Ende eines Runs
-- Sieg oder Niederlage zeigen einen **Endbildschirm** über einem dunklen Schleier: Ergebnis, Grund,
-  gerettete Menschen, Schiffe und Spielzeit. Dahinter steht die Zeit still.
-- Nach einem Sieg wartet der Bildschirm, bis kein Funkspruch mehr offen ist.
-- **„Neuer Run“** startet mit dem nächsten Galaxie-Seed.
+- **Sieg:** Eine Questkette, die den Run gewinnt (bisher Meltdown), ist abgeschlossen. Der Bildschirm wartet,
+  bis kein Funkspruch mehr offen ist.
+- **Niederlage:** Ein Questschritt beendet den Run (die Supernova erwischt die Flotte), oder das **letzte
+  Großkampfschiff der Flotte wird zerstört**. Die Niederlage erscheint 2,5 Sekunden nach dem Verlust, damit
+  die Explosion zu sehen ist. Ein verlorener Run zählt keine Überlebenden.
+- **Endbildschirm:** Bei einem Sieg steht ein goldener Titel „Die Flotte ist entkommen“ mit der Questkette,
+  die gewonnen hat, bei einer Niederlage ein roter Titel „Die Flotte ist verloren“ mit dem Grund. Dahinter
+  ist das Spiel pausiert.
+- **Wertung:** Die Zeilen bauen sich nacheinander auf, dann zählt die Gesamtpunktzahl hoch. Ein Klick
+  überspringt das. **Nur Erfolge bringen Punkte**, Verluste werden ohne Punkte aufgeführt:
+
+| Erfolg | Punkte |
+| --- | --- |
+| Gerettete Person | 1 |
+| Überlebende Person am Ende | 1 |
+| Gewonnenes kleines Schiff | 50 |
+| Gewonnenes Großkampfschiff | 500 |
+| Hinweis (abgeschlossener Questschritt) | 200 |
+| Sieg | 5.000 |
+
+- **Lauf-Historie:** Jeder beendete Run wird sofort als JSON-Datei gespeichert (`run-history.json` im
+  persistenten Datenordner von Unity), ohne Begrenzung. Jede Zeile zeigt die Veränderung zum letzten Run
+  (▲/▼, grün besser, rot schlechter) und „Rekord!“, wenn sie alle früheren Runs übertrifft. Die Summe zeigt
+  die bisher beste oder „Neuer Rekord!“. Danach folgen die **5 letzten Runs** mit Datum, Ergebnis und Punkten.
+- Eine unlesbare Historie wird beiseitegelegt statt überschrieben.
+- **„Neuer Lauf“** startet mit dem nächsten Galaxie-Seed.
 
 ---
 
@@ -585,10 +750,12 @@ Im Nahduell braucht ein Jäger etwa 7,5 s für einen Pronin-Jäger, umgekehrt si
   Quest-Platzierung.
 - **Laufzeitzustand pro Run**: Scans, Abbaumengen, Wracks, Stationsbewohner, Anfunk-Ergebnisse und
   Questfortschritt bleiben erhalten, solange der Run läuft.
-- **Modulare Struktur** unter `Assets/Modules/` mit 25 Feature-Modulen (Galaxy, StarSystem, Zones, Ships,
+- **Modulare Struktur** unter `Assets/Modules/` mit 30 Feature-Modulen (Galaxy, StarSystem, Zones, Ships,
   ShipControl, Mining, Exploration, Inspection, People, Provisions, Stations, Combat, Pursuit, FleetJump,
-  Quests, Dialogue, Rewards, Repairs, TacticalWeapons, RunEnd, Hud, Localization, CameraControl, Space, GenerationPreview) und
-  einem Shared-Modul.
+  Quests, Dialogue, Rewards, Repairs, TacticalWeapons, StrandedShips, LateSignals, FleetModules,
+  AbandonedShips, Tutorial, RunEnd, Hud, Localization, CameraControl, Space, GenerationPreview) und einem
+  Shared-Modul.
+- **Gespeichert** wird bisher nur die Lauf-Historie. Einen Spielstand gibt es noch nicht.
 - **EditMode-Tests** für Spielregeln (Abbau, Gefahren, Treibstoff, Kampfgeometrie, Countdown, Quests,
   Texte und mehr).
 - Schiffs- und Stationsprefabs werden per Editor-Skript als Blockout erzeugt (Menü *Last Fleet*).
@@ -614,12 +781,20 @@ Im Nahduell braucht ein Jäger etwa 7,5 s für einen Pronin-Jäger, umgekehrt si
 ## 13. Noch nicht eingebaut / offene Punkte
 
 - **Subsysteme** (Triebwerk, Sprungantrieb, Hangar, Waffen, Lebenserhaltung) und ihre Reparatur,
-  **benannte Ingenieure** und eine Hangar-Übersicht mit dem Zustand der angedockten Schiffe.
-- **Wirkung von Upgrade-Modulen, Hinweisen und Archivdaten.** Sie werden nur gezählt.
+  **benannte Ingenieure** und eine Hangar-Übersicht mit dem Zustand der angedockten Schiffe. Gestrandete
+  Schiffe könnten dann auch mit kaputten Antrieben kommen.
+- **Wirkung von Archivdaten und gefundenen Hinweisen.** Sie werden nur gezählt.
+- **Flottenmodule:** Die Zahl der Plätze (3, 4 oder 5) muss im Spiel getestet werden. Module bleiben bei
+  einem neuen Run erhalten, weil es noch keinen Reset gibt.
+- **Spielstand und Meta-Fortschritt:** Erst damit kann der Prolog beim ersten Run Pflicht werden.
+- **Prolog:** Texte, die 20-Sekunden-Pause und die Stärke des Überfalls sind noch nicht von Hand
+  durchgespielt. Ein Sprungeffekt für das ankommende Militär fehlt.
+- **Gefundene Schiffe** werden vor der Rettung noch nicht im Inspektionsfenster gezeigt (Klasse, Rumpf,
+  Treibstoff). Gestrandete Schiffe tragen noch keine eigenen Namen.
+- **Piloten als benannte Spezialisten:** Die Crew-Übergabe bewegt bisher nur eine Anzahl.
 - **Weitere taktische Waffen** neben der EMP-Rakete und EMP-Waffen der Pronin.
 - **Lügende Stationscrews** beim Anfunken.
-- **Allgemeine Niederlage**, z. B. wenn die Flotte vernichtet ist. Die einzige Niederlage ist bisher das
-  Bleiben in der Supernova.
+- **Balancing** der späten Signale (Anzahl, Zeitpunkt, Wert) und der Punktwerte der Wertung.
 - **Kampf-Balancing:** Die eigenen Jäger sind deutlich stärker, und alle Schiffe konzentrieren das Feuer auf
   dasselbe Ziel.
 - **Gefahren** treffen bisher nur die eigene Flotte, nicht die Pronin.

@@ -18,6 +18,7 @@ Agreed with the designer on 2026-11-17. Change them only on purpose.
 | Installing | **Instant and free.** No metal, no engineer time. |
 | Full slots | The new module **replaces** an installed one, which is **destroyed**. No storage, no swapping back. The player may also **discard** a waiting module. |
 | Stacking | A module can be installed only once; shares of the same stat from different modules add up (cargo bays −10 % and plating +30 % hull = +20 %). |
+| New run | **Nothing carries over** (2026-11-18: roguelike, not incremental). A new run empties the slots, drops the offer and the waiting modules (`NewRunReset` in GenerationPreview). |
 
 ### Modules
 
@@ -51,5 +52,4 @@ Hull changes keep a ship's intact share (50 % stays 50 %).
 ## Open
 
 - Slot count 3, 4 or 5 still needs playtesting.
-- Modules are kept across a new galaxy seed, like the fleet inventory; there is no run reset yet.
 - Values are balancing starting points.

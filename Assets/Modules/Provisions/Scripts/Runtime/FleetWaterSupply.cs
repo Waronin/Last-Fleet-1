@@ -58,6 +58,15 @@ namespace LastFleet.Provisions
             }
         }
 
+        /// <summary>
+        /// A new run forgets the old run's water state: warnings, the wait for recovery and deaths of thirst not yet
+        /// reported. The water itself is aboard the new fleet's ships.
+        /// </summary>
+        public void ResetForNewRun()
+        {
+            _consumption = null;
+        }
+
         void Update()
         {
             int people = _population.TotalPeople;

@@ -104,6 +104,17 @@ namespace LastFleet.FleetModules
             Notice?.Invoke(FleetModuleTexts.Discarded);
         }
 
+        /// <summary>
+        /// A new run starts with empty slots and no offer (roguelike: nothing carries over). The waiting modules live in
+        /// the fleet inventory, which the run start empties as well.
+        /// </summary>
+        public void ResetForNewRun()
+        {
+            _offer.Clear();
+            _slots.Clear();
+            _reportedWaiting = WaitingModules;
+        }
+
         FleetModuleKind TakeOffered(int offerIndex)
         {
             IReadOnlyList<FleetModuleKind> offer = Offer;

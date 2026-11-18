@@ -17,6 +17,7 @@ Agreed with the designer on 2026-11-18. Change them only on purpose.
 | Run history | Every finished run is saved at once (before the screen shows) as JSON in `Application.persistentDataPath/run-history.json`, **without limit**. JSON over XML: built into Unity (`JsonUtility`), compact and readable. |
 | Comparison | Wins and losses compare together. Each line shows its change since the last run (▲/▼, green when better, red when worse; fewer losses are better) and "Rekord!" when it beats every earlier run; a tie is no record. The total shows the best earlier total or "Neuer Rekord!". The victory bonus is not compared. |
 | Latest runs | Once the build-up is done, the 5 latest runs follow, this one first and highlighted: date, victory with its chain or defeat, points. |
+| New run | A **full reset** (roguelike, not incremental): new galaxy, starting fleet, quests, countdown and tally, and no installed modules, found items or water state of the old run (`NewRunReset`). Only the run history stays. |
 | Broken history | A file that cannot be read as a history (bad JSON, bad record, newer version) is moved aside as `run-history.unreadable-<time>.json` and a new history begins. A file that exists but cannot be opened is left alone and this session saves nothing, so earlier runs are never overwritten. |
 
 ## How it is built
@@ -34,5 +35,6 @@ Agreed with the designer on 2026-11-18. Change them only on purpose.
 | `CapitalShipLossWatch` | RunEnd | Reports the defeat when the last capital ship falls. |
 | `RunTallyRecorder` | GenerationPreview | Feeds the tally from the population, water, recoveries, crew transfers, quests and fleet losses. |
 | `RunEndFlow` | GenerationPreview | Builds the summary, saves and compares it, shows the screen, pauses the game and starts the next run. |
+| `NewRunReset` | GenerationPreview | Clears the fleet inventory, the fleet modules and the water state when a run starts. |
 
 Known limits: a ship that docks and sets down passengers it already carried at the start counts them as rescued.

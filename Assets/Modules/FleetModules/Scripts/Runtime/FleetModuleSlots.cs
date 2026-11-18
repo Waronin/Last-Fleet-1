@@ -28,7 +28,7 @@ namespace LastFleet.FleetModules
 
         public bool HasFreeSlot => _installed.Count < SlotCount;
 
-        /// <summary>Raised after a module was installed or replaced.</summary>
+        /// <summary>Raised after a module was installed or replaced, or the slots were cleared.</summary>
         public event Action Changed;
 
         public bool IsInstalled(FleetModuleKind kind)
@@ -60,6 +60,17 @@ namespace LastFleet.FleetModules
             _installed[slotIndex] = kind;
             Changed?.Invoke();
             return removed;
+        }
+
+        /// <summary>Empties every slot, e.g. for a new run.</summary>
+        public void Clear()
+        {
+            if (_installed.Count == 0)
+            {
+                return;
+            }
+            _installed.Clear();
+            Changed?.Invoke();
         }
 
         void RequireNotInstalled(FleetModuleKind kind)

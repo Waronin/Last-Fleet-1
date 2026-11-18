@@ -33,6 +33,24 @@ namespace LastFleet.Rewards
             Changed?.Invoke(item);
         }
 
+        /// <summary>Removes every item, e.g. for a new run; reports each item whose count went down.</summary>
+        public void Clear()
+        {
+            List<ItemKind> held = new List<ItemKind>();
+            foreach (KeyValuePair<ItemKind, int> entry in _counts)
+            {
+                if (entry.Value > 0)
+                {
+                    held.Add(entry.Key);
+                }
+            }
+            _counts.Clear();
+            foreach (ItemKind item in held)
+            {
+                Changed?.Invoke(item);
+            }
+        }
+
         /// <summary>Takes one item out of the inventory; false if there is none.</summary>
         public bool TryTake(ItemKind item)
         {

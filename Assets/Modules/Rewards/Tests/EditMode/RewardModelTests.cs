@@ -7,6 +7,23 @@ namespace LastFleet.Rewards.Tests
     public class RewardModelTests
     {
         [Test]
+        public void Inventory_Clear_EmptiesEveryItem_AndReportsOnlyTheHeldOnes()
+        {
+            FleetInventory inventory = new FleetInventory();
+            inventory.Add(ItemKind.UpgradeModule, 2);
+            inventory.Add(ItemKind.Clue, 1);
+            System.Collections.Generic.List<ItemKind> reported = new System.Collections.Generic.List<ItemKind>();
+            inventory.Changed += reported.Add;
+
+            inventory.Clear();
+            inventory.Clear();
+
+            Assert.AreEqual(0, inventory.CountOf(ItemKind.UpgradeModule));
+            Assert.AreEqual(0, inventory.CountOf(ItemKind.Clue));
+            CollectionAssert.AreEquivalent(new[] { ItemKind.UpgradeModule, ItemKind.Clue }, reported);
+        }
+
+        [Test]
         public void Inventory_TakesItemsOneByOneAndReportsEveryChange()
         {
             FleetInventory inventory = new FleetInventory();

@@ -287,6 +287,9 @@ namespace LastFleet.GenerationPreview.Editor
             RunTallyRecorder runTally = previewObject.AddComponent<RunTallyRecorder>();
             EditorAssetUtility.SetReferences(runTally, ("_controller", preview), ("_fleet", shipRegistry), ("_population", population),
                 ("_quests", quests), ("_water", water), ("_strandedShips", strandedShips), ("_crewTransfer", crewTransfer));
+            NewRunReset newRunReset = previewObject.AddComponent<NewRunReset>();
+            EditorAssetUtility.SetReferences(newRunReset, ("_controller", preview), ("_rewards", rewards), ("_fleetModules", fleetModules),
+                ("_fleetModuleWindow", fleetModuleWindow), ("_water", water));
             CapitalShipLossWatch lossWatch = previewObject.AddComponent<CapitalShipLossWatch>();
             EditorAssetUtility.SetReferences(lossWatch, ("_fleet", shipRegistry));
             RunEndFlow runEnd = previewObject.AddComponent<RunEndFlow>();
