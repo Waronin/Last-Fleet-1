@@ -20,7 +20,7 @@ MonoBehaviour:
     - rid: 5599358745442254938
   m_TableData:
   - m_Id: 1022963712
-    m_Localized: The fleet survived
+    m_Localized: The fleet escaped
     m_Metadata:
       m_Items: []
   - m_Id: 1060712448
@@ -33,7 +33,7 @@ MonoBehaviour:
       m_Items:
       - rid: 5599358745442254938
   - m_Id: 1064906753
-    m_Localized: 'Ships: {ships}'
+    m_Localized: 'Ships in the fleet: {ships}'
     m_Metadata:
       m_Items:
       - rid: 5599358745442254938
@@ -46,6 +46,121 @@ MonoBehaviour:
     m_Localized: New run
     m_Metadata:
       m_Items: []
+  - m_Id: 4561374662963200
+    m_Localized: The Pronin have lost our trail. Everyone who survived owes it to you.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4561374688129024
+    m_Localized: Humanity's last light has gone out. But what you saved will be remembered.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4561374688129025
+    m_Localized: The fleet's last capital ship was destroyed.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4561374688129026
+    m_Localized: 'People rescued: {count}'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254938
+  - m_Id: 4561374692323328
+    m_Localized: 'Survivors at the end: {count}'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254938
+  - m_Id: 4561374692323329
+    m_Localized: 'Small ships gained: {count}'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254938
+  - m_Id: 4561374692323330
+    m_Localized: 'Capital ships gained: {count}'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254938
+  - m_Id: 4561374692323331
+    m_Localized: 'Clues found: {count}'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254938
+  - m_Id: 4561374692323332
+    m_Localized: Victory
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4561374692323333
+    m_Localized: 'People lost: {count}'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254938
+  - m_Id: 4561374692323334
+    m_Localized: 'Ships lost: {count}'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254938
+  - m_Id: 4561374692323335
+    m_Localized: +{points}
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254938
+  - m_Id: 4561374692323336
+    m_Localized: 'Score: {points} points'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254938
+  - m_Id: 4561374692323337
+    m_Localized: Click to skip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4566769318047744
+    m_Localized: Won through the quest chain "{chain}"
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254938
+  - m_Id: 4566769347407872
+    m_Localized: "\u25B2 {change}"
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254938
+  - m_Id: 4566769347407873
+    m_Localized: "\u25BC {change}"
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254938
+  - m_Id: 4566769347407874
+    m_Localized: =
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4566769351602176
+    m_Localized: Record!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4566769351602177
+    m_Localized: 'Best so far: {points} points'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254938
+  - m_Id: 4566769351602178
+    m_Localized: New record!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4566769351602179
+    m_Localized: Your first scored run
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4566769351602180
+    m_Localized: Latest runs
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4566769351602181
+    m_Localized: "{date}   Victory \xB7 {chain}   {points} points"
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254938
+  - m_Id: 4566769351602182
+    m_Localized: '{date}   Defeat   {points} points'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254938
   references:
     version: 2
     RefIds:
@@ -57,3 +172,18 @@ MonoBehaviour:
         - id: 1064906752
         - id: 1064906753
         - id: 1073295360
+        - id: 4561374688129026
+        - id: 4561374692323328
+        - id: 4561374692323329
+        - id: 4561374692323330
+        - id: 4561374692323331
+        - id: 4561374692323333
+        - id: 4561374692323334
+        - id: 4561374692323335
+        - id: 4561374692323336
+        - id: 4566769318047744
+        - id: 4566769347407872
+        - id: 4566769347407873
+        - id: 4566769351602177
+        - id: 4566769351602181
+        - id: 4566769351602182

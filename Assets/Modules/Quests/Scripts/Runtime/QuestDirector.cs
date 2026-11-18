@@ -54,6 +54,9 @@ namespace LastFleet.Quests
         /// <summary>A step was placed, finished or failed: the systems with a quest marker changed.</summary>
         public event Action MarkersChanged;
 
+        /// <summary>A step of a chain was completed; each one counts as a clue found for the run's account.</summary>
+        public event Action StepCompleted;
+
         /// <summary>A chain that wins the run is complete (see <see cref="QuestChainDefinition.WinsRun"/>).</summary>
         public event Action<QuestChain> RunWon;
 
@@ -269,6 +272,7 @@ namespace LastFleet.Quests
             QuestChain chain = context.Chain;
             EndAttempt(chain);
             GameText title = chain.CurrentStep.Title;
+            StepCompleted?.Invoke();
             if (!chain.CompleteStep())
             {
                 RaiseNotice(QuestTexts.ChainCompleted.Format(("chain", chain.Definition.Title)));

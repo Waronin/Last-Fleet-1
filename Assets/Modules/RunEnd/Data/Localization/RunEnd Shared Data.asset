@@ -23,10 +23,6 @@ MonoBehaviour:
     m_Key: title.Lost
     m_Metadata:
       m_Items: []
-  - m_Id: 1064906752
-    m_Key: stat.people
-    m_Metadata:
-      m_Items: []
   - m_Id: 1064906753
     m_Key: stat.ships
     m_Metadata:
@@ -37,6 +33,106 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 1073295361
     m_Key: button.new-run
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4561374662963200
+    m_Key: mood.Won
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4561374688129024
+    m_Key: mood.Lost
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4561374688129025
+    m_Key: reason.capital-ships-lost
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4561374688129026
+    m_Key: line.rescued
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4561374692323328
+    m_Key: line.survivors
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4561374692323329
+    m_Key: line.small-ships-gained
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4561374692323330
+    m_Key: line.capital-ships-gained
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4561374692323331
+    m_Key: line.clues
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4561374692323332
+    m_Key: line.victory
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4561374692323333
+    m_Key: line.people-lost
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4561374692323334
+    m_Key: line.ships-lost
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4561374692323335
+    m_Key: line.points
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4561374692323336
+    m_Key: total
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4561374692323337
+    m_Key: hint.skip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4566769318047744
+    m_Key: winning-chain
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4566769347407872
+    m_Key: compare.up
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4566769347407873
+    m_Key: compare.down
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4566769347407874
+    m_Key: compare.same
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4566769351602176
+    m_Key: compare.record
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4566769351602177
+    m_Key: compare.best-total
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4566769351602178
+    m_Key: compare.new-best-total
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4566769351602179
+    m_Key: compare.first-run
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4566769351602180
+    m_Key: history.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4566769351602181
+    m_Key: history.won
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4566769351602182
+    m_Key: history.lost
     m_Metadata:
       m_Items: []
   m_Metadata:

@@ -69,6 +69,12 @@ namespace LastFleet.People
         /// <summary>A small win for a success popup: a ferry brought people to safety aboard a carrier.</summary>
         public event Action<GameText> Success;
 
+        /// <summary>People brought to safety aboard a carrier, with their number, e.g. for the run's account.</summary>
+        public event Action<int> PeopleRescued;
+
+        /// <summary>People of the fleet who died, from hits or with their ship, with their number.</summary>
+        public event Action<int> PeopleDied;
+
         void Awake()
         {
             if (_registry == null)
@@ -163,6 +169,7 @@ namespace LastFleet.People
         void ReportDeaths(ShipAgent ship, int deaths, GameText cause)
         {
             Notice?.Invoke(PeopleTexts.CasualtiesFromHit.Format(("count", deaths), ("ship", ship.DisplayName), ("cause", cause)));
+            PeopleDied?.Invoke(deaths);
         }
 
         void OnPassengersLostWithShip(ShipPassengers passengers, int lost)
@@ -187,6 +194,7 @@ namespace LastFleet.People
             if (_lostWithShip.TryGetValue(ship, out int lost) && lost > 0)
             {
                 Notice?.Invoke(PeopleTexts.LostWithShip.Format(("count", lost), ("ship", ship.DisplayName)));
+                PeopleDied?.Invoke(lost);
             }
             _lostWithShip.Remove(ship);
         }
@@ -195,6 +203,7 @@ namespace LastFleet.People
         {
             Notice?.Invoke(PeopleTexts.Disembarked.Format(("count", people), ("ship", transport.Ship.DisplayName), ("carrier", carrier.Ship.DisplayName)));
             Success?.Invoke(PeopleTexts.Rescued.Format(("count", people)));
+            PeopleRescued?.Invoke(people);
         }
     }
 }

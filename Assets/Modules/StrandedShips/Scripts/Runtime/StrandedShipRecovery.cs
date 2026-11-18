@@ -43,6 +43,9 @@ namespace LastFleet.StrandedShips
         /// <summary>Small wins for success popups: a new ship in the fleet and the survivors it saved.</summary>
         public event Action<GameText> Success;
 
+        /// <summary>A recovered ship joined the fleet, with the survivors it brought aboard.</summary>
+        public event Action<ShipAgent, int> ShipRecovered;
+
         FleetSupplies Supplies => _supplies ??= new FleetSupplies(_registry);
 
         void Awake()
@@ -215,6 +218,7 @@ namespace LastFleet.StrandedShips
             {
                 Success?.Invoke(PeopleTexts.Rescued.Format(("count", survivors)));
             }
+            ShipRecovered?.Invoke(ship, survivors);
         }
 
         /// <summary>Only the survivors are aboard: the prefab's starting passengers belong to the fleet's own ships.</summary>

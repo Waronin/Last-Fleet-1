@@ -20,7 +20,7 @@ MonoBehaviour:
     - rid: 5599358745442254937
   m_TableData:
   - m_Id: 1022963712
-    m_Localized: "Die Flotte hat \xFCberlebt"
+    m_Localized: Die Flotte ist entkommen
     m_Metadata:
       m_Items: []
   - m_Id: 1060712448
@@ -33,7 +33,7 @@ MonoBehaviour:
       m_Items:
       - rid: 5599358745442254937
   - m_Id: 1064906753
-    m_Localized: 'Schiffe: {ships}'
+    m_Localized: 'Schiffe in der Flotte: {ships}'
     m_Metadata:
       m_Items:
       - rid: 5599358745442254937
@@ -46,6 +46,121 @@ MonoBehaviour:
     m_Localized: Neuer Lauf
     m_Metadata:
       m_Items: []
+  - m_Id: 4561374662963200
+    m_Localized: "Die Pronin haben unsere Spur verloren. Wer \xFCberlebt hat, verdankt es dir."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4561374688129024
+    m_Localized: Das letzte Licht der Menschheit ist erloschen. Doch was du gerettet hast, bleibt in Erinnerung.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4561374688129025
+    m_Localized: "Das letzte Kapitalschiff der Flotte wurde zerst\xF6rt."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4561374688129026
+    m_Localized: 'Gerettete Menschen: {count}'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254937
+  - m_Id: 4561374692323328
+    m_Localized: "\xDCberlebende am Ende: {count}"
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254937
+  - m_Id: 4561374692323329
+    m_Localized: 'Gewonnene kleine Schiffe: {count}'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254937
+  - m_Id: 4561374692323330
+    m_Localized: 'Gewonnene Kapitalschiffe: {count}'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254937
+  - m_Id: 4561374692323331
+    m_Localized: 'Gefundene Hinweise: {count}'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254937
+  - m_Id: 4561374692323332
+    m_Localized: Sieg
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4561374692323333
+    m_Localized: 'Verlorene Menschen: {count}'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254937
+  - m_Id: 4561374692323334
+    m_Localized: 'Verlorene Schiffe: {count}'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254937
+  - m_Id: 4561374692323335
+    m_Localized: +{points}
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254937
+  - m_Id: 4561374692323336
+    m_Localized: 'Wertung: {points} Punkte'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254937
+  - m_Id: 4561374692323337
+    m_Localized: "Klicken zum \xDCberspringen"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4566769318047744
+    m_Localized: "Sieg durch die Questreihe \u201E{chain}\u201C"
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254937
+  - m_Id: 4566769347407872
+    m_Localized: "\u25B2 {change}"
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254937
+  - m_Id: 4566769347407873
+    m_Localized: "\u25BC {change}"
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254937
+  - m_Id: 4566769347407874
+    m_Localized: =
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4566769351602176
+    m_Localized: Rekord!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4566769351602177
+    m_Localized: 'Bisheriger Bestwert: {points} Punkte'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254937
+  - m_Id: 4566769351602178
+    m_Localized: Neuer Rekord!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4566769351602179
+    m_Localized: Dein erster gewerteter Run
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4566769351602180
+    m_Localized: Letzte Runs
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4566769351602181
+    m_Localized: "{date}   Sieg \xB7 {chain}   {points} Punkte"
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254937
+  - m_Id: 4566769351602182
+    m_Localized: '{date}   Niederlage   {points} Punkte'
+    m_Metadata:
+      m_Items:
+      - rid: 5599358745442254937
   references:
     version: 2
     RefIds:
@@ -57,3 +172,18 @@ MonoBehaviour:
         - id: 1064906752
         - id: 1064906753
         - id: 1073295360
+        - id: 4561374688129026
+        - id: 4561374692323328
+        - id: 4561374692323329
+        - id: 4561374692323330
+        - id: 4561374692323331
+        - id: 4561374692323333
+        - id: 4561374692323334
+        - id: 4561374692323335
+        - id: 4561374692323336
+        - id: 4566769318047744
+        - id: 4566769347407872
+        - id: 4566769347407873
+        - id: 4566769351602177
+        - id: 4566769351602181
+        - id: 4566769351602182

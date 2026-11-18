@@ -4,7 +4,8 @@
     "references": [
         "LastFleet.Shared",
         "LastFleet.Localization",
-        "LastFleet.ShipControl"
+        "LastFleet.ShipControl",
+        "LastFleet.Ships"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

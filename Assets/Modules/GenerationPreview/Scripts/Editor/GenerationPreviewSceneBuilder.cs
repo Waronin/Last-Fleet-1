@@ -284,9 +284,15 @@ namespace LastFleet.GenerationPreview.Editor
                 ("_linerPrefab", ShipPrefabBuilder.LoadOrCreateLiner()),
                 ("_shuttlePrefab", ShipPrefabBuilder.LoadOrCreateShuttle()),
                 ("_harvesterPrefab", ShipPrefabBuilder.LoadOrCreateHarvester()));
+            RunTallyRecorder runTally = previewObject.AddComponent<RunTallyRecorder>();
+            EditorAssetUtility.SetReferences(runTally, ("_controller", preview), ("_fleet", shipRegistry), ("_population", population),
+                ("_quests", quests), ("_water", water), ("_strandedShips", strandedShips), ("_crewTransfer", crewTransfer));
+            CapitalShipLossWatch lossWatch = previewObject.AddComponent<CapitalShipLossWatch>();
+            EditorAssetUtility.SetReferences(lossWatch, ("_fleet", shipRegistry));
             RunEndFlow runEnd = previewObject.AddComponent<RunEndFlow>();
             EditorAssetUtility.SetReferences(runEnd, ("_controller", preview), ("_quests", quests), ("_dialogue", dialogue),
-                ("_fleet", shipRegistry), ("_population", population), ("_window", runEndWindow));
+                ("_fleet", shipRegistry), ("_population", population), ("_window", runEndWindow), ("_tally", runTally),
+                ("_lossWatch", lossWatch));
             GenerationPreviewOverlay overlay = previewObject.AddComponent<GenerationPreviewOverlay>();
             EditorAssetUtility.SetReferences(overlay, ("_controller", preview));
             DeveloperRaidInput raid = previewObject.AddComponent<DeveloperRaidInput>();

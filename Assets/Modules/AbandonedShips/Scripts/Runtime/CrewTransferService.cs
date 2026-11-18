@@ -30,6 +30,9 @@ namespace LastFleet.AbandonedShips
         /// <summary>A small win for a success popup: a found ship joined the fleet.</summary>
         public event Action<GameText> Success;
 
+        /// <summary>A found ship joined the fleet.</summary>
+        public event Action<ShipAgent> ShipJoined;
+
         void Awake()
         {
             if (_fleet == null || _stranded == null || _abandoned == null)
@@ -163,6 +166,7 @@ namespace LastFleet.AbandonedShips
                 ? AbandonedShipTexts.Recovered.Format(("ship", receiver.DisplayName), ("home", home.Carrier.DisplayName))
                 : AbandonedShipTexts.RecoveredWithoutHome.Format(("ship", receiver.DisplayName)));
             Success?.Invoke(ShipTexts.JoinedFleet.Format(("ship", receiver.DisplayName)));
+            ShipJoined?.Invoke(receiver);
         }
 
         /// <summary>Tells the player once when one of the fleet's small ships loses its last crew member.</summary>

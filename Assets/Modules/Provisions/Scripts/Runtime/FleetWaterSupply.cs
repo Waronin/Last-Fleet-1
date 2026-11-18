@@ -44,6 +44,9 @@ namespace LastFleet.Provisions
         /// <summary>A small win for a success popup: the water is plentiful again after running low.</summary>
         public event Action<GameText> Success;
 
+        /// <summary>Passengers who died of thirst, with their number; crews report theirs through the population.</summary>
+        public event Action<int> PassengersDied;
+
         FleetSupplies Supplies => _supplies ??= new FleetSupplies(_registry);
 
         void Awake()
@@ -89,6 +92,10 @@ namespace LastFleet.Provisions
         void KillOfThirst(int deaths)
         {
             int died = KillPassengers(deaths);
+            if (died > 0)
+            {
+                PassengersDied?.Invoke(died);
+            }
             foreach (ShipAgent ship in _registry.Ships)
             {
                 if (died >= deaths)
