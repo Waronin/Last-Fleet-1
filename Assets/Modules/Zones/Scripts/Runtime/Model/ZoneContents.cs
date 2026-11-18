@@ -11,19 +11,30 @@ namespace LastFleet.Zones
     {
         readonly List<ResourceDeposit> _deposits;
         readonly List<ZoneStation> _stations;
+        readonly List<AbandonedShip> _abandonedShips;
 
         public ZoneContents(float radiusKlicks, ZoneBackdrop backdrop, IReadOnlyList<ResourceDeposit> deposits, IReadOnlyList<ZoneStation> stations)
+            : this(radiusKlicks, backdrop, deposits, stations, Array.Empty<AbandonedShip>())
+        {
+        }
+
+        public ZoneContents(float radiusKlicks, ZoneBackdrop backdrop, IReadOnlyList<ResourceDeposit> deposits, IReadOnlyList<ZoneStation> stations,
+            IReadOnlyList<AbandonedShip> abandonedShips)
         {
             RadiusKlicks = radiusKlicks;
             Backdrop = backdrop;
             _deposits = new List<ResourceDeposit>(deposits);
             _stations = new List<ZoneStation>(stations);
+            _abandonedShips = new List<AbandonedShip>(abandonedShips ?? throw new ArgumentNullException(nameof(abandonedShips)));
         }
 
         public float RadiusKlicks { get; }
         public ZoneBackdrop Backdrop { get; }
         public IReadOnlyList<ResourceDeposit> Deposits => _deposits;
         public IReadOnlyList<ZoneStation> Stations => _stations;
+
+        /// <summary>Small ships adrift without crew, found with the zone; recovered and destroyed ones stay listed as gone.</summary>
+        public IReadOnlyList<AbandonedShip> AbandonedShips => _abandonedShips;
 
         /// <summary>Adds a deposit that appeared during the run; it stays for the rest of the run like any other.</summary>
         public void AddDeposit(ResourceDeposit deposit)

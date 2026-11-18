@@ -28,6 +28,9 @@ namespace LastFleet.Rewards
         /// <summary>{ship}, {carrier}</summary>
         public static readonly GameTextKey Delivered = new GameTextKey(Table, "notice.delivered");
 
+        /// <summary>{finds} - success popup when finds are stored aboard.</summary>
+        public static readonly GameTextKey FindsSecured = new GameTextKey(Table, "success.finds-secured");
+
         /// <summary>{ship}</summary>
         public static readonly GameTextKey NoRoomForFinds = new GameTextKey(Table, "notice.no-room");
 

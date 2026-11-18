@@ -66,6 +66,9 @@ namespace LastFleet.People
         /// <summary>Short feedback for the player when people die or move between ships.</summary>
         public event Action<GameText> Notice;
 
+        /// <summary>A small win for a success popup: a ferry brought people to safety aboard a carrier.</summary>
+        public event Action<GameText> Success;
+
         void Awake()
         {
             if (_registry == null)
@@ -191,6 +194,7 @@ namespace LastFleet.People
         void OnDisembarked(ShipPassengers transport, ShipPassengers carrier, int people)
         {
             Notice?.Invoke(PeopleTexts.Disembarked.Format(("count", people), ("ship", transport.Ship.DisplayName), ("carrier", carrier.Ship.DisplayName)));
+            Success?.Invoke(PeopleTexts.Rescued.Format(("count", people)));
         }
     }
 }

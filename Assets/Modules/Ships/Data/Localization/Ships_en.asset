@@ -147,6 +147,11 @@ MonoBehaviour:
     m_Localized: Stranded ship
     m_Metadata:
       m_Items: []
+  - m_Id: 7612849165250560
+    m_Localized: 'Congratulations, a new ship joined the fleet: {ship}!'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421286
   references:
     version: 2
     RefIds:
@@ -159,3 +164,4 @@ MonoBehaviour:
         - id: 326709248
         - id: 368647247310849
         - id: 368647247310850
+        - id: 7612849165250560

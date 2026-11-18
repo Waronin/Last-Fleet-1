@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: AbandonedShips Shared Data
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.SharedTableData
+  m_TableCollectionName: AbandonedShips
+  m_TableCollectionNameGuidString: c7be2f50009562d458f34139c8160800
+  m_Entries:
+  - m_Id: 1735995392
+    m_Key: notice.found
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1765355520
+    m_Key: notice.crew-gone
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1769549824
+    m_Key: feedback.transfer-ordered
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1769549825
+    m_Key: feedback.no-donor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1773744128
+    m_Key: notice.transfer-abandoned
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1773744129
+    m_Key: notice.recrewed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1773744130
+    m_Key: notice.recovered
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1773744131
+    m_Key: notice.recovered-homeless
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1756125278208
+    m_Key: name.found-ship
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 5599359038138089542
+  references:
+    version: 2
+    RefIds:
+    - rid: 5599359038138089542
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1794992416351

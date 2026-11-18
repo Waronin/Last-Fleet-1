@@ -30,6 +30,9 @@ namespace LastFleet.Mining
         /// <summary>Short feedback for the player, e.g. when a harvester runs out of work.</summary>
         public event Action<GameText> Notice;
 
+        /// <summary>A small win for a success popup: a deposit was mined out.</summary>
+        public event Action<GameText> Success;
+
         void Awake()
         {
             if (_registry == null)
@@ -209,6 +212,13 @@ namespace LastFleet.Mining
         public void Report(GameText message)
         {
             Notice?.Invoke(message);
+        }
+
+        /// <summary>Called by the harvester whose extraction emptied the deposit, so it is reported once.</summary>
+        public void ReportMinedOut(ResourceDeposit deposit, ZoneView zone)
+        {
+            Success?.Invoke(MiningTexts.DepositMinedOut.Format(("resource", ZoneTexts.Resources.For(deposit.Resource)),
+                ("zone", zone.Record.PointOfInterest.Name)));
         }
 
         void OnShipSpawned(ShipAgent ship)

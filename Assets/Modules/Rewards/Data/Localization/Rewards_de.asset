@@ -83,6 +83,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - rid: 6743102069811707985
+  - m_Id: 7111225900609536
+    m_Localized: 'Funde gesichert: {finds}.'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707985
   references:
     version: 2
     RefIds:
@@ -99,3 +104,4 @@ MonoBehaviour:
         - id: 809054211
         - id: 809054212
         - id: 809054213
+        - id: 7111225900609536

@@ -139,6 +139,10 @@ MonoBehaviour:
     m_Key: class.StrandedHulk
     m_Metadata:
       m_Items: []
+  - m_Id: 7612849165250560
+    m_Key: success.joined-fleet
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

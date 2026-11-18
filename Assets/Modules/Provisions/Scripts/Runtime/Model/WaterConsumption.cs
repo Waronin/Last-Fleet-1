@@ -5,12 +5,13 @@ namespace LastFleet.Provisions
     /// <summary>What one step of game time means for the fleet's water.</summary>
     public readonly struct WaterStep
     {
-        public WaterStep(float waterToTake, int deaths, bool becameLow, bool ranDry)
+        public WaterStep(float waterToTake, int deaths, bool becameLow, bool ranDry, bool recovered)
         {
             WaterToTake = waterToTake;
             Deaths = deaths;
             BecameLow = becameLow;
             RanDry = ranDry;
+            Recovered = recovered;
         }
 
         /// <summary>Water drunk in this step; never more than there is.</summary>
@@ -24,6 +25,9 @@ namespace LastFleet.Provisions
 
         /// <summary>The water just ran out.</summary>
         public bool RanDry { get; }
+
+        /// <summary>After running low, the water just reached the comfortable reserve again.</summary>
+        public bool Recovered { get; }
     }
 
     /// <summary>
@@ -38,15 +42,27 @@ namespace LastFleet.Provisions
         readonly float _deathFractionPerMinute;
         readonly float _warningMinutes;
         readonly float _deathBatchSeconds;
+        readonly float _recoveredMinutes;
         float _pendingDeaths;
+        bool _awaitingRecovery;
         float _secondsSinceBatch;
 
-        public WaterConsumption(float peoplePerUnitPerMinute, float deathFractionPerMinute, float warningMinutes, float deathBatchSeconds)
+        /// <param name="recoveredMinutes">
+        /// Reserve that counts as recovered after a warning. It lies above <paramref name="warningMinutes"/>, so a reserve
+        /// hovering at the warning line does not celebrate every refill.
+        /// </param>
+        public WaterConsumption(float peoplePerUnitPerMinute, float deathFractionPerMinute, float warningMinutes, float deathBatchSeconds,
+            float recoveredMinutes)
         {
             if (peoplePerUnitPerMinute <= 0f || deathFractionPerMinute <= 0f || warningMinutes < 0f || deathBatchSeconds <= 0f)
             {
                 throw new ArgumentOutOfRangeException(nameof(peoplePerUnitPerMinute), "Water rules need positive rates and batch time.");
             }
+            if (recoveredMinutes <= warningMinutes)
+            {
+                throw new ArgumentOutOfRangeException(nameof(recoveredMinutes), "The recovered reserve must lie above the warning time.");
+            }
+            _recoveredMinutes = recoveredMinutes;
             _peoplePerUnitPerMinute = peoplePerUnitPerMinute;
             _deathFractionPerMinute = deathFractionPerMinute;
             _warningMinutes = warningMinutes;
@@ -85,6 +101,16 @@ namespace LastFleet.Provisions
             float left = Math.Max(0f, waterAvailable) - taken;
             IsDry = people > 0 && left <= 0f;
             IsLow = people > 0 && MinutesLeft(left, people) <= _warningMinutes;
+            bool recovered = false;
+            if (IsLow)
+            {
+                _awaitingRecovery = true;
+            }
+            else if (_awaitingRecovery && people > 0 && MinutesLeft(left, people) >= _recoveredMinutes)
+            {
+                _awaitingRecovery = false;
+                recovered = true;
+            }
 
             int deaths = 0;
             _secondsSinceBatch += deltaSeconds;
@@ -100,7 +126,7 @@ namespace LastFleet.Provisions
                 // Less than one person short is forgiven once there is water again.
                 _pendingDeaths = 0f;
             }
-            return new WaterStep(taken, deaths, IsLow && !wasLow, IsDry && !wasDry);
+            return new WaterStep(taken, deaths, IsLow && !wasLow, IsDry && !wasDry, recovered);
         }
     }
 }

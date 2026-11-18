@@ -6,7 +6,7 @@ namespace LastFleet.Provisions.Tests
     {
         static WaterConsumption Create()
         {
-            return new WaterConsumption(50f, 0.01f, 5f, 15f);
+            return new WaterConsumption(50f, 0.01f, 5f, 15f, 15f);
         }
 
         [Test]
@@ -67,6 +67,25 @@ namespace LastFleet.Provisions.Tests
             Assert.IsFalse(water.Advance(1f, 5000, 390f).BecameLow);
             Assert.IsFalse(water.Advance(1f, 5000, 2000f).BecameLow);
             Assert.IsTrue(water.Advance(1f, 5000, 400f).BecameLow);
+        }
+
+        [Test]
+        public void Recovered_OnlyAfterALowWarning_AndOnlyOnce()
+        {
+            WaterConsumption water = Create();
+
+            // 5000 people drink 100 units per minute: 3000 units last 30 minutes.
+            Assert.IsFalse(water.Advance(1f, 5000, 3000f).Recovered, "Plenty of water without a warning before is nothing new.");
+            Assert.IsTrue(water.Advance(1f, 5000, 300f).BecameLow);
+            Assert.IsFalse(water.Advance(1f, 5000, 1000f).Recovered, "10 minutes is no longer low, but below the reserve.");
+            Assert.IsTrue(water.Advance(1f, 5000, 1600f).Recovered);
+            Assert.IsFalse(water.Advance(1f, 5000, 3000f).Recovered);
+        }
+
+        [Test]
+        public void RecoveredReserve_MustLieAboveTheWarning()
+        {
+            Assert.Throws<System.ArgumentOutOfRangeException>(() => new WaterConsumption(50f, 0.01f, 5f, 15f, 5f));
         }
     }
 }

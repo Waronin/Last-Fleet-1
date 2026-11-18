@@ -199,6 +199,11 @@ namespace LastFleet.Mining
             float rate = _extractionPerSecond * _ship.WorkEfficiency * _ship.Effects.MiningRateMultiplier(Deposit.Resource);
             float wanted = Mathf.Min(rate * deltaTime, Cargo.FreeSpace / multiplier);
             float extracted = Deposit.Extract(wanted);
+            if (Deposit.IsDepleted)
+            {
+                // It was not depleted before this extraction, so only this harvester reports it.
+                _coordinator.ReportMinedOut(Deposit, _zone);
+            }
             Deposit.RecordMining(deltaTime);
             Cargo.Load(Deposit.Resource, extracted * multiplier);
             _zone.RefreshDeposit(Deposit);

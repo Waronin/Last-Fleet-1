@@ -27,6 +27,9 @@ namespace LastFleet.Combat
         /// <summary>Short feedback for the player, e.g. when an enemy is shot down.</summary>
         public event Action<GameText> Notice;
 
+        /// <summary>A small win for a success popup: the fleet cleared a zone of enemies.</summary>
+        public event Action<GameText> Success;
+
         void Awake()
         {
             _sides.Clear();
@@ -405,6 +408,51 @@ namespace LastFleet.Combat
         void OnEnemyLost(ShipAgent ship, GameText cause)
         {
             Notice?.Invoke(ShipTexts.ShipDestroyed.Format(("ship", ship.DisplayName), ("cause", cause)));
+            ZoneView zone = ship.Zone;
+            if (zone != null && HasFleetShipIn(zone) && !HasEnemyLeftIn(zone, ship))
+            {
+                Success?.Invoke(CombatTexts.ZoneSecured.Format(("zone", zone.Record.PointOfInterest.Name)));
+            }
+        }
+
+        bool HasFleetShipIn(ZoneView zone)
+        {
+            foreach (ShipAgent ship in _fleet.Ships)
+            {
+                if (ship.Zone == zone)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Enemies still fighting in the zone besides the lost one. Ships destroyed this frame are still registered
+        /// until the end of the frame, and docked ships share their carrier's fate, so neither counts.
+        /// </summary>
+        bool HasEnemyLeftIn(ZoneView zone, ShipAgent lost)
+        {
+            foreach (ShipRegistry side in _sides)
+            {
+                if (!FactionRelations.AreHostile(_fleet.Allegiance, side.Allegiance))
+                {
+                    continue;
+                }
+                foreach (ShipAgent other in side.Ships)
+                {
+                    if (other == lost || other.IsDocked || other.Zone != zone)
+                    {
+                        continue;
+                    }
+                    if (other.TryGetComponent(out ShipDurability durability) && durability.Hull.IsDestroyed)
+                    {
+                        continue;
+                    }
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

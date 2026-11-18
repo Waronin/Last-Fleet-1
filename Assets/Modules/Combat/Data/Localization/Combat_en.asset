@@ -57,6 +57,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - rid: 6743102069811707987
+  - m_Id: 7090816706752512
+    m_Localized: Victory! {zone} is clear of enemies.
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707987
   references:
     version: 2
     RefIds:
@@ -71,3 +76,4 @@ MonoBehaviour:
         - id: 838414337
         - id: 988262507819008
         - id: 988262520401921
+        - id: 7090816706752512

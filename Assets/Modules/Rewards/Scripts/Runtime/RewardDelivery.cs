@@ -19,6 +19,7 @@ namespace LastFleet.Rewards
 
         readonly FleetInventory _inventory = new FleetInventory();
         readonly List<Reward> _remaining = new List<Reward>();
+        readonly List<Reward> _stored = new List<Reward>();
         FleetSupplies _supplies;
 
         public FleetInventory Inventory => _inventory;
@@ -26,6 +27,9 @@ namespace LastFleet.Rewards
 
         /// <summary>Short feedback for the player when finds are unloaded.</summary>
         public event Action<GameText> Notice;
+
+        /// <summary>A small win for a success popup: finds made it aboard.</summary>
+        public event Action<GameText> Success;
 
         void Awake()
         {
@@ -54,6 +58,7 @@ namespace LastFleet.Rewards
         public void Deliver(ShipRewardHold hold, Hangar hangar)
         {
             _remaining.Clear();
+            _stored.Clear();
             foreach (Reward reward in hold.Hold.Rewards)
             {
                 float left = Store(reward, hangar.Carrier, hold.Ship);
@@ -61,10 +66,18 @@ namespace LastFleet.Rewards
                 {
                     _remaining.Add(reward.WithAmount(left));
                 }
+                if (reward.Amount - left > 0.01f)
+                {
+                    _stored.Add(left > 0.01f ? reward.WithAmount(reward.Amount - left) : reward);
+                }
             }
             hold.Hold.ReplaceWith(_remaining);
 
             Notice?.Invoke(RewardTexts.Delivered.Format(("ship", hold.Ship.DisplayName), ("carrier", hangar.Carrier.DisplayName)));
+            if (_stored.Count > 0)
+            {
+                Success?.Invoke(RewardTexts.FindsSecured.Format(("finds", RewardTexts.DescribeAll(_stored))));
+            }
             if (!hold.Hold.IsEmpty)
             {
                 Notice?.Invoke(RewardTexts.NoRoomForFinds.Format(("ship", hold.Ship.DisplayName)));

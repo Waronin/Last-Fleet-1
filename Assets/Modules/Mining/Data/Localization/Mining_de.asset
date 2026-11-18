@@ -177,6 +177,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - rid: 6743102046643421294
+  - m_Id: 7612848531910656
+    m_Localized: "Lagerst\xE4tte vollst\xE4ndig abgebaut: {resource} in {zone}."
+    m_Metadata:
+      m_Items:
+      - rid: 6743102046643421294
   references:
     version: 2
     RefIds:
@@ -203,3 +208,4 @@ MonoBehaviour:
         - id: 4551304503963658
         - id: 4551304503963659
         - id: 4551304503963660
+        - id: 7612848531910656

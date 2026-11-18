@@ -47,6 +47,10 @@ MonoBehaviour:
     m_Key: task.escorting
     m_Metadata:
       m_Items: []
+  - m_Id: 7090816706752512
+    m_Key: success.zone-secured
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

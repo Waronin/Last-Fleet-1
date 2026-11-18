@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using LastFleet.AbandonedShips;
 using LastFleet.Combat;
 using LastFleet.Exploration;
 using LastFleet.Mining;
@@ -30,6 +31,8 @@ namespace LastFleet.ShipControl
         [SerializeField] ScoutingService _scouting;
         [SerializeField] DockingService _docking;
         [SerializeField] CombatService _combat;
+        [Tooltip("Optional. Right click on a small ship without crew sends a selected ship to put one person aboard.")]
+        [SerializeField] CrewTransferService _crewTransfer;
         [SerializeField, Min(1f)] float _pickRadiusPixels = 18f;
         [SerializeField] Color _selectionBoxColor = new Color(0.4f, 0.8f, 1f, 0.25f);
 
@@ -214,12 +217,19 @@ namespace LastFleet.ShipControl
                 return;
             }
 
-            // Context command (GDD): right click on an enemy attacks it, selected fighters on another of our
+            // Context command (GDD): right click on an enemy attacks it, a small ship without crew gets one
+            // person from a selected ship, selected fighters on another of our
             // ships escort it (or its squad), on a deposit sends harvesters mining or scouts scanning, on an
             // unscanned station scouts scan it, otherwise small ships dock at it; elsewhere it is a move.
             if (_combat.TryPickHostile(_activeZone, _camera, pointer, _pickRadiusPixels, out ShipAgent hostile))
             {
                 _combat.OrderAttack(_selection.Ships, hostile);
+                return;
+            }
+            if (_crewTransfer != null && _crewTransfer.TryPickReceiver(_activeZone, _camera, pointer, _pickRadiusPixels, out ShipAgent receiver) &&
+                !_selection.Contains(receiver))
+            {
+                _crewTransfer.OrderTransfer(_selection.Ships, receiver);
                 return;
             }
             ShipAgent friendly = PickShip(pointer);

@@ -48,6 +48,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - rid: 6743102069811707976
+  - m_Id: 7244201338679296
+    m_Localized: '{count:plural:You saved a life. Thank you.|You saved {} people. They thank you for it.}'
+    m_Metadata:
+      m_Items:
+      - rid: 6743102069811707976
   references:
     version: 2
     RefIds:
@@ -61,3 +66,4 @@ MonoBehaviour:
         - id: 939077633
         - id: 939077635
         - id: 4317792251904
+        - id: 7244201338679296

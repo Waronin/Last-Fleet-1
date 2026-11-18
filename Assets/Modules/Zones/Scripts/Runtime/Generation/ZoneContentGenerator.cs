@@ -46,6 +46,13 @@ namespace LastFleet.Zones
             (DepositHazard.Radioactive, 0.5f), (DepositHazard.GasPockets, 0.5f)
         };
 
+        // Small ships left adrift (GDD: small ships are only found): often among wrecks, now and then near a hulk or a station.
+        const float AbandonedShipFootprintUnits = 4f;
+        const float WreckFieldAbandonedShipChance = 0.6f;
+        const float HulkAbandonedShipChance = 0.25f;
+        const float StationAbandonedShipChance = 0.25f;
+        const int MaximumWreckFieldAbandonedShips = 2;
+
         static readonly (ResourceKind Value, float Weight)[] OreOnly = { (ResourceKind.Ore, 1f) };
         static readonly (ResourceKind Value, float Weight)[] IceOnly = { (ResourceKind.Ice, 1f) };
         static readonly (ResourceKind Value, float Weight)[] GasOnly = { (ResourceKind.Gas, 1f) };
@@ -121,7 +128,10 @@ namespace LastFleet.Zones
                     break;
             }
 
-            return new ZoneContents(ZoneRadiusKlicks, CreateBackdrop(pointOfInterest, star), deposits, stations);
+            // Rolled after everything else, so the rest of the zone is the same as before abandoned ships existed.
+            List<AbandonedShip> abandonedShips = new List<AbandonedShip>();
+            AddAbandonedShips(random, placement, abandonedShips, pointOfInterest.Kind);
+            return new ZoneContents(ZoneRadiusKlicks, CreateBackdrop(pointOfInterest, star), deposits, stations, abandonedShips);
         }
 
         /// <summary>
@@ -146,6 +156,10 @@ namespace LastFleet.Zones
             foreach (ZoneStation station in contents.Stations)
             {
                 placement.Occupy(station.LocalPosition, station.FootprintRadiusUnits);
+            }
+            foreach (AbandonedShip ship in contents.AbandonedShips)
+            {
+                placement.Occupy(ship.LocalPosition, AbandonedShipFootprintUnits);
             }
 
             bool found = placement.TryPlace(radiusUnits, out localPosition);
@@ -252,6 +266,31 @@ namespace LastFleet.Zones
                 if (placement.TryPlace(radius + ResourceDeposit.SlotClearanceUnits, out Vector3 wreckPosition))
                 {
                     deposits.Add(ResourceDeposit.DriftingWreck(wreckPosition, metal, angle, radius, hazard));
+                }
+            }
+        }
+
+        static void AddAbandonedShips(DeterministicRandom random, ZonePlacement placement, List<AbandonedShip> ships, PointOfInterestKind kind)
+        {
+            (float chance, int maximum) = kind switch
+            {
+                PointOfInterestKind.WreckField => (WreckFieldAbandonedShipChance, MaximumWreckFieldAbandonedShips),
+                PointOfInterestKind.StrandedShip => (HulkAbandonedShipChance, 1),
+                PointOfInterestKind.Station => (StationAbandonedShipChance, 1),
+                _ => (0f, 0)
+            };
+            if (maximum == 0 || !random.Chance(chance))
+            {
+                return;
+            }
+
+            int count = random.Range(1, maximum + 1);
+            for (int i = 0; i < count; i++)
+            {
+                if (placement.TryPlace(AbandonedShipFootprintUnits, out Vector3 position))
+                {
+                    position.y = 0f;
+                    ships.Add(AbandonedShip.Roll(random, position));
                 }
             }
         }

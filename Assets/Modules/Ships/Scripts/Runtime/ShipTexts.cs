@@ -25,6 +25,9 @@ namespace LastFleet.Ships
         /// <summary>{ship}, {cause}</summary>
         public static readonly GameTextKey ShipDestroyed = new GameTextKey(Table, "notice.destroyed");
 
+        /// <summary>{ship} - success popup when a recovered or recrewed ship joins the fleet.</summary>
+        public static readonly GameTextKey JoinedFleet = new GameTextKey(Table, "success.joined-fleet");
+
         /// <summary>{ship}, {zone}, {needed}, {left}</summary>
         public static readonly GameTextKey JumpRefusedForFuel = new GameTextKey(Table, "notice.jump-refused-fuel");
     }

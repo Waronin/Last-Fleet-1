@@ -25,6 +25,9 @@ namespace LastFleet.Mining
         /// <summary>{zone}, {count}</summary>
         public static readonly GameTextKey GasExplosionReport = new GameTextKey(Table, "notice.gas-explosion");
 
+        /// <summary>{resource}, {zone} - success popup when a deposit is mined out.</summary>
+        public static readonly GameTextKey DepositMinedOut = new GameTextKey(Table, "success.deposit-mined-out");
+
         /// <summary>{ship}, {zone}</summary>
         public static readonly GameTextKey NoDepositLeft = new GameTextKey(Table, "notice.no-deposit-left");
 

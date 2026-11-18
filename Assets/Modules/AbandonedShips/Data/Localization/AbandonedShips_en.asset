@@ -1,0 +1,81 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: AbandonedShips_en
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: c7be2f50009562d458f34139c8160800, type: 2}
+  m_Metadata:
+    m_Items:
+    - rid: 5599359038138089544
+  m_TableData:
+  - m_Id: 1735995392
+    m_Localized: An abandoned {class} drifts in {zone}. Right-click it with a ship that has two aboard to put someone on it.
+    m_Metadata:
+      m_Items:
+      - rid: 5599359038138089544
+  - m_Id: 1765355520
+    m_Localized: '{ship} has no crew left and drifts. Right-click it with a ship that has two aboard to put someone on it.'
+    m_Metadata:
+      m_Items:
+      - rid: 5599359038138089544
+  - m_Id: 1769549824
+    m_Localized: '{donor} flies over to put a crew member aboard {ship}.'
+    m_Metadata:
+      m_Items:
+      - rid: 5599359038138089544
+  - m_Id: 1769549825
+    m_Localized: No selected small ship has two aboard to spare one.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1773744128
+    m_Localized: Nobody crossed over to {ship}.
+    m_Metadata:
+      m_Items:
+      - rid: 5599359038138089544
+  - m_Id: 1773744129
+    m_Localized: A crew member of {donor} climbed aboard {ship}; it flies again.
+    m_Metadata:
+      m_Items:
+      - rid: 5599359038138089544
+  - m_Id: 1773744130
+    m_Localized: '{ship} is recovered and flies with the fleet. Home hangar: {home}.'
+    m_Metadata:
+      m_Items:
+      - rid: 5599359038138089544
+  - m_Id: 1773744131
+    m_Localized: '{ship} is recovered and flies with the fleet, but no hangar has room for it.'
+    m_Metadata:
+      m_Items:
+      - rid: 5599359038138089544
+  - m_Id: 1756125278208
+    m_Localized: the abandoned {class}
+    m_Metadata:
+      m_Items:
+      - rid: 5599359038138089544
+  references:
+    version: 2
+    RefIds:
+    - rid: 5599359038138089544
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 
+        m_SharedEntries:
+        - id: 1735995392
+        - id: 1765355520
+        - id: 1769549824
+        - id: 1773744128
+        - id: 1773744129
+        - id: 1773744130
+        - id: 1773744131
+        - id: 1756125278208

@@ -159,6 +159,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Locale-en
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e63142879067baa4c90f53e54890a79b
+    m_Address: AbandonedShips_en
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f5e5b31ddc6250443bd7b74e9fe335d1
     m_Address: Quests_en
     m_ReadOnly: 1

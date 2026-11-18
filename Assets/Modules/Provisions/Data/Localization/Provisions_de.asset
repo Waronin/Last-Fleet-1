@@ -42,6 +42,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - rid: 5599358803017203783
+  - m_Id: 3774418173636608
+    m_Localized: "Unser Wasserstand sieht wirklich gut aus. Vorrat f\xFCr {minutes} Minuten."
+    m_Metadata:
+      m_Items:
+      - rid: 5599358803017203783
   references:
     version: 2
     RefIds:
@@ -53,3 +58,4 @@ MonoBehaviour:
         - id: 1681469440
         - id: 1735995393
         - id: 718727098368
+        - id: 3774418173636608

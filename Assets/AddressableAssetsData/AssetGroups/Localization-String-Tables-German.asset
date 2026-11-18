@@ -111,6 +111,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Locale-de
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8532badc1ac6c7c40955fbe9ad97016b
+    m_Address: AbandonedShips_de
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-de
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 912ecc4d49398bd4fb07296a3def9811
     m_Address: Stations_de
     m_ReadOnly: 1

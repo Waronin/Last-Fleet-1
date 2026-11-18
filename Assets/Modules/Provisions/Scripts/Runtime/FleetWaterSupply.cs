@@ -23,6 +23,8 @@ namespace LastFleet.Provisions
         [SerializeField, Range(0.001f, 1f)] float _deathFractionPerMinute = 0.01f;
         [Tooltip("Warn when the water lasts less than this at the current population.")]
         [SerializeField, Min(0f)] float _warningMinutes = 5f;
+        [Tooltip("After a warning, celebrate once the water lasts at least this long again. Must be above the warning time.")]
+        [SerializeField, Min(0f)] float _recoveredMinutes = 15f;
         [Tooltip("Deaths of thirst are reported in batches of this much game time.")]
         [SerializeField, Min(1f)] float _deathBatchSeconds = 15f;
 
@@ -31,13 +33,16 @@ namespace LastFleet.Provisions
         FleetSupplies _supplies;
 
         public WaterConsumption Consumption => _consumption ??= new WaterConsumption(_peoplePerUnitPerMinute, _deathFractionPerMinute,
-            _warningMinutes, _deathBatchSeconds);
+            _warningMinutes, _deathBatchSeconds, _recoveredMinutes);
 
         /// <summary>How long the water lasts at the current population, for the HUD.</summary>
         public float MinutesLeft => Consumption.MinutesLeft(Supplies.AmountOf(Supply.Water), _population.TotalPeople);
 
         /// <summary>Short feedback for the player when the water runs low or out.</summary>
         public event Action<GameText> Notice;
+
+        /// <summary>A small win for a success popup: the water is plentiful again after running low.</summary>
+        public event Action<GameText> Success;
 
         FleetSupplies Supplies => _supplies ??= new FleetSupplies(_registry);
 
@@ -66,6 +71,10 @@ namespace LastFleet.Provisions
             else if (step.BecameLow)
             {
                 Notice?.Invoke(ProvisionsTexts.WaterLow.Format(("minutes", Mathf.CeilToInt(MinutesLeft))));
+            }
+            if (step.Recovered)
+            {
+                Success?.Invoke(ProvisionsTexts.WaterRecovered.Format(("minutes", Mathf.FloorToInt(MinutesLeft))));
             }
             if (step.Deaths > 0)
             {

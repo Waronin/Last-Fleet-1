@@ -16,6 +16,9 @@ namespace LastFleet.People
         /// <summary>{count}, {ship}, {carrier}</summary>
         public static readonly GameTextKey Disembarked = new GameTextKey(Table, "notice.disembarked");
 
+        /// <summary>{count} - success popup when rescued people reach safety.</summary>
+        public static readonly GameTextKey Rescued = new GameTextKey(Table, "success.rescued");
+
         /// <summary>{count}, {capacity}</summary>
         public static readonly GameTextKey PassengersLine = new GameTextKey(Table, "line.passengers");
 

@@ -241,6 +241,23 @@ namespace LastFleet.Ships
             return _squads.Form(members);
         }
 
+        /// <summary>
+        /// Forms a squad of ships of this side that fly on their own, e.g. a found ship that just joined, and gives
+        /// them a home hangar; null leaves them without one until the player regroups them.
+        /// </summary>
+        public Squad FormSquad(IReadOnlyList<ShipAgent> ships, Hangar homeHangar)
+        {
+            foreach (ShipAgent ship in ships)
+            {
+                if (!_ships.Contains(ship))
+                {
+                    throw new InvalidOperationException($"{ship.name} does not belong to this registry.");
+                }
+                ship.SetHomeHangar(homeHangar);
+            }
+            return _squads.Form(ships);
+        }
+
         /// <summary>Where a small ship should land: home hangar first, else any hangar with room.</summary>
         public Hangar FindHangarFor(ShipAgent ship)
         {

@@ -35,6 +35,10 @@ MonoBehaviour:
     m_Key: notice.thirst-deaths
     m_Metadata:
       m_Items: []
+  - m_Id: 3774418173636608
+    m_Key: success.water-recovered
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

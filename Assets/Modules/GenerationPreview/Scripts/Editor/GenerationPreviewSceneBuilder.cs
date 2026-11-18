@@ -1,4 +1,5 @@
-﻿using LastFleet.CameraControl;
+﻿using LastFleet.AbandonedShips;
+using LastFleet.CameraControl;
 using LastFleet.CameraControl.Editor;
 using LastFleet.Dialogue;
 using LastFleet.Combat;
@@ -173,6 +174,13 @@ namespace LastFleet.GenerationPreview.Editor
             StrandedHulkBodies hulkBodies = shipsObject.AddComponent<StrandedHulkBodies>();
             EditorAssetUtility.SetReferences(hulkBodies, ("_zoneWorld", zoneWorld), ("_stranded", strandedRegistry), ("_recovery", strandedShips),
                 ("_docking", docking), ("_hulkPrefab", CombatShipPrefabBuilder.LoadOrCreateStrandedHulk()));
+            AbandonedShipBodies abandonedShips = shipsObject.AddComponent<AbandonedShipBodies>();
+            EditorAssetUtility.SetReferences(abandonedShips, ("_zoneWorld", zoneWorld), ("_stranded", strandedRegistry),
+                ("_shuttlePrefab", ShipPrefabBuilder.LoadOrCreateShuttle()), ("_harvesterPrefab", ShipPrefabBuilder.LoadOrCreateHarvester()),
+                ("_fighterPrefab", CombatShipPrefabBuilder.LoadOrCreateFighter()));
+            CrewTransferService crewTransfer = shipsObject.AddComponent<CrewTransferService>();
+            EditorAssetUtility.SetReferences(crewTransfer, ("_fleet", shipRegistry), ("_stranded", strandedRegistry), ("_abandoned", abandonedShips));
+            EditorAssetUtility.SetReferences(shipInput, ("_crewTransfer", crewTransfer));
             EmpService emp = shipsObject.AddComponent<EmpService>();
             EditorAssetUtility.SetReferences(emp, ("_fleet", shipRegistry), ("_pronin", proninRegistry),
                 ("_missilePrefab", TacticalWeaponPrefabBuilder.LoadOrCreateMissile()), ("_blastPrefab", TacticalWeaponPrefabBuilder.LoadOrCreateBlast()));
@@ -268,7 +276,7 @@ namespace LastFleet.GenerationPreview.Editor
                 ("_environment", environment), ("_cameraRig", cameraRig), ("_shipRegistry", shipRegistry),
                 ("_shipInput", shipInput), ("_groupInput", groupInput), ("_hangarInput", hangarInput), ("_mining", mining),
                 ("_scouting", scouting), ("_population", population), ("_docking", docking), ("_search", search), ("_rewards", rewards), ("_combat", combat), ("_pursuit", pursuit), ("_lateSignals", lateSignals), ("_proninAttack", proninAttack), ("_fleetJump", fleetJump), ("_jumpDialog", jumpDialog), ("_jumpStatus", jumpStatus), ("_inspection", inspection), ("_shipPanel", shipPanel), ("_quests", quests),
-                ("_runEndWindow", runEndWindow), ("_water", water), ("_evacuation", evacuation), ("_requests", requests), ("_repairs", repairs), ("_strandedShips", strandedShips), ("_hulkBodies", hulkBodies), ("_emp", emp), ("_empTargeting", empTargeting), ("_fuelReturn", fuelReturn), ("_fleetModules", fleetModules), ("_prologue", prologue),
+                ("_runEndWindow", runEndWindow), ("_water", water), ("_evacuation", evacuation), ("_requests", requests), ("_repairs", repairs), ("_strandedShips", strandedShips), ("_hulkBodies", hulkBodies), ("_abandonedShips", abandonedShips), ("_crewTransfer", crewTransfer), ("_emp", emp), ("_empTargeting", empTargeting), ("_fuelReturn", fuelReturn), ("_fleetModules", fleetModules), ("_prologue", prologue),
                 ("_cruiserPrefab", CombatShipPrefabBuilder.LoadOrCreateCruiser()),
                 ("_fighterPrefab", CombatShipPrefabBuilder.LoadOrCreateFighter()),
                 ("_refineryPrefab", ShipPrefabBuilder.LoadOrCreateRefinery()),
@@ -284,6 +292,10 @@ namespace LastFleet.GenerationPreview.Editor
             DeveloperRaidInput raid = previewObject.AddComponent<DeveloperRaidInput>();
             EditorAssetUtility.SetReferences(raid, ("_controller", preview), ("_pronin", proninRegistry),
                 ("_proninFighterPrefab", CombatShipPrefabBuilder.LoadOrCreateProninFighter()));
+            SuccessToasts successToasts = supplyBarObject.AddComponent<SuccessToasts>();
+            SuccessToastSources successSources = previewObject.AddComponent<SuccessToastSources>();
+            EditorAssetUtility.SetReferences(successSources, ("_toasts", successToasts), ("_population", population), ("_combat", combat),
+                ("_rewards", rewards), ("_mining", mining), ("_water", water), ("_strandedShips", strandedShips), ("_crewTransfer", crewTransfer));
 
             EditorAssetUtility.EnsureFolder(SceneFolder);
             EditorSceneManager.SaveScene(scene, ScenePath);

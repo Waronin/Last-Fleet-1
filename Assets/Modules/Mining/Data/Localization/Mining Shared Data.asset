@@ -155,6 +155,10 @@ MonoBehaviour:
     m_Key: action.cancel-refuel.done
     m_Metadata:
       m_Items: []
+  - m_Id: 7612848531910656
+    m_Key: success.deposit-mined-out
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

@@ -28,5 +28,8 @@ namespace LastFleet.Combat
 
         /// <summary>{target}</summary>
         public static readonly GameTextKey EscortingTask = new GameTextKey(Table, "task.escorting");
+
+        /// <summary>{zone} - success popup when the last enemy in a zone with fleet ships falls.</summary>
+        public static readonly GameTextKey ZoneSecured = new GameTextKey(Table, "success.zone-secured");
     }
 }

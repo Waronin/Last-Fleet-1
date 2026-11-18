@@ -120,6 +120,11 @@ MonoBehaviour:
     m_ReadOnly: 1
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c7be2f50009562d458f34139c8160800
+    m_Address: Assets/Modules/AbandonedShips/Data/Localization/AbandonedShips Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: cd00f3038d2655c4ea308048f383e40a
     m_Address: Assets/Modules/Rewards/Data/Localization/Rewards Shared Data.asset
     m_ReadOnly: 1

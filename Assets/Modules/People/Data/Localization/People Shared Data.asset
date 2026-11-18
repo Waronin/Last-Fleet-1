@@ -39,6 +39,10 @@ MonoBehaviour:
     m_Key: notice.disembarked
     m_Metadata:
       m_Items: []
+  - m_Id: 7244201338679296
+    m_Key: success.rescued
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

@@ -17,6 +17,9 @@ namespace LastFleet.Provisions
         /// <summary>{count}</summary>
         public static readonly GameTextKey ThirstDeaths = new GameTextKey(Table, "notice.thirst-deaths");
 
+        /// <summary>{minutes} - success popup when the water is plentiful again after running low.</summary>
+        public static readonly GameTextKey WaterRecovered = new GameTextKey(Table, "success.water-recovered");
+
         /// <summary>{minutes} - next to the water in the supply bar.</summary>
         public static readonly GameTextKey WaterMinutesLeft = new GameTextKey(Table, "hud.water-minutes");
     }

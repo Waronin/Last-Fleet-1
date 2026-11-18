@@ -71,6 +71,10 @@ MonoBehaviour:
     m_Key: line.inventory
     m_Metadata:
       m_Items: []
+  - m_Id: 7111225900609536
+    m_Key: success.finds-secured
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

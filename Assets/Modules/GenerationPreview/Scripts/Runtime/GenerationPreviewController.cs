@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using LastFleet.AbandonedShips;
 using LastFleet.CameraControl;
 using LastFleet.Combat;
 using LastFleet.Exploration;
@@ -120,6 +121,10 @@ namespace LastFleet.GenerationPreview
         [SerializeField] StrandedShipRecovery _strandedShips;
         [Tooltip("Optional. Stranded hulks under Pronin fire; its notices go into the notice feed.")]
         [SerializeField] StrandedHulkBodies _hulkBodies;
+        [Tooltip("Optional. Abandoned small ships adrift in zones; its notices go into the notice feed.")]
+        [SerializeField] AbandonedShipBodies _abandonedShips;
+        [Tooltip("Optional. Putting crew aboard small ships without crew; its notices go into the notice feed.")]
+        [SerializeField] CrewTransferService _crewTransfer;
         [Tooltip("Optional. EMP missiles of the warships: firing, building and their notices.")]
         [SerializeField] EmpService _emp;
         [SerializeField] EmpTargetingInput _empTargeting;
@@ -220,6 +225,14 @@ namespace LastFleet.GenerationPreview
             {
                 _hulkBodies.Notice += ShowNotice;
             }
+            if (_abandonedShips != null)
+            {
+                _abandonedShips.Notice += ShowNotice;
+            }
+            if (_crewTransfer != null)
+            {
+                _crewTransfer.Notice += ShowNotice;
+            }
             if (_emp != null && _empTargeting != null)
             {
                 _emp.Notice += ShowNotice;
@@ -309,6 +322,14 @@ namespace LastFleet.GenerationPreview
             if (_hulkBodies != null)
             {
                 _hulkBodies.Notice -= ShowNotice;
+            }
+            if (_abandonedShips != null)
+            {
+                _abandonedShips.Notice -= ShowNotice;
+            }
+            if (_crewTransfer != null)
+            {
+                _crewTransfer.Notice -= ShowNotice;
             }
             if (_emp != null && _empTargeting != null)
             {
